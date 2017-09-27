@@ -721,6 +721,30 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 [width="59%",cols="22%,<23%,<25%,<30%",options="header",]
 |=======================================================================
 |Priority |As a ... |I want to ... |So that I can...
+|`* * *` |busy user |search using accumulative filters |narrow down my search in the shortest time possible
+
+|`* * *` |careless user that cant remember the order of entry |add a contact without following the particular order of entry |not remember the order of entry
+
+|`* * *` |forgetful user that cant remember all tags |view a list of existing tags |recall the tags associated with a person
+
+|`* * *` |organized user |search for contacts by a given tag |get the list of contacts with the same tag
+
+|`* * *` |sociable user that was given contacts by another person |import from another source file |add contacts that were shared with me
+
+|`* * *` |sociable user |export selected contacts |share the contacts with friends
+
+|`* * *` |sociable user |get reminders of upcoming birthdays |plan my schedule
+
+|`* * *` |user |sort the list by name alphabetically |
+
+|`* * *` |user with limited details of a contact |add user with just the name and phone number |store acquaintance with limited details
+
+|`* * *` |user with large number of tags |identify tags by colors and their alphabetical order |easily identify different tags
+
+|`* * *` |user visiting a friend |view a map based on a person's address in the GUI |find directions to his/her place
+
+|`* * *` |user |search for contacts with just the first few characters of their name |find contacts if I'm unable to remember the spelling of the name
+
 |`* * *` |new user |see usage instructions |refer to instructions when I forget how to use the App
 
 |`* * *` |user |add a new person |

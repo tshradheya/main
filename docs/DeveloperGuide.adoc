@@ -742,7 +742,7 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 (For all use cases below, the *System* is the `AddressBook` and the *Actor* is the `user`, unless specified otherwise)
 
 [discrete]
-=== Use case: Delete person
+=== Use case: UC1 - Delete person
 
 *MSS*
 
@@ -767,7 +767,154 @@ Use case ends.
 +
 Use case resumes at step 2.
 
-{More to be added}
+[discrete]
+=== Use case: UC2 -  Export Contacts
+
+*MSS*
+
+1.  User selects contacts to be exported
+2.  User requests for creating file containing selected contacts
+3.  AddressBook creates file with specified user
+4.  User specifies the location where data file needs to be stored
+5.  AddressBook saves the data file in proper format and indicates success
+6.  User sends the data file to the required recipient
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 1a. No contacts selected
++
+Use case ends.
+
+* 3a. Address Book unable to create file with mentioned contacts
++
+[none]
+** 3a1. AddressBook shows an error message.
++
+Use case resumes at step 1.
+* *a. At any time user chooses to cancel exporting contacts
++
+[none]
+** *a1. AddressBook shows an error message.
++
+Use case ends.
+
+
+[discrete]
+=== Use case: UC3 - Import Contacts
+
+*MSS*
+
+1.  User receives the data file containing contacts
+2.  User requests to import contacts
+3.  Address Book requests for file location
+4.  User specifies location where the data file is found
+5.  AddressBook reads the file and merges new contacts it into existing file
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 4a. No file selected
++
+Use case ends.
+
+* 5a. Address Book finds duplicate contacts
++
+[none]
+** 5a1. AddressBook shows an error message and doesn't merge the duplicate ones
++
+Use case resumes at step 1.
+* *a. At any time user chooses to cancel importing contacts
++
+[none]
+** *a1. AddressBook shows an error message.
++
+Use case ends.
+
+[discrete]
+=== Use case: UC4 - Sharing Contacts
+
+*Guarantees*
+
+[none]
+*  The sharing is completed with recipient successfully being able to get the exported contacts
+
+*MSS*
+
+1.  Sending User +++<u>Exports Contacts (UC2)</u>+++
+2.  Receiving User +++<u>Imports Contacts (UC3)</u>+++
+3.  Receiving User views the list of new contacts
+
++
+Use case ends.
+
+[discrete]
+=== Use case: UC5 - List Contacts after applying Filtered search
+
+*MSS*
+
+1.  User specifies the keywords for different attributes( name, tag...) and requests the list
+2.  Address Book finds list of all people satisfying all conditions
+3.  Address Book displays list of all such contacts
+
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 2a. The list is empty
++
+Use case ends.
+
+
+
+
+[discrete]
+=== Use case: UC6 - Get directions to a contact's Address
+
+*MSS*
+
+1.  User requests for the list of contacts
+2.  Address Book displays list of all such contacts
+3.  User requests for directions to a contact's address by specifying index
+4.  Address Book shows directions from current location to contact's address in Google Maps using GUI
+
++
+Use case ends.
+
+*Extensions*
+
+[none]
+* 2a. The list is empty
++
+Use case ends.
+
+* 3a. The given index is invalid.
++
+[none]
+** 3a1. AddressBook shows an error message.
++
+Use case resumes at step 2.
+
+[none]
+* 4a. Google Maps unable to find location of direction to address
++
+[none]
+** 4a1. AddressBook shows an error message through GUI
++
+Use case ends.
+
+
+
+
+
+
+
 
 [appendix]
 == Non Functional Requirements

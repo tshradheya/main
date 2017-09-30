@@ -731,49 +731,45 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* *` |user |hide link:#private-contact-detail[private contact details] by default |minimize chance of someone else seeing them by accident
 
-|`* *` |user |view my top five most accessed contact |find them more easily
+|`* *` |user |view my top five most accessed persons |find them more easily
 
 |`* *` |user |see frequently used contacts instantly |locate them more easily
 
-|`* *` |user |view my contact list online |so that I can view it without the device running the software
+|`* *` |user |view my Address Book online |so that I can view it without the device running the software
 
-|`* *` |user |send email to a group of contacts |easily send email to a group
+|`* *` |user |send email to a group of persons with one command |easily send email to a group of persons
 
-|`* *` |user |include more details for a person's information |identify the person easily
+|`* *` |user |include more details for a person's contact information |store more information about a person to identify him/her more easily
 
-|`* *` |user |delete multiple users in one command |remove several entries that I no longer need quickly
+|`* *` |user |delete multiple persons in one command |remove several persons that I no longer need quickly
 
 |`* *` |user |have color-coded commands and attributes in command line |identify the command and attributes easily
 
-|`* *` |user |view my recent additions |identify which contact is newly added
+|`* *` |user |view my recent additions |identify which person is newly added
 
-|`* *` |lazy user |have short-hand form of command |perform commands quickly
+|`* *` |lazy user |have short-hand form for each command |perform commands quickly
 
 |`* *` |user |set reminders |remind myself any activities or events that will happen
 
-|`* *` |user |save my contacts as an external file |backup or transfer data easily
+|`* *` |user |save the Address Book as an external file |backup or transfer the Address Book easily
 
-|`* *` |user |add multiple emails and phone numbers to a contact |handle contacts with more than one email and phone numbers
-
-|`* *` |user |add birthday of a person |store the birthday of the person
+|`* *` |user |add multiple emails and phone numbers to a person |handle persons with more than one email and phone numbers
 
 |`* *` |user |add reminders of any approaching birthday |prepare for the person's birthday
 
-|`* *` |user |sort contact by birthday |identify the contacts who will have a birthday soon
+|`* *` |user |sort persons by birthday |identify the persons who will have a birthday soon
 
-|`*` |user with many persons in the address book |sort persons by name |locate a person easily
+|`*` |sociable user |list all persons having birthday during a particular month |identify all persons who have the birthday in the same month
 
-|`*` |sociable user |list all persons having a birthday of a particular month |identify all contacts who have the birthday in the same month
+|`*` |user |count on the backup system |be assured that the Address Book can be recovered if lost
 
-|`*` |user |count on the backup system |be assured that the contact list can be recovered if lost
+|`*` |careless user |search a person using similar keywords |find contacts if I do not know the correct spelling
 
-|`*` |careless user |search a contact using similar keywords |find contacts if I don't know the correct spelling
+|`*` |user |add same tag(s) to multiple persons in one command |tag multiple persons quickly
 
-|`*` |user |add same tag(s) to multiple contacts in one command |tag multiple contacts quickly
+|`*` |user |auto sort the list whenever I add a person |avoid using the sort command with every single additions
 
-|`*` |user |auto sort the list whenever I add contact |avoid using the sort command with every single additions
-
-|`*` |user |have a secured address book |only I have access to my contacts
+|`*` |user |have a secured address book |only I have access to my persons
 |=======================================================================
 
 {More to be added}

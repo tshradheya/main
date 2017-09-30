@@ -769,7 +769,7 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`*` |user |auto sort the list whenever I add a person |avoid using the sort command with every single additions
 
-|`*` |user |have a secured address book |only I have access to my persons
+|`*` |user |have a secured address book |only I have access to my Address Book
 |=======================================================================
 
 {More to be added}

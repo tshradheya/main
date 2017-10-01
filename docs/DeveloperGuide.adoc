@@ -803,6 +803,13 @@ Contact information of a person
 Contact information of a person, including his/her name, phone, email, address and (optional) tags related to that person.
 ....
 
+[[frequently-visited-contacts]]
+Frequently Visited Contacts
+
+....
+The contact information of persons that are frequently viewed or selected.
+....
+
 [[tag]]
 Tag
 
@@ -852,6 +859,14 @@ Open-Close Principle
 ....
 An object-oriented programming principle that states that software entities such as classes and modules should be open for extension, but closed to modification.
 ....
+
+[[data-file]]
+Data File
+
+....
+The XML file that stores the contact information of AddressBook. This is also the file that AddressBook reads from when starting up. There can be multiple data files at any one time.
+....
+
 
 [appendix]
 == Product Survey

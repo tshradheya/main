@@ -731,8 +731,6 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* *` |user |hide link:#private-contact-detail[private contact details] by default |minimize chance of someone else seeing them by accident
 
-|`* *` |user |view my top five most accessed persons |find them more easily
-
 |`* *` |user |see frequently used contacts instantly |locate them more easily
 
 |`* *` |user |view my Address Book online |so that I can view it without the device running the software
@@ -755,13 +753,9 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* *` |user |add multiple emails and phone numbers to a person |handle persons with more than one email and phone numbers
 
-|`* *` |user |add reminders of any approaching birthday |prepare for the person's birthday
+|`* *` |user |get reminder of any approaching birthday |prepare for the person's birthday
 
 |`* *` |user |sort persons by birthday |identify the persons who will have a birthday soon
-
-|`*` |sociable user |list all persons having birthday during a particular month |identify all persons who have the birthday in the same month
-
-|`*` |user |count on the backup system |be assured that the Address Book can be recovered if lost
 
 |`*` |careless user |search a person using similar keywords |find contacts if I do not know the correct spelling
 
@@ -771,8 +765,6 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`*` |user |have a secured address book |only I have access to my Address Book
 |=======================================================================
-
-{More to be added}
 
 [appendix]
 == Use Cases

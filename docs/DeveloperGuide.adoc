@@ -822,7 +822,7 @@ Use case ends.
 1.  User requests to import contacts
 2.  AddressBook requests for file location
 3.  User specifies location where the data file is found
-4.  AddressBook reads the file and merges the contacts from the received data file into the data file that the Address Book is currently using
+4.  AddressBook reads the file and merges the contacts from the received data file into the data file that the AddressBook is currently using
 +
 Use case ends.
 

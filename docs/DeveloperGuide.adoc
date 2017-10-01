@@ -729,7 +729,11 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* * *` |user |find a person by name |locate details of persons without having to go through the entire list
 
+|`* * *` |forgetful user |be able to make changes to existing information when I edit a person's contact information instead of retyping it |refer to what was previously entered under a person's contact information and make changes more easily
+
 |`* *` |user |hide link:#private-contact-detail[private contact details] by default |minimize chance of someone else seeing them by accident
+
+|`* *` |user |find my frequently visited contacts at the top of the displayed list when I do a search |quickly find the contact information I need
 
 |`*` |user with many persons in the address book |sort persons by name |locate a person easily
 |=======================================================================

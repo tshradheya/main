@@ -788,21 +788,18 @@ Use case resumes at step 2.
 .  Should be backwards compatible with storage files from prior versions.
 .  Should be compatible with storage files from the same application but from different computers.
 .  Should minimize dependencies on third-party software.
-.  Any command that can remove data should require additional user confirmation.
 .  Should consistently come up with at least one new feature every month.
 .  Should require some form of authentication before allowing usage.
 .  Should follow JavaDoc style of commenting.
 .  Should adhere to proper coding standards and follow the existing coding style. Proper coding standard can be seen from : https://oss-generic.github.io/process/codingStandards/CodingStandard-Java.html
 .  Should follow the Forking Workflow during commits and merging.
 .  Should have updated and correct documentations and diagrams.
-.  Should have frequent commits during the development of a feature.
 .  Should adhere to the Open-Close Principle for easy future updates.
 .  Should have correct and sufficient tests.
 .  Should minimize coupling between classes for easy reusing and testing.
 .  Should adhere to the Single Responsibility Principle for easy testing and reusing of classes.
 .  Project should not costs more than S$10,000.
 
-{More to be added}
 
 [appendix]
 == Glossary

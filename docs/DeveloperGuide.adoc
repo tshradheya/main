@@ -993,8 +993,31 @@ Use case ends.
 .  Should work on any link:#mainstream-os[mainstream OS] as long as it has Java `1.8.0_60` or higher installed.
 .  Should be able to hold up to 1000 persons without a noticeable sluggishness in performance for typical usage.
 .  A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
+.  A new user to a CLI environment and/or address book application should be able to learn how to install and use the application within 20 minutes with the help of the User Guide.
+.  Should be responsive and commands are executed within 2 seconds under normal load (1000 persons or less) and typical usage.
+.  Layout of the application should be clear, appealing and attractive.
+.  Should be able to handle any invalid input and recover from it.
+.  Should not consume too much processing time/power, less than 10% of the CPU of modern computers/laptops.
+.  Should take up as little memory on the hard disk/permanent memory as possible, less than 100 MB.
+.  Should be free to download and use.
+.  Should work on 32-bit and 64-bit environments.
+.  Should not display content not associated with the operations of the address book.
+.  User Guide and Developer Guide should be well-documented.
+.  Should be backwards compatible with storage files from prior versions.
+.  Should be compatible with storage files from the same application but from different computers.
+.  Should minimize dependencies on third-party software.
+.  Should consistently come up with at least one new feature every month.
+.  Should require some form of authentication before allowing usage.
+.  Should follow JavaDoc style of commenting.
+.  Should adhere to proper coding standards and follow the existing coding style. Proper coding standard can be seen from : https://oss-generic.github.io/process/codingStandards/CodingStandard-Java.html
+.  Should follow the Forking Workflow during commits and merging.
+.  Should have updated and correct documentations and diagrams.
+.  Should adhere to the Open-Close Principle for easy future updates.
+.  Should have correct and sufficient tests.
+.  Should minimize coupling between classes for easy reusing and testing.
+.  Should adhere to the Single Responsibility Principle for easy testing and reusing of classes.
+.  Project should not costs more than S$10,000.
 
-{More to be added}
 
 [appendix]
 == Glossary

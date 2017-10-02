@@ -723,23 +723,23 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 |Priority |As a ... |I want to ... |So that I can...
 |`* * *` |busy user |search using accumulative filters |narrow down my search in the shortest time possible
 
-|`* * *` |careless user that cant remember the order of entry |add a contact without following the particular order of entry |not remember the order of entry
+|`* * *` |careless user that finds it troublesome to follow a particular order of entering contact information |add contact information without following any particular order |enter contact information more easily and conveniently
 
-|`* * *` |forgetful user that cant remember all tags |view a list of existing tags |recall the tags associated with a person
+|`* * *` |forgetful user that can't remember all tags |view a list of existing tags |recall and reuse the tags associated with a person
 
 |`* * *` |organized user |search for contacts by a given tag |get the list of contacts with the same tag
 
 |`* * *` |sociable user that was given contacts by another person |import from another source file |add contacts that were shared with me
 
-|`* * *` |sociable user |export selected contacts |share the contacts with friends
+|`* * *` |sociable user |export selected contacts |share my contacts with friends
 
-|`* * *` |sociable user |get reminders of upcoming birthdays |plan my schedule
+|`* * *` |sociable user |store the person's birthday |keep track of the person's birthday
 
-|`* * *` |user |sort the list by name alphabetically |
+|`* * *` |user |sort the list by name alphabetically |view contacts in an alphabetical order
 
-|`* * *` |user with limited details of a contact |add user with just the name and phone number |store acquaintance with limited details
+|`* * *` |user with limited details of a contact |add user with just the name and phone number |store contact information with limited detail
 
-|`* * *` |user with large number of tags |identify tags by colors and their alphabetical order |easily identify different tags
+|`* * *` |user with large number of tags |identify tags by colors and their alphabetical order |easily identify different tags and their alphabetical order in the GUI
 
 |`* * *` |user visiting a friend |view a map based on a person's address in the GUI |find directions to his/her place
 
@@ -754,8 +754,6 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 |`* * *` |user |find a person by name |locate details of persons without having to go through the entire list
 
 |`* *` |user |hide link:#private-contact-detail[private contact details] by default |minimize chance of someone else seeing them by accident
-
-|`*` |user with many persons in the address book |sort persons by name |locate a person easily
 |=======================================================================
 
 {More to be added}

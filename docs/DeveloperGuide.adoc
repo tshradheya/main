@@ -1013,6 +1013,79 @@ Private contact detail
 A contact detail that is not meant to be shared with others
 ....
 
+
+[[contact-information]]
+Contact information of a person
+
+....
+Contact information of a person, including his/her name, phone, email, address and (optional) tags related to that person.
+....
+
+[[frequently-visited-contacts]]
+Frequently Visited Contacts
+
+....
+The contact information of persons that are frequently viewed or selected.
+....
+
+[[tag]]
+Tag
+
+....
+A label attached to a person's contact information for the purpose of identification, grouping, and to give more information about that person.
+....
+
+[[CLI]]
+Command Line Interface
+
+....
+A user interface to an application in which the users responds to a prompt by typing in a command on a specified line
+....
+
+[[GUI]]
+Graphical User Interface
+
+....
+A user interface to an application in which the users interact with the application through graphical icons and visual indicators
+....
+
+[[JavaDoc]]
+JavaDoc
+
+....
+A documentation generator for the Java language for generating API documentation in HTML format from Java source code.
+....
+
+[[forking-workflow]]
+Forking Workflow
+
+....
+A kind of workflow recommended by Atlassian when using Github's VCS tools. More information can be obtained from :https://www.atlassian.com/git/tutorials/comparing-workflows#forking-workflow
+....
+
+
+[[SRP]]
+Single Responsibility Principle
+
+....
+A computer programming principle that states that every module or class should have responsibility over only a single part of functionality of the program.
+....
+
+[[OCP]]
+Open-Close Principle
+
+....
+An object-oriented programming principle that states that software entities such as classes and modules should be open for extension, but closed to modification.
+....
+
+[[data-file]]
+Data File
+
+....
+The XML file that stores the contact information of AddressBook. This is also the file that AddressBook reads from when starting up. There can be multiple data files at any one time.
+....
+
+
 [appendix]
 == Product Survey
 

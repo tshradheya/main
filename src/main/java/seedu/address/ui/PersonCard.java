@@ -1,5 +1,8 @@
 package seedu.address.ui;
 
+import java.util.HashMap;
+import java.util.Random;
+
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -8,8 +11,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import seedu.address.model.person.ReadOnlyPerson;
 
-import java.util.HashMap;
-import java.util.Random;
 
 /**
  * An UI component that displays information of a {@code Person}.
@@ -81,13 +82,17 @@ public class PersonCard extends UiPart<Region> {
         });
     }
 
+    /**
+     * Initialize tags for the respective person
+     *
+     * @param person
+     */
     private void initTags(ReadOnlyPerson person) {
         person.getTags().forEach(tag -> {
             Label tagLabel = new Label(tag.tagName);
             tagLabel.setStyle("-fx-background-color: " + getTagColor(tag.tagName));
             tags.getChildren().add(tagLabel);
         });
-        //person.getTags().forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
     }
 
     @Override

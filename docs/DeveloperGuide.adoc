@@ -754,9 +754,41 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 |`* * *` |user |find a person by name |locate details of persons without having to go through the entire list
 
 |`* *` |user |hide link:#private-contact-detail[private contact details] by default |minimize chance of someone else seeing them by accident
-|=======================================================================
 
-{More to be added}
+|`* *` |user |see frequently used contacts instantly |locate them more easily
+
+|`* *` |user |view my Address Book online |so that I can view it without the device running the software
+
+|`* *` |user |send email to a group of persons with one command |easily send email to a group of persons
+
+|`* *` |user |include more details for a person's contact information |store more information about a person to identify him/her more easily
+
+|`* *` |user |delete multiple persons in one command |remove several persons that I no longer need quickly
+
+|`* *` |user |have color-coded commands and attributes in command line |identify the command and attributes easily
+
+|`* *` |user |view my recent additions |identify which person is newly added
+
+|`* *` |lazy user |have short-hand form for each command |perform commands quickly
+
+|`* *` |user |set reminders |remind myself any activities or events that will happen
+
+|`* *` |user |save the Address Book as an external file |backup or transfer the Address Book easily
+
+|`* *` |user |add multiple emails and phone numbers to a person |handle persons with more than one email and phone numbers
+
+|`* *` |user |get reminder of any approaching birthday |prepare for the person's birthday
+
+|`* *` |user |sort persons by birthday |identify the persons who will have a birthday soon
+
+|`*` |careless user |search a person using similar keywords |find contacts if I do not know the correct spelling
+
+|`*` |user |add same tag(s) to multiple persons in one command |tag multiple persons quickly
+
+|`*` |user |auto sort the list whenever I add a person |avoid using the sort command with every single additions
+
+|`*` |user |have a secured address book |only I have access to my Address Book
+|=======================================================================
 
 [appendix]
 == Use Cases

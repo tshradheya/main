@@ -17,8 +17,8 @@ import java.util.Random;
 public class PersonCard extends UiPart<Region> {
 
     private static final String FXML = "PersonListCard.fxml";
-    private static String[] colors = {"red","blue","green","yellow","pink"};
-    private static HashMap<String,String> tagColors = new HashMap<String,String>();
+    private static String[] colors = {"red", "blue", "green", "yellow", "pink"};
+    private static HashMap<String, String> tagColors = new HashMap<String, String>();
     private static Random random = new Random();
 
     /**
@@ -59,8 +59,8 @@ public class PersonCard extends UiPart<Region> {
      * returns a String containing the color
      */
 
-    private String getTagColor(String tag){
-        if(!tagColors.containsKey(tag)){
+    private String getTagColor(String tag) {
+        if (!tagColors.containsKey(tag)) {
             tagColors.put(tag, colors[random.nextInt(colors.length)]);
         }
         return tagColors.get(tag);

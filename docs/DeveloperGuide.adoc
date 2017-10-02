@@ -721,11 +721,11 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 [width="59%",cols="22%,<23%,<25%,<30%",options="header",]
 |=======================================================================
 |Priority |As a ... |I want to ... |So that I can...
-|`* * *` |busy user |search using accumulative filters |narrow down my search in the shortest time possible
+|`* * *` |busy user |search using accumulative link:@attributes[attributes] |narrow down my search in the shortest time possible
 
-|`* * *` |careless user that finds it troublesome to follow a particular order of entering contact information |add contact information without following any particular order |enter contact information more easily and conveniently
+|`* * *` |careless user that finds it troublesome to follow a particular order of entering link:#contact-information[contact information] |add contact information without following any particular order |enter contact information more easily and conveniently
 
-|`* * *` |forgetful user that can't remember all tags |view a list of existing tags |recall and reuse the tags associated with a person
+|`* * *` |forgetful user that can't remember all link:#tag[tags] |view a list of existing tags |recall and reuse the tags associated with a person
 
 |`* * *` |organized user |search for contacts by a given tag |get the list of contacts with the same tag
 
@@ -739,7 +739,7 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* * *` |user with limited details of a contact |add user with just the name and phone number |store contact information with limited detail
 
-|`* * *` |user with large number of tags |identify tags by colors and their alphabetical order |easily identify different tags and their alphabetical order in the GUI
+|`* * *` |user with large number of tags |identify tags by colors and their alphabetical order |easily identify different tags and their alphabetical order in the link:#GUI[GUI]
 
 |`* * *` |user visiting a friend |view a map based on a person's address in the GUI |find directions to his/her place
 
@@ -757,11 +757,11 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* *` |user |hide link:#private-contact-detail[private contact details] by default |minimize chance of someone else seeing them by accident
 
-|`* *` |user |find my frequently visited contacts at the top of the displayed list when I do a search |quickly find the contact information I need
+|`* *` |user |find my link:#frequently-used-contacts[frequently used contacts] at the top of the displayed list when I do a search |quickly find the contact information I need
 
 |`* *` |user |see frequently used contacts instantly |locate them more easily
 
-|`* *` |user |view my Address Book online |so that I can view it without the device running the software
+|`* *` |user |view my AddressBook online |so that I can view it without the device running the software
 
 |`* *` |user |send email to a group of persons with one command |easily send email to a group of persons
 
@@ -769,7 +769,7 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* *` |user |delete multiple persons in one command |remove several persons that I no longer need quickly
 
-|`* *` |user |have color-coded commands and attributes in command line |identify the command and attributes easily
+|`* *` |user |have color-coded commands and contact information in command line |identify the command and contact information easily
 
 |`* *` |user |view my recent additions |identify which person is newly added
 
@@ -777,7 +777,7 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* *` |user |set reminders |remind myself any activities or events that will happen
 
-|`* *` |user |save the Address Book as an external file |backup or transfer the Address Book easily
+|`* *` |user |save the AddressBook as an external file |backup or transfer the AddressBook easily
 
 |`* *` |user |add multiple emails and phone numbers to a person |handle persons with more than one email and phone numbers
 
@@ -791,7 +791,7 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`*` |user |auto sort the list whenever I add a person |avoid using the sort command with every single additions
 
-|`*` |user |have a secured address book |only I have access to my Address Book
+|`*` |user |have a secured address book |only I have access to my AddressBook
 |=======================================================================
 
 [appendix]
@@ -832,8 +832,8 @@ Use case resumes at step 2.
 
 1.  User selects contacts to be exported based on current list
 2.  User requests for creating file containing selected contacts
-3.  AddressBook creates file with the contact details of specified contacts
-4.  User specifies the location where data file needs to be stored
+3.  AddressBook creates file with the link:#contact-information[contact information] of specified contacts
+4.  User specifies the location where link:#data-file[data file] needs to be stored
 5.  AddressBook saves the data file in proper format and indicates success
 6.  User sends the data file to the required recipient
 +
@@ -871,7 +871,7 @@ Use case ends.
 *Precondition*
 
 [none]
-*  User receives the data file containing contacts
+*  User receives the link:#data-file[data file] containing contacts
 
 
 *MSS*
@@ -932,8 +932,8 @@ Use case ends.
 
 *MSS*
 
-1.  User specifies the keywords for different attributes( name, tag...) and requests the list
-2.  AddressBook finds list of all people satisfying all conditions
+1.  User specifies the keywords for different link:#attributes[attributes] and requests the list
+2.  AddressBook finds list of all people satisfying all attributes
 3.  AddressBook displays list of all such contacts
 
 +
@@ -957,7 +957,7 @@ Use case ends.
 1.  User requests for the list of contacts
 2.  AddressBook displays list of all such contacts
 3.  User requests for directions to a contact's address
-4.  AddressBook shows directions from current location to contact's address in Google Maps using GUI
+4.  AddressBook shows directions from current location to contact's address in Google Maps using link:#GUI[GUI]
 
 +
 Use case ends.
@@ -997,7 +997,7 @@ Use case ends.
 .  Should work on any link:#mainstream-os[mainstream OS] as long as it has Java `1.8.0_60` or higher installed.
 .  Should be able to hold up to 1000 persons without a noticeable sluggishness in performance for typical usage.
 .  A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
-.  A new user to a CLI environment and/or address book application should be able to learn how to install and use the application within 20 minutes with the help of the User Guide.
+.  A new user to a link:#CLI[CLI] environment and/or address book application should be able to learn how to install and use the application within 20 minutes with the help of the User Guide.
 .  Should be responsive and commands are executed within 2 seconds under normal load (1000 persons or less) and typical usage.
 .  Layout of the application should be clear, appealing and attractive.
 .  Should be able to handle any invalid input and recover from it.
@@ -1012,14 +1012,14 @@ Use case ends.
 .  Should minimize dependencies on third-party software.
 .  Should consistently come up with at least one new feature every month.
 .  Should require some form of authentication before allowing usage.
-.  Should follow JavaDoc style of commenting.
+.  Should follow link:#JavaDoc[JavaDoc] style of commenting.
 .  Should adhere to proper coding standards and follow the existing coding style. Proper coding standard can be seen from : https://oss-generic.github.io/process/codingStandards/CodingStandard-Java.html
-.  Should follow the Forking Workflow during commits and merging.
+.  Should follow the link:#forking-workflow[Forking Workflow] during commits and merging.
 .  Should have updated and correct documentations and diagrams.
-.  Should adhere to the Open-Close Principle for easy future updates.
+.  Should adhere to the link:#OCP[Open-Close Principle] for easy future updates.
 .  Should have correct and sufficient tests.
 .  Should minimize coupling between classes for easy reusing and testing.
-.  Should adhere to the Single Responsibility Principle for easy testing and reusing of classes.
+.  Should adhere to the link:#SRP[Single Responsibility Principle] for easy testing and reusing of classes.
 .  Project should not costs more than S$10,000.
 
 
@@ -1048,8 +1048,15 @@ Contact information of a person
 Contact information of a person, including his/her name, phone, email, address and (optional) tags related to that person.
 ....
 
-[[frequently-visited-contacts]]
-Frequently Visited Contacts
+[[attributes]]
+Attributes
+
+....
+Name and tags of a person
+....
+
+[[frequently-used-contacts]]
+Frequently Used Contacts
 
 ....
 The contact information of persons that are frequently viewed or selected.
@@ -1087,7 +1094,7 @@ A documentation generator for the Java language for generating API documentation
 Forking Workflow
 
 ....
-A kind of workflow recommended by Atlassian when using Github's VCS tools. More information can be obtained from :https://www.atlassian.com/git/tutorials/comparing-workflows#forking-workflow
+A kind of workflow recommended by Atlassian when using Github's VCS tools. More information can be obtained from: https://www.atlassian.com/git/tutorials/comparing-workflows#forking-workflow
 ....
 
 

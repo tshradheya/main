@@ -763,7 +763,7 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* *` |user |see frequently used contacts instantly |locate them more easily
 
-|`* *` |user |I want to be able to add Display Picture for my contact |so that I can easily identify them
+|`* *` |user |I want to be able to add link:#display-picture[Display Picture] for my contacts |so that I can easily identify them
 
 |`* *` |user |view my address book online |so that I can view it without the device running the software
 
@@ -803,7 +803,7 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 [appendix]
 == Use Cases
 
-(For all use cases below, the *System* is the `iContacts` and the *Actor* is the `user`, unless specified otherwise)
+(For all use cases below, the *System* is `iContacts` and the *Actor* is the `user`, unless specified otherwise)
 
 [discrete]
 === Use case: UC1 - Delete person
@@ -1119,5 +1119,12 @@ Contacts
 
 ....
 The people whose details are present in my address book.
+....
+
+[[display-picture]]
+Display Picture
+
+....
+A photo of the person represented by this contact entry
 ....
 

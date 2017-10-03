@@ -1,4 +1,4 @@
-= AddressBook Level 4 - Developer Guide
+= iContacts - Developer Guide
 :toc:
 :toc-title:
 :toc-placement: preamble
@@ -745,6 +745,8 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* * *` |user |search for contacts with just the first few characters of their name |find contacts if I'm unable to remember the spelling of the name
 
+|`* * *` |forgetful user |I want to add nicknames for people |so that I can easily search for them
+
 |`* * *` |new user |see usage instructions |refer to instructions when I forget how to use the App
 
 |`* * *` |user |add a new person |
@@ -761,7 +763,9 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* *` |user |see frequently used contacts instantly |locate them more easily
 
-|`* *` |user |view my AddressBook online |so that I can view it without the device running the software
+|`* *` |user |I want to be able to add link:#display-picture[Display Picture] for my contacts |so that I can easily identify them
+
+|`* *` |user |view my address book online |so that I can view it without the device running the software
 
 |`* *` |user |send email to a group of persons with one command |easily send email to a group of persons
 
@@ -777,7 +781,7 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* *` |user |set reminders |remind myself any activities or events that will happen
 
-|`* *` |user |save the AddressBook as an external file |backup or transfer the AddressBook easily
+|`* *` |user |save the address book as an external file |backup or transfer the address book easily
 
 |`* *` |user |add multiple emails and phone numbers to a person |handle persons with more than one email and phone numbers
 
@@ -791,13 +795,15 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`*` |user |auto sort the list whenever I add a person |avoid using the sort command with every single additions
 
-|`*` |user |have a secured address book |only I have access to my AddressBook
+|`*` |busy user |I should be able to create meeting reminders with my link:#contacts[contacts] |so that I don't forget whom should I be meeting at what time
+
+|`*` |user |have a secured address book |only I have access to my address book
 |=======================================================================
 
 [appendix]
 == Use Cases
 
-(For all use cases below, the *System* is the `AddressBook` and the *Actor* is the `user`, unless specified otherwise)
+(For all use cases below, the *System* is `iContacts` and the *Actor* is the `user`, unless specified otherwise)
 
 [discrete]
 === Use case: UC1 - Delete person
@@ -805,9 +811,9 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 *MSS*
 
 1.  User requests to list persons
-2.  AddressBook shows a list of persons
+2.  iContacts shows a list of persons
 3.  User requests to delete a specific person in the list
-4.  AddressBook deletes the person
+4.  iContacts deletes the person
 +
 Use case ends.
 
@@ -821,7 +827,7 @@ Use case ends.
 * 3a. The given index is invalid.
 +
 [none]
-** 3a1. AddressBook shows an error message.
+** 3a1. iContacts shows an error message.
 +
 Use case resumes at step 2.
 
@@ -832,9 +838,9 @@ Use case resumes at step 2.
 
 1.  User selects contacts to be exported based on current list
 2.  User requests for creating file containing selected contacts
-3.  AddressBook creates file with the link:#contact-information[contact information] of specified contacts
+3.  iContacts creates file with the link:#contact-information[contact information] of specified contacts
 4.  User specifies the location where link:#data-file[data file] needs to be stored
-5.  AddressBook saves the data file in proper format and indicates success
+5.  iContacts saves the data file in proper format and indicates success
 6.  User sends the data file to the required recipient
 +
 Use case ends.
@@ -846,21 +852,21 @@ Use case ends.
 +
 Use case ends.
 
-* 3a. AddressBook unable to create file with mentioned contacts
+* 3a. iContacts unable to create file with mentioned contacts
 +
 [none]
-** 3a1. AddressBook shows an error message.
+** 3a1. iContacts shows an error message.
 +
 Use case resumes at step 1.
 [none]
-* 5a. AddressBook unable to store at given location
-** 5a1. AddressBook shows an error message.
+* 5a. iContacts unable to store at given location
+** 5a1. iContacts shows an error message.
 +
 Use case ends
 * *a. At any time user chooses to cancel exporting contacts
 +
 [none]
-** *a1. AddressBook shows an error message.
+** *a1. iContacts shows an error message.
 +
 Use case ends.
 
@@ -878,9 +884,9 @@ Use case ends.
 
 
 1.  User requests to import contacts
-2.  AddressBook requests for file location
+2.  iContacts requests for file location
 3.  User specifies location where the data file is found
-4.  AddressBook reads the file and merges the contacts from the received data file into the data file that the AddressBook is currently using
+4.  iContacts reads the file and merges the contacts from the received data file into the data file that iContacts is currently using
 +
 Use case ends.
 
@@ -891,22 +897,22 @@ Use case ends.
 +
 Use case ends.
 
-* 4a. AddressBook finds duplicate contacts
+* 4a. iContacts finds duplicate contacts
 +
 [none]
-** 4a1. AddressBook shows an error message and doesn't merge the duplicate ones
+** 4a1. iContacts shows an error message and doesn't merge the duplicate ones
 +
 Use case resumes at step 1.
 
 [none]
-* 4b. AddressBook unable to locate the path of file and open it
-** 4b1. AddressBook shows an error message.
+* 4b. iContacts unable to locate the path of file and open it
+** 4b1. iContacts shows an error message.
 +
 Use case ends
 * *a. At any time user chooses to cancel importing contacts
 +
 [none]
-** *a1. AddressBook shows an error message.
+** *a1. iContacts shows an error message.
 +
 Use case ends.
 
@@ -933,8 +939,8 @@ Use case ends.
 *MSS*
 
 1.  User specifies the keywords for different link:#attributes[attributes] and requests the list
-2.  AddressBook finds list of all people satisfying all attributes
-3.  AddressBook displays list of all such contacts
+2.  iContacts finds list of all people satisfying all attributes
+3.  iContacts displays list of all such contacts
 
 +
 Use case ends.
@@ -946,18 +952,15 @@ Use case ends.
 +
 Use case ends.
 
-
-
-
 [discrete]
 === Use case: UC6 - Get directions to a contact's address
 
 *MSS*
 
 1.  User requests for the list of contacts
-2.  AddressBook displays list of all such contacts
+2.  iContacts displays list of all such contacts
 3.  User requests for directions to a contact's address
-4.  AddressBook shows directions from current location to contact's address in Google Maps using link:#GUI[GUI]
+4.  iContacts shows directions from current location to contact's address in Google Maps using link:#GUI[GUI]
 
 +
 Use case ends.
@@ -972,7 +975,7 @@ Use case ends.
 * 3a. The given index is invalid.
 +
 [none]
-** 3a1. AddressBook shows an error message.
+** 3a1. iContacts shows an error message.
 +
 Use case resumes at step 2.
 
@@ -980,16 +983,9 @@ Use case resumes at step 2.
 * 4a. Google Maps unable to find location of direction to address
 +
 [none]
-** 4a1. AddressBook shows an error message through GUI
+** 4a1. iContacts shows an error message through GUI
 +
 Use case ends.
-
-
-
-
-
-
-
 
 [appendix]
 == Non Functional Requirements
@@ -1021,7 +1017,6 @@ Use case ends.
 .  Should minimize coupling between classes for easy reusing and testing.
 .  Should adhere to the link:#SRP[Single Responsibility Principle] for easy testing and reusing of classes.
 .  Project should not costs more than S$10,000.
-
 
 [appendix]
 == Glossary
@@ -1116,23 +1111,20 @@ An object-oriented programming principle that states that software entities such
 Data File
 
 ....
-The XML file that stores the contact information of AddressBook. This is also the file that AddressBook reads from when starting up. There can be multiple data files at any one time.
+The XML file that stores the contact information of address book. This is also the file that iContacts reads from when starting up. There can be multiple data files at any one time.
 ....
 
+[[contact]]
+Contacts
 
-[appendix]
-== Product Survey
+....
+The people whose details are present in my address book.
+....
 
-*Product Name*
+[[display-picture]]
+Display Picture
 
-Author: ...
+....
+A photo of the person represented by this contact entry
+....
 
-Pros:
-
-* ...
-* ...
-
-Cons:
-
-* ...
-* ...

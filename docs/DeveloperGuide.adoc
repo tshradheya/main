@@ -1114,7 +1114,7 @@ Data File
 The XML file that stores the contact information of address book. This is also the file that iContacts reads from when starting up. There can be multiple data files at any one time.
 ....
 
-[[contact]]
+[[contacts]]
 Contacts
 
 ....

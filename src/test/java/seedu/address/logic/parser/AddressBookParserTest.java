@@ -5,6 +5,8 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
+import static seedu.address.logic.commands.CommandTestUtil.NICKNAME_DESC_AMY;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_NICKNAME_AMY;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 
 import java.util.Arrays;
@@ -111,6 +113,14 @@ public class AddressBookParserTest {
     }
 
     @Test
+    public void parseCommand_nickname() throws Exception {
+        NicknameCommand command = (NicknameCommand) parser.parseCommand(
+                NicknameCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased()
+                + NICKNAME_DESC_AMY);
+        assertEquals(new NicknameCommand(INDEX_FIRST_PERSON, VALID_NICKNAME_AMY), command);
+    }
+
+    @Test
     public void parseCommand_select() throws Exception {
         SelectCommand command = (SelectCommand) parser.parseCommand(
                 SelectCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased());
@@ -127,12 +137,6 @@ public class AddressBookParserTest {
     public void parseCommand_undoCommandWord_returnsUndoCommand() throws Exception {
         assertTrue(parser.parseCommand(UndoCommand.COMMAND_WORD) instanceof UndoCommand);
         assertTrue(parser.parseCommand("undo 3") instanceof UndoCommand);
-    }
-
-    @Test
-    public void parseCommand_nicknameCommandWord_returnsNicknameCommand() throws Exception {
-        assertTrue(parser.parseCommand(NicknameCommand.COMMAND_WORD) instanceof NicknameCommand);
-        assertTrue(parser.parseCommand("nickname 1") instanceof NicknameCommand);
     }
 
     @Test

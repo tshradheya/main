@@ -31,8 +31,9 @@ public class NicknameCommand extends UndoableCommand {
             + "Example: " + COMMAND_WORD + " 1 "
             + PREFIX_NICKNAME + "Adam";
 
-    public static final String MESSAGE_SET_NICKNAME_SUCCESS = "Nickname set to Person: %1$s";
+    public static final String MESSAGE_SET_NICKNAME_SUCCESS = "Nickname successfully set to Person: %1$s";
     public static final String MESSAGE_REMOVE_NICKNAME_SUCCESS = "Nickname successfully removed from Person: %1$s";
+    public static final String MESSAGE_UNCHANGED_NICKNAME = "Nickname remains unchanged for Person: %1$s";
 
     private final Index index;
     private final Nickname nickname;
@@ -58,11 +59,14 @@ public class NicknameCommand extends UndoableCommand {
         }
 
         Person personToEdit = (Person) lastShownList.get(index.getZeroBased());
+        Nickname previousNickname = personToEdit.getNickname();
         personToEdit.setNickname(nickname);
 
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
 
-        if (nickname.value.equals("")) {
+        if (nickname.equals(previousNickname)) {
+            return new CommandResult(String.format(MESSAGE_UNCHANGED_NICKNAME, personToEdit.getName()));
+        } else if (nickname.value.equals("")) {
             return new CommandResult(String.format(MESSAGE_REMOVE_NICKNAME_SUCCESS, personToEdit.getName()));
         } else {
             return new CommandResult(String.format(MESSAGE_SET_NICKNAME_SUCCESS, personToEdit.getName()));

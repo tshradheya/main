@@ -4,6 +4,8 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NICKNAME;
 
+import java.util.NoSuchElementException;
+
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.logic.commands.NicknameCommand;
@@ -33,13 +35,13 @@ public class NicknameCommandParser implements Parser<NicknameCommand> {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, NicknameCommand.MESSAGE_USAGE));
         }
 
-        Nickname nickname;
+        String nickname;
         try {
-            nickname = new Nickname(argMultimap.getValue(PREFIX_NICKNAME).get());
-        } catch (NullPointerException npe) {
-            throw new ParseException(npe.getMessage(), npe);
+            nickname = argMultimap.getValue(PREFIX_NICKNAME).get();
+        } catch (NoSuchElementException nsee) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, NicknameCommand.MESSAGE_USAGE));
         }
 
-        return new NicknameCommand(index, nickname);
+        return new NicknameCommand(index, new Nickname(nickname));
     }
 }

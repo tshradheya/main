@@ -32,6 +32,7 @@ public class NicknameCommand extends UndoableCommand {
             + PREFIX_NICKNAME + "Adam";
 
     public static final String MESSAGE_SET_NICKNAME_SUCCESS = "Nickname set to Person: %1$s";
+    public static final String MESSAGE_REMOVE_NICKNAME_SUCCESS = "Nickname successfully removed from Person: %1$s";
 
     private final Index index;
     private final Nickname nickname;
@@ -56,32 +57,16 @@ public class NicknameCommand extends UndoableCommand {
             throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
         }
 
-        ReadOnlyPerson personToEdit = lastShownList.get(index.getZeroBased());
-        Person person = createEditedPerson(personToEdit, nickname);
+        Person personToEdit = (Person) lastShownList.get(index.getZeroBased());
+        personToEdit.setNickname(nickname);
 
-        try {
-
-        } catch () {
-
-        }
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
-        return new CommandResult(String.format(MESSAGE_SET_NICKNAME_SUCCESS, editedPerson));
-    }
 
-    /**
-     * Creates and returns a {@code Person} with the details of {@code personToEdit}
-     * edited with {@code nickname}.
-     */
-    private static Person createEditedPerson(ReadOnlyPerson personToEdit, Nickname nickname) {
-        assert personToEdit != null;
-
-        Name name = personToEdit.getName();
-        Phone phone = personToEdit.getPhone();
-        Email email = personToEdit.getEmail();
-        Address address = personToEdit.getAddress();
-        Set<Tag> tags = personToEdit.getTags();
-
-        return new Person(name, phone, email, address, nickname, tags);
+        if (nickname.value.equals("")) {
+            return new CommandResult(String.format(MESSAGE_REMOVE_NICKNAME_SUCCESS, personToEdit.getName()));
+        } else {
+            return new CommandResult(String.format(MESSAGE_SET_NICKNAME_SUCCESS, personToEdit.getName()));
+        }
     }
 
     @Override

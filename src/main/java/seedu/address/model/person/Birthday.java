@@ -6,7 +6,7 @@ import seedu.address.commons.exceptions.IllegalValueException;
 
 /**
  * Represents a Person's birthday in the address book.
- * Guarantees: immutable; is valid as declared in {@link #isValidBirthday(int[])}
+ * Guarantees: immutable; is valid as declared in {@link #isValidBirthday(String)}
  */
 public class Birthday {
 
@@ -17,7 +17,7 @@ public class Birthday {
             30, 31, 30, 31};
     private static final String BIRTHDAY_DASH_SEPARATOR = "-";
     private static final String BIRTHDAY_FORWARD_SLASH_SEPARATOR = "/";
-    private static final String BIRTHDAY_DOT_SEPARATOR = ".";
+    private static final String BIRTHDAY_DOT_SEPARATOR = "\\.";
 
     private static final String EMPTY_STRING = "";
 
@@ -27,6 +27,9 @@ public class Birthday {
 
     private static final int SMALLEST_POSSIBLE_MONTH = 1;
     private static final int LARGEST_POSSIBLE_MONTH = 12;
+
+    private static final int SMALLEST_ALLOWED_YEAR = 1000;
+    private static final int LARGEST_ALLOWED_YEAR = 9999;
 
     private static final int LEAP_YEAR_MONTH_FEBRUARY = 2;
     private static final int LEAP_YEAR_DAY = 29;
@@ -49,16 +52,11 @@ public class Birthday {
             this.value = EMPTY_STRING;
         }else {
 
-            int[] processedSplitDate;
-            try {
-                processedSplitDate = processDate(birthday);
-            } catch (NumberFormatException nfe) {
+            if(!isValidBirthday(birthday)) {
                 throw new IllegalValueException("");
             }
 
-            if (!isValidBirthday(processedSplitDate)) {
-                throw new IllegalValueException("");
-            }
+            int[] processedSplitDate = processDate(birthday);
             this.value = convertToDefaultDateFormat(processedSplitDate);
         }
     }
@@ -81,7 +79,7 @@ public class Birthday {
      *
      * @throws NumberFormatException if one segment of the date String cannot be parsed into an integer.
      */
-    private int[] processDate(String date) throws NumberFormatException {
+    private static int[] processDate(String date) throws NumberFormatException {
         requireNonNull(date);
 
         String[] splitDate = getSplitDate(date);
@@ -118,7 +116,7 @@ public class Birthday {
     private static String removeLeadingZeroes(String toRemove) {
         requireNonNull(toRemove);
 
-        while(!toRemove.isEmpty() && !toRemove.startsWith("0")) {
+        while(!toRemove.isEmpty() && toRemove.startsWith("0")) {
             toRemove = toRemove.substring(1);
         }
         return toRemove;
@@ -128,8 +126,16 @@ public class Birthday {
      * Returns true if the date is valid. A date is valid if it is possible for it to exist.
      * E.g. 31/4/1999 is not a valid date because April only has 30 days.
      */
-    public static boolean isValidBirthday(int[] processedSplitDate) {
-        requireNonNull(processedSplitDate);
+    public static boolean isValidBirthday(String birthday) {
+        requireNonNull(birthday);
+        int[] processedSplitDate;
+
+        try {
+            processedSplitDate = processDate(birthday);
+        }catch(NumberFormatException nfe) {
+            return false;
+        }
+
         if(processedSplitDate.length != 3 || !isValidDate(processedSplitDate)) {
             return false;
         }
@@ -192,7 +198,7 @@ public class Birthday {
      * A year is valid if has at least 4 digits.
      */
     private static boolean isYearValid(int year) {
-        if(year < 1000) {
+        if(year < SMALLEST_ALLOWED_YEAR || year > LARGEST_ALLOWED_YEAR) {
             return false;
         }
         return true;

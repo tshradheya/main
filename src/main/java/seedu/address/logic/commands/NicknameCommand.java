@@ -36,7 +36,7 @@ public class NicknameCommand extends UndoableCommand {
     }
 
     @Override
-    public CommandResult execute_undoableCommand() throws CommandException {
+    public CommandResult executeUndoableCommand() throws CommandException {
         throw new CommandException(index.getOneBased() + " " + nickname);
     }
 }

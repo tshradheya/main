@@ -59,17 +59,23 @@ public class NicknameCommand extends UndoableCommand {
         }
 
         Person personToEdit = (Person) lastShownList.get(index.getZeroBased());
-        Nickname previousNickname = personToEdit.getNickname();
-        personToEdit.setNickname(nickname);
+        Nickname previousNickname = null;
 
+        try {
+            previousNickname = personToEdit.getNickname();
+        } catch (NullPointerException npe) {
+            assert false : "The nickname cannot be null";
+        }
+
+        personToEdit.setNickname(nickname);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
 
         if (nickname.equals(previousNickname)) {
-            return new CommandResult(String.format(MESSAGE_UNCHANGED_NICKNAME, personToEdit.getName()));
+            return new CommandResult(String.format(MESSAGE_UNCHANGED_NICKNAME, personToEdit.getAsText()));
         } else if (nickname.value.equals("")) {
-            return new CommandResult(String.format(MESSAGE_REMOVE_NICKNAME_SUCCESS, personToEdit.getName()));
+            return new CommandResult(String.format(MESSAGE_REMOVE_NICKNAME_SUCCESS, personToEdit.getAsText()));
         } else {
-            return new CommandResult(String.format(MESSAGE_SET_NICKNAME_SUCCESS, personToEdit.getName()));
+            return new CommandResult(String.format(MESSAGE_SET_NICKNAME_SUCCESS, personToEdit.getAsText()));
         }
     }
 

@@ -48,13 +48,12 @@ public class NicknameCommand extends UndoableCommand {
         }
 
         // instanceof handles nulls
-        if (!(other instanceof String)) {
+        if (!(other instanceof NicknameCommand)) {
             return false;
         }
 
         // state check
-        String e = (String) other;
-
-        return e.equals(other);
+        NicknameCommand e = (NicknameCommand) other;
+        return index.equals(e.index) && nickname.equals(e.nickname);
     }
 }

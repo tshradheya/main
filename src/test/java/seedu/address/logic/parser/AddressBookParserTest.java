@@ -33,6 +33,7 @@ import seedu.address.logic.commands.SelectCommand;
 import seedu.address.logic.commands.UndoCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
+import seedu.address.model.person.Nickname;
 import seedu.address.model.person.Person;
 import seedu.address.testutil.EditPersonDescriptorBuilder;
 import seedu.address.testutil.PersonBuilder;
@@ -117,7 +118,7 @@ public class AddressBookParserTest {
         NicknameCommand command = (NicknameCommand) parser.parseCommand(
                 NicknameCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased()
                 + NICKNAME_DESC_AMY);
-        assertEquals(new NicknameCommand(INDEX_FIRST_PERSON, VALID_NICKNAME_AMY), command);
+        assertEquals(new NicknameCommand(INDEX_FIRST_PERSON, new Nickname(VALID_NICKNAME_AMY)), command);
     }
 
     @Test

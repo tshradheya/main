@@ -15,7 +15,7 @@ public class Nickname {
 
     public final String value;
 
-    public Nickname(String nickname) throws IllegalValueException {
+    public Nickname(String nickname) {
         requireNonNull(nickname);
         this.value = nickname;
     }

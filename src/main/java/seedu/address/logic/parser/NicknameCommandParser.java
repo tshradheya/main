@@ -8,6 +8,7 @@ import seedu.address.commons.core.index.Index;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.logic.commands.NicknameCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.person.Nickname;
 
 /**
  * Parses input arguments and creates a new NicknameCommand object
@@ -32,9 +33,9 @@ public class NicknameCommandParser implements Parser<NicknameCommand> {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, NicknameCommand.MESSAGE_USAGE));
         }
 
-        String nickname = new String();
+        Nickname nickname;
         try {
-            nickname = argMultimap.getValue(PREFIX_NICKNAME).get();
+            nickname = new Nickname(argMultimap.getValue(PREFIX_NICKNAME).get());
         } catch (NullPointerException npe) {
             throw new ParseException(npe.getMessage(), npe);
         }

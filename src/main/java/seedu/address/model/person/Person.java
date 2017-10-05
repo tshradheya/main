@@ -22,20 +22,29 @@ public class Person implements ReadOnlyPerson {
     private ObjectProperty<Phone> phone;
     private ObjectProperty<Email> email;
     private ObjectProperty<Address> address;
+    private ObjectProperty<Nickname> nickname;
 
     private ObjectProperty<UniqueTagList> tags;
 
     /**
      * Every field must be present and not null.
      */
-    public Person(Name name, Phone phone, Email email, Address address, Set<Tag> tags) {
+    public Person(Name name, Phone phone, Email email, Address address, Nickname nickname, Set<Tag> tags) {
         requireAllNonNull(name, phone, email, address, tags);
         this.name = new SimpleObjectProperty<>(name);
         this.phone = new SimpleObjectProperty<>(phone);
         this.email = new SimpleObjectProperty<>(email);
         this.address = new SimpleObjectProperty<>(address);
+        this.nickname = new SimpleObjectProperty<>(nickname);
         // protect internal tags from changes in the arg list
         this.tags = new SimpleObjectProperty<>(new UniqueTagList(tags));
+    }
+
+    /**
+     * Overloaded constructor that sets nickname to be an empty String
+     */
+    public Person(Name name, Phone phone, Email email, Address address, Set<Tag> tags) {
+        this(name, phone, email, address, new Nickname(""), tags);
     }
 
     /**
@@ -100,6 +109,20 @@ public class Person implements ReadOnlyPerson {
     @Override
     public Address getAddress() {
         return address.get();
+    }
+
+    public void setNickname(Nickname nickname) {
+        this.nickname.set(requireNonNull(nickname));
+    }
+
+    @Override
+    public ObjectProperty<Nickname> nicknameProperty() {
+        return nickname;
+    }
+
+    @Override
+    public Nickname getNickname() {
+        return nickname.get();
     }
 
     /**

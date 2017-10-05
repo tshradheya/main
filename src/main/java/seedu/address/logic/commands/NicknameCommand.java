@@ -5,6 +5,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_NICKNAME;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.exceptions.CommandException;
+import seedu.address.model.person.Nickname;
 
 public class NicknameCommand extends UndoableCommand {
 
@@ -21,18 +22,18 @@ public class NicknameCommand extends UndoableCommand {
     public static final String MESSAGE_SET_NICKNAME_SUCCESS = "Nickname set to Person: %1$s";
 
     private final Index index;
-    private final String nickname;
+    private final Nickname nickname;
 
     /**
      * @param index of the person in the filtered person list to edit
      * @param nickname details to edit the person with
      */
-    public NicknameCommand(Index index, String nickname) {
+    public NicknameCommand(Index index, Nickname nickname) {
         requireNonNull(index);
         requireNonNull(nickname);
 
         this.index = index;
-        this.nickname = new String(nickname);
+        this.nickname = nickname;
     }
 
     @Override

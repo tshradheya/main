@@ -15,6 +15,7 @@ import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
+import seedu.address.model.person.Nickname;
 
 public class NicknameCommandTest {
 
@@ -24,7 +25,7 @@ public class NicknameCommandTest {
     public void executeUndoableCommand() throws Exception {
         boolean thrown = false;
 
-        NicknameCommand command = new NicknameCommand(INDEX_FIRST_PERSON, VALID_NICKNAME_AMY);
+        NicknameCommand command = new NicknameCommand(INDEX_FIRST_PERSON, new Nickname(VALID_NICKNAME_AMY));
 
         try {
             command.executeUndoableCommand();
@@ -37,11 +38,13 @@ public class NicknameCommandTest {
 
     @Test
     public void equals() {
-        final NicknameCommand standardCommand = new NicknameCommand(INDEX_FIRST_PERSON, VALID_NICKNAME_AMY);
-        final NicknameCommand commandWithSameValues = new NicknameCommand(INDEX_FIRST_PERSON, VALID_NICKNAME_AMY);
-        final NicknameCommand commandWithDifferentIndex = new NicknameCommand(INDEX_SECOND_PERSON, VALID_NICKNAME_AMY);
-        final NicknameCommand commandWithDifferentNickname = new NicknameCommand(INDEX_FIRST_PERSON, VALID_NICKNAME_BOB);
-        final NicknameCommand commandWithDifferentValues = new NicknameCommand(INDEX_SECOND_PERSON, VALID_NICKNAME_BOB);
+        Nickname amy = new Nickname(VALID_NICKNAME_AMY);
+        Nickname bob = new Nickname(VALID_NICKNAME_BOB);
+        final NicknameCommand standardCommand = new NicknameCommand(INDEX_FIRST_PERSON, amy);
+        final NicknameCommand commandWithSameValues = new NicknameCommand(INDEX_FIRST_PERSON, amy);
+        final NicknameCommand commandWithDifferentIndex = new NicknameCommand(INDEX_SECOND_PERSON, amy);
+        final NicknameCommand commandWithDifferentNickname = new NicknameCommand(INDEX_FIRST_PERSON, bob);
+        final NicknameCommand commandWithDifferentValues = new NicknameCommand(INDEX_SECOND_PERSON, bob);
 
         // same object -> Returns true
         assertTrue(standardCommand.equals(standardCommand));

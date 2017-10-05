@@ -53,7 +53,7 @@ public class Birthday {
         }else {
 
             if(!isValidBirthday(birthday)) {
-                throw new IllegalValueException("");
+                throw new IllegalValueException(MESSAGE_BIRTHDAY_CONSTRAINTS);
             }
 
             int[] processedSplitDate = processDate(birthday);

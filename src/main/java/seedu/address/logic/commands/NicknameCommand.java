@@ -20,23 +20,23 @@ public class NicknameCommand extends UndoableCommand {
 
     public static final String MESSAGE_SET_NICKNAME_SUCCESS = "Nickname set to Person: %1$s";
 
-    private final Index index;
-    private final String nickname;
+    // private final Index index;
+    // private final String nickname;
 
     /**
      * @param index of the person in the filtered person list to edit
      * @param nickname details to edit the person with
      */
-    public NicknameCommand(Index index, String nickname) {
-        requireNonNull(index);
-        requireNonNull(nickname);
+    public NicknameCommand() {
+        //requireNonNull(index);
+        //requireNonNull(nickname);
 
-        this.index = index;
-        this.nickname = new String(nickname);
+        //this.index = index;
+        //this.nickname = new String(nickname);
     }
 
     @Override
     public CommandResult executeUndoableCommand() throws CommandException {
-        throw new CommandException(index.getOneBased() + " " + nickname);
+        throw new CommandException("");
     }
 }

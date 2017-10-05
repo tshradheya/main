@@ -21,7 +21,7 @@ public class NicknameCommandTest {
     public void executeUndoableCommand() throws Exception {
         boolean thrown = false;
 
-        NicknameCommand command = new NicknameCommand(INDEX_FIRST_PERSON, VALID_NICKNAME_AMY);
+        NicknameCommand command = new NicknameCommand();
 
         try {
             command.executeUndoableCommand();

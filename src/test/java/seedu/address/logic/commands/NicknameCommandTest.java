@@ -49,8 +49,8 @@ public class NicknameCommandTest {
     @Test
     public void execute_removeNickname_success() throws Exception {
         // intialize model with a person with a nickname
-        Person intializedPerson = new PersonBuilder(model.getFilteredPersonList().
-                get(INDEX_FIRST_PERSON.getZeroBased())).withNickname(VALID_NICKNAME_AMY).build();
+        Person intializedPerson = new PersonBuilder(model.getFilteredPersonList()
+                .get(INDEX_FIRST_PERSON.getZeroBased())).withNickname(VALID_NICKNAME_AMY).build();
         model.updatePerson(model.getFilteredPersonList().get(0), intializedPerson);
 
         // building a person without a nickname

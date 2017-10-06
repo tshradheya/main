@@ -14,7 +14,7 @@ public class Birthday {
             + "dd/mm/yyyy, dd.mm.yyyy or dd-mm-yyyy.\nLeading zeroes are allowed for the day and month field. "
             + "The year field must have 4 digits.\nExample: 21/10/1995, 21-05-1996. 8.10.1987";
     private static final int[] MONTH_TO_DAY_MAPPING = {31, 28, 31, 30, 31, 30, 31, 31,
-            30, 31, 30, 31};
+        30, 31, 30, 31};
     private static final String BIRTHDAY_DASH_SEPARATOR = "-";
     private static final String BIRTHDAY_FORWARD_SLASH_SEPARATOR = "/";
     private static final String BIRTHDAY_DOT_SEPARATOR = "\\.";
@@ -48,13 +48,13 @@ public class Birthday {
     public Birthday(String birthday) throws IllegalValueException {
         requireNonNull(birthday);
 
-        if(!isValidBirthday(birthday)) {
+        if (!isValidBirthday(birthday)) {
             throw new IllegalValueException(MESSAGE_BIRTHDAY_CONSTRAINTS);
         }
 
-        if(birthday.isEmpty()) {
+        if (birthday.isEmpty()) {
             this.value = EMPTY_STRING;
-        }else {
+        } else {
             int[] processedSplitDate = processDate(birthday);
             this.value = convertToDefaultDateFormat(processedSplitDate);
         }
@@ -84,7 +84,7 @@ public class Birthday {
         String[] splitDate = getSplitDate(date);
         int[] numericalSplitDate = new int[splitDate.length];
 
-        for(int i=0; i<splitDate.length; i++){
+        for (int i = 0; i < splitDate.length; i++) {
             splitDate[i] = removeLeadingZeroes(splitDate[i]);
             numericalSplitDate[i] = Integer.parseInt(splitDate[i]);
         }
@@ -99,11 +99,11 @@ public class Birthday {
         requireNonNull(date);
 
         String[] splitDate;
-        if(date.contains(BIRTHDAY_DASH_SEPARATOR)) {
+        if (date.contains(BIRTHDAY_DASH_SEPARATOR)) {
             splitDate = date.split(BIRTHDAY_DASH_SEPARATOR);
-        }else if(date.contains(BIRTHDAY_FORWARD_SLASH_SEPARATOR)) {
+        } else if (date.contains(BIRTHDAY_FORWARD_SLASH_SEPARATOR)) {
             splitDate = date.split(BIRTHDAY_FORWARD_SLASH_SEPARATOR);
-        }else{
+        } else {
             splitDate = date.split(BIRTHDAY_DOT_SEPARATOR);
         }
         return splitDate;
@@ -115,7 +115,7 @@ public class Birthday {
     private static String removeLeadingZeroes(String toRemove) {
         requireNonNull(toRemove);
 
-        while(!toRemove.isEmpty() && toRemove.startsWith("0")) {
+        while (!toRemove.isEmpty() && toRemove.startsWith("0")) {
             toRemove = toRemove.substring(1);
         }
         return toRemove;
@@ -128,7 +128,7 @@ public class Birthday {
     public static boolean isValidBirthday(String birthday) {
         requireNonNull(birthday);
 
-        if(birthday.isEmpty()) {
+        if (birthday.isEmpty()) {
             return true;
         }
 
@@ -136,22 +136,25 @@ public class Birthday {
 
         try {
             processedSplitDate = processDate(birthday);
-        }catch(NumberFormatException nfe) {
+        } catch (NumberFormatException nfe) {
             return false;
         }
 
-        if(processedSplitDate.length != 3 || !isValidDate(processedSplitDate)) {
+        if (processedSplitDate.length != 3 || !isValidDate(processedSplitDate)) {
             return false;
         }
         return true;
     }
 
+    /**
+     * Returns true if the date is valid. A date is valid if it is possible for it to exist.
+     */
     private static boolean isValidDate(int[] processedSplitDate) {
         requireNonNull(processedSplitDate);
-        if(isLeapYearDate(processedSplitDate)) {
+        if (isLeapYearDate(processedSplitDate)) {
             return true;
         }
-        if(isYearValid(processedSplitDate[DATE_YEAR_INDEX])
+        if (isYearValid(processedSplitDate[DATE_YEAR_INDEX])
                 && isDayAndMonthValid(processedSplitDate[DATE_DAY_INDEX], processedSplitDate[DATE_MONTH_INDEX])) {
             return true;
         }
@@ -163,13 +166,13 @@ public class Birthday {
      * The month and day is valid if the day can exist in the specific month.
      */
     private static boolean isDayAndMonthValid(int day, int month) {
-        if(!isMonthValid(month)) {
+        if (!isMonthValid(month)) {
             return false;
         }
 
         final int dayUpperLimitForMonth = MONTH_TO_DAY_MAPPING[month-ZERO_BASED_ADJUSTMENT];
 
-        if(!isDayValid(dayUpperLimitForMonth, day)) {
+        if (!isDayValid(dayUpperLimitForMonth, day)) {
             return false;
         }
 
@@ -181,7 +184,7 @@ public class Birthday {
      * A day is valid if it is at least 1 and smaller than the largest possible day for the specific month.
      */
     private static boolean isDayValid(int dayUpperLimitForMonth, int day) {
-        if(day < SMALLEST_POSSIBLE_DAY || day > dayUpperLimitForMonth) {
+        if (day < SMALLEST_POSSIBLE_DAY || day > dayUpperLimitForMonth) {
             return false;
         }
         return true;
@@ -202,7 +205,7 @@ public class Birthday {
      * A year is valid if has at least 4 digits.
      */
     private static boolean isYearValid(int year) {
-        if(year < SMALLEST_ALLOWED_YEAR || year > LARGEST_ALLOWED_YEAR) {
+        if (year < SMALLEST_ALLOWED_YEAR || year > LARGEST_ALLOWED_YEAR) {
             return false;
         }
         return true;
@@ -213,9 +216,9 @@ public class Birthday {
      * A leap year day must be on 29 April.
      */
     private static boolean isLeapYearDate(int[] processedSplitDate) {
-        if(processedSplitDate[DATE_DAY_INDEX] == LEAP_YEAR_DAY) {
-            if(processedSplitDate[DATE_MONTH_INDEX] == LEAP_YEAR_MONTH_FEBRUARY) {
-                if(isLeapYear(processedSplitDate[DATE_YEAR_INDEX])) {
+        if (processedSplitDate[DATE_DAY_INDEX] == LEAP_YEAR_DAY) {
+            if (processedSplitDate[DATE_MONTH_INDEX] == LEAP_YEAR_MONTH_FEBRUARY) {
+                if (isLeapYear(processedSplitDate[DATE_YEAR_INDEX])) {
                     return true;
                 }
             }
@@ -227,9 +230,9 @@ public class Birthday {
      * Returns true if the year is a valid leap year.
      */
     private static boolean isLeapYear(int year) {
-        if(year%4 == 0 && year%100 != 0) {
+        if (year % 4 == 0 && year % 100 != 0) {
             return true;
-        }else if(year%4 == 0 && year%100 == 0 && year%400 == 0) {
+        } else if (year % 4 == 0 && year % 100 == 0 && year % 400 == 0) {
             return true;
         }
         return false;

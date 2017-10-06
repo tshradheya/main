@@ -716,6 +716,8 @@ See this https://github.com/se-edu/addressbook-level4/pull/599[PR] for the step-
 [appendix]
 == User Stories
 
+Target User: The software is aimed to target university students to make their life easier allowing them to communicate easily with friends, family, colleagues etc
+
 Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (unlikely to have) - `*`
 
 [width="59%",cols="22%,<23%,<25%,<30%",options="header",]
@@ -731,7 +733,7 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* * *` |sociable user that was given contacts by another person |import from another source file |add contacts that were shared with me
 
-|`* * *` |sociable user |export selected contacts |share my contacts with friends
+|`* * *` |sociable student |export selected contacts |share my contacts with friends
 
 |`* * *` |sociable user |store the person's birthday |keep track of the person's birthday
 
@@ -761,13 +763,13 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* *` |user |find my link:#frequently-used-contacts[frequently used contacts] at the top of the displayed list when I do a search |quickly find the contact information I need
 
-|`* *` |user |see frequently used contacts instantly |locate them more easily
+|`* *` |regular user|see frequently used contacts instantly |locate them more easily
 
 |`* *` |user |I want to be able to add link:#display-picture[Display Picture] for my contacts |so that I can easily identify them
 
 |`* *` |user |view my address book online |so that I can view it without the device running the software
 
-|`* *` |user |send email to a group of persons with one command |easily send email to a group of persons
+|`* *` |member of a team|send email to a group of persons with one command |easily send email to a group of persons
 
 |`* *` |user |include more details for a person's contact information |store more information about a person to identify him/her more easily
 
@@ -779,7 +781,7 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* *` |lazy user |have short-hand form for each command |perform commands quickly
 
-|`* *` |user |set reminders |remind myself any activities or events that will happen
+|`* *` |busy student |set reminders |remind myself any activities or events that will happen
 
 |`* *` |user |save the address book as an external file |backup or transfer the address book easily
 
@@ -795,7 +797,7 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`*` |user |auto sort the list whenever I add a person |avoid using the sort command with every single additions
 
-|`*` |busy user |I should be able to create meeting reminders with my link:#contacts[contacts] |so that I don't forget whom should I be meeting at what time
+|`*` |busy student |I should be able to create meeting reminders with my link:#contacts[contacts] |so that I don't forget whom should I be meeting at what time
 
 |`*` |user |have a secured address book |only I have access to my address book
 |=======================================================================

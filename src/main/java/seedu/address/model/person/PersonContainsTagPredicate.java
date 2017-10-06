@@ -4,6 +4,7 @@ import java.util.Set;
 import java.util.function.Predicate;
 
 import seedu.address.commons.exceptions.IllegalValueException;
+import seedu.address.commons.util.StringUtil;
 import seedu.address.model.tag.Tag;
 
 
@@ -21,16 +22,10 @@ public class PersonContainsTagPredicate implements Predicate<ReadOnlyPerson> {
 
     @Override
     public boolean test(ReadOnlyPerson person) {
-        Set<Tag> tags = person.getTags();
-        Tag keywordInTag = null;
+        Set<Tag> tagsOfPerson = person.getTags();
 
-        try {
-            keywordInTag = new Tag(keyword);
-        } catch (IllegalValueException e) {
-            e.printStackTrace();
-        }
-
-        return tags.contains(keywordInTag);
+        return tagsOfPerson.stream()
+                .anyMatch(tagMatches -> tagMatches.getTagName().equalsIgnoreCase(keyword));
 
     }
 

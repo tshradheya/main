@@ -23,9 +23,7 @@ public class ViewTagCommandParser implements Parser<ViewTagCommand> {
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, ViewTagCommand.MESSAGE_USAGE));
         }
 
-        String[] tagKeyword = trimmedArgs.split("\\s+");
-
-        return new ViewTagCommand(new PersonContainsTagPredicate(tagKeyword[0]));
+        return new ViewTagCommand(new PersonContainsTagPredicate(trimmedArgs));
     }
 
 

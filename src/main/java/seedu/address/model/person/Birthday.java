@@ -170,7 +170,7 @@ public class Birthday {
             return false;
         }
 
-        final int dayUpperLimitForMonth = MONTH_TO_DAY_MAPPING[month-ZERO_BASED_ADJUSTMENT];
+        final int dayUpperLimitForMonth = MONTH_TO_DAY_MAPPING[month - ZERO_BASED_ADJUSTMENT];
 
         if (!isDayValid(dayUpperLimitForMonth, day)) {
             return false;

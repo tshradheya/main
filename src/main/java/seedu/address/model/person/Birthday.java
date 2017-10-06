@@ -11,8 +11,9 @@ import seedu.address.commons.exceptions.IllegalValueException;
 public class Birthday {
 
     public static final String MESSAGE_BIRTHDAY_CONSTRAINTS = "Birthday must be in the following format: "
-            + "dd/mm/yyyy, dd.mm.yyyy or dd-mm-yyyy.\nLeading zeroes are allowed for the day and month field. "
-            + "The year field must have 4 digits.\nExample: 21/10/1995, 21-05-1996. 8.10.1987";
+            + "dd/mm/yyyy, dd.mm.yyyy or dd-mm-yyyy.\n"
+            + "Leading zeroes are allowed for the day and month field. The year field must have 4 digits.\n"
+            + "Example: 21/10/1995, 21-05-1996. 8.10.1987";
     private static final int[] MONTH_TO_DAY_MAPPING = {31, 28, 31, 30, 31, 30, 31, 31,
         30, 31, 30, 31};
     private static final String BIRTHDAY_DASH_SEPARATOR = "-";
@@ -216,13 +217,13 @@ public class Birthday {
      * A leap year day must be on 29 April.
      */
     private static boolean isLeapYearDate(int[] processedSplitDate) {
-        if (processedSplitDate[DATE_DAY_INDEX] == LEAP_YEAR_DAY) {
-            if (processedSplitDate[DATE_MONTH_INDEX] == LEAP_YEAR_MONTH_FEBRUARY) {
-                if (isLeapYear(processedSplitDate[DATE_YEAR_INDEX])) {
+        if (processedSplitDate[DATE_DAY_INDEX] == LEAP_YEAR_DAY
+                && processedSplitDate[DATE_MONTH_INDEX] == LEAP_YEAR_MONTH_FEBRUARY
+                && isLeapYear(processedSplitDate[DATE_YEAR_INDEX])) {
                     return true;
-                }
-            }
         }
+
+
         return false;
     }
 

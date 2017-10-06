@@ -3,10 +3,7 @@ package seedu.address.model.person;
 import java.util.Set;
 import java.util.function.Predicate;
 
-import seedu.address.commons.exceptions.IllegalValueException;
-import seedu.address.commons.util.StringUtil;
 import seedu.address.model.tag.Tag;
-
 
 /**
  * Tests that a {@code ReadOnlyPerson}'s {@code Tags} matches the keyword given.

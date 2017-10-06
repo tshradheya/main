@@ -48,14 +48,13 @@ public class Birthday {
     public Birthday(String birthday) throws IllegalValueException {
         requireNonNull(birthday);
 
+        if(!isValidBirthday(birthday)) {
+            throw new IllegalValueException(MESSAGE_BIRTHDAY_CONSTRAINTS);
+        }
+
         if(birthday.isEmpty()) {
             this.value = EMPTY_STRING;
         }else {
-
-            if(!isValidBirthday(birthday)) {
-                throw new IllegalValueException(MESSAGE_BIRTHDAY_CONSTRAINTS);
-            }
-
             int[] processedSplitDate = processDate(birthday);
             this.value = convertToDefaultDateFormat(processedSplitDate);
         }
@@ -128,6 +127,11 @@ public class Birthday {
      */
     public static boolean isValidBirthday(String birthday) {
         requireNonNull(birthday);
+
+        if(birthday.isEmpty()) {
+            return true;
+        }
+
         int[] processedSplitDate;
 
         try {
@@ -159,17 +163,17 @@ public class Birthday {
      * The month and day is valid if the day can exist in the specific month.
      */
     private static boolean isDayAndMonthValid(int day, int month) {
-            if(!isMonthValid(month)) {
-                return false;
-            }
+        if(!isMonthValid(month)) {
+            return false;
+        }
 
-            final int dayUpperLimitForMonth = MONTH_TO_DAY_MAPPING[month-ZERO_BASED_ADJUSTMENT];
+        final int dayUpperLimitForMonth = MONTH_TO_DAY_MAPPING[month-ZERO_BASED_ADJUSTMENT];
 
-            if(!isDayValid(dayUpperLimitForMonth, day)) {
-                return false;
-            }
+        if(!isDayValid(dayUpperLimitForMonth, day)) {
+            return false;
+        }
 
-            return true;
+        return true;
     }
 
     /**
@@ -223,7 +227,9 @@ public class Birthday {
      * Returns true if the year is a valid leap year.
      */
     private static boolean isLeapYear(int year) {
-        if(year%4 == 0 && year%100 == 0 && year%400 == 0) {
+        if(year%4 == 0 && year%100 != 0) {
+            return true;
+        }else if(year%4 == 0 && year%100 == 0 && year%400 == 0) {
             return true;
         }
         return false;

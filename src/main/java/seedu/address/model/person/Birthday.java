@@ -220,7 +220,7 @@ public class Birthday {
         if (processedSplitDate[DATE_DAY_INDEX] == LEAP_YEAR_DAY
                 && processedSplitDate[DATE_MONTH_INDEX] == LEAP_YEAR_MONTH_FEBRUARY
                 && isLeapYear(processedSplitDate[DATE_YEAR_INDEX])) {
-                    return true;
+            return true;
         }
 
 

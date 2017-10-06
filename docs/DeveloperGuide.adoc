@@ -718,14 +718,13 @@ See this https://github.com/se-edu/addressbook-level4/pull/599[PR] for the step-
 
 This application is targeted towards University students, aiming to meet their needs throughout their university life, and hopefully beyond. University students meet many people in the university, such as project group members, tutors, lecturers, friends and other connections. Nowadays it is important for students to build connections with other people, as connections may also help students for their future career after graduation. Since the students meet a lot of people, they may not be able to remember all the information about the people they met. Therefore, iContacts aims to help students to store and manage their contacts easily.
 
-*  User Profiles
+*  User Profile
 
 **  University Student
-**  Student part of many CCA clubs
-**  Student doing the role of a Tutor
+**  Student part of many CCA clubs and committees
+**  Student taking role of Teaching Assistant/Tutor
 **  Student who is interning and has colleagues
 **  Student having close friends and family
-
 
 [appendix]
 == User Stories

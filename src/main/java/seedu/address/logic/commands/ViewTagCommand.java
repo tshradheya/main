@@ -1,6 +1,6 @@
 package seedu.address.logic.commands;
 
-import seedu.address.model.person.PersonContainsTag;
+import seedu.address.model.person.PersonContainsTagPredicate;
 
 /**
  * Finds and lists all persons in address book who are associated with the tag given in keywords
@@ -17,9 +17,9 @@ public class ViewTagCommand extends Command {
             + "Example: " + COMMAND_WORD + " cs2103";
 
 
-    private final PersonContainsTag predicate;
+    private final PersonContainsTagPredicate predicate;
 
-    public ViewTagCommand(PersonContainsTag predicate) {
+    public ViewTagCommand(PersonContainsTagPredicate predicate) {
         this.predicate = predicate;
     }
 

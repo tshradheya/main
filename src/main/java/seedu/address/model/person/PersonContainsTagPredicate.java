@@ -25,7 +25,7 @@ public class PersonContainsTagPredicate implements Predicate<ReadOnlyPerson> {
         Tag keywordInTag = null;
 
         try {
-            keywordInTag= new Tag(keyword);
+            keywordInTag = new Tag(keyword);
         } catch (IllegalValueException e) {
             e.printStackTrace();
         }

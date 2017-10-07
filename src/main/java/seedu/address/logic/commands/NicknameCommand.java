@@ -12,6 +12,8 @@ import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.person.Nickname;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.ReadOnlyPerson;
+import seedu.address.model.person.exceptions.DuplicatePersonException;
+import seedu.address.model.person.exceptions.PersonNotFoundException;
 
 /**
  * Sets the nickname of an existing person in the address book.
@@ -56,16 +58,24 @@ public class NicknameCommand extends UndoableCommand {
         }
 
         Person personToEdit = (Person) lastShownList.get(index.getZeroBased());
-        Nickname previousNickname = null;
+        Nickname previousNickname;
 
         try {
             previousNickname = personToEdit.getNickname();
         } catch (NullPointerException npe) {
-            assert false : "The nickname cannot be null";
+            throw new AssertionError("Nickname cannot be null");
         }
 
         personToEdit.setNickname(nickname);
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
+
+        try {
+            model.updatePerson(personToEdit, personToEdit);
+        } catch (DuplicatePersonException dpe) {
+            throw new AssertionError("The target person cannot be duplicated");
+        } catch (PersonNotFoundException pnfe) {
+            throw new AssertionError("The target person cannot be missing");
+        }
 
         if (nickname.equals(previousNickname)) {
             return new CommandResult(String.format(MESSAGE_UNCHANGED_NICKNAME, personToEdit.getAsText()));

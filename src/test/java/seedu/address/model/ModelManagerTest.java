@@ -63,8 +63,8 @@ public class ModelManagerTest {
         // different filtered list -> returns false
         Set<Tag> tagsOfBenson = BENSON.getTags();
         final String[] keyword = new String[1];
-        tagsOfBenson.stream().
-                findFirst().ifPresent(s -> keyword[0] = s.getTagName());
+        tagsOfBenson.stream()
+                .findFirst().ifPresent(s -> keyword[0] = s.getTagName());
 
         modelManager.updateFilteredPersonList(new PersonContainsTagPredicate(keyword[0]));
         assertFalse(modelManager.equals(new ModelManager(addressBook, userPrefs)));

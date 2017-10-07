@@ -238,7 +238,7 @@ public class Birthday {
     private static boolean isLeapYear(int year) {
         if (year % LEAP_YEAR_REQUIREMENT_FIRST == 0 && year % LEAP_YEAR_REQUIREMENT_SECOND != 0) {
             return true;
-        } else if (year %LEAP_YEAR_REQUIREMENT_FIRST == 0 && year % LEAP_YEAR_REQUIREMENT_SECOND == 0
+        } else if (year % LEAP_YEAR_REQUIREMENT_FIRST == 0 && year % LEAP_YEAR_REQUIREMENT_SECOND == 0
                 && year % LEAP_YEAR_REQUIREMENT_THIRD == 0) {
             return true;
         }

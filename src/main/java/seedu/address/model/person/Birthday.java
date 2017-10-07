@@ -34,6 +34,9 @@ public class Birthday {
 
     private static final int LEAP_YEAR_MONTH_FEBRUARY = 2;
     private static final int LEAP_YEAR_DAY = 29;
+    private static final int LEAP_YEAR_REQUIREMENT_FIRST = 4;
+    private static final int LEAP_YEAR_REQUIREMENT_SECOND = 100;
+    private static final int LEAP_YEAR_REQUIREMENT_THIRD = 400;
 
     private static final int DATE_DAY_INDEX = 0;
     private static final int DATE_MONTH_INDEX = 1;
@@ -229,11 +232,14 @@ public class Birthday {
 
     /**
      * Returns true if the year is a valid leap year.
+     * Algorithm to determine is a year is a valid leap year:
+     * https://support.microsoft.com/en-us/help/214019/method-to-determine-whether-a-year-is-a-leap-year
      */
     private static boolean isLeapYear(int year) {
-        if (year % 4 == 0 && year % 100 != 0) {
+        if (year % LEAP_YEAR_REQUIREMENT_FIRST == 0 && year % LEAP_YEAR_REQUIREMENT_SECOND != 0) {
             return true;
-        } else if (year % 4 == 0 && year % 100 == 0 && year % 400 == 0) {
+        } else if (year %LEAP_YEAR_REQUIREMENT_FIRST == 0 && year % LEAP_YEAR_REQUIREMENT_SECOND == 0
+                && year % LEAP_YEAR_REQUIREMENT_THIRD == 0) {
             return true;
         }
         return false;

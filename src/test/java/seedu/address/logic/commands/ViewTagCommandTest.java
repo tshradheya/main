@@ -70,7 +70,7 @@ public class ViewTagCommandTest {
     }
 
     @Test
-    public void execute_oneKeyword_SinglePersonFound() {
+    public void execute_oneKeyword_singlePersonFound() {
         String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 1);
         ViewTagCommand command = prepareCommand("enemy");
         assertCommandSuccess(command, expectedMessage, Arrays.asList(ELLE));
@@ -92,7 +92,8 @@ public class ViewTagCommandTest {
      *     - the {@code FilteredList<ReadOnlyPerson>} is equal to {@code expectedList}<br>
      *     - the {@code AddressBook} in model remains the same after executing the {@code command}
      */
-    private void assertCommandSuccess(ViewTagCommand command, String expectedMessage, List<ReadOnlyPerson> expectedList) {
+    private void assertCommandSuccess(ViewTagCommand command, String expectedMessage,
+                                      List<ReadOnlyPerson> expectedList) {
         AddressBook expectedAddressBook = new AddressBook(model.getAddressBook());
         CommandResult commandResult = command.execute();
 

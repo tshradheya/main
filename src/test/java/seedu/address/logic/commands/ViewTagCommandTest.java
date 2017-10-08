@@ -73,7 +73,7 @@ public class ViewTagCommandTest {
     public void execute_oneKeyword_singlePersonFound() {
         String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 1);
         ViewTagCommand command = prepareCommand("enemy");
-        assertCommandSuccess(command, expectedMessage, Arrays.asList(ELLE));
+        assertCommandSuccess(command, expectedMessage, Collections.singletonList(ELLE));
     }
 
     /**

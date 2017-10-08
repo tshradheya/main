@@ -92,6 +92,24 @@ Edits the phone number and email address of the 1st person to be `91234567` and 
 * `edit 2 n/Betsy Crower t/` +
 Edits the name of the 2nd person to be `Betsy Crower` and clears all existing tags.
 
+=== Adding nickname to a person : `nickname`
+
+Adds a nickname to an existing person in the address book. +
+Format: nickname INDEX nk/[NICKNAME]
+
+****
+* Adds a nickname to the person at the specified `INDEX`. The index refers to the index number shown in the last person listing. The index *must be a positive integer* 1, 2, 3, ...
+* Existing values will be updated to the input values.
+* You can remove the person's nickname by typing `nk/` without specifying anything after it.
+****
+
+Examples:
+
+* `nickname 1 nk/Addy` +
+Adds a nickname `Addy` to the 1st person.
+* `nickname 1 nk/` +
+Removes the nickname from the the 1st person.
+
 === Locating persons by name: `find`
 
 Finds persons whose names contain any of the given keywords. +
@@ -241,6 +259,8 @@ e.g. `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 123466
 e.g. `delete 3`
 * *Edit* : `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]...` +
 e.g. `edit 2 n/James Lee e/jameslee@example.com`
+* *Nickname* : `edit INDEX nk/[NICKNAME]` +
+e.g. `add 1 nk/Jam`
 * *Find* : `find KEYWORD [MORE_KEYWORDS]` +
 e.g. `find James Jake`
 * *List* : `list`

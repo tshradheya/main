@@ -65,7 +65,7 @@ public class ViewTagCommandTest {
     @Test
     public void execute_oneKeyword_multiplePersonsFound() {
         String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 2);
-        ViewTagCommand command = prepareCommand("friends");
+        ViewTagCommand command = prepareCommand("friend");
         assertCommandSuccess(command, expectedMessage, Arrays.asList(ALICE, BENSON));
     }
 

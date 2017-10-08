@@ -38,9 +38,9 @@ public class PersonContainsTagPredicateTest {
     @Test
     public void test_personContainsTag_returnsTrue() {
 
-        // multiple people having 'friends' tag
-        PersonContainsTagPredicate predicate = new PersonContainsTagPredicate("friends");
-        assertTrue(predicate.test(new PersonBuilder().withTags("friends").build()));
+        // multiple people having 'friend' tag
+        PersonContainsTagPredicate predicate = new PersonContainsTagPredicate("friend");
+        assertTrue(predicate.test(new PersonBuilder().withTags("friend").build()));
 
         // one person having the tag
         predicate = new PersonContainsTagPredicate("enemy");
@@ -64,12 +64,12 @@ public class PersonContainsTagPredicateTest {
         assertFalse(predicate.test(new PersonBuilder().withTags("enemy").build()));
 
         // not matching
-        predicate = new PersonContainsTagPredicate("friends");
+        predicate = new PersonContainsTagPredicate("friend");
         assertFalse(predicate.test(new PersonBuilder().withTags("enemy").build()));
 
         // people associated with empty tag
         predicate = new PersonContainsTagPredicate("");
-        assertFalse(predicate.test(new PersonBuilder().withTags("friends").build()));
+        assertFalse(predicate.test(new PersonBuilder().withTags("friend").build()));
 
         // keyword matches name but not tag
         predicate = new PersonContainsTagPredicate("Alice");

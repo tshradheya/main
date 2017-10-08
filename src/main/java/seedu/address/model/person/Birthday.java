@@ -42,6 +42,8 @@ public class Birthday {
     private static final int DATE_MONTH_INDEX = 1;
     private static final int DATE_YEAR_INDEX = 2;
 
+    private static final int NUMBER_OF_LOGICAL_SEGMENTS_IN_DATE = 3;
+
     public final String value;
 
     /**
@@ -126,8 +128,8 @@ public class Birthday {
     }
 
     /**
-     * Returns true if the date is valid. A date is valid if it is possible for it to exist.
-     * E.g. 31/4/1999 is not a valid date because April only has 30 days.
+     * Returns true if the birthday input is valid.
+     * A birthday input is valid if it is a valid date, or an empty String.
      */
     public static boolean isValidBirthday(String birthday) {
         requireNonNull(birthday);
@@ -136,7 +138,7 @@ public class Birthday {
             return true;
         }
 
-        int[] processedSplitDate;
+        final int[] processedSplitDate;
 
         try {
             processedSplitDate = processDate(birthday);
@@ -144,25 +146,24 @@ public class Birthday {
             return false;
         }
 
-        if (processedSplitDate.length != 3 || !isValidDate(processedSplitDate)) {
-            return false;
-        }
-        return true;
+        return isValidDate(processedSplitDate);
     }
 
     /**
      * Returns true if the date is valid. A date is valid if it is possible for it to exist.
+     * E.g. 31/4/1995 is not a valid date because April only has 30 days.
      */
     private static boolean isValidDate(int[] processedSplitDate) {
         requireNonNull(processedSplitDate);
+
+        if (processedSplitDate.length != NUMBER_OF_LOGICAL_SEGMENTS_IN_DATE) {
+            return false;
+        }
         if (isLeapYearDate(processedSplitDate)) {
             return true;
         }
-        if (isYearValid(processedSplitDate[DATE_YEAR_INDEX])
-                && isDayAndMonthValid(processedSplitDate[DATE_DAY_INDEX], processedSplitDate[DATE_MONTH_INDEX])) {
-            return true;
-        }
-        return false;
+        return isYearValid(processedSplitDate[DATE_YEAR_INDEX])
+                && isDayAndMonthValid(processedSplitDate[DATE_DAY_INDEX], processedSplitDate[DATE_MONTH_INDEX]);
     }
 
     /**
@@ -176,32 +177,22 @@ public class Birthday {
 
         final int dayUpperLimitForMonth = MONTH_TO_DAY_MAPPING[month - ZERO_BASED_ADJUSTMENT];
 
-        if (!isDayValid(dayUpperLimitForMonth, day)) {
-            return false;
-        }
-
-        return true;
+        return isDayValid(dayUpperLimitForMonth, day);
     }
 
     /**
      * Returns true if the day is valid.
-     * A day is valid if it is at least 1 and smaller than the largest possible day for the specific month.
+     * A day is valid if it is at least 1 and smaller than or equal to the largest possible day for the specific month.
      */
     private static boolean isDayValid(int dayUpperLimitForMonth, int day) {
-        if (day < SMALLEST_POSSIBLE_DAY || day > dayUpperLimitForMonth) {
-            return false;
-        }
-        return true;
+        return day >= SMALLEST_POSSIBLE_DAY && day <= dayUpperLimitForMonth;
     }
 
     /**
      * Returns true if the month is valid.
      */
     private static boolean isMonthValid(int month) {
-        if (month < SMALLEST_POSSIBLE_MONTH || month > LARGEST_POSSIBLE_MONTH) {
-            return false;
-        }
-        return true;
+        return month >= SMALLEST_POSSIBLE_MONTH && month <= LARGEST_POSSIBLE_MONTH;
     }
 
     /**
@@ -209,10 +200,7 @@ public class Birthday {
      * A year is valid if has at least 4 digits.
      */
     private static boolean isYearValid(int year) {
-        if (year < SMALLEST_ALLOWED_YEAR || year > LARGEST_ALLOWED_YEAR) {
-            return false;
-        }
-        return true;
+        return year >= SMALLEST_ALLOWED_YEAR && year <= LARGEST_ALLOWED_YEAR;
     }
 
     /**
@@ -220,14 +208,11 @@ public class Birthday {
      * A leap year day must be on 29 April.
      */
     private static boolean isLeapYearDate(int[] processedSplitDate) {
-        if (processedSplitDate[DATE_DAY_INDEX] == LEAP_YEAR_DAY
+        return processedSplitDate[DATE_DAY_INDEX] == LEAP_YEAR_DAY
                 && processedSplitDate[DATE_MONTH_INDEX] == LEAP_YEAR_MONTH_FEBRUARY
-                && isLeapYear(processedSplitDate[DATE_YEAR_INDEX])) {
-            return true;
-        }
+                && isLeapYear(processedSplitDate[DATE_YEAR_INDEX]);
 
 
-        return false;
     }
 
     /**

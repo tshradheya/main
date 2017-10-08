@@ -60,7 +60,7 @@ Adds a person to the address book +
 Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [b/BIRTHDAY] [t/TAG]...`
 
 [TIP]
-A person can have no birthday, or at most 1
+A person can have no birthday entry, or at most 1
 A person can have any number of tags (including 0)
 
 Examples:
@@ -84,7 +84,7 @@ Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [b/BIRTHDAY] [t/TAG
 * Existing values will be updated to the input values.
 * When editing tags, the existing tags of the person will be removed i.e adding of tags is not cumulative.
 * You can remove all the person's tags by typing `t/` without specifying any tags after it.
-* You can remove a person's birthday by typing `b/` without specifying a birthday after it.
+* You can remove a person's birthday entry by typing `b/` without specifying a birthday after it.
 ****
 
 Examples:

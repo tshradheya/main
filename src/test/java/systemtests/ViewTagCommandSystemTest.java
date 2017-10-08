@@ -47,7 +47,7 @@ public class ViewTagCommandSystemTest extends AddressBookSystemTest {
         /* Case: When multiple people have a tag with other tags too -> 2 persons found */
         command = ViewTagCommand.COMMAND_WORD + " relative";
         ModelHelper.setFilteredList(expectedModel, CARL, DANIEL); // Carl and Daniel have 2 tags and one is "family"
-        assertCommandSuccess(command,expectedModel);
+        assertCommandSuccess(command, expectedModel);
         assertSelectedCardUnchanged();
 
         /* Case: undo previous find command -> rejected */
@@ -60,7 +60,7 @@ public class ViewTagCommandSystemTest extends AddressBookSystemTest {
         expectedResultMessage = RedoCommand.MESSAGE_FAILURE;
         assertCommandFailure(command, expectedResultMessage);
 
-         /* Case: find same persons in address book with tag after deleting 1 of them -> 1 person found */
+        /* Case: find same persons in address book with tag after deleting 1 of them -> 1 person found */
         executeCommand(DeleteCommand.COMMAND_WORD + " 1");
         assert !getModel().getAddressBook().getPersonList().contains(CARL);
         command = ViewTagCommand.COMMAND_WORD + " relative";

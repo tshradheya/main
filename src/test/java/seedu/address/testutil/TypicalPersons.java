@@ -29,17 +29,20 @@ public class TypicalPersons {
     public static final ReadOnlyPerson ALICE = new PersonBuilder().withName("Alice Pauline")
             .withAddress("123, Jurong West Ave 6, #08-111").withEmail("alice@example.com")
             .withPhone("85355255").withBirthday("21/10/1995")
-            .withTags("friends").build();
+            .withTags("friend").build();
     public static final ReadOnlyPerson BENSON = new PersonBuilder().withName("Benson Meier")
             .withAddress("311, Clementi Ave 2, #02-25")
             .withEmail("johnd@example.com").withPhone("98765432").withBirthday("22/10/1995")
-            .withTags("owesMoney", "friends").build();
+            .withTags("owesMoney", "friend").build();
     public static final ReadOnlyPerson CARL = new PersonBuilder().withName("Carl Kurz").withPhone("95352563")
-            .withEmail("heinz@example.com").withAddress("wall street").withBirthday("23/10/1995").build();
+            .withEmail("heinz@example.com").withAddress("wall street").withTags("relative")
+            .withBirthday("23/10/1995").build();
     public static final ReadOnlyPerson DANIEL = new PersonBuilder().withName("Daniel Meier").withPhone("87652533")
-            .withEmail("cornelia@example.com").withAddress("10th street").withBirthday("24/10/1995").build();
+            .withEmail("cornelia@example.com").withAddress("10th street").withTags("relative", "colleague")
+            .withBirthday("24/10/1995").build();
     public static final ReadOnlyPerson ELLE = new PersonBuilder().withName("Elle Meyer").withPhone("9482224")
-            .withEmail("werner@example.com").withAddress("michegan ave").withBirthday("25/10/1995").build();
+            .withEmail("werner@example.com").withAddress("michegan ave").withTags("enemy")
+            .withBirthday("25/10/1995").build();
     public static final ReadOnlyPerson FIONA = new PersonBuilder().withName("Fiona Kunz").withPhone("9482427")
             .withEmail("lydia@example.com").withAddress("little tokyo").withBirthday("26/10/1995").build();
     public static final ReadOnlyPerson GEORGE = new PersonBuilder().withName("George Best").withPhone("9482442")
@@ -62,6 +65,8 @@ public class TypicalPersons {
             .withBirthday(VALID_BIRTHDAY_BOB).build();
 
     public static final String KEYWORD_MATCHING_MEIER = "Meier"; // A keyword that matches MEIER
+
+    public static final String KEYWORD_TAG_FRIEND = "friend";
 
     private TypicalPersons() {} // prevents instantiation
 

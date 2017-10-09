@@ -107,10 +107,10 @@ public class EditCommand extends UndoableCommand {
         Birthday updatedBirthday = editPersonDescriptor.getBirthday().orElse(personToEdit.getBirthday());
         Nickname updatedNickname = editPersonDescriptor.getNickname().orElse(personToEdit.getNickname());
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
-      
+
         return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress,
                           updatedBirthday, updatedNickname, updatedTags);
-        
+
     }
 
     @Override
@@ -202,7 +202,7 @@ public class EditCommand extends UndoableCommand {
         public Optional<Nickname> getNickname() {
             return Optional.ofNullable(nickname);
         }
-      
+
         public void setBirthday(Birthday birthday) {
             this.birthday = birthday;
         }

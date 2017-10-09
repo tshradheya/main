@@ -89,8 +89,8 @@ public class ParserUtil {
         requireNonNull(nickname);
         return nickname.isPresent() ? Optional.of(new Nickname(nickname.get())) : Optional.empty();
     }
-  
-     /** 
+
+    /**
      * Parses a {@code Optional<String> birthday} into an {@code Optional<Birthday>} if {@code birthday} is present.
      * See header comment of this class regarding the use of {@code Optional} parameters.
      */

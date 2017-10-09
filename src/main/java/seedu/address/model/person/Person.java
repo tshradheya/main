@@ -122,7 +122,7 @@ public class Person implements ReadOnlyPerson {
     public Nickname getNickname() {
         return nickname.get();
     }
-  
+
     public void setBirthday(Birthday birthday) {
         this.birthday.set(requireNonNull(birthday));
     }

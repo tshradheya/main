@@ -96,7 +96,7 @@ public class EditPersonDescriptorBuilder {
         }
         return this;
     }
-  
+
     /**
      * Sets the {@code Birthday} of the {@code EditPersonDescriptor} that we are building.
      */

@@ -182,7 +182,7 @@ public class AddressBookParserTest {
                 + NICKNAME_DESC_AMY);
         assertEquals(new NicknameCommand(INDEX_FIRST_PERSON, new Nickname(VALID_NICKNAME_AMY)), command);
     }
-  
+
     @Test
     public void parseAliasCommand_list() throws Exception {
         assertTrue(parser.parseCommand(ListCommand.COMMAND_ALIAS) instanceof ListCommand);

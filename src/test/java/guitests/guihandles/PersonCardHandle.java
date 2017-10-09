@@ -39,7 +39,7 @@ public class PersonCardHandle extends NodeHandle<Node> {
         this.emailLabel = getChildNode(EMAIL_FIELD_ID);
         this.nicknameLabel = getChildNode(NICKNAME_FIELD_ID);
         this.birthdayLabel = getChildNode(BIRTHDAY_FIELD_ID);
-      
+
         Region tagsContainer = getChildNode(TAGS_FIELD_ID);
         this.tagLabels = tagsContainer
                 .getChildrenUnmodifiable()

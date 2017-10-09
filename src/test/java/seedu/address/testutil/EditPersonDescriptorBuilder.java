@@ -33,6 +33,7 @@ public class EditPersonDescriptorBuilder {
         descriptor.setEmail(person.getEmail());
         descriptor.setAddress(person.getAddress());
         descriptor.setNickname(person.getNickname());
+        descriptor.setBirthday(person.getBirthday());
         descriptor.setTags(person.getTags());
     }
 
@@ -85,13 +86,25 @@ public class EditPersonDescriptorBuilder {
     }
 
     /**
-     * Sets the {@code Address} of the {@code EditPersonDescriptor} that we are building.
+     * Sets the {@code nickname} of the {@code EditPersonDescriptor} that we are building.
      */
     public EditPersonDescriptorBuilder withNickname(String nickname) {
         try {
             ParserUtil.parseNickname(Optional.of(nickname)).ifPresent(descriptor::setNickname);
         } catch (IllegalValueException ive) {
-            assert false : "nickname can never be null";
+            throw new IllegalArgumentException("nickname cannot be null");
+        }
+        return this;
+    }
+  
+    /**
+     * Sets the {@code Birthday} of the {@code EditPersonDescriptor} that we are building.
+     */
+    public EditPersonDescriptorBuilder withBirthday(String birthday) {
+        try {
+            ParserUtil.parseBirthday(Optional.of(birthday)).ifPresent(descriptor::setBirthday);
+        } catch (IllegalValueException ive) {
+            throw new IllegalArgumentException("birthday is expected to be unique");
         }
         return this;
     }

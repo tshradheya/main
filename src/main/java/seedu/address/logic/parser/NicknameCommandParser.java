@@ -2,9 +2,6 @@ package seedu.address.logic.parser;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_NICKNAME;
-
-import java.util.NoSuchElementException;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.exceptions.IllegalValueException;
@@ -24,22 +21,21 @@ public class NicknameCommandParser implements Parser<NicknameCommand> {
      */
     public NicknameCommand parse(String args) throws ParseException {
         requireNonNull(args);
-        ArgumentMultimap argMultimap =
-                ArgumentTokenizer.tokenize(args, PREFIX_NICKNAME);
+        String regex = "[\\s]+";
+        String[] splitArgs = args.trim().split(regex, 2);
 
         Index index;
-
         try {
-            index = ParserUtil.parseIndex(argMultimap.getPreamble());
+            index = ParserUtil.parseIndex(splitArgs[0]);
         } catch (IllegalValueException ive) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, NicknameCommand.MESSAGE_USAGE));
         }
 
         String nickname;
-        try {
-            nickname = argMultimap.getValue(PREFIX_NICKNAME).get();
-        } catch (NoSuchElementException nsee) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, NicknameCommand.MESSAGE_USAGE));
+        if (splitArgs.length > 1) {
+            nickname = splitArgs[1];
+        } else {
+            nickname = "";
         }
 
         return new NicknameCommand(index, new Nickname(nickname));

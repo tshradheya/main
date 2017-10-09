@@ -21,7 +21,7 @@ import seedu.address.model.Model;
 public class ViewTagCommandSystemTest extends AddressBookSystemTest {
 
     @Test
-    public void find() {
+    public void viewtag() {
 
         /* Case: Multiple people having one Tag, command with leading spaces and trailing spaces
          * -> 2 persons found

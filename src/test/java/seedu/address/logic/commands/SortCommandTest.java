@@ -1,5 +1,7 @@
 package seedu.address.logic.commands;
 
+import javafx.collections.transformation.SortedList;
+import org.junit.Before;
 import org.junit.Test;
 import seedu.address.logic.CommandHistory;
 import seedu.address.logic.UndoRedoStack;
@@ -9,23 +11,28 @@ import seedu.address.model.UserPrefs;
 
 import static org.junit.Assert.*;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
-import static seedu.address.logic.commands.SortCommand.MESSAGE_NOT_IMPLEMENTED_YET;
+import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
+import static seedu.address.logic.commands.CommandTestUtil.showFirstPersonOnly;
+import static seedu.address.testutil.SortedPersons.getSortedAddressBook;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
+import static seedu.address.testutil.UnsortedPersons.getUnsortedAddressBook;
 
 public class SortCommandTest {
-    private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+    private Model model;
+    private Model expectedModel;
+    private SortCommand sortCommand;
 
-    @Test
-    public void execute() throws Exception {
-        assertCommandFailure(prepareCommand(), model, MESSAGE_NOT_IMPLEMENTED_YET);
+    @Before
+    public void setUp() {
+        model = new ModelManager(getUnsortedAddressBook(), new UserPrefs());
+        expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+
+        sortCommand = new SortCommand();
+        sortCommand.setData(model, new CommandHistory(), new UndoRedoStack());
     }
 
-    /**
-     * Returns an {@code SortCommand}
-     */
-    private SortCommand prepareCommand() {
-        SortCommand sortCommand = new SortCommand();
-        sortCommand.setData(model, new CommandHistory(), new UndoRedoStack());
-        return sortCommand;
+    @Test
+    public void execute_listIsNotFiltered_showsSameList() {
+        assertCommandSuccess(sortCommand, model, SortCommand.MESSAGE_SUCCESS, expectedModel);
     }
 }

@@ -114,7 +114,7 @@ Adds a nickname `Addy` to the 1st person.
 * `nickname 1 nk/` +
 Removes the nickname from the the 1st person.
 
-=== Adding Display picture for each person : `displaypic` [Comingin v2.0]
+=== Adding Display picture for each person : `displaypic` [Coming in v2.0]
 
 Adds a Display Picture to an existing person in the address book. +
 Format: displaypic INDEX PATHOFIMAGE
@@ -148,11 +148,29 @@ Format: direction INDEX
 
 Examples:
 
-
 * `direction 2`
 Returns direction to the address of person at `INDEX` 2
 
 image::directon.png[width="790"]
+
+
+=== Email directly to a group of people having a particular tag: `email` [Coming in v2.0]
+
+Opens up the link to send email to all people of having a particular tag
+Format: email KEYWORD
+
+****
+* The `KEYWORD` should be a tag which has atleast 1 person associated with it
+* The email drafting will open up in the browser panel to write in your message
+* The command will add all people with the `KEYWORD` tag as the recepeints
+****
+
+Examples:
+
+* `email cs2103`
+Allows to send email after drafting message to everyone with the tag `cs2103`
+
+image::email.png[width="790"]
 
 
 === Locating persons by name: `find`

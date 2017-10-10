@@ -1,11 +1,5 @@
 package seedu.address.logic.commands;
 
-import javafx.collections.transformation.SortedList;
-import seedu.address.logic.commands.exceptions.CommandException;
-import seedu.address.model.person.ReadOnlyPerson;
-
-import java.util.Comparator;
-
 /**
  * Sorts the current list in alphabetical order
  */

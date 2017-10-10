@@ -107,14 +107,7 @@ public class ModelManager extends ComponentManager implements Model {
                 return o1.getName().fullName.compareTo(o2.getName().fullName);
             }
         };
-
-        Comparator<ReadOnlyPerson> sortByEmail = new Comparator<ReadOnlyPerson>() {
-            @Override
-            public int compare(ReadOnlyPerson o1, ReadOnlyPerson o2) {
-                return o1.getEmail().value.compareTo(o2.getEmail().value);
-            }
-        };
-
+        
         sortedfilteredPersons.setComparator(sortByName);
         indicateAddressBookChanged();
     }

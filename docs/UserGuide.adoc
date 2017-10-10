@@ -114,6 +114,26 @@ Adds a nickname `Addy` to the 1st person.
 * `nickname 1 nk/` +
 Removes the nickname from the the 1st person.
 
+=== Adding Display picture for each person : `displaypic` [Comingin v2.0]
+
+Adds a Display Picture to an existing person in the address book. +
+Format: displaypic INDEX PATHOFIMAGE
+
+****
+* The picture at the path address will be added to the person at the specified `INDEX` of current list
+* The person can have either 0 or 1 display picture
+* Existing picture will be updated to with the new input path
+* Picture can be removed by typing `remove` instead of `PATHOFIMAGE`
+****
+
+Examples:
+* `displaypic 1 C:\Users\Admin\Desktop\Sem 3 Mods\CS2103T\mypic.jpg
+Adds the `mypic.jpg` at the given path to the person at `INDEX` 1 as his display picture
+* `displaypic 2 remove`
+Removes the existing display picture for the person as `INDEX` 2
+
+image::displaypic.png[width="790"]
+
 === Locating persons by name: `find`
 
 Finds persons whose names contain any of the given keywords. +

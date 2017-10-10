@@ -1,10 +1,10 @@
 package seedu.address.logic.commands;
 
-import org.junit.Before;
-import org.junit.Test;
-
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.address.testutil.UnsortedPersons.getUnsortedAddressBook;
+
+import org.junit.Before;
+import org.junit.Test;
 
 import seedu.address.logic.CommandHistory;
 import seedu.address.logic.UndoRedoStack;

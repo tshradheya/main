@@ -102,7 +102,7 @@ public class AddressBookParser {
             return new RedoCommand();
 
         case SortCommand.COMMAND_WORD:
-            return new SortCommand()
+            return new SortCommand();
               
         case NicknameCommand.COMMAND_WORD:
             return new NicknameCommandParser().parse(arguments);

@@ -27,7 +27,7 @@ public class SortCommandTest {
     }
 
     @Test
-    public void execute_listIsNotFiltered_showsSameList() {
+    public void executeSortUnsortedToSorted() {
         assertCommandSuccess(sortCommand, model, SortCommand.MESSAGE_SUCCESS, expectedModel);
     }
 }

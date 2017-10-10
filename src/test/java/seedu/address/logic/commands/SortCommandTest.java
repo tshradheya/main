@@ -1,6 +1,5 @@
 package seedu.address.logic.commands;
 
-import javafx.collections.transformation.SortedList;
 import org.junit.Before;
 import org.junit.Test;
 import seedu.address.logic.CommandHistory;
@@ -9,12 +8,7 @@ import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
 
-import static org.junit.Assert.*;
-import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
-import static seedu.address.logic.commands.CommandTestUtil.showFirstPersonOnly;
-import static seedu.address.testutil.SortedPersons.getSortedAddressBook;
-import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 import static seedu.address.testutil.UnsortedPersons.getUnsortedAddressBook;
 
 public class SortCommandTest {

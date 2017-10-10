@@ -139,7 +139,7 @@ public class AddCommandTest {
         public void sortFilteredPersonList() {
             fail("This method should not be called.");
         }
-      
+
         @Override
         public void deleteTag(Tag toBeRemoved) {
             fail("This method should not be called.");

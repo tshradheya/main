@@ -134,6 +134,29 @@ Returns `john` and `John Doe`
 * `find Betsy Tim John` +
 Returns any person having names `Betsy`, `Tim`, or `John`
 
+
+=== Finding all people associated with a particular Tag: `viewtag`
+
+Finds all people who have the tag given in the keyword. +
+Format: `viewtag KEYWORD`
+
+****
+* The search is case insensetive. e.g `friends` tag matches witg `Friends`
+* There should only be exactly 1 keyword
+* Only tags of people are searched
+* The entire keyword should match with the tag
+* Even if one of the many tags of a person exactly matches the keywords, the person will be listed. e.g `Betty` having `friends` and `classmate` will be matched with keyword `friend`
+****
+
+Examples:
+
+* `viewtag cs2103` +
+Returns all people who have the tag `cs2103` associated with them
+* `viewtag friends` +
+Returns `Alex` and `Bernice1 as they are having the tag `friends`
+
+image::viewtag.png[width="790"]
+
 === Deleting a person : `delete`
 
 Deletes the specified person from the address book. +
@@ -267,6 +290,8 @@ e.g. `edit 2 n/James Lee e/jameslee@example.com`
 e.g. `add 1 nk/Jam`
 * *Find* : `find KEYWORD [MORE_KEYWORDS]` +
 e.g. `find James Jake`
+* *ViewTag* : `viewtag KEYWORD` +
+e.g. `viewtag enemy`
 * *List* : `list`
 * *Help* : `help`
 * *Select* : `select INDEX` +

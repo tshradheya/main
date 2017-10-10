@@ -107,7 +107,6 @@ public class ModelManager extends ComponentManager implements Model {
                 return o1.getName().fullName.compareTo(o2.getName().fullName);
             }
         };
-        
         sortedfilteredPersons.setComparator(sortByName);
         indicateAddressBookChanged();
     }

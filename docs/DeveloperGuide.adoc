@@ -28,7 +28,7 @@ This app will not work with earlier versions of Java 8.
 . *IntelliJ* IDE
 +
 [NOTE]
-IntelliJ by default has Gradle and JavaFx plugins installed. +
+IntelliJ by default has link:#gradle[Gradle] and link:#javafx[JavaFx] plugins installed. +
 Do not disable them. If you have disabled them, go to `File` > `Settings` > `Plugins` to re-enable them.
 
 
@@ -72,9 +72,9 @@ After forking the repo, links in the documentation will still point to the `se-e
 
 ==== Setting up CI
 
-Set up Travis to perform Continuous Integration (CI) for your fork. See <<UsingTravis#, UsingTravis.adoc>> to learn how to set it up.
+Set up link:#travis[Travis] to perform Continuous Integration (CI) for your fork. See <<UsingTravis#, UsingTravis.adoc>> to learn how to set it up.
 
-Optionally, you can set up AppVeyor as a second CI (see <<UsingAppVeyor#, UsingAppVeyor.adoc>>).
+Optionally, you can set up link:#appveyor[AppVeyor] as a second CI (see <<UsingAppVeyor#, UsingAppVeyor.adoc>>).
 
 [NOTE]
 Having both Travis and AppVeyor ensures your App works on both Unix-based platforms and Windows-based platforms (Travis is Unix-based and AppVeyor is Windows-based)
@@ -714,6 +714,19 @@ We now have everything set up... but we still can't modify the remarks. Let's fi
 See this https://github.com/se-edu/addressbook-level4/pull/599[PR] for the step-by-step solution.
 
 [appendix]
+== Target Users
+
+This application is targeted towards University students, aiming to meet their needs throughout their university life, and hopefully beyond. University students meet many people in the university, such as project group members, tutors, lecturers, friends and other connections. Nowadays it is important for students to build connections with other people, as connections may also help students for their future career after graduation. Since the students meet a lot of people, they may not be able to remember all the information about the people they met. Therefore, iContacts aims to help students to store and manage their contacts easily.
+
+*  User Profile
+
+**  University Student
+**  Student part of many CCA clubs and committees
+**  Student taking role of Teaching Assistant/Tutor
+**  Student who is interning and has colleagues
+**  Student having close friends and family
+
+[appendix]
 == User Stories
 
 Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (unlikely to have) - `*`
@@ -731,7 +744,7 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* * *` |sociable user that was given contacts by another person |import from another source file |add contacts that were shared with me
 
-|`* * *` |sociable user |export selected contacts |share my contacts with friends
+|`* * *` |sociable student |export selected contacts |share my contacts with friends
 
 |`* * *` |sociable user |store the person's birthday |keep track of the person's birthday
 
@@ -739,9 +752,9 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* * *` |user with limited details of a contact |add user with just the name and phone number |store contact information with limited detail
 
-|`* * *` |user with large number of tags |identify tags by colors and their alphabetical order |easily identify different tags and their alphabetical order in the link:#GUI[GUI]
+|`* * *` |student with large number of connections |identify tags by colors and their alphabetical order |easily identify different tags and their alphabetical order in the link:#GUI[GUI]
 
-|`* * *` |user visiting a friend |view a map based on a person's address in the GUI |find directions to his/her place
+|`* * *` |user visiting a friend |view a person's address location in link:#google-map[Google Maps] in the GUI |find directions to his/her place
 
 |`* * *` |user |search for contacts with just the first few characters of their name |find contacts if I'm unable to remember the spelling of the name
 
@@ -749,7 +762,7 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* * *` |new user |see usage instructions |refer to instructions when I forget how to use the App
 
-|`* * *` |user |add a new person |
+|`* * *` |user |add a new person | to populate data in the address book
 
 |`* * *` |user |delete a person |remove entries that I no longer need
 
@@ -761,41 +774,49 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* *` |user |find my link:#frequently-used-contacts[frequently used contacts] at the top of the displayed list when I do a search |quickly find the contact information I need
 
-|`* *` |user |see frequently used contacts instantly |locate them more easily
+|`* *` |regular user |see frequently used contacts instantly |locate them more easily
 
 |`* *` |user |I want to be able to add link:#display-picture[Display Picture] for my contacts |so that I can easily identify them
 
-|`* *` |user |view my address book online |so that I can view it without the device running the software
+|`* *` |student who doesn't use his laptop everywhere |view my address book online |so that I can view it without the device running the software
 
-|`* *` |user |send email to a group of persons with one command |easily send email to a group of persons
+|`* *` |member of a team |send email to a group of persons with one command |easily send email to a group of persons
 
 |`* *` |user |include more details for a person's contact information |store more information about a person to identify him/her more easily
 
 |`* *` |user |delete multiple persons in one command |remove several persons that I no longer need quickly
 
-|`* *` |user |have color-coded commands and contact information in command line |identify the command and contact information easily
+|`* *` |young student who likes user-friendly applications |have color-coded commands and contact information in command line |identify the command and contact information easily
+
+|`* *` |lazy user |auto-completion of commands |use the address book more conveniently
+
+|`* *` |trendy user |choose my own theme for the address book |customise the address book to my own liking
 
 |`* *` |user |view my recent additions |identify which person is newly added
 
+|`* *` |frequent user |change the font of the address book |protect my eyes
+
+|`* *` |expert user |define my own short-hand aliases for commands |personalise the address book to suit my needs
+
 |`* *` |lazy user |have short-hand form for each command |perform commands quickly
 
-|`* *` |user |set reminders |remind myself any activities or events that will happen
+|`* *` |busy student |set reminders |remind myself any activities or events that will happen
 
-|`* *` |user |save the address book as an external file |backup or transfer the address book easily
+|`* *` |careless student |save the address book as an external file |backup or transfer the address book easily
 
 |`* *` |user |add multiple emails and phone numbers to a person |handle persons with more than one email and phone numbers
 
-|`* *` |user |get reminder of any approaching birthday |prepare for the person's birthday
+|`* *` |student with many friends |get reminder of any approaching birthday |prepare for the person's birthday
 
 |`* *` |user |sort persons by birthday |identify the persons who will have a birthday soon
 
 |`*` |careless user |search a person using similar keywords |find contacts if I do not know the correct spelling
 
-|`*` |user |add same tag(s) to multiple persons in one command |tag multiple persons quickly
+|`*` |student with many connections |add same tag(s) to multiple persons in one command |tag multiple persons quickly
 
-|`*` |user |auto sort the list whenever I add a person |avoid using the sort command with every single additions
+|`*` |organized student |auto sort the list whenever I add a person |avoid using the sort command with every single additions
 
-|`*` |busy user |I should be able to create meeting reminders with my link:#contacts[contacts] |so that I don't forget whom should I be meeting at what time
+|`*` |busy student with many commitments |I should be able to create meeting reminders with my link:#contacts[contacts] |so that I don't forget whom should I be meeting at what time
 
 |`*` |user |have a secured address book |only I have access to my address book
 |=======================================================================
@@ -995,6 +1016,7 @@ Use case ends.
 .  A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
 .  A new user to a link:#CLI[CLI] environment and/or address book application should be able to learn how to install and use the application within 20 minutes with the help of the User Guide.
 .  Should be responsive and commands are executed within 2 seconds under normal load (1000 persons or less) and typical usage.
+.  Essential services (adding, deleting contacts etc) should still work perfectly without Internet access.
 .  Layout of the application should be clear, appealing and attractive.
 .  Should be able to handle any invalid input and recover from it.
 .  Should not consume too much processing time/power, less than 10% of the CPU of modern computers/laptops.
@@ -1114,7 +1136,7 @@ Data File
 The XML file that stores the contact information of address book. This is also the file that iContacts reads from when starting up. There can be multiple data files at any one time.
 ....
 
-[[contact]]
+[[contacts]]
 Contacts
 
 ....
@@ -1128,3 +1150,37 @@ Display Picture
 A photo of the person represented by this contact entry
 ....
 
+[[google-map]]
+Google Maps
+
+....
+A web mapping service procided by Google that offers satellite imagery, street maps, route planning, real-time traffic conditions and other features.
+....
+
+[[gradle]]
+Gradle
+
+....
+An open-source build automation system that also serve as a dependency management tool.
+....
+
+[[javafx]]
+JavaFX
+
+....
+A software platform that contains a set of graphics and packages that enables developers to develop rich applications that can run across a wide variety of devices and platforms.
+....
+
+[[travis]]
+Travis
+
+....
+A hosted, distributed continuous integration service used to build and test software projects hosted at GitHub on a Linux virtual machine.
+....
+
+[[appveyor]]
+AppVeyor
+
+....
+A hosted, distributed integration service used to build and test software projects hosted at GitHub on a Microsoft Windows virtual machine.
+....

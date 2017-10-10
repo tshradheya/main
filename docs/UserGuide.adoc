@@ -127,12 +127,33 @@ Format: displaypic INDEX PATHOFIMAGE
 ****
 
 Examples:
-* `displaypic 1 C:\Users\Admin\Desktop\Sem 3 Mods\CS2103T\mypic.jpg
+
+* `displaypic 1 C:\Users\Admin\Desktop\Sem 3 Mods\CS2103T\mypic.jpg`
 Adds the `mypic.jpg` at the given path to the person at `INDEX` 1 as his display picture
 * `displaypic 2 remove`
 Removes the existing display picture for the person as `INDEX` 2
 
 image::displaypic.png[width="790"]
+
+=== Displaying direction to a contact's address: `direction`[Coming in v2.0]
+
+Uses Google Maps to show direction from the current location to the address of the selected `INDEX`
+Format: direction INDEX
+
+****
+* The directions shown are in browser panel using Google Maps
+* The current location is the location of device from where the command is executed
+* The command is only valid for INDEX which have an valid address
+****
+
+Examples:
+
+
+* `direction 2`
+Returns direction to the address of person at `INDEX` 2
+
+image::directon.png[width="790"]
+
 
 === Locating persons by name: `find`
 

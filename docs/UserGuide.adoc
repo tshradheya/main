@@ -73,6 +73,11 @@ Examples:
 Shows a list of all persons in the address book. +
 Format: `list`
 
+=== Sorting all persons : `sort`
+
+Sorts and shows a list of all persons in the address book alphabetically. +
+Format: `sort`
+
 === Editing a person : `edit`
 
 Edits an existing person in the address book. +
@@ -293,6 +298,7 @@ e.g. `find James Jake`
 * *ViewTag* : `viewtag KEYWORD` +
 e.g. `viewtag enemy`
 * *List* : `list`
+* *Sort* : `sort`
 * *Help* : `help`
 * *Select* : `select INDEX` +
 e.g.`select 2`

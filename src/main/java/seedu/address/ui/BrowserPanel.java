@@ -9,6 +9,7 @@ import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
 import javafx.scene.web.WebView;
 import seedu.address.MainApp;
 import seedu.address.commons.core.LogsCenter;
@@ -30,6 +31,9 @@ public class BrowserPanel extends UiPart<Region> {
 
     @FXML
     private WebView browser;
+
+    @FXML
+    private StackPane birthdayList;
 
     public BrowserPanel() {
         super(FXML);

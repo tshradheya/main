@@ -96,22 +96,22 @@ Edits the name of the 2nd person to be `Betsy Crower` and clears all existing ta
 * `edit 3 b/` +
 Clear the birthday of the 3rd person.
 
-=== Adding nickname to a person : `nickname`
+=== Adding a nickname to a person : `nickname`
 
 Adds a nickname to an existing person in the address book. +
-Format: nickname INDEX nk/[NICKNAME]
+Format: `nickname INDEX [NICKNAME]`
 
 ****
 * Adds a nickname to the person at the specified `INDEX`. The index refers to the index number shown in the last person listing. The index *must be a positive integer* 1, 2, 3, ...
 * Existing values will be updated to the input values.
-* You can remove the person's nickname by typing `nk/` without specifying anything after it.
+* You can remove the person's nickname without specifying anything after the `INDEX`.
 ****
 
 Examples:
 
-* `nickname 1 nk/Addy` +
-Adds a nickname `Addy` to the 1st person.
-* `nickname 1 nk/` +
+* `nickname 1 Eddie` +
+Adds a nickname `Eddie` to the 1st person.
+* `nickname 1` +
 Removes the nickname from the the 1st person.
 
 === Locating persons by name: `find`
@@ -272,6 +272,25 @@ Format: `exit`
 Address book data are saved in the hard disk automatically after any command that changes the data. +
 There is no need to save manually.
 
+== Coming in v2.0
+
+=== Exporting the list: `export`
+
+Exports the last displayed list to a specified location. +
+Format: `export [SAVE LOCATION]NAME`
+
+****
+* Exports the last displayed list as `NAME.xml` to a specified `SAVE LOCATION`
+* If `SAVE LOCATION` is omitted, the list will be saved at a default folder "data".
+****
+
+Examples:
+
+* `export newData/newList` +
+Exports the last displayed list to `newData` folder as `newList.xml`.
+* `export newList` +
+Saves the last displayed list to the default location as `newList.xml`.
+
 == FAQ
 
 *Q*: How do I transfer my data to another Computer? +
@@ -286,8 +305,8 @@ e.g. `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 123466
 e.g. `delete 3`
 * *Edit* : `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [b/BIRTHDAY] [t/TAG]...` +
 e.g. `edit 2 n/James Lee e/jameslee@example.com`
-* *Nickname* : `edit INDEX nk/[NICKNAME]` +
-e.g. `add 1 nk/Jam`
+* *Nickname* : `edit INDEX [NICKNAME]` +
+e.g. `add 1 Jamie`
 * *Find* : `find KEYWORD [MORE_KEYWORDS]` +
 e.g. `find James Jake`
 * *ViewTag* : `viewtag KEYWORD` +

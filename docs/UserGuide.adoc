@@ -301,9 +301,8 @@ e.g.`select 2`
 * *Redo* : `redo`
 
 == Coming in v2.0
-
-* Search command. +
-User will be able to search for persons fulfilling *all* keywords provided by the user. +
+=== *Search* +
+Users will be able to search for persons fulfilling *all* keywords provided by the users. +
 This allow a more focused and efficient search for users. +
 Format: `search KEYWORD [MORE KEYWORDS]` +
 `KEYWORD` is either `n/PHONE` or `t/TAG`
@@ -322,4 +321,24 @@ Examples:
 Returns all persons with name matching `Dickson` (case-insensitive) *and* tag matching `volleyball` (case-insensitive).
 * `search t/friend t/NUS t/Computing` +
 Returns all persons having tags `friend`, `NUS`, and `Computing` (all case-insensitive).
+
+=== Command Format Validation +
+The text field where users type commands into would be outlined with colors. +
+
+* if the outline is green, it means that the format of the command currently in the text field is valid. +
+* if the outline is orange, it means that the format of command currently in the text field is not wrong, but is incomplete. +
+* if the outline is red, it means the the format of the command currently in the text field is wrong, and needs to be changed. +
+
+This allows users to be able to check for the format of the command they are typing, and rectify as soon as there is an error.
+
+=== Find by similar keywords +
+Users would be able to obtain a list of contacts by entering similar keywords that is not identical. +
+This is an enhancement to the existing `find` command, so format of command would remain the same. +
+
+Examples:
+
+* `find john` +
+Returns `john` and `John Doe` and `Jon` +
+* `find delylah justin`
+One possible list of contacts returned might be `delilah`, `justinn` and `Justin Lim`.
 

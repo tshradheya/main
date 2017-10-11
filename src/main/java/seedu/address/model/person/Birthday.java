@@ -3,7 +3,6 @@ package seedu.address.model.person;
 import static java.util.Objects.requireNonNull;
 
 import seedu.address.commons.exceptions.IllegalValueException;
-import sun.jvm.hotspot.utilities.AssertionFailure;
 
 /**
  * Represents a Person's birthday in the address book.
@@ -11,9 +10,11 @@ import sun.jvm.hotspot.utilities.AssertionFailure;
  */
 public class Birthday {
 
-    public static final String MESSAGE_BIRTHDAY_CONSTRAINTS = "Birthday must be in the following format: "
+    public static final String MESSAGE_BIRTHDAY_CONSTRAINTS = "Birthday must be valid and in the following format: "
             + "dd/mm/yyyy, dd.mm.yyyy or dd-mm-yyyy.\n"
-            + "Leading zeroes are allowed for the day and month field. The year field must have 4 digits.\n"
+            + "Day field: 1 - 31 (allows leading zeroes).\n"
+            + "Month field: 1-12 (allows leading zeroes).\n"
+            + "Year field: 1900 - 2099.\n"
             + "Example: 21/10/1995, 21-05-1996. 8.10.1987";
     private static final int[] MONTH_TO_DAY_MAPPING = {31, 28, 31, 30, 31, 30, 31, 31,
         30, 31, 30, 31};
@@ -61,6 +62,9 @@ public class Birthday {
         }
     }
 
+    /**
+     * Returns true if a given string is a valid person birthday.
+     */
     public static boolean isValidBirthday(String birthday) {
         String trimmedBirthday = birthday.trim();
         if (trimmedBirthday.isEmpty()) {
@@ -78,6 +82,10 @@ public class Birthday {
         return true;
     }
 
+    /**
+     * Returns true if a given date is a valid date.
+     * A date is valid if it exists.
+     */
     private static boolean isValidDate(String[] splitDate) {
         if (isValidLeapDay(splitDate)) {
             return true;
@@ -97,6 +105,9 @@ public class Birthday {
         return true;
     }
 
+    /**
+     * Returns true if a given date is a valid leap day.
+     */
     private static boolean isValidLeapDay(String[] splitDate) {
         try {
             final int day = Integer.parseInt(splitDate[DATE_DAY_INDEX]);
@@ -111,27 +122,6 @@ public class Birthday {
         return true;
     }
 
-
-    private static String[] getSplitDate(String trimmedBirthday) {
-       return trimmedBirthday.split(BIRTHDAY_SPLIT_REGEX);
-    }
-
-    /**
-     * Converts date in integer array into dd-mm-yyyy String format.
-     */
-    private static String convertToDefaultDateFormat(String birthday) {
-        String[] splitDate = getSplitDate(birthday);
-
-        StringBuilder builder = new StringBuilder();
-        builder.append(splitDate[DATE_DAY_INDEX]);
-        builder.append(BIRTHDAY_DASH_SEPARATOR);
-        builder.append(splitDate[DATE_MONTH_INDEX]);
-        builder.append(BIRTHDAY_DASH_SEPARATOR);
-        builder.append(splitDate[DATE_YEAR_INDEX]);
-        return builder.toString();
-    }
-
-
     /**
      * Returns true if the year is a valid leap year.
      * Algorithm to determine is a year is a valid leap year:
@@ -145,6 +135,28 @@ public class Birthday {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Converts the date into logical segments.
+     */
+    private static String[] getSplitDate(String trimmedDate) {
+        return trimmedDate.split(BIRTHDAY_SPLIT_REGEX);
+    }
+
+    /**
+     * Converts date in integer array into dd-mm-yyyy String format.
+     */
+    private static String convertToDefaultDateFormat(String date) {
+        String[] splitDate = getSplitDate(date);
+
+        StringBuilder builder = new StringBuilder();
+        builder.append(splitDate[DATE_DAY_INDEX]);
+        builder.append(BIRTHDAY_DASH_SEPARATOR);
+        builder.append(splitDate[DATE_MONTH_INDEX]);
+        builder.append(BIRTHDAY_DASH_SEPARATOR);
+        builder.append(splitDate[DATE_YEAR_INDEX]);
+        return builder.toString();
     }
 
     @Override

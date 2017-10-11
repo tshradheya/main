@@ -19,9 +19,11 @@ public class BirthdayTest {
 
         // year too small -> returns false
         assertFalse(Birthday.isValidBirthday("01.01.999"));
+        assertFalse(Birthday.isValidBirthday("01.01.1899"));
 
         // year too big -> returns false
         assertFalse(Birthday.isValidBirthday("01.01.10000"));
+        assertFalse(Birthday.isValidBirthday("01.01.2100"));
 
         // input format not correct -> returns false
         assertFalse(Birthday.isValidBirthday("1 January 1999"));

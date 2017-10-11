@@ -25,7 +25,6 @@ public class BirthdayTest {
 
         // input format not correct -> returns false
         assertFalse(Birthday.isValidBirthday("1 January 1999"));
-        assertFalse(Birthday.isValidBirthday("10.10/1999"));
         assertFalse(Birthday.isValidBirthday("10/ 10 / 1992"));
 
         // input values are not integers -> returns false
@@ -34,8 +33,8 @@ public class BirthdayTest {
         // not even a date -> returns false
         assertFalse(Birthday.isValidBirthday("Not a date"));
 
-        // space -> returns false
-        assertFalse(Birthday.isValidBirthday(" "));
+        // space -> returns true
+        assertTrue(Birthday.isValidBirthday(" "));
 
         // empty string -> returns true
         assertTrue(Birthday.isValidBirthday(""));
@@ -56,6 +55,11 @@ public class BirthdayTest {
         assertTrue(Birthday.isValidBirthday("01.03.1995"));
 
         // valid leap year day -> returns true
-        assertTrue(Birthday.isValidBirthday("29-4-2016"));
+        assertTrue(Birthday.isValidBirthday("29-2-2016"));
+
+        // flexible day-month-year separator -> returns true
+        assertTrue(Birthday.isValidBirthday("01/03.1995"));
+        assertTrue(Birthday.isValidBirthday("31.03/1995"));
+        assertTrue(Birthday.isValidBirthday("01/03-1995"));
     }
 }

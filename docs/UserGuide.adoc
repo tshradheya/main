@@ -256,3 +256,19 @@ e.g.`select 2`
 * *History* : `history`
 * *Undo* : `undo`
 * *Redo* : `redo`
+
+== Coming Soon (Version 2.0)
+
+* *Color coded commands for easy viewing*
+* *Email contacts with particular tags*
+* *Export data file*
+* *Frequently viewed contacts*
+* *Import data file*
+* *Reminders for birthdays*
+* *Search using accumulative filters*
+* *Search with wild cards*
+* *Sort by attribute* : e.g. name, email, tags
+
+
+
+

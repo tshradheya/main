@@ -299,3 +299,27 @@ e.g.`select 2`
 * *History* : `history`
 * *Undo* : `undo`
 * *Redo* : `redo`
+
+== Coming in v2.0
+
+* Search command. +
+User will be able to search for persons fulfilling *all* keywords provided by the user. +
+This allow a more focused and efficient search for users. +
+Format: `search KEYWORD [MORE KEYWORDS]` +
+`KEYWORD` is either `n/PHONE` or `t/TAG`
+
+****
+* The search is case insensitive. e.g `hans` will match `Hans`.
+* The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`.
+* Both name and tags are searched.
+* Only full words and tags will be matched e.g. `Han` will not match `Hans`, `volleyball` will not match `vball`.
+* Persons matching *all* the keywords will be returned.
+****
+
+Examples:
+
+* `search n/Dickson t/volleyball` +
+Returns all persons with name matching `Dickson` (case-insensitive) *and* tag matching `volleyball` (case-insensitive).
+* `search t/friend t/NUS t/Computing` +
+Returns all persons having tags `friend`, `NUS`, and `Computing` (all case-insensitive).
+

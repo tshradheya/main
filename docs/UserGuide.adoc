@@ -280,7 +280,7 @@ Exports the last displayed list to a specified location. +
 Format: `export [SAVE LOCATION]NAME`
 
 ****
-* Exports the last displayed list as `NAME.xml` to a specified `SAVE LOCATION`
+* Exports the last displayed list as `NAME.xml` to a specified `SAVE LOCATION`.
 * If `SAVE LOCATION` is omitted, the list will be saved at a default folder "data".
 ****
 

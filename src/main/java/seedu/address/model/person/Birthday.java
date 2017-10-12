@@ -10,8 +10,8 @@ import seedu.address.commons.exceptions.IllegalValueException;
  */
 public class Birthday {
 
-    public static final String MESSAGE_BIRTHDAY_CONSTRAINTS = "Birthday must be valid and in the following format: "
-            + "dd/mm/yyyy, dd.mm.yyyy or dd-mm-yyyy.\n"
+    public static final String MESSAGE_BIRTHDAY_CONSTRAINTS = "Birthday must be a valid date and in the following format:\n"
+            + "'.', '-' and '/' can be used to seperate the day, month and year fields.\n"
             + "Day field: 1 - 31 (allows leading zeroes).\n"
             + "Month field: 1-12 (allows leading zeroes).\n"
             + "Year field: 1900 - 2099.\n"

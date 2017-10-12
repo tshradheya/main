@@ -32,6 +32,7 @@ import seedu.address.storage.Storage;
 import seedu.address.storage.StorageManager;
 import seedu.address.storage.UserPrefsStorage;
 import seedu.address.storage.XmlAddressBookStorage;
+import seedu.address.ui.BirthdayInCurrentMonthPredicate;
 import seedu.address.ui.Ui;
 import seedu.address.ui.UiManager;
 
@@ -67,6 +68,9 @@ public class MainApp extends Application {
         initLogging(config);
 
         model = initModelManager(storage, userPrefs);
+
+        // immediately pass it the birthday predicate at the start
+        model.updateBirthdayPanelFilteredPersonList(new BirthdayInCurrentMonthPredicate());
 
         logic = new LogicManager(model);
 

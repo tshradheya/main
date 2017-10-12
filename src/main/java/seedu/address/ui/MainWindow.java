@@ -40,7 +40,7 @@ public class MainWindow extends UiPart<Region> {
     private Logic logic;
 
     // Independent Ui parts residing in this Ui container
-    private BrowserPanel browserPanel;
+    private BrowserAndRemindersPanel browserAndRemindersPanel;
     private PersonListPanel personListPanel;
     private Config config;
     private UserPrefs prefs;
@@ -126,8 +126,8 @@ public class MainWindow extends UiPart<Region> {
      * Fills up all the placeholders of this window.
      */
     void fillInnerParts() {
-        browserPanel = new BrowserPanel(logic.getBirthdayPanelFilteredPersonList());
-        browserPlaceholder.getChildren().add(browserPanel.getRoot());
+        browserAndRemindersPanel = new BrowserAndRemindersPanel(logic.getBirthdayPanelFilteredPersonList());
+        browserPlaceholder.getChildren().add(browserAndRemindersPanel.getRoot());
 
         personListPanel = new PersonListPanel(logic.getFilteredPersonList());
         personListPanelPlaceholder.getChildren().add(personListPanel.getRoot());
@@ -210,7 +210,7 @@ public class MainWindow extends UiPart<Region> {
     }
 
     void releaseResources() {
-        browserPanel.freeResources();
+        browserAndRemindersPanel.freeResources();
     }
 
     @Subscribe

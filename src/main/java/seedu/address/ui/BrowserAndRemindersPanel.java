@@ -1,14 +1,12 @@
 package seedu.address.ui;
 
 import java.net.URL;
-import java.util.List;
 import java.util.logging.Logger;
 
 import com.google.common.eventbus.Subscribe;
 
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.layout.Region;
@@ -16,15 +14,14 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.web.WebView;
 import seedu.address.MainApp;
 import seedu.address.commons.core.LogsCenter;
-import seedu.address.commons.events.ui.BrowserPanelToggleEvent;
+import seedu.address.commons.events.ui.BrowserAndRemindersPanelToggleEvent;
 import seedu.address.commons.events.ui.PersonPanelSelectionChangedEvent;
-import seedu.address.logic.Logic;
 import seedu.address.model.person.ReadOnlyPerson;
 
 /**
  * The Browser Panel of the App.
  */
-public class BrowserPanel extends UiPart<Region> {
+public class BrowserAndRemindersPanel extends UiPart<Region> {
 
     /**
      * An Enumeration to differentiate between the child nodes and to keep track of which is
@@ -38,7 +35,7 @@ public class BrowserPanel extends UiPart<Region> {
     public static final String GOOGLE_SEARCH_URL_PREFIX = "https://www.google.com.sg/search?safe=off&q=";
     public static final String GOOGLE_SEARCH_URL_SUFFIX = "&cad=h";
 
-    private static final String FXML = "BrowserPanel.fxml";
+    private static final String FXML = "BrowserAndRemindersPanel.fxml";
 
     private final Logger logger = LogsCenter.getLogger(this.getClass());
     private BirthdayListPanel birthdayListPanel;
@@ -50,7 +47,7 @@ public class BrowserPanel extends UiPart<Region> {
     @FXML
     private StackPane birthdayList;
 
-    public BrowserPanel(ObservableList<ReadOnlyPerson> birthdayPanelFilteredPersonList) {
+    public BrowserAndRemindersPanel(ObservableList<ReadOnlyPerson> birthdayPanelFilteredPersonList) {
         super(FXML);
 
         // To prevent triggering events for typing inside the loaded Web page.
@@ -120,7 +117,7 @@ public class BrowserPanel extends UiPart<Region> {
     }
 
     @Subscribe
-    private void handleBrowserPanelToggleEvent(BrowserPanelToggleEvent event) {
+    private void handleBrowserPanelToggleEvent(BrowserAndRemindersPanelToggleEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
         toggleBrowserPanel();
     }

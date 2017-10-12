@@ -1,7 +1,7 @@
 package seedu.address.logic.commands;
 
 import seedu.address.commons.core.EventsCenter;
-import seedu.address.commons.events.ui.BrowserPanelToggleEvent;
+import seedu.address.commons.events.ui.BrowserAndRemindersPanelToggleEvent;
 
 /**
  * Toggles between the browser and reminders.
@@ -14,7 +14,7 @@ public class ToggleCommand extends Command {
 
     @Override
     public CommandResult execute() {
-        EventsCenter.getInstance().post(new BrowserPanelToggleEvent());
+        EventsCenter.getInstance().post(new BrowserAndRemindersPanelToggleEvent());
         return new CommandResult(MESSAGE_SUCCESS);
     }
 

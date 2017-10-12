@@ -51,6 +51,11 @@ public class LogicManager extends ComponentManager implements Logic {
     }
 
     @Override
+    public ObservableList<ReadOnlyPerson> getBirthdayPanelFilteredPersonList() {
+        return model.getBirthdayPanelFilteredPersonList();
+    }
+
+    @Override
     public ListElementPointer getHistorySnapshot() {
         return new ListElementPointer(history.getHistory());
     }

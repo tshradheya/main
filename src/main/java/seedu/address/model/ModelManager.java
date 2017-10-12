@@ -30,6 +30,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     private final AddressBook addressBook;
     private final FilteredList<ReadOnlyPerson> filteredPersons;
+    private final FilteredList<ReadOnlyPerson> filteredPersonsForBirthdayListPanel;
 
     private SortedList<ReadOnlyPerson> sortedfilteredPersons;
 
@@ -44,6 +45,7 @@ public class ModelManager extends ComponentManager implements Model {
 
         this.addressBook = new AddressBook(addressBook);
         filteredPersons = new FilteredList<>(this.addressBook.getPersonList());
+        filteredPersonsForBirthdayListPanel = new FilteredList<>(this.addressBook.getPersonList());
         sortedfilteredPersons = new SortedList<ReadOnlyPerson>(filteredPersons);
 
     }
@@ -133,6 +135,17 @@ public class ModelManager extends ComponentManager implements Model {
     public void updateFilteredPersonList(Predicate<ReadOnlyPerson> predicate) {
         requireNonNull(predicate);
         filteredPersons.setPredicate(predicate);
+    }
+
+    @Override
+    public ObservableList<ReadOnlyPerson> getBirthdayPanelFilteredPersonList() {
+        return FXCollections.unmodifiableObservableList(filteredPersonsForBirthdayListPanel);
+    }
+
+    @Override
+    public void updateBirthdayPanelFilteredPersonList(Predicate<ReadOnlyPerson> predicate) {
+        requireNonNull(predicate);
+        filteredPersonsForBirthdayListPanel.setPredicate(predicate);
     }
 
     @Override

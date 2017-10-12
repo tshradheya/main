@@ -8,6 +8,7 @@ import com.google.common.eventbus.Subscribe;
 
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.layout.Region;
@@ -48,6 +49,7 @@ public class BrowserPanel extends UiPart<Region> {
         loadDefaultPage();
 
         //Predicate to filter out the birthdayListPanel should be given to the filtered list here.
+
         birthdayListPanel = new BirthdayListPanel(filteredList);
 
         //birthdayListPanel should be displayed first so no need to shift it to the back.

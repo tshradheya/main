@@ -24,6 +24,7 @@ public class Person implements ReadOnlyPerson {
     private ObjectProperty<Address> address;
     private ObjectProperty<Nickname> nickname;
     private ObjectProperty<Birthday> birthday;
+    private ObjectProperty<DisplayPicture> displayPicture;
 
 
     private ObjectProperty<UniqueTagList> tags;
@@ -32,7 +33,7 @@ public class Person implements ReadOnlyPerson {
      * Every field must be present and not null.
      */
     public Person(Name name, Phone phone, Email email, Address address, Birthday birthday,
-                  Nickname nickname, Set<Tag> tags) {
+                  Nickname nickname, DisplayPicture displayPicture, Set<Tag> tags) {
         requireAllNonNull(name, phone, email, address, birthday, tags);
 
         this.name = new SimpleObjectProperty<>(name);
@@ -41,6 +42,7 @@ public class Person implements ReadOnlyPerson {
         this.address = new SimpleObjectProperty<>(address);
         this.nickname = new SimpleObjectProperty<>(nickname);
         this.birthday = new SimpleObjectProperty<>(birthday);
+        this.displayPicture = new SimpleObjectProperty<>(displayPicture);
         // protect internal tags from changes in the arg list
         this.tags = new SimpleObjectProperty<>(new UniqueTagList(tags));
     }
@@ -50,7 +52,7 @@ public class Person implements ReadOnlyPerson {
      */
     public Person(ReadOnlyPerson source) {
         this(source.getName(), source.getPhone(), source.getEmail(), source.getAddress(),
-             source.getBirthday(), source.getNickname(), source.getTags());
+             source.getBirthday(), source.getNickname(), source.getDisplayPicture(), source.getTags());
     }
 
     public void setName(Name name) {
@@ -135,6 +137,20 @@ public class Person implements ReadOnlyPerson {
     @Override
     public Birthday getBirthday() {
         return birthday.get();
+    }
+
+    public void setDisplayPicture(DisplayPicture displayPicture) {
+        this.displayPicture.set(requireNonNull(displayPicture));
+    }
+
+    @Override
+    public ObjectProperty<DisplayPicture> displayPictureProperty() {
+        return displayPicture;
+    }
+
+    @Override
+    public DisplayPicture getDisplayPicture() {
+        return displayPicture.get();
     }
 
     /**

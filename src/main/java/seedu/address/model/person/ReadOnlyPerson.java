@@ -24,6 +24,8 @@ public interface ReadOnlyPerson {
     Nickname getNickname();
     ObjectProperty<Birthday> birthdayProperty();
     Birthday getBirthday();
+    ObjectProperty<DisplayPicture> displayPictureProperty();
+    DisplayPicture getDisplayPicture();
     ObjectProperty<UniqueTagList> tagProperty();
     Set<Tag> getTags();
 
@@ -38,7 +40,8 @@ public interface ReadOnlyPerson {
                 && other.getEmail().equals(this.getEmail())
                 && other.getAddress().equals(this.getAddress())
                 && other.getNickname().equals(this.getNickname())
-                && other.getBirthday().equals(this.getBirthday()));
+                && other.getBirthday().equals(this.getBirthday())
+                && other.getDisplayPicture().equals(this.getDisplayPicture()));
     }
 
     /**

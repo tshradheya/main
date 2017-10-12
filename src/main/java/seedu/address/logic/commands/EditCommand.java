@@ -19,6 +19,7 @@ import seedu.address.commons.util.CollectionUtil;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Birthday;
+import seedu.address.model.person.DisplayPicture;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Nickname;
@@ -106,10 +107,11 @@ public class EditCommand extends UndoableCommand {
         Address updatedAddress = editPersonDescriptor.getAddress().orElse(personToEdit.getAddress());
         Birthday updatedBirthday = editPersonDescriptor.getBirthday().orElse(personToEdit.getBirthday());
         Nickname updatedNickname = editPersonDescriptor.getNickname().orElse(personToEdit.getNickname());
+        DisplayPicture displayPicture = editPersonDescriptor.getDisplayPicture().orElse(personToEdit.getDisplayPicture());
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
 
         return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress,
-                          updatedBirthday, updatedNickname, updatedTags);
+                          updatedBirthday, updatedNickname, displayPicture, updatedTags);
 
     }
 
@@ -142,6 +144,7 @@ public class EditCommand extends UndoableCommand {
         private Address address;
         private Nickname nickname;
         private Birthday birthday;
+        private DisplayPicture displayPicture;
         private Set<Tag> tags;
 
         public EditPersonDescriptor() {}
@@ -153,6 +156,7 @@ public class EditCommand extends UndoableCommand {
             this.address = toCopy.address;
             this.nickname = toCopy.nickname;
             this.birthday = toCopy.birthday;
+            this.displayPicture = toCopy.displayPicture;
             this.tags = toCopy.tags;
         }
 
@@ -197,6 +201,14 @@ public class EditCommand extends UndoableCommand {
 
         public void setNickname(Nickname nickname) {
             this.nickname = nickname;
+        }
+
+        public Optional<DisplayPicture> getDisplayPicture() {
+            return Optional.ofNullable(displayPicture);
+        }
+
+        public void setDisplayPicture(DisplayPicture displayPicture) {
+            this.displayPicture = displayPicture;
         }
 
         public Optional<Nickname> getNickname() {

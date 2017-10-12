@@ -46,6 +46,16 @@ public class Birthday {
 
     public final String value;
 
+    public int getMonthOfBirthday() {
+        String[] splitDate = value.split(BIRTHDAY_DASH_SEPARATOR);
+        try {
+            final int month = Integer.parseInt(splitDate[DATE_MONTH_INDEX]);
+            return month;
+        } catch (NumberFormatException nfe) {
+            throw new AssertionError("Should not happen");
+        }
+    }
+
     /**
      * Validates the given birthday.
      *

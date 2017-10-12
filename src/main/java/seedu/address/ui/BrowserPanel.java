@@ -26,6 +26,10 @@ import seedu.address.model.person.ReadOnlyPerson;
  */
 public class BrowserPanel extends UiPart<Region> {
 
+    /**
+     * An Enumeration to differentiate between the child nodes and to keep track of which is
+     * in front.
+     */
     private enum NODE {
         BROWSER, REMINDERS
     }
@@ -85,6 +89,9 @@ public class BrowserPanel extends UiPart<Region> {
         browser = null;
     }
 
+    /**
+     * Check which child is currently at the front, and do the appropriate toggling between the children nodes.
+     */
     private void toggleBrowserPanel() {
         switch(currentlyInFront) {
             case BROWSER:
@@ -96,7 +103,7 @@ public class BrowserPanel extends UiPart<Region> {
                 currentlyInFront = NODE.BROWSER;
                 break;
             default:
-                assert false;
+                throw new AssertionError("It should not be possible to land here");
         }
     }
 

@@ -1,8 +1,5 @@
 package seedu.address.ui;
 
-import java.util.HashMap;
-import java.util.Random;
-
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -14,7 +11,7 @@ import seedu.address.model.person.ReadOnlyPerson;
 /**
  * An UI component that displays the name, nickname and birthday of a Person.
  */
-public class BirthdayCard extends UiPart<Region> {
+public class BirthdayReminderCard extends UiPart<Region> {
 
     private static final String FXML = "BirthdayListCard.fxml";
 
@@ -39,7 +36,7 @@ public class BirthdayCard extends UiPart<Region> {
     @FXML
     private Label birthday;
 
-    public BirthdayCard(ReadOnlyPerson person, int displayedIndex) {
+    public BirthdayReminderCard(ReadOnlyPerson person, int displayedIndex) {
         super(FXML);
         this.person = person;
         id.setText(displayedIndex + ". ");
@@ -70,7 +67,7 @@ public class BirthdayCard extends UiPart<Region> {
         }
 
         // state check
-        BirthdayCard card = (BirthdayCard) other;
+        BirthdayReminderCard card = (BirthdayReminderCard) other;
         return id.getText().equals(card.id.getText())
                 && person.equals(card.person);
     }

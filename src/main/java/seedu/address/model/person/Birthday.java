@@ -44,11 +44,13 @@ public class Birthday {
 
     private static final int NUMBER_OF_LOGICAL_SEGMENTS_IN_DATE = 3;
 
+    public static final int EMPTY_BIRTHDAY_FIELD_MONTH = 0;
+
     public final String value;
 
     public int getMonthOfBirthday() {
         if (value.isEmpty()) {
-            return 0;
+            return EMPTY_BIRTHDAY_FIELD_MONTH;
         }
         String[] splitDate = value.split(BIRTHDAY_DASH_SEPARATOR);
         try {

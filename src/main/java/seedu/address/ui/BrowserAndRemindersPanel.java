@@ -16,6 +16,8 @@ import seedu.address.MainApp;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.ui.BrowserAndRemindersPanelToggleEvent;
 import seedu.address.commons.events.ui.PersonPanelSelectionChangedEvent;
+import seedu.address.commons.events.ui.TurnLabelsOffEvent;
+import seedu.address.commons.events.ui.TurnLabelsOnEvent;
 import seedu.address.model.person.ReadOnlyPerson;
 
 /**
@@ -94,10 +96,12 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
             case BROWSER:
                 birthdayList.toFront();
                 currentlyInFront = NODE.REMINDERS;
+                raise(new TurnLabelsOnEvent());
                 break;
             case REMINDERS:
                 browser.toFront();
                 currentlyInFront = NODE.BROWSER;
+                raise(new TurnLabelsOffEvent());
                 break;
             default:
                 throw new AssertionError("It should not be possible to land here");
@@ -114,6 +118,7 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
         loadPersonPage(event.getNewSelection().person);
         bringBrowserToFront();
+        raise(new TurnLabelsOffEvent());
     }
 
     @Subscribe

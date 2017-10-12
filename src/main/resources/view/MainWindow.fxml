@@ -38,11 +38,8 @@
     </padding>
   </StackPane>
 
-  <FlowPane maxHeight="50" minHeight="50" prefHeight="50" styleClass="pane-with-border" VBox.vgrow="NEVER">
-    <Label text="Contacts" translateX="130.0" />
-    <Label text="Birthdays" translateX="550.0" />
-    <Label text="Reminders" translateX="900.0" />
-  </FlowPane>
+  <StackPane fx:id="headerPanePlaceholder" maxHeight="50" minHeight="50" prefHeight="50" styleClass="pane-with-border" VBox.vgrow="NEVER">
+  </StackPane>
 
   <SplitPane id="splitPane" fx:id="splitPane" dividerPositions="0.4" VBox.vgrow="ALWAYS">
     <VBox fx:id="personList" minWidth="340" prefWidth="340" SplitPane.resizableWithParent="false">

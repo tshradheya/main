@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<FlowPane maxHeight="50" minHeight="50" prefHeight="50" styleClass="pane-with-border" VBox.vgrow="NEVER"
+          xmlns="http://javafx.com/javafx/8">
+    <Label fx:id="contacts" text="Contacts" translateX="130.0" xmlns:fx="http://javafx.com/fxml/1"/>
+    <Label fx:id="birthdays" text="Birthdays" translateX="550.0" xmlns:fx="http://javafx.com/fxml/1"/>
+    <Label fx:id="reminders" text="Reminders" translateX="900.0" xmlns:fx="http://javafx.com/fxml/1"/>
+</FlowPane>

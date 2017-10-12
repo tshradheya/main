@@ -11,6 +11,10 @@ import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.ui.TurnLabelsOffEvent;
 import seedu.address.commons.events.ui.TurnLabelsOnEvent;
 
+/**
+ * The Header Pane of the App.
+ */
+
 public class HeaderPane extends UiPart<Region> {
 
     private static final String FXML = "HeaderPane.fxml";

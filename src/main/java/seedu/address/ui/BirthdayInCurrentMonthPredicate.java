@@ -13,7 +13,11 @@ public class BirthdayInCurrentMonthPredicate implements Predicate<ReadOnlyPerson
 
     @Override
     public boolean test(ReadOnlyPerson person) {
-        return currentMonth == person.getBirthday().getMonthOfBirthday();
+        final int month = person.getBirthday().getMonthOfBirthday();
+        if (month == 0) {
+            return false;
+        }
+        return currentMonth == month;
     }
 
     @Override

@@ -69,9 +69,6 @@ public class MainApp extends Application {
 
         model = initModelManager(storage, userPrefs);
 
-        // immediately pass it the birthday predicate at the start
-        model.updateBirthdayPanelFilteredPersonList(new BirthdayInCurrentMonthPredicate());
-
         logic = new LogicManager(model);
 
         ui = new UiManager(logic, config, userPrefs);

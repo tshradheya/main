@@ -40,7 +40,7 @@ public class BrowserPanel extends UiPart<Region> {
     @FXML
     private StackPane birthdayList;
 
-    public BrowserPanel(ObservableList<ReadOnlyPerson> filteredList) {
+    public BrowserPanel(ObservableList<ReadOnlyPerson> birthdayPanelFilteredPersonList) {
         super(FXML);
 
         // To prevent triggering events for typing inside the loaded Web page.
@@ -48,9 +48,7 @@ public class BrowserPanel extends UiPart<Region> {
 
         loadDefaultPage();
 
-        //Predicate to filter out the birthdayListPanel should be given to the filtered list here.
-
-        birthdayListPanel = new BirthdayListPanel(filteredList);
+        birthdayListPanel = new BirthdayListPanel(birthdayPanelFilteredPersonList);
 
         //birthdayListPanel should be displayed first so no need to shift it to the back.
         birthdayList.getChildren().add(birthdayListPanel.getRoot());

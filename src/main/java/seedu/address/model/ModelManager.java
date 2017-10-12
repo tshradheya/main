@@ -20,6 +20,7 @@ import seedu.address.model.person.ReadOnlyPerson;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
 import seedu.address.model.tag.Tag;
+import seedu.address.ui.BirthdayInCurrentMonthPredicate;
 
 /**
  * Represents the in-memory model of the address book data.
@@ -46,6 +47,7 @@ public class ModelManager extends ComponentManager implements Model {
         this.addressBook = new AddressBook(addressBook);
         filteredPersons = new FilteredList<>(this.addressBook.getPersonList());
         filteredPersonsForBirthdayListPanel = new FilteredList<>(this.addressBook.getPersonList());
+        filteredPersonsForBirthdayListPanel.setPredicate(new BirthdayInCurrentMonthPredicate());
         sortedfilteredPersons = new SortedList<ReadOnlyPerson>(filteredPersons);
 
     }

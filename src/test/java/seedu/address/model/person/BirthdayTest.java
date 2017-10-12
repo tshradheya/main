@@ -35,6 +35,9 @@ public class BirthdayTest {
         // not even a date -> returns false
         assertFalse(Birthday.isValidBirthday("Not a date"));
 
+        // wrong leap day date -> returns false
+        assertFalse(Birthday.isValidBirthday("29/2/2017"));
+
         // space -> returns true
         assertTrue(Birthday.isValidBirthday(" "));
 

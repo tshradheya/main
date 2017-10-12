@@ -16,6 +16,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.web.WebView;
 import seedu.address.MainApp;
 import seedu.address.commons.core.LogsCenter;
+import seedu.address.commons.events.ui.BrowserPanelToggleEvent;
 import seedu.address.commons.events.ui.PersonPanelSelectionChangedEvent;
 import seedu.address.logic.Logic;
 import seedu.address.model.person.ReadOnlyPerson;
@@ -25,6 +26,10 @@ import seedu.address.model.person.ReadOnlyPerson;
  */
 public class BrowserPanel extends UiPart<Region> {
 
+    private enum NODE {
+        BROWSER, REMINDERS
+    }
+
     public static final String DEFAULT_PAGE = "default.html";
     public static final String GOOGLE_SEARCH_URL_PREFIX = "https://www.google.com.sg/search?safe=off&q=";
     public static final String GOOGLE_SEARCH_URL_SUFFIX = "&cad=h";
@@ -33,6 +38,7 @@ public class BrowserPanel extends UiPart<Region> {
 
     private final Logger logger = LogsCenter.getLogger(this.getClass());
     private BirthdayListPanel birthdayListPanel;
+    private NODE currentlyInFront = NODE.REMINDERS;
 
     @FXML
     private WebView browser;
@@ -79,9 +85,36 @@ public class BrowserPanel extends UiPart<Region> {
         browser = null;
     }
 
+    private void toggleBrowserPanel() {
+        switch(currentlyInFront) {
+            case BROWSER:
+                birthdayList.toFront();
+                currentlyInFront = NODE.REMINDERS;
+                break;
+            case REMINDERS:
+                browser.toFront();
+                currentlyInFront = NODE.BROWSER;
+                break;
+            default:
+                assert false;
+        }
+    }
+
+    private void bringBrowserToFront() {
+        browser.toFront();
+        currentlyInFront = NODE.BROWSER;
+    }
+
     @Subscribe
     private void handlePersonPanelSelectionChangedEvent(PersonPanelSelectionChangedEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
         loadPersonPage(event.getNewSelection().person);
+        bringBrowserToFront();
+    }
+
+    @Subscribe
+    private void handleBrowserPanelToggleEvent(BrowserPanelToggleEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event));
+        toggleBrowserPanel();
     }
 }

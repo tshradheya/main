@@ -82,10 +82,10 @@ public class FilterCommandTest {
      * Parses {@code userInput} into a {@code FilterCommand}.
      */
     private FilterCommand prepareCommand(String nameInputs, String tagInputs) {
-        List<String> nameKeywords = (nameInputs == null) ? Collections.emptyList() :
-                Arrays.asList(nameInputs.split("\\s+"));
-        List<String> tagKeywords = (tagInputs == null) ? Collections.emptyList() :
-                Arrays.asList(tagInputs.split("\\s+"));
+        List<String> nameKeywords = (nameInputs == null) ? Collections.emptyList()
+                : Arrays.asList(nameInputs.split("\\s+"));
+        List<String> tagKeywords = (tagInputs == null) ? Collections.emptyList()
+                : Arrays.asList(tagInputs.split("\\s+"));
 
         FilterCommand command =
                 new FilterCommand(new NameAndTagsContainsKeywordsPredicate(nameKeywords, tagKeywords));

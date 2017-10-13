@@ -5,7 +5,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import org.junit.Test;
@@ -16,10 +15,10 @@ public class NameAndTagsContainsKeywordsPredicateTest {
 
     @Test
     public void equals() {
-        List<String> firstPredicateNameKeywordList = Arrays.asList("alex","yeoh");
-        List<String> firstPredicateTagsKeywordList = Arrays.asList("friends","colleagues");
+        List<String> firstPredicateNameKeywordList = Arrays.asList("alex", "yeoh");
+        List<String> firstPredicateTagsKeywordList = Arrays.asList("friends", "colleagues");
 
-        List<String> secondPredicateNameKeywordList = Arrays.asList("bernice","yu");
+        List<String> secondPredicateNameKeywordList = Arrays.asList("bernice", "yu");
         List<String> secondPredicateTagsKeywordList = Arrays.asList("clients");
 
         NameAndTagsContainsKeywordsPredicate firstPredicate = new NameAndTagsContainsKeywordsPredicate(
@@ -76,7 +75,7 @@ public class NameAndTagsContainsKeywordsPredicateTest {
 
         // Both names and tags
         predicate = new NameAndTagsContainsKeywordsPredicate(Arrays.asList("Alice"), Arrays.asList("family"));
-        assertTrue(predicate.test(new PersonBuilder().withNameAndTags("Alice Bob","family").build()));
+        assertTrue(predicate.test(new PersonBuilder().withNameAndTags("Alice Bob", "family").build()));
 
         // Only one matching name
         predicate = new NameAndTagsContainsKeywordsPredicate(Arrays.asList("Bob", "Carol"), new ArrayList<>());
@@ -110,7 +109,7 @@ public class NameAndTagsContainsKeywordsPredicateTest {
         // Match name but does not match tag
         predicate = new NameAndTagsContainsKeywordsPredicate(
                 Arrays.asList("Alice", "Bob"), Arrays.asList("family"));
-        assertFalse(predicate.test(new PersonBuilder().withNameAndTags("Alice Bob","friends").build()));
+        assertFalse(predicate.test(new PersonBuilder().withNameAndTags("Alice Bob", "friends").build()));
     }
 
     @Test

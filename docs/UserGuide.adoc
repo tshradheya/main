@@ -322,6 +322,28 @@ Returns all persons with name matching `Dickson` (case-insensitive) *and* tag ma
 * `search t/friend t/NUS t/Computing` +
 Returns all persons having tags `friend`, `NUS`, and `Computing` (all case-insensitive).
 
+=== listThemes and changeTheme command +
+Users will be able to switch to different color themes. They will be able to choose from a list of themes. +
+This allows users to better customise their address book.
+
+==== listTheme +
+Format: `listTheme` +
+A window will pop up displaying the list of available themes. Users need only take note of the theme name of the theme they are interested in for the next step.
+
+==== changeTheme +
+Format: `changeTheme KEYWORD` +
+`KEYWORD` is the theme name of the theme the user is interested in switching to.
+
+****
+* The search is case insensitive. e.g `groovy` will match `Groovy`.
+* Only full theme names will be matched e.g. `groovy` will not match `groov`.
+****
+
+Examples:
+
+* `changeTheme light` +
+* `changeTheme rainbow`
+
 === Command Format Validation +
 The text field where users type commands into would be outlined with colors. +
 
@@ -347,7 +369,7 @@ Users would be required to provide authentication to access the application. Thi
 Users would be prompted to sign up when they use the application for the first time. +
 To change the password, users need only type the command `reset`. Users would then be prompted for the new password.
 
-=== Integration with online Cloud Storage services
+=== Integration with online Cloud Storage services +
 Users would be able to store and synchronize their contacts in the application within popular Cloud Storage services such as Google Drive. +
 Users would be required to provide authentication for the Cloud Storage services of their choice, and then any changes to the contacts of the application
 would be synchronized with the copy within the Cloud service. +

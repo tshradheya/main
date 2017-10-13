@@ -10,27 +10,23 @@ import seedu.address.commons.exceptions.IllegalValueException;
  */
 public class Birthday {
 
-    public static final String MESSAGE_BIRTHDAY_CONSTRAINTS = "Birthday must be in the following format: "
-            + "dd/mm/yyyy, dd.mm.yyyy or dd-mm-yyyy.\n"
-            + "Leading zeroes are allowed for the day and month field. The year field must have 4 digits.\n"
+    public static final String MESSAGE_BIRTHDAY_CONSTRAINTS = "Birthday must be a valid date"
+            + " and in the following format:\n"
+            + "'.', '-' and '/' can be used to seperate the day, month and year fields.\n"
+            + "Day field: 1 - 31 (allows leading zeroes).\n"
+            + "Month field: 1-12 (allows leading zeroes).\n"
+            + "Year field: 1900 - 2099.\n"
             + "Example: 21/10/1995, 21-05-1996. 8.10.1987";
     private static final int[] MONTH_TO_DAY_MAPPING = {31, 28, 31, 30, 31, 30, 31, 31,
         30, 31, 30, 31};
-    private static final String BIRTHDAY_DASH_SEPARATOR = "-";
-    private static final String BIRTHDAY_FORWARD_SLASH_SEPARATOR = "/";
-    private static final String BIRTHDAY_DOT_SEPARATOR = "\\.";
 
     private static final String EMPTY_STRING = "";
+
+    private static final String BIRTHDAY_DASH_SEPARATOR = "-";
 
     private static final int ZERO_BASED_ADJUSTMENT = 1;
 
     private static final int SMALLEST_POSSIBLE_DAY = 1;
-
-    private static final int SMALLEST_POSSIBLE_MONTH = 1;
-    private static final int LARGEST_POSSIBLE_MONTH = 12;
-
-    private static final int SMALLEST_ALLOWED_YEAR = 1000;
-    private static final int LARGEST_ALLOWED_YEAR = 9999;
 
     private static final int LEAP_YEAR_MONTH_FEBRUARY = 2;
     private static final int LEAP_YEAR_DAY = 29;
@@ -42,7 +38,9 @@ public class Birthday {
     private static final int DATE_MONTH_INDEX = 1;
     private static final int DATE_YEAR_INDEX = 2;
 
-    private static final int NUMBER_OF_LOGICAL_SEGMENTS_IN_DATE = 3;
+    private static final String BIRTHDAY_VALIDATION_REGEX = "(0[1-9]|[1-9]|1[0-9]|2[0-9]|3[01])[///./-]"
+            + "(0[1-9]|1[0-2]|[1-9])[///./-](19|20)[0-9][0-9]";
+    private static final String BIRTHDAY_SPLIT_REGEX = "[///./-]";
 
     public final String value;
 
@@ -57,162 +55,72 @@ public class Birthday {
         if (!isValidBirthday(birthday)) {
             throw new IllegalValueException(MESSAGE_BIRTHDAY_CONSTRAINTS);
         }
-
-        if (birthday.isEmpty()) {
+        String trimmedBirthday = birthday.trim();
+        if (trimmedBirthday.isEmpty()) {
             this.value = EMPTY_STRING;
         } else {
-            int[] processedSplitDate = processDate(birthday);
-            this.value = convertToDefaultDateFormat(processedSplitDate);
+            this.value = convertToDefaultDateFormat(birthday);
         }
     }
 
     /**
-     * Converts date in integer array into dd-mm-yyyy String format.
-     */
-    private static String convertToDefaultDateFormat(int[] processedSplitDate) {
-        StringBuilder builder = new StringBuilder();
-        builder.append(processedSplitDate[DATE_DAY_INDEX]);
-        builder.append(BIRTHDAY_DASH_SEPARATOR);
-        builder.append(processedSplitDate[DATE_MONTH_INDEX]);
-        builder.append(BIRTHDAY_DASH_SEPARATOR);
-        builder.append(processedSplitDate[DATE_YEAR_INDEX]);
-        return builder.toString();
-    }
-
-    /**
-     * Split the date String into integer array with a suitable separator for easy processing.
-     *
-     * @throws NumberFormatException if one segment of the date String cannot be parsed into an integer.
-     */
-    private static int[] processDate(String date) throws NumberFormatException {
-        requireNonNull(date);
-
-        String[] splitDate = getSplitDate(date);
-        int[] numericalSplitDate = new int[splitDate.length];
-
-        for (int i = 0; i < splitDate.length; i++) {
-            splitDate[i] = removeLeadingZeroes(splitDate[i]);
-            numericalSplitDate[i] = Integer.parseInt(splitDate[i]);
-        }
-
-        return numericalSplitDate;
-    }
-
-    /**
-     * Split the date String into a String array with a suitable separator.
-     */
-    private static String[] getSplitDate(String date) {
-        requireNonNull(date);
-
-        String[] splitDate;
-        if (date.contains(BIRTHDAY_DASH_SEPARATOR)) {
-            splitDate = date.split(BIRTHDAY_DASH_SEPARATOR);
-        } else if (date.contains(BIRTHDAY_FORWARD_SLASH_SEPARATOR)) {
-            splitDate = date.split(BIRTHDAY_FORWARD_SLASH_SEPARATOR);
-        } else {
-            splitDate = date.split(BIRTHDAY_DOT_SEPARATOR);
-        }
-        return splitDate;
-    }
-
-    /**
-     * Remove leading zeroes from each segment of the date to allow parsing using Integer.parseInt.
-     */
-    private static String removeLeadingZeroes(String toRemove) {
-        requireNonNull(toRemove);
-
-        while (!toRemove.isEmpty() && toRemove.startsWith("0")) {
-            toRemove = toRemove.substring(1);
-        }
-        return toRemove;
-    }
-
-    /**
-     * Returns true if the birthday input is valid.
-     * A birthday input is valid if it is a valid date, or an empty String.
+     * Returns true if a given string is a valid person birthday.
      */
     public static boolean isValidBirthday(String birthday) {
-        requireNonNull(birthday);
-
-        if (birthday.isEmpty()) {
+        String trimmedBirthday = birthday.trim();
+        if (trimmedBirthday.isEmpty()) {
             return true;
         }
+        if (!trimmedBirthday.matches(BIRTHDAY_VALIDATION_REGEX)) {
+            return false;
+        }
 
-        final int[] processedSplitDate;
+        String[] splitDate = getSplitDate(trimmedBirthday);
+
+        if (!isValidDate(splitDate)) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Returns true if a given date is a valid date.
+     * A date is valid if it exists.
+     */
+    private static boolean isValidDate(String[] splitDate) {
+        if (isValidLeapDay(splitDate)) {
+            return true;
+        }
 
         try {
-            processedSplitDate = processDate(birthday);
+            final int day = Integer.parseInt(splitDate[DATE_DAY_INDEX]);
+            final int month = Integer.parseInt(splitDate[DATE_MONTH_INDEX]);
+            final int dayUpperLimitForMonth = MONTH_TO_DAY_MAPPING[month - ZERO_BASED_ADJUSTMENT];
+            if (day < SMALLEST_POSSIBLE_DAY || day > dayUpperLimitForMonth) {
+                return false;
+            }
         } catch (NumberFormatException nfe) {
-            return false;
+            throw new AssertionError("Not possible as birthday has passed through the regex");
         }
 
-        return isValidDate(processedSplitDate);
+        return true;
     }
 
     /**
-     * Returns true if the date is valid. A date is valid if it is possible for it to exist.
-     * E.g. 31/4/1995 is not a valid date because April only has 30 days.
+     * Returns true if a given date is a valid leap day.
      */
-    private static boolean isValidDate(int[] processedSplitDate) {
-        requireNonNull(processedSplitDate);
-
-        if (processedSplitDate.length != NUMBER_OF_LOGICAL_SEGMENTS_IN_DATE) {
-            return false;
+    private static boolean isValidLeapDay(String[] splitDate) {
+        try {
+            final int day = Integer.parseInt(splitDate[DATE_DAY_INDEX]);
+            final int month = Integer.parseInt(splitDate[DATE_MONTH_INDEX]);
+            final int year = Integer.parseInt(splitDate[DATE_YEAR_INDEX]);
+            if (!isLeapYear(year) || day != LEAP_YEAR_DAY || month != LEAP_YEAR_MONTH_FEBRUARY) {
+                return false;
+            }
+        } catch (NumberFormatException nfe) {
+            throw new AssertionError("Not possible as birthday has passed through the regex");
         }
-        if (isLeapYearDate(processedSplitDate)) {
-            return true;
-        }
-        return isYearValid(processedSplitDate[DATE_YEAR_INDEX])
-                && isDayAndMonthValid(processedSplitDate[DATE_DAY_INDEX], processedSplitDate[DATE_MONTH_INDEX]);
-    }
-
-    /**
-     * Returns true if the month and day is valid.
-     * The month and day is valid if the day can exist in the specific month.
-     */
-    private static boolean isDayAndMonthValid(int day, int month) {
-        if (!isMonthValid(month)) {
-            return false;
-        }
-
-        final int dayUpperLimitForMonth = MONTH_TO_DAY_MAPPING[month - ZERO_BASED_ADJUSTMENT];
-
-        return isDayValid(dayUpperLimitForMonth, day);
-    }
-
-    /**
-     * Returns true if the day is valid.
-     * A day is valid if it is at least 1 and smaller than or equal to the largest possible day for the specific month.
-     */
-    private static boolean isDayValid(int dayUpperLimitForMonth, int day) {
-        return day >= SMALLEST_POSSIBLE_DAY && day <= dayUpperLimitForMonth;
-    }
-
-    /**
-     * Returns true if the month is valid.
-     */
-    private static boolean isMonthValid(int month) {
-        return month >= SMALLEST_POSSIBLE_MONTH && month <= LARGEST_POSSIBLE_MONTH;
-    }
-
-    /**
-     * Returns true if the year is valid.
-     * A year is valid if has at least 4 digits.
-     */
-    private static boolean isYearValid(int year) {
-        return year >= SMALLEST_ALLOWED_YEAR && year <= LARGEST_ALLOWED_YEAR;
-    }
-
-    /**
-     * Returns true if the date is a leap year day.
-     * A leap year day must be on 29 April.
-     */
-    private static boolean isLeapYearDate(int[] processedSplitDate) {
-        return processedSplitDate[DATE_DAY_INDEX] == LEAP_YEAR_DAY
-                && processedSplitDate[DATE_MONTH_INDEX] == LEAP_YEAR_MONTH_FEBRUARY
-                && isLeapYear(processedSplitDate[DATE_YEAR_INDEX]);
-
-
+        return true;
     }
 
     /**
@@ -228,6 +136,28 @@ public class Birthday {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Converts the date into logical segments.
+     */
+    private static String[] getSplitDate(String trimmedDate) {
+        return trimmedDate.split(BIRTHDAY_SPLIT_REGEX);
+    }
+
+    /**
+     * Converts date in integer array into dd-mm-yyyy String format.
+     */
+    private static String convertToDefaultDateFormat(String date) {
+        String[] splitDate = getSplitDate(date);
+
+        StringBuilder builder = new StringBuilder();
+        builder.append(splitDate[DATE_DAY_INDEX]);
+        builder.append(BIRTHDAY_DASH_SEPARATOR);
+        builder.append(splitDate[DATE_MONTH_INDEX]);
+        builder.append(BIRTHDAY_DASH_SEPARATOR);
+        builder.append(splitDate[DATE_YEAR_INDEX]);
+        return builder.toString();
     }
 
     @Override

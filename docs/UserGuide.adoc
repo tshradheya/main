@@ -73,6 +73,11 @@ Examples:
 Shows a list of all persons in the address book. +
 Format: `list`
 
+=== Sorting all persons : `sort`
+
+Sorts and shows a list of all persons in the address book alphabetically. +
+Format: `sort`
+
 === Editing a person : `edit`
 
 Edits an existing person in the address book. +
@@ -312,6 +317,7 @@ e.g. `find James Jake`
 * *ViewTag* : `viewtag KEYWORD` +
 e.g. `viewtag enemy`
 * *List* : `list`
+* *Sort* : `sort`
 * *Help* : `help`
 * *Select* : `select INDEX` +
 e.g.`select 2`
@@ -320,7 +326,84 @@ e.g.`select 2`
 * *Redo* : `redo`
 
 
-== Coming Soon (Version 2.0)
+== Coming in v2.0
+
+=== *Search Command* +
+Users will be able to search for persons fulfilling *all* keywords provided by the users. +
+This allow a more focused and efficient search for users. +
+Format: `search KEYWORD [MORE KEYWORDS]` +
+`KEYWORD` is either `n/PHONE` or `t/TAG`
+
+****
+* The search is case insensitive. e.g `hans` will match `Hans`.
+* The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`.
+* Both name and tags are searched.
+* Only full words and tags will be matched e.g. `Han` will not match `Hans`, `volleyball` will not match `vball`.
+* Persons matching *all* the keywords will be returned.
+****
+
+Examples:
+
+* `search n/Dickson t/volleyball` +
+Returns all persons with name matching `Dickson` (case-insensitive) *and* tag matching `volleyball` (case-insensitive).
+* `search t/friend t/NUS t/Computing` +
+Returns all persons having tags `friend`, `NUS`, and `Computing` (all case-insensitive).
+
+=== listThemes and changeTheme command +
+Users will be able to switch to different color themes. They will be able to choose from a list of themes. +
+This allows users to better customise their address book.
+
+==== listTheme +
+Format: `listTheme` +
+A window will pop up displaying the list of available themes. Users need only take note of the theme name of the theme they are interested in for the next step.
+
+==== changeTheme +
+Format: `changeTheme KEYWORD` +
+`KEYWORD` is the theme name of the theme the user is interested in switching to.
+
+****
+* The search is case insensitive. e.g `groovy` will match `Groovy`.
+* Only full theme names will be matched e.g. `groovy` will not match `groov`.
+****
+
+Examples:
+
+* `changeTheme light` +
+* `changeTheme rainbow`
+
+=== Command Format Validation +
+The text field where users type commands into would be outlined with colors. +
+
+* if the outline is green, it means that the format of the command currently in the text field is valid. +
+* if the outline is orange, it means that the format of command currently in the text field is not wrong, but is incomplete. +
+* if the outline is red, it means the the format of the command currently in the text field is wrong, and needs to be changed. +
+
+This allows users to be able to check for the format of the command they are typing, and rectify as soon as there is an error.
+
+=== Find by similar keywords +
+Users would be able to obtain a list of contacts by entering similar keywords that is not identical. +
+This is an enhancement to the existing `find` command, so format of command would remain the same. +
+
+Examples:
+
+* `find john` +
+Returns `john` and `John Doe` and `Jon` +
+* `find delylah justin`
+One possible list of contacts returned might be `delilah`, `justinn` and `Justin Lim`.
+
+=== Authentication +
+Users would be required to provide authentication to access the application. This is so as to ensure the privacy of the contact information within the application. +
+Users would be prompted to sign up when they use the application for the first time. +
+To change the password, users need only type the command `reset`. Users would then be prompted for the new password.
+
+=== Integration with online Cloud Storage services +
+Users would be able to store and synchronize their contacts in the application within popular Cloud Storage services such as Google Drive. +
+Users would be required to provide authentication for the Cloud Storage services of their choice, and then any changes to the contacts of the application
+would be synchronized with the copy within the Cloud service. +
+This way, users would have a backup copy of their contacts. Users would also be able to access their contacts from other devices, bringing about portability.
+
+
+
 
 * *Color coded commands for easy viewing*
 * *Frequently viewed contacts*

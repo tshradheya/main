@@ -30,6 +30,7 @@ import seedu.address.logic.commands.ListCommand;
 import seedu.address.logic.commands.NicknameCommand;
 import seedu.address.logic.commands.RedoCommand;
 import seedu.address.logic.commands.SelectCommand;
+import seedu.address.logic.commands.SortCommand;
 import seedu.address.logic.commands.UndoCommand;
 import seedu.address.logic.commands.ViewTagCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
@@ -78,6 +79,13 @@ public class AddressBookParserTest {
         DeleteCommand command = (DeleteCommand) parser.parseCommand(
                 DeleteCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased());
         assertEquals(new DeleteCommand(INDEX_FIRST_PERSON), command);
+    }
+
+    @Test
+    public void parseCommand_sort() throws Exception {
+        SortCommand command = (SortCommand) parser.parseCommand(SortCommand.COMMAND_WORD);
+        assertTrue(command instanceof SortCommand);
+        assertTrue(parser.parseCommand(SortCommand.COMMAND_WORD) instanceof SortCommand);
     }
 
     @Test

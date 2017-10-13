@@ -5,7 +5,6 @@ import static java.util.UUID.randomUUID;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.UUID;
 
 import javax.imageio.ImageIO;
 
@@ -27,18 +26,18 @@ public class ReadAndStoreImage {
 
         String uniquePath = null;
 
-        try{
+        try {
             fileToRead = new File(path);
             image = new BufferedImage(963, 640, BufferedImage.TYPE_INT_ARGB);
             image = ImageIO.read(fileToRead);
 
             uniquePath = randomUUID().toString();
 
-            fileToWrite = new File("src\\main\\resources\\pictures\\"+ uniquePath + ".jpg");
+            fileToWrite = new File("src\\main\\resources\\pictures\\" + uniquePath + ".jpg");
             ImageIO.write(image, "jpg", fileToWrite);
 
 
-        } catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
 

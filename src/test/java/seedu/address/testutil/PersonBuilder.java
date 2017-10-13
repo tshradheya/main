@@ -132,6 +132,19 @@ public class PersonBuilder {
         return this;
     }
 
+    /**
+     * Sets the {@code Nickname} of the {@code Person} that we are building.
+     */
+    public PersonBuilder withNameAndTags(String name, String ... tags) {
+        try {
+            this.person.setName(new Name(name));
+            this.person.setTags(SampleDataUtil.getTagSet(tags));
+        } catch (IllegalValueException ive) {
+            throw new IllegalArgumentException("names and tags are expected to be unique.");
+        }
+        return this;
+    }
+
     public Person build() {
         return this.person;
     }

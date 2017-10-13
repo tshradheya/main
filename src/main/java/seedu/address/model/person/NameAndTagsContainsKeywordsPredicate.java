@@ -43,8 +43,8 @@ public class NameAndTagsContainsKeywordsPredicate implements Predicate<ReadOnlyP
 
         boolean nameFound = false;
         if (!nameKeywords.isEmpty()) {
-            nameFound = nameKeywords.stream().anyMatch(nameKeywords -> StringUtil.
-                    containsWordIgnoreCase(person.getName().fullName, nameKeywords));
+            nameFound = nameKeywords.stream().anyMatch(nameKeywords -> StringUtil
+                    .containsWordIgnoreCase(person.getName().fullName, nameKeywords));
         }
 
         if (nameKeywords.isEmpty() && tagKeywords.isEmpty()) {

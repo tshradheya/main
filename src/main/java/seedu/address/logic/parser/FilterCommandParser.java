@@ -50,7 +50,7 @@ public class FilterCommandParser implements Parser<FilterCommand> {
         List<String> tagsKeywordsList;
 
         // Extracting name
-        if (argMultimap.getValue(PREFIX_NAME).isPresent()){
+        if (argMultimap.getValue(PREFIX_NAME).isPresent()) {
             name = argMultimap.getValue(PREFIX_NAME).get();
             // name cannot be empty
             if (name.length() == 0) {

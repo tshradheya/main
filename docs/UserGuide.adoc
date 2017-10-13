@@ -336,9 +336,7 @@ Format: `exit`
 Address book data are saved in the hard disk automatically after any command that changes the data. +
 There is no need to save manually.
 
-== Coming in v2.0
-
-=== Exporting the list: `export`
+=== Exporting the list: `export`[Coming in v2.0]
 
 Exports the last displayed list to a specified location. +
 Format: `export [SAVE LOCATION]NAME`
@@ -387,7 +385,7 @@ e.g.`select 2`
 
 == Coming in v2.0
 
-=== *Search Command* +
+=== Search Command +
 Users will be able to search for persons fulfilling *all* keywords provided by the users. +
 This allow a more focused and efficient search for users. +
 Format: `search KEYWORD [MORE KEYWORDS]` +
@@ -463,10 +461,9 @@ This way, users would have a backup copy of their contacts. Users would also be 
 
 
 
-
-* *Color coded commands for easy viewing*
-* *Frequently viewed contacts*
-* *Import data file*
-* *Reminders for birthdays*
-* *Search with wild cards*
-* *Sort by attribute* : e.g. name, email, tags
+=== Color coded commands for easy viewing*
+=== Frequently viewed contacts*
+=== Import data file*
+=== Reminders for birthdays*
+=== Search with wild cards*
+=== Sort by attribute* : e.g. name, email, tags

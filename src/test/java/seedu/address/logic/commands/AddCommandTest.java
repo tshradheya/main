@@ -136,6 +136,11 @@ public class AddCommandTest {
         }
 
         @Override
+        public void updateFilteredListToShowAll() {
+            fail("This method should not be called");
+        }
+
+        @Override
         public void sortFilteredPersonList() {
             fail("This method should not be called.");
         }

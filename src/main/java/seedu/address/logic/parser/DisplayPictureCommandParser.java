@@ -37,12 +37,13 @@ public class DisplayPictureCommandParser implements Parser<DisplayPictureCommand
         String path;
         if (splitArgs.length > 1) {
             path = splitArgs[1];
+
+            ReadAndStoreImage readAndStoreImage = new ReadAndStoreImage();
+            path = readAndStoreImage.execute(path);
         } else {
             path = "";
         }
 
-        ReadAndStoreImage readAndStoreImage = new ReadAndStoreImage();
-        path = readAndStoreImage.execute(path);
 
         return new DisplayPictureCommand(index, new DisplayPicture(path));
     }

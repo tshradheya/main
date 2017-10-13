@@ -1,11 +1,13 @@
 package seedu.address.ui;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Random;
 
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
@@ -90,6 +92,21 @@ public class PersonCard extends UiPart<Region> {
             tags.getChildren().clear();
             initTags(person);
         });
+        assignImage(person);
+    }
+
+    /**
+     *  Assigns URL to the image depending on the path
+     *
+     */
+    private void assignImage(ReadOnlyPerson person) {
+
+        String url = "src\\main\\resources\\pictures\\" + person.getDisplayPicture().path + ".jpg";
+
+        File fileImageStored = new File(url);
+        Image image = new Image(fileImageStored.toURI().toString());
+        displayPicture.setImage(image);
+
     }
 
     /**

@@ -109,7 +109,7 @@ public class AddressBookParser {
             return new NicknameCommandParser().parse(arguments);
 
         case FilterCommand.COMMAND_WORD:
-            return new FilterCommand();
+            return new FilterCommandParser().parse(arguments);
 
         default:
             throw new ParseException(MESSAGE_UNKNOWN_COMMAND);

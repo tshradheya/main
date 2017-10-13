@@ -48,7 +48,7 @@ public class NameAndTagsContainsKeywordsPredicate implements Predicate<ReadOnlyP
         }
 
         if (nameKeywords.isEmpty() && tagKeywords.isEmpty()) {
-            assert false : "Either name or tag must be non-empty";
+            throw new AssertionError("Either name or tag must be non-empty");
         } else if (nameKeywords.isEmpty()) {
             return tagFound;
         } else if (tagKeywords.isEmpty()) {

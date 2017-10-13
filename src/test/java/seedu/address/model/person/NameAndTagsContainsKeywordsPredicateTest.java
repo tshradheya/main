@@ -109,8 +109,8 @@ public class NameAndTagsContainsKeywordsPredicateTest {
 
         // Match name but does not match tag
         predicate = new NameAndTagsContainsKeywordsPredicate(
-                Arrays.asList("Alice Bob"), Arrays.asList("family"));
-        assertFalse(predicate.test(new PersonBuilder().withNameAndTags("Alice","friends").build()));
+                Arrays.asList("Alice", "Bob"), Arrays.asList("family"));
+        assertFalse(predicate.test(new PersonBuilder().withNameAndTags("Alice Bob","friends").build()));
     }
 
     @Test

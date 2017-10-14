@@ -4,6 +4,7 @@ import static guitests.guihandles.WebViewUtil.waitUntilBrowserLoaded;
 import static org.junit.Assert.assertEquals;
 import static seedu.address.testutil.EventsUtil.postNow;
 import static seedu.address.testutil.TypicalPersons.ALICE;
+import static seedu.address.testutil.TypicalPersons.getTypicalPersons;
 import static seedu.address.ui.BrowserAndRemindersPanel.DEFAULT_PAGE;
 import static seedu.address.ui.BrowserAndRemindersPanel.GOOGLE_SEARCH_URL_PREFIX;
 import static seedu.address.ui.BrowserAndRemindersPanel.GOOGLE_SEARCH_URL_SUFFIX;
@@ -15,20 +16,24 @@ import org.junit.Before;
 import org.junit.Test;
 
 import guitests.guihandles.BrowserAndRemindersPanelHandle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import seedu.address.MainApp;
 import seedu.address.commons.events.ui.PersonPanelSelectionChangedEvent;
+import seedu.address.model.person.ReadOnlyPerson;
 
 public class BrowserAndRemindersPanelTest extends GuiUnitTest {
     private PersonPanelSelectionChangedEvent selectionChangedEventStub;
 
     private BrowserAndRemindersPanel browserAndRemindersPanel;
     private BrowserAndRemindersPanelHandle browserAndRemindersPanelHandle;
-
+    private static final ObservableList<ReadOnlyPerson> TYPICAL_PERSONS =
+            FXCollections.observableList(getTypicalPersons());
     @Before
     public void setUp() {
         selectionChangedEventStub = new PersonPanelSelectionChangedEvent(new PersonCard(ALICE, 0));
 
-        guiRobot.interact(() -> browserAndRemindersPanel = new BrowserAndRemindersPanel());
+        guiRobot.interact(() -> browserAndRemindersPanel = new BrowserAndRemindersPanel(TYPICAL_PERSONS));
         uiPartRule.setUiPart(browserAndRemindersPanel);
 
         browserAndRemindersPanelHandle = new BrowserAndRemindersPanelHandle(browserAndRemindersPanel.getRoot());

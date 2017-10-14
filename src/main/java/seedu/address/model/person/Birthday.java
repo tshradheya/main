@@ -19,7 +19,7 @@ public class Birthday {
             + "Example: 21/10/1995, 21-05-1996. 8.10.1987";
     public static final int EMPTY_BIRTHDAY_FIELD_MONTH = 0;
     private static final int[] MONTH_TO_DAY_MAPPING = {31, 28, 31, 30, 31, 30, 31, 31,
-            30, 31, 30, 31};
+        30, 31, 30, 31};
 
     private static final String EMPTY_STRING = "";
 

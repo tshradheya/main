@@ -145,12 +145,6 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public void updateBirthdayPanelFilteredPersonList(Predicate<ReadOnlyPerson> predicate) {
-        requireNonNull(predicate);
-        filteredPersonsForBirthdayListPanel.setPredicate(predicate);
-    }
-
-    @Override
     public boolean equals(Object obj) {
         // short circuit if same object
         if (obj == this) {

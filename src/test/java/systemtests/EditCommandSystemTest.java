@@ -58,6 +58,23 @@ import seedu.address.testutil.PersonUtil;
 
 public class EditCommandSystemTest extends AddressBookSystemTest {
 
+
+    @Test
+    public void editTestClearingBirthday() throws Exception {
+        Model model = getModel();
+
+        /* ----------------- Performing edit operation while an unfiltered list is being shown ---------------------- */
+        /* ----------------- This test only consist of performing the clearing of birthday field -------------------- */
+
+
+        /* Case: clear birthday -> cleared */
+        Index index = INDEX_FIRST_PERSON;
+        ReadOnlyPerson personToEdit = getModel().getFilteredPersonList().get(index.getZeroBased());
+        String command = EditCommand.COMMAND_WORD + " " + index.getOneBased() + " " + PREFIX_BIRTHDAY.getPrefix();
+        Person editedPerson = new PersonBuilder(personToEdit).withBirthday("").build();
+        assertCommandSuccess(command, index, editedPerson);
+    }
+
     @Test
     public void edit() throws Exception {
         Model model = getModel();

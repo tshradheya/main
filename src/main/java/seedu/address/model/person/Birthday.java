@@ -81,7 +81,6 @@ public class Birthday {
         }
     }
 
-
     /**
      * Returns true if a given string is a valid person birthday.
      */
@@ -121,7 +120,6 @@ public class Birthday {
         } catch (NumberFormatException nfe) {
             throw new AssertionError("Not possible as birthday has passed through the regex");
         }
-
         return true;
     }
 

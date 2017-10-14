@@ -33,7 +33,7 @@ public class BirthdayInCurrentMonthPredicateTest {
         assertFalse(firstPredicate.equals(null));
 
         // different month -> returns false
-       assertFalse(firstPredicate.equals(thirdPredicate));
+        assertFalse(firstPredicate.equals(thirdPredicate));
     }
 
     @Test

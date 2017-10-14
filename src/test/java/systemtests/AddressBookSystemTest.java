@@ -154,8 +154,8 @@ public abstract class AddressBookSystemTest {
     }
 
     /**
-     * Calls {@code BrowserAndRemindersPanelHandle}, {@code PersonListPanelHandle} and {@code StatusBarFooterHandle} to remember
-     * their current state.
+     * Calls {@code BrowserAndRemindersPanelHandle},
+     * {@code PersonListPanelHandle} and {@code StatusBarFooterHandle} to remember their current state.
      */
     private void rememberStates() {
         StatusBarFooterHandle statusBarFooterHandle = getStatusBarFooter();

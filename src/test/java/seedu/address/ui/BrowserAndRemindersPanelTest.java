@@ -23,12 +23,12 @@ import seedu.address.commons.events.ui.PersonPanelSelectionChangedEvent;
 import seedu.address.model.person.ReadOnlyPerson;
 
 public class BrowserAndRemindersPanelTest extends GuiUnitTest {
-    private PersonPanelSelectionChangedEvent selectionChangedEventStub;
-
-    private BrowserAndRemindersPanel browserAndRemindersPanel;
-    private BrowserAndRemindersPanelHandle browserAndRemindersPanelHandle;
     private static final ObservableList<ReadOnlyPerson> TYPICAL_PERSONS =
             FXCollections.observableList(getTypicalPersons());
+
+    private PersonPanelSelectionChangedEvent selectionChangedEventStub;
+    private BrowserAndRemindersPanel browserAndRemindersPanel;
+    private BrowserAndRemindersPanelHandle browserAndRemindersPanelHandle;
 
     @Before
     public void setUp() {

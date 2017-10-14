@@ -14,6 +14,7 @@ public class Birthday {
             + "dd/mm/yyyy, dd.mm.yyyy or dd-mm-yyyy.\n"
             + "Leading zeroes are allowed for the day and month field. The year field must have 4 digits.\n"
             + "Example: 21/10/1995, 21-05-1996. 8.10.1987";
+    public static final int EMPTY_BIRTHDAY_FIELD_MONTH = 0;
     private static final int[] MONTH_TO_DAY_MAPPING = {31, 28, 31, 30, 31, 30, 31, 31,
         30, 31, 30, 31};
     private static final String BIRTHDAY_DASH_SEPARATOR = "-";
@@ -44,22 +45,8 @@ public class Birthday {
 
     private static final int NUMBER_OF_LOGICAL_SEGMENTS_IN_DATE = 3;
 
-    public static final int EMPTY_BIRTHDAY_FIELD_MONTH = 0;
-
     public final String value;
 
-    public int getMonthOfBirthday() {
-        if (value.isEmpty()) {
-            return EMPTY_BIRTHDAY_FIELD_MONTH;
-        }
-        String[] splitDate = value.split(BIRTHDAY_DASH_SEPARATOR);
-        try {
-            final int month = Integer.parseInt(splitDate[DATE_MONTH_INDEX]);
-            return month;
-        } catch (NumberFormatException nfe) {
-            throw new AssertionError("Should not happen");
-        }
-    }
 
     /**
      * Validates the given birthday.
@@ -78,6 +65,23 @@ public class Birthday {
         } else {
             int[] processedSplitDate = processDate(birthday);
             this.value = convertToDefaultDateFormat(processedSplitDate);
+        }
+    }
+
+    /**
+     * Get the month of the birthday in this Birthday object.
+     * If the birthday field is empty, return EMPTY_BIRTHDAY_FIELD_MONTH
+     */
+    public int getMonthOfBirthday() {
+        if (value.isEmpty()) {
+            return EMPTY_BIRTHDAY_FIELD_MONTH;
+        }
+        String[] splitDate = value.split(BIRTHDAY_DASH_SEPARATOR);
+        try {
+            final int month = Integer.parseInt(splitDate[DATE_MONTH_INDEX]);
+            return month;
+        } catch (NumberFormatException nfe) {
+            throw new AssertionError("Should not happen");
         }
     }
 

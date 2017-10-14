@@ -30,7 +30,8 @@ public class BirthdayListPanel extends UiPart<Region> {
 
     private void setConnections(ObservableList<ReadOnlyPerson> birthdayList) {
         ObservableList<BirthdayReminderCard> mappedList = EasyBind.map(
-                birthdayList, (birthdayPerson) -> new BirthdayReminderCard(birthdayPerson, birthdayList.indexOf(birthdayPerson) + 1));
+                birthdayList, (birthdayPerson) -> new BirthdayReminderCard(birthdayPerson,
+                        birthdayList.indexOf(birthdayPerson) + 1));
         birthdayListView.setItems(mappedList);
         birthdayListView.setCellFactory(listView -> new PersonListViewCell());
     }

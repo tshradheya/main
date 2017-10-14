@@ -29,7 +29,7 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
      * An Enumeration to differentiate between the child nodes and to keep track of which is
      * in front.
      */
-    private enum NODE {
+    private enum Node {
         BROWSER, REMINDERS
     }
 
@@ -41,7 +41,7 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
 
     private final Logger logger = LogsCenter.getLogger(this.getClass());
     private BirthdayListPanel birthdayListPanel;
-    private NODE currentlyInFront = NODE.REMINDERS;
+    private Node currentlyInFront = Node.REMINDERS;
 
     @FXML
     private WebView browser;
@@ -93,24 +93,24 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
      */
     private void toggleBrowserPanel() {
         switch(currentlyInFront) {
-            case BROWSER:
-                birthdayList.toFront();
-                currentlyInFront = NODE.REMINDERS;
-                raise(new TurnLabelsOnEvent());
-                break;
-            case REMINDERS:
-                browser.toFront();
-                currentlyInFront = NODE.BROWSER;
-                raise(new TurnLabelsOffEvent());
-                break;
-            default:
-                throw new AssertionError("It should not be possible to land here");
+        case BROWSER:
+            birthdayList.toFront();
+            currentlyInFront = Node.REMINDERS;
+            raise(new TurnLabelsOnEvent());
+            break;
+        case REMINDERS:
+            browser.toFront();
+            currentlyInFront = Node.BROWSER;
+            raise(new TurnLabelsOffEvent());
+            break;
+        default:
+            throw new AssertionError("It should not be possible to land here");
         }
     }
 
     private void bringBrowserToFront() {
         browser.toFront();
-        currentlyInFront = NODE.BROWSER;
+        currentlyInFront = Node.BROWSER;
     }
 
     @Subscribe

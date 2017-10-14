@@ -10,7 +10,7 @@ import org.junit.Test;
 import seedu.address.commons.events.ui.BrowserAndRemindersPanelToggleEvent;
 import seedu.address.ui.testutil.EventsCollectorRule;
 
-public class ToggleTest {
+public class ToggleCommandTest {
     @Rule
     public final EventsCollectorRule eventsCollectorRule = new EventsCollectorRule();
 

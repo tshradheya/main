@@ -29,6 +29,7 @@ public class BrowserAndRemindersPanelTest extends GuiUnitTest {
     private BrowserAndRemindersPanelHandle browserAndRemindersPanelHandle;
     private static final ObservableList<ReadOnlyPerson> TYPICAL_PERSONS =
             FXCollections.observableList(getTypicalPersons());
+
     @Before
     public void setUp() {
         selectionChangedEventStub = new PersonPanelSelectionChangedEvent(new PersonCard(ALICE, 0));
@@ -53,4 +54,5 @@ public class BrowserAndRemindersPanelTest extends GuiUnitTest {
         waitUntilBrowserLoaded(browserAndRemindersPanelHandle);
         assertEquals(expectedPersonUrl, browserAndRemindersPanelHandle.getLoadedUrl());
     }
+
 }

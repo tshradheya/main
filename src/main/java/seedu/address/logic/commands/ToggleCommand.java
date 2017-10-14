@@ -10,12 +10,12 @@ import seedu.address.commons.events.ui.BrowserAndRemindersPanelToggleEvent;
 public class ToggleCommand extends Command {
 
     public static final String COMMAND_WORD = "toggle";
-    public static final String MESSAGE_SUCCESS = "Toggle successful.";
+    public static final String MESSAGE_TOGGLE_SUCCESS = "Toggle successful.";
 
     @Override
     public CommandResult execute() {
         EventsCenter.getInstance().post(new BrowserAndRemindersPanelToggleEvent());
-        return new CommandResult(MESSAGE_SUCCESS);
+        return new CommandResult(MESSAGE_TOGGLE_SUCCESS);
     }
 
 

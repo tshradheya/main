@@ -405,6 +405,7 @@ e.g.`select 2`
 * *History* : `history`
 * *Undo* : `undo`
 * *Redo* : `redo`
+* *Toggle* : `toggle`
 
 
 == Coming in v2.0

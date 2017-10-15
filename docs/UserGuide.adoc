@@ -368,15 +368,14 @@ Format: `toggle`
 ****
 
 
-.The reminders panel.
 image::RemindersPanel.png[width="790"]
+_Figure 1 : The reminders panel._
 
-.The browser panel.
 image::BrowserPanel.png[width="790"]
+_Figure 2 : The browser panel._
 
-.The default background.
 image::DefaultBackground.png[width="790"]
-
+_Figure 3 : The default panel._
 
 == FAQ
 

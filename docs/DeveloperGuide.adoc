@@ -345,6 +345,57 @@ image::UndoRedoActivityDiagram.png[width="200"]
 **Cons:** Requires dealing with commands that have already been undone: We must remember to skip these commands. Violates Single Responsibility Principle and Separation of Concerns as `HistoryManager` now needs to do two different things. +
 // end::undoredo[]
 
+=== Toggling mechanism
+The toggling mechanism is an event-driven mechanism. It is facilitated by events `BrowserAndRemindersPanelToggleEvent`, `TurnLabelsOffEvent` and `TurnLabelsOnEvent`. +
+
+image::togglingMechanism1.png[width="790"]
+_Figure 1: High-level overview of the toggling mechanism._
+
+As seen from the diagram above, when the user type in the `toggle` command and the `Logic` component execute the command, the `BrowserAndRemindersPanelToggleEvent` will be posted.
+[source, java]
+----
+@Override
+public CommandResult execute() {
+    EventsCenter.getInstance().post(new BrowserAndRemindersPanelToggleEvent());
+    // ... return some object or null ...
+}
+----
+
+The method `handleBrowserToggleEvent()` in the `BrowserAndRemindersPanel` class in the `UI` component will then listen for the event,
+and upon receiving the event, it will invoke the method `toggleBrowserPanel` to trigger the actual toggling.
+
+image::togglingMechanism2.png[width="790"]
+_Figure 2: Lower-level overview of the toggling mechanism._
+
+`toggleBrowserPanel` would check which (browser or reminders) is currently being shown, and will toggle to the correct one.
+
+[source, java]
+----
+    @Subscribe
+    private void handleBrowserPanelToggleEvent(BrowserAndRemindersPanelToggleEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event));
+        toggleBrowserPanel();
+    }
+
+    private void toggleBrowserPanel() {
+        switch(currentlyInFront) {
+        case BROWSER:
+            birthdayList.toFront();
+            currentlyInFront = Node.REMINDERS;
+            raise(new TurnLabelsOnEvent());
+            break;
+        case REMINDERS:
+            browser.toFront();
+            currentlyInFront = Node.BROWSER;
+            raise(new TurnLabelsOffEvent());
+            break;
+        default:
+            throw new AssertionError("It should not be possible to land here");
+        }
+    }
+
+----
+
 === Logging
 
 We are using `java.util.logging` package for logging. The `LogsCenter` class is used to manage the logging levels and logging destinations.

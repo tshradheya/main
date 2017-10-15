@@ -19,7 +19,7 @@ public class BirthdayReminderCardTest extends GuiUnitTest {
     public void display() {
         // no nickname
         Person personWithNoNickName = new PersonBuilder().withNickname("").build();
-        BirthdayReminderCard birthdayCard = new BirthdayReminderCard(personWithNoNickName ,1);
+        BirthdayReminderCard birthdayCard = new BirthdayReminderCard(personWithNoNickName, 1);
         uiPartRule.setUiPart(birthdayCard);
         assertCardDisplay(birthdayCard, personWithNoNickName, 1);
 

@@ -3,6 +3,9 @@ package guitests.guihandles;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 
+/**
+ * Provides a handle to a birthday reminder card in the birthday reminder list panel.
+ */
 public class BirthdayReminderCardHandle extends NodeHandle<Node> {
     private static final String ID_FIELD_ID = "#id";
     private static final String NAME_FIELD_ID = "#name";

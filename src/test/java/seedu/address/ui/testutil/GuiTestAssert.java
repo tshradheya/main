@@ -43,7 +43,8 @@ public class GuiTestAssert {
     /**
      * Asserts that {@code actualCard} displays the details of {@code expectedPerson}.
      */
-    public static void assertBirthdayReminderCardDisplaysPerson(ReadOnlyPerson expectedPerson, BirthdayReminderCardHandle actualCard) {
+    public static void assertBirthdayReminderCardDisplaysPerson(ReadOnlyPerson expectedPerson,
+                                                                BirthdayReminderCardHandle actualCard) {
         assertEquals(expectedPerson.getName().fullName, actualCard.getName());
         assertEquals(expectedPerson.getBirthday().value, actualCard.getBirthday());
         assertEquals(expectedPerson.getNickname().value, actualCard.getNickname());

@@ -101,6 +101,7 @@ Edits the name of the 2nd person to be `Betsy Crower` and clears all existing ta
 * `edit 3 b/` +
 Clear the birthday of the 3rd person.
 
+// tag::nickname[]
 === Adding a nickname to a person : `nickname`
 
 Adds a nickname to an existing person in the address book. +
@@ -118,6 +119,7 @@ Examples:
 Adds a nickname `Eddie` to the 1st person.
 * `nickname 1` +
 Removes the nickname from the the 1st person.
+// end::nickname[]
 
 === Adding Display picture for each person : `displaypic` [Coming in v2.0]
 
@@ -221,6 +223,7 @@ Returns `Alex` and `Bernice1 as they are having the tag `friends`
 
 image::viewtag.png[width="790"]
 
+// tag::filter[]
 === Finding all people by name and associated with one or more tags: `filter`
 
 Finds persons whose names and/or tag(s) contain any of the given keywords. +
@@ -246,6 +249,7 @@ Returns any person with the tag `friends`.
 Returns any person with the tag `friends` and `colleagues`.
 * `filter n/John t/friends` +
 Returns any person having the name `John` and with the tag `friends`.
+// end::filter[]
 
 === Deleting a person : `delete`
 

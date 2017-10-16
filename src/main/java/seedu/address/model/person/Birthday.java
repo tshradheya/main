@@ -87,7 +87,7 @@ public class Birthday {
      * If the birthday field is empty, return EMPTY_BIRTHDAY_FIELD_DAY
      */
     public int getDayOfBirthday() {
-        if(value.isEmpty()) {
+        if (value.isEmpty()) {
             return EMPTY_BIRTHDAY_FIELD_DAY;
         }
         String[] splitDate = value.split(BIRTHDAY_DASH_SEPARATOR);

@@ -346,20 +346,23 @@ image::UndoRedoActivityDiagram.png[width="200"]
 // end::undoredo[]
 
 === Toggling mechanism
+
+
 The toggling mechanism is an event-driven mechanism. It is facilitated by events `BrowserAndRemindersPanelToggleEvent`, `TurnLabelsOffEvent` and `TurnLabelsOnEvent`. +
 
 image::togglingMechanism1.png[width="790"]
 _Figure 1: High-level overview of the toggling mechanism._
 
 As seen from the diagram above, when the user type in the `toggle` command and the `Logic` component execute the command, the `BrowserAndRemindersPanelToggleEvent` will be posted. +
-The following code snippet is taken from the `Toggle` class:
 
 [source, java]
 ----
-@Override
-public CommandResult execute() {
-    EventsCenter.getInstance().post(new BrowserAndRemindersPanelToggleEvent());
-    // ... return some object or null ...
+public class ToggleCommand extends Command {
+    @Override
+    public CommandResult execute() {
+        EventsCenter.getInstance().post(new BrowserAndRemindersPanelToggleEvent());
+        // ... return some object or null ...
+    }
 }
 ----
 
@@ -371,10 +374,10 @@ _Figure 2: Lower-level overview of the toggling mechanism._
 
 The `BrowserAndRemindersPanel` class has a variable `currentlyInFront` keeping track of which panel (browser or reminders) is currently being shown (in front).
 `toggleBrowserPanel` would then use the `currentlyInFront` variable to toggle to the correct panel, and then update `currentlyInFront` appropriately. +
-The following code snippet is taken from the `BrowserAndRemindersPanel` class:
 
 [source, java]
 ----
+public class BrowserAndRemindersPanel extends UIPart<Region> {
     @Subscribe
     private void handleBrowserPanelToggleEvent(BrowserAndRemindersPanelToggleEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
@@ -397,16 +400,16 @@ The following code snippet is taken from the `BrowserAndRemindersPanel` class:
             //... Should not come to the default case ...
         }
     }
+}
 ----
 
 As seen from the code snippet above, 2 other events can still be raised; the `TurnLabelsOnEvent` and `TurnLabelsOffEvent`.
 When the browser is being brought to the front, the *birthdays* and *reminders* heading just above the list of birthday reminders and
-reminders should be turned off, and when the reminders panel is brought to the front, these heading should be turned on. This can
-be seen from the following code snippet, taken from the `HeaderPane` class:
+reminders should be turned off, and when the reminders panel is brought to the front, these heading should be turned on.
 
 [source, java]
 ----
-
+public class HeaderPane extends UIPart<Region> {
     @Subscribe
     private void handleTurnLabelsOffEvent(TurnLabelsOffEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
@@ -420,15 +423,14 @@ be seen from the following code snippet, taken from the `HeaderPane` class:
          birthdays.setVisible(true);
          reminders.setVisible(true);
     }
-
+}
 ----
 
 One important thing to note is that when the `select` command is executed, the browser panel would be brought forward no matter what.
-This can be seen from the following code snippet taken from the `BrowserAndRemindersPanel` class:
 
 [source, java]
 ----
-
+public class BrowserAndRemindersPanel extends UIPart<Region> {
     @Subscribe
     private void handlePersonPanelSelectionChangedEvent(PersonPanelSelectionChangedEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
@@ -441,7 +443,7 @@ This can be seen from the following code snippet taken from the `BrowserAndRemin
         browser.toFront();
         currentlyInFront = Node.BROWSER;
     }
-
+}
 ----
 
 The `PersonPanelSelectionChangedEvent` is posted whenever the `select` command is executed. Within the `handlePersonPanelSelectionChangedEvent`

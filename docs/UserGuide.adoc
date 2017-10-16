@@ -205,7 +205,7 @@ Finds all people who have the tag given in the keyword. +
 Format: `viewtag KEYWORD`
 
 ****
-* The search is case insensitive. e.g `friends` tag matches witg `Friends`
+* The search is case insensitive. e.g `friends` tag matches with `Friends`
 * There should only be exactly 1 keyword
 * Only tags of people are searched
 * The entire keyword should match with the tag

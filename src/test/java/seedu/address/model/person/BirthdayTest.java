@@ -1,6 +1,8 @@
 package seedu.address.model.person;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Rule;
@@ -9,8 +11,42 @@ import org.junit.rules.ExpectedException;
 
 public class BirthdayTest {
 
+    private final int TEST_MONTH = 5;
+    private final int TEST_DAY = 10;
+    private final String TEST_BIRTHDAY = TEST_DAY + "-" + TEST_MONTH + "-1990";
+    private final int WRONG_MONTH = 6;
+    private final int WRONG_DAY = 9;
+
     @Rule
     public ExpectedException thrown = ExpectedException.none();
+
+    @Test
+    public void getMonthOfBirthday() throws Exception {
+        Birthday birthday = new Birthday(TEST_BIRTHDAY);
+
+        // correct month -> equal
+        assertEquals(TEST_MONTH, birthday.getMonthOfBirthday());
+
+        // wrong month -> not equal
+        assertNotEquals(WRONG_MONTH, birthday.getMonthOfBirthday());
+
+        // no birthday field -> equal to Birthday.EMPTY_BIRTHDAY_FIELD_MONTH
+        assertEquals(Birthday.EMPTY_BIRTHDAY_FIELD_MONTH, new Birthday("").getMonthOfBirthday());
+    }
+
+    @Test
+    public void getDayOfBirthday() throws Exception {
+        Birthday birthday = new Birthday(TEST_BIRTHDAY);
+
+        // correct day -> equal
+        assertEquals(TEST_DAY, birthday.getDayOfBirthday());
+
+        // wrong month -> not equal
+        assertNotEquals(WRONG_DAY, birthday.getDayOfBirthday());
+
+        // no birthday field -> equal to Birthday.EMPTY_BIRTHDAY_FIELD_MONTH
+        assertEquals(Birthday.EMPTY_BIRTHDAY_FIELD_DAY, new Birthday("").getDayOfBirthday());
+    }
 
     @Test
     public void isValidBirthday() {

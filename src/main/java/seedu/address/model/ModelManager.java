@@ -34,6 +34,7 @@ public class ModelManager extends ComponentManager implements Model {
     private final FilteredList<ReadOnlyPerson> filteredPersonsForBirthdayListPanel;
 
     private SortedList<ReadOnlyPerson> sortedfilteredPersons;
+    private SortedList<ReadOnlyPerson> sortedFilteredPersonsForBirthdayListPanel;
 
     /**
      * Initializes a ModelManager with the given addressBook and userPrefs.
@@ -48,7 +49,9 @@ public class ModelManager extends ComponentManager implements Model {
         filteredPersons = new FilteredList<>(this.addressBook.getPersonList());
         filteredPersonsForBirthdayListPanel = new FilteredList<>(this.addressBook.getPersonList());
         filteredPersonsForBirthdayListPanel.setPredicate(new BirthdayInCurrentMonthPredicate());
-        sortedfilteredPersons = new SortedList<ReadOnlyPerson>(filteredPersons);
+        sortedfilteredPersons = new SortedList<>(filteredPersons);
+        sortedFilteredPersonsForBirthdayListPanel = new SortedList<>(filteredPersonsForBirthdayListPanel,
+                Comparator.comparingInt(birthday -> birthday.getBirthday().getDayOfBirthday()));
 
     }
 
@@ -141,7 +144,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     @Override
     public ObservableList<ReadOnlyPerson> getBirthdayPanelFilteredPersonList() {
-        return FXCollections.unmodifiableObservableList(filteredPersonsForBirthdayListPanel);
+        return FXCollections.unmodifiableObservableList(sortedFilteredPersonsForBirthdayListPanel);
     }
 
     @Override

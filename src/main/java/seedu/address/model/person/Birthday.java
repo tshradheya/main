@@ -18,6 +18,7 @@ public class Birthday {
             + "Year field: 1900 - 2099.\n"
             + "Example: 21/10/1995, 21-05-1996. 8.10.1987";
     public static final int EMPTY_BIRTHDAY_FIELD_MONTH = 0;
+    public static final int EMPTY_BIRTHDAY_FIELD_DAY = 0;
     private static final int[] MONTH_TO_DAY_MAPPING = {31, 28, 31, 30, 31, 30, 31, 31,
         30, 31, 30, 31};
 
@@ -79,6 +80,19 @@ public class Birthday {
         } catch (NumberFormatException nfe) {
             throw new AssertionError("Should not happen");
         }
+    }
+
+    /**
+     * Get the day of the birthday in this Birthday object.
+     * If the birthday field is empty, return EMPTY_BIRTHDAY_FIELD_DAY
+     */
+    public int getDayOfBirthday() {
+        if(value.isEmpty()) {
+            return EMPTY_BIRTHDAY_FIELD_DAY;
+        }
+        String[] splitDate = value.split(BIRTHDAY_DASH_SEPARATOR);
+        final int day = Integer.parseInt(splitDate[DATE_DAY_INDEX]);
+        return day;
     }
 
     /**

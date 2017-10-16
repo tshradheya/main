@@ -205,7 +205,7 @@ Finds all people who have the tag given in the keyword. +
 Format: `viewtag KEYWORD`
 
 ****
-* The search is case insensetive. e.g `friends` tag matches witg `Friends`
+* The search is case insensitive. e.g `friends` tag matches witg `Friends`
 * There should only be exactly 1 keyword
 * Only tags of people are searched
 * The entire keyword should match with the tag
@@ -224,16 +224,28 @@ image::viewtag.png[width="790"]
 === Finding all people by name and associated with one or more tags: `filter`
 
 Finds persons whose names and/or tag(s) contain any of the given keywords. +
-Format: `filter [n/KEYWORD] [t/KEYWORD]`
+Format: `filter [n/NAME] [t/TAG]`
 
 ****
-* To search the name, type the keywords after the `n/`.
-* To search by tag, type the keyword after the `t/`.
-* To search for multiple tags, type `t/` before each keyword.
+* To search by name, type the keywords after the `n/`.
+* To search by tag, type the keywords after the `t/`.
 * The search is case insensitive. e.g `hans` will match `Hans`
 * Only full words will be matched e.g. `Han` will not match `Hans`
 * Persons matching at least one keyword will be returned (i.e. `OR` search). e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`
 ****
+
+Examples:
+
+* `filter n/John` +
+Returns `john` and `John Doe`
+* `filter n/Betsy Tim John` +
+Returns any person having names `Betsy`, `Tim`, or `John`
+* `filter t/friends` +
+Returns any person with the tag `friends`.
+* `filter t/friends colleagues` +
+Returns any person with the tag `friends` and `colleagues`.
+* `filter n/John t/friends` +
+Returns any person having the name `John` and with the tag `friends`.
 
 === Deleting a person : `delete`
 
@@ -387,6 +399,8 @@ e.g. `add 1 Jamie`
 e.g. `find James Jake`
 * *ViewTag* : `viewtag KEYWORD` +
 e.g. `viewtag enemy`
+* *Filter* : `filter [n/NAME] [t/TAG]` +
+e.g. `filter n/John t/friends`
 * *List* : `list`
 * *Sort* : `sort`
 * *Help* : `help`

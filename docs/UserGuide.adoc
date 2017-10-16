@@ -221,6 +221,20 @@ Returns `Alex` and `Bernice1 as they are having the tag `friends`
 
 image::viewtag.png[width="790"]
 
+=== Finding all people by name and associated with one or more tags: `filter`
+
+Finds persons whose names and/or tag(s) contain any of the given keywords. +
+Format: `filter [n/KEYWORD] [t/KEYWORD]`
+
+****
+* To search the name, type the keywords after the `n/`.
+* To search by tag, type the keyword after the `t/`.
+* To search for multiple tags, type `t/` before each keyword.
+* The search is case insensitive. e.g `hans` will match `Hans`
+* Only full words will be matched e.g. `Han` will not match `Hans`
+* Persons matching at least one keyword will be returned (i.e. `OR` search). e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`
+****
+
 === Deleting a person : `delete`
 
 Deletes the specified person from the address book. +

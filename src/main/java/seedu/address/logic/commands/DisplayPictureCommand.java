@@ -3,10 +3,12 @@ package seedu.address.logic.commands;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_DISPLAYPICTURE;
 
+import java.io.IOException;
 import java.util.List;
 
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.index.Index;
+import seedu.address.commons.events.storage.ReadAndStoreImage;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.person.DisplayPicture;
 import seedu.address.model.person.Person;
@@ -23,11 +25,11 @@ public class DisplayPictureCommand extends UndoableCommand {
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds/Updates the profile picture of a person identified "
             + "by the index number used in the last person listing. "
-            + "Existing Display picture will be updated byt the image referenced in the input path. \n"
+            + "Existing Display picture will be updated by the image referenced in the input path. \n"
             + "Parameters: INDEX (must be a positive integer) "
             + PREFIX_DISPLAYPICTURE + "[PATH]\n"
-            + "Example: " + COMMAND_WORD + " 2"
-            + PREFIX_DISPLAYPICTURE + "C:\\Users\\Admin\\Desktop\\pic.jpg";
+            + "Example: " + COMMAND_WORD + " 2 "
+            + "C:\\Users\\Admin\\Desktop\\pic.jpg";
 
     public static final String MESSAGE_ADD_DISPLAYPICTURE_SUCCESS = "Added Display Picture to Person: %1$s";
 
@@ -55,17 +57,26 @@ public class DisplayPictureCommand extends UndoableCommand {
     }
 
     @Override
-    public CommandResult executeUndoableCommand() throws CommandException {
+    public CommandResult executeUndoableCommand() throws CommandException, IOException {
         List<ReadOnlyPerson> lastShownList = model.getFilteredPersonList();
+        ReadOnlyPerson personToEdit = lastShownList.get(index.getZeroBased());
 
         if (index.getZeroBased() >= lastShownList.size()) {
             throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
         }
-        if (displayPicture.path.equalsIgnoreCase("")) {
+
+        ReadAndStoreImage readAndStoreImage = new ReadAndStoreImage();
+        try {
+            displayPicture.setPath(readAndStoreImage.execute(displayPicture.getPath(),
+                    personToEdit.getEmail().hashCode()));
+        } catch (IOException ioe) {
+            displayPicture.setPath("");
+        }
+        if (displayPicture.getPath().equalsIgnoreCase("")) {
             return new CommandResult(generateFailureMessage());
         }
 
-        ReadOnlyPerson personToEdit = lastShownList.get(index.getZeroBased());
+
         Person editedPerson = new Person(personToEdit.getName(), personToEdit.getPhone(), personToEdit.getEmail(),
                 personToEdit.getAddress(), personToEdit.getBirthday(), personToEdit.getNickname(),
                 displayPicture, personToEdit.getTags());
@@ -96,7 +107,7 @@ public class DisplayPictureCommand extends UndoableCommand {
      * @return String
      */
     private String generateSuccessMessage(ReadOnlyPerson personToEdit) {
-        if (!displayPicture.path.isEmpty()) {
+        if (!displayPicture.getPath().isEmpty()) {
             return String.format(MESSAGE_ADD_DISPLAYPICTURE_SUCCESS, personToEdit);
         } else {
             return String.format(MESSAGE_DELETE_DISPLAYPICTURE_SUCCESS, personToEdit);

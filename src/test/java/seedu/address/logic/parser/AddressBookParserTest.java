@@ -6,6 +6,7 @@ import static org.junit.Assert.fail;
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
 import static seedu.address.logic.commands.CommandTestUtil.NICKNAME_DESC_AMY;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_EMAIL_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NICKNAME_AMY;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 
@@ -20,6 +21,7 @@ import org.junit.rules.ExpectedException;
 import seedu.address.logic.commands.AddCommand;
 import seedu.address.logic.commands.ClearCommand;
 import seedu.address.logic.commands.DeleteCommand;
+import seedu.address.logic.commands.DisplayPictureCommand;
 import seedu.address.logic.commands.EditCommand;
 import seedu.address.logic.commands.EditCommand.EditPersonDescriptor;
 import seedu.address.logic.commands.ExitCommand;
@@ -34,6 +36,7 @@ import seedu.address.logic.commands.SortCommand;
 import seedu.address.logic.commands.UndoCommand;
 import seedu.address.logic.commands.ViewTagCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.person.DisplayPicture;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
 import seedu.address.model.person.Nickname;
 import seedu.address.model.person.Person;
@@ -199,6 +202,17 @@ public class AddressBookParserTest {
                 NicknameCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased()
                 + NICKNAME_DESC_AMY);
         assertEquals(new NicknameCommand(INDEX_FIRST_PERSON, new Nickname(VALID_NICKNAME_AMY)), command);
+    }
+
+    @Test
+    public void parseCommand_displayPicture() throws  Exception {
+        final DisplayPicture displayPicture  = new DisplayPicture(Integer.toString(VALID_EMAIL_AMY.hashCode()));
+
+        DisplayPictureCommand displayPictureCommand =
+                (DisplayPictureCommand) parser.parseCommand(DisplayPictureCommand.COMMAND_WORD + " "
+                + INDEX_FIRST_PERSON.getOneBased() + " " + displayPicture.getPath());
+
+        assertEquals(new DisplayPictureCommand(INDEX_FIRST_PERSON, displayPicture), displayPictureCommand);
     }
 
     @Test

@@ -3,10 +3,7 @@ package seedu.address.logic.parser;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 
-import java.io.IOException;
-
 import seedu.address.commons.core.index.Index;
-import seedu.address.commons.events.storage.ReadAndStoreImage;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.logic.commands.DisplayPictureCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
@@ -22,7 +19,7 @@ public class DisplayPictureCommandParser implements Parser<DisplayPictureCommand
      * and returns an DisplayPictureCommand object for execution.
      * @throws ParseException if the user input does not conform the expected format
      */
-    public DisplayPictureCommand parse(String args) throws ParseException, IOException {
+    public DisplayPictureCommand parse(String args) throws ParseException {
         requireNonNull(args);
         String regex = "[\\s]+";
         String[] splitArgs = args.trim().split(regex, 2);
@@ -37,14 +34,6 @@ public class DisplayPictureCommandParser implements Parser<DisplayPictureCommand
         String path;
         if (splitArgs.length > 1) {
             path = splitArgs[1];
-
-            ReadAndStoreImage readAndStoreImage = new ReadAndStoreImage();
-            try {
-                path = readAndStoreImage.execute(path);
-            } catch (IOException ioe) {
-                path = "";
-            }
-
         } else {
             path = "";
         }

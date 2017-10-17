@@ -9,7 +9,7 @@ import static java.util.Objects.requireNonNull;
 public class DisplayPicture {
 
 
-    public final String path;
+    private String path;
 
     public DisplayPicture(String path) {
         requireNonNull(path);
@@ -33,4 +33,11 @@ public class DisplayPicture {
         return path.hashCode();
     }
 
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
 }

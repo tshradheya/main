@@ -101,7 +101,7 @@ public class PersonCard extends UiPart<Region> {
      */
     private void assignImage(ReadOnlyPerson person) {
 
-        String url = "src\\main\\resources\\pictures\\" + person.getDisplayPicture().path + ".jpg";
+        String url = "src\\main\\resources\\pictures\\" + person.getDisplayPicture().getPath() + ".jpg";
 
         File fileImageStored = new File(url);
         Image image = new Image(fileImageStored.toURI().toString(), 100, 100,

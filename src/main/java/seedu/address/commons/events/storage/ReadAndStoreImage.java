@@ -1,6 +1,5 @@
 package seedu.address.commons.events.storage;
 
-import static java.util.UUID.randomUUID;
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_IMAGE;
 
 import java.awt.image.BufferedImage;
@@ -21,7 +20,7 @@ public class ReadAndStoreImage {
      * @param path
      * @return uniquePath new path in directory
      */
-    public String execute(String path) throws IOException {
+    public String execute(String path, int newPath) throws IOException {
 
         File fileToRead = null;
         BufferedImage image = null;
@@ -35,7 +34,7 @@ public class ReadAndStoreImage {
             image = new BufferedImage(963, 640, BufferedImage.TYPE_INT_ARGB);
             image = ImageIO.read(fileToRead);
 
-            uniquePath = randomUUID().toString();
+            uniquePath = Integer.toString(newPath);
 
             fileToWrite = new File("src\\main\\resources\\pictures\\" + uniquePath + ".jpg");
             ImageIO.write(image, "jpg", fileToWrite);

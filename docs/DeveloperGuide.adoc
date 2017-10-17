@@ -405,7 +405,9 @@ public class BrowserAndRemindersPanel extends UIPart<Region> {
 
 As seen from the code snippet above, 2 other events can still be raised; the `TurnLabelsOnEvent` and `TurnLabelsOffEvent`.
 When the browser is being brought to the front, the *birthdays* and *reminders* heading just above the list of birthday reminders and
-reminders should be turned off, and when the reminders panel is brought to the front, these heading should be turned on.
+reminders should be turned off, and when the reminders panel is brought to the front, these heading should be turned on. The handling of these 2 events
+are in the `HeaderPane` class, where the variables `birthdays` and `reminders`, representing the `Label` header object for birthday reminders and reminders
+respectively, are turned on and off by simply setting their visibility appropriately.
 
 [source, java]
 ----

@@ -374,6 +374,8 @@ e.g. `add 1 Jamie`
 e.g. `find James Jake`
 * *ViewTag* : `viewtag KEYWORD` +
 e.g. `viewtag enemy`
+* *Display Picture* : `displaypic INDEX PATHOFIMAGE` +
+e.g. `displaypic 2 C:\Users\Admin\Desktop\Sem 3 Mods\CS2103T\mypic.jpg`
 * *List* : `list`
 * *Sort* : `sort`
 * *Help* : `help`

@@ -119,28 +119,29 @@ Adds a nickname `Eddie` to the 1st person.
 * `nickname 1` +
 Removes the nickname from the the 1st person.
 
-=== Adding Display picture for each person : `displaypic` [Coming in v2.0]
+=== Adding Display picture for each person : `displaypic`
 
 Adds a Display Picture to an existing person in the address book. +
-Format: displaypic INDEX PATHOFIMAGE
+Format: `displaypic INDEX PATHOFIMAGE`
 
 ****
 * The picture at the path address will be added to the person at the specified `INDEX` of current list
 * The person can have either 0 or 1 display picture
 * Existing picture will be updated to with the new input path
-* Picture can be removed by typing `remove` instead of `PATHOFIMAGE`
+* Picture can be removed by leaving the PATHOFIMAGE empty
+* The image should be on the local computer and the PATHOFIMAGE must be valid
 ****
 
 Examples:
 
 * `displaypic 1 C:\Users\Admin\Desktop\Sem 3 Mods\CS2103T\mypic.jpg`
 Adds the `mypic.jpg` at the given path to the person at `INDEX` 1 as his display picture
-* `displaypic 2 remove`
-Removes the existing display picture for the person as `INDEX` 2
+* `displaypic 2 `
+Removes the existing display picture for the person at `INDEX` 2
 
 image::displaypic.png[width="790"]
 
-=== Displaying direction to a contact's address: `direction`[Coming in v2.0]
+=== Displaying direction to a contact's address: `direction`[Since V1.2]
 
 Uses Google Maps to show direction from the current location to the address of the selected `INDEX`
 Format: direction INDEX
@@ -159,7 +160,7 @@ Returns direction to the address of person at `INDEX` 2
 image::directon.png[width="790"]
 
 
-=== Email directly to a group of people having a particular tag: `email` [Coming in v2.0]
+=== Email directly to a group of people having a particular tag: `email` [Since V1.2]
 
 Opens up the link to send email to all people of having a particular tag
 Format: email KEYWORD
@@ -336,7 +337,7 @@ Format: `exit`
 Address book data are saved in the hard disk automatically after any command that changes the data. +
 There is no need to save manually.
 
-=== Exporting the list: `export`[Coming in v2.0]
+=== Exporting the list: `export`[Since V1.2]
 
 Exports the last displayed list to a specified location. +
 Format: `export [SAVE LOCATION]NAME`
@@ -383,7 +384,7 @@ e.g.`select 2`
 * *Redo* : `redo`
 
 
-== Coming in v2.0
+== Since V1.2
 
 === Search Command +
 Users will be able to search for persons fulfilling *all* keywords provided by the users. +

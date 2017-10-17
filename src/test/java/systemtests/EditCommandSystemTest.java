@@ -73,6 +73,7 @@ public class EditCommandSystemTest extends AddressBookSystemTest {
                 + TAG_DESC_HUSBAND + " ";
         Person editedPerson = new PersonBuilder().withName(VALID_NAME_BOB).withPhone(VALID_PHONE_BOB)
                 .withEmail(VALID_EMAIL_BOB).withAddress(VALID_ADDRESS_BOB).withBirthday(VALID_BIRTHDAY_BOB)
+                .withNickname("").withDisplayPicture("")
                 .withTags(VALID_TAG_HUSBAND).build();
         assertCommandSuccess(command, index, editedPerson);
 

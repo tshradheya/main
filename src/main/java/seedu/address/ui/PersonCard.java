@@ -104,8 +104,7 @@ public class PersonCard extends UiPart<Region> {
         String url = "src\\main\\resources\\pictures\\" + person.getDisplayPicture().getPath() + ".jpg";
 
         File fileImageStored = new File(url);
-        Image image = new Image(fileImageStored.toURI().toString(), 100, 100,
-                false, false);
+        Image image = new Image(fileImageStored.toURI().toString(), 100, 100, false, false);
         centerImage();
 
         displayPicture.setImage(image);

@@ -27,7 +27,7 @@ public class PersonBuilder {
     public static final String DEFAULT_NICKNAME = "";
     public static final String DEFAULT_BIRTHDAY = "21/10/1995";
     public static final String DEFAULT_TAGS = "friends";
-    public static final String DEFAULT_DISPLAYPICTURE = Integer.toString(DEFAULT_EMAIL.hashCode());
+    public static final String DEFAULT_DISPLAYPICTURE = "";
 
     private Person person;
 

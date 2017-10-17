@@ -35,6 +35,9 @@ public class DisplayPictureCommand extends UndoableCommand {
 
     public static final String MESSAGE_DUPLICATE_PERSON = "This person already exists in the address book.";
 
+    public static final String MESSAGE_IMAGE_PATH_FAIL =
+            "This specified path cannot be read. Please check it's validity and try again";
+
 
     private Index index;
     private DisplayPicture displayPicture;
@@ -58,6 +61,9 @@ public class DisplayPictureCommand extends UndoableCommand {
         if (index.getZeroBased() >= lastShownList.size()) {
             throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
         }
+        if (displayPicture.path.equalsIgnoreCase("")) {
+            return new CommandResult(generateFailureMessage());
+        }
 
         ReadOnlyPerson personToEdit = lastShownList.get(index.getZeroBased());
         Person editedPerson = new Person(personToEdit.getName(), personToEdit.getPhone(), personToEdit.getEmail(),
@@ -78,6 +84,14 @@ public class DisplayPictureCommand extends UndoableCommand {
 
     /**
      * Generates success message
+     * @return String
+     */
+    private String generateFailureMessage() {
+        return MESSAGE_IMAGE_PATH_FAIL;
+    }
+
+    /**
+     * Generates failure message
      * @param personToEdit is checked
      * @return String
      */

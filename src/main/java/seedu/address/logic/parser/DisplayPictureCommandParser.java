@@ -39,7 +39,12 @@ public class DisplayPictureCommandParser implements Parser<DisplayPictureCommand
             path = splitArgs[1];
 
             ReadAndStoreImage readAndStoreImage = new ReadAndStoreImage();
-            path = readAndStoreImage.execute(path);
+            try {
+                path = readAndStoreImage.execute(path);
+            } catch (IOException ioe) {
+                path = "";
+            }
+
         } else {
             path = "";
         }

@@ -29,42 +29,47 @@ public class TypicalPersons {
     public static final ReadOnlyPerson ALICE = new PersonBuilder().withName("Alice Pauline")
             .withAddress("123, Jurong West Ave 6, #08-111").withEmail("alice@example.com")
             .withPhone("85355255").withBirthday("21/10/1995")
-            .withDisplayPicture(Integer.toString("alice@example.com".hashCode()))
+            //.withDisplayPicture(Integer.toString("alice@example.com".hashCode()))
             .withTags("friend").build();
     public static final ReadOnlyPerson BENSON = new PersonBuilder().withName("Benson Meier")
             .withAddress("311, Clementi Ave 2, #02-25")
             .withEmail("johnd@example.com").withPhone("98765432").withBirthday("22/10/1995")
-            .withDisplayPicture(Integer.toString("johnd@example.com".hashCode()))
+            //.withDisplayPicture(Integer.toString("johnd@example.com".hashCode()))
             .withTags("owesMoney", "friend").build();
     public static final ReadOnlyPerson CARL = new PersonBuilder().withName("Carl Kurz").withPhone("95352563")
             .withEmail("heinz@example.com").withAddress("wall street").withTags("relative")
-            .withDisplayPicture(Integer.toString("heinz@example.com".hashCode()))
+            //.withDisplayPicture(Integer.toString("heinz@example.com".hashCode()))
             .withBirthday("23/10/1995").build();
     public static final ReadOnlyPerson DANIEL = new PersonBuilder().withName("Daniel Meier").withPhone("87652533")
             .withEmail("cornelia@example.com").withAddress("10th street").withTags("relative", "colleague")
-            .withDisplayPicture(Integer.toString("cornelia@example.com".hashCode()))
+            //.withDisplayPicture(Integer.toString("cornelia@example.com".hashCode()))
             .withBirthday("24/10/1995").build();
     public static final ReadOnlyPerson ELLE = new PersonBuilder().withName("Elle Meyer").withPhone("9482224")
             .withEmail("werner@example.com").withAddress("michegan ave").withTags("enemy")
-            .withDisplayPicture(Integer.toString("werner@example.com".hashCode()))
+            //.withDisplayPicture(Integer.toString("werner@example.com".hashCode()))
             .withBirthday("25/10/1995").build();
     public static final ReadOnlyPerson FIONA = new PersonBuilder().withName("Fiona Kunz").withPhone("9482427")
             .withEmail("lydia@example.com").withAddress("little tokyo").withBirthday("26/10/1995")
-            .withDisplayPicture(Integer.toString("lydia@example.com".hashCode())).build();
+            //.withDisplayPicture(Integer.toString("lydia@example.com".hashCode()))
+            .build();
     public static final ReadOnlyPerson GEORGE = new PersonBuilder().withName("George Best").withPhone("9482442")
             .withEmail("anna@example.com").withAddress("4th street").withBirthday("27/10/1995")
-            .withDisplayPicture(Integer.toString("anna@example.com".hashCode())).build();
+            //.withDisplayPicture(Integer.toString("anna@example.com".hashCode()))
+            .build();
 
     // Manually added
     public static final ReadOnlyPerson HOON = new PersonBuilder().withName("Hoon Meier").withPhone("8482424")
             .withEmail("stefan@example.com").withAddress("little india").withBirthday("28/10/1995")
-            .withDisplayPicture(Integer.toString("stefan@example.com".hashCode())).build();
+            //.withDisplayPicture(Integer.toString("stefan@example.com".hashCode()))
+            .build();
     public static final ReadOnlyPerson IDA = new PersonBuilder().withName("Ida Mueller").withPhone("8482131")
             .withEmail("hans@example.com").withAddress("chicago ave").withBirthday("")
-            .withDisplayPicture(Integer.toString("hans@example.com".hashCode())).build();
+            //.withDisplayPicture(Integer.toString("hans@example.com".hashCode()))
+            .build();
     public static final ReadOnlyPerson HARRY = new PersonBuilder().withName("Harry Potter").withPhone("12121212")
             .withEmail("harry@hogwarts.com").withAddress("hogwarts").withTags("wizard")
-            .withDisplayPicture(Integer.toString("harry@howgarts.com".hashCode())).build();
+            //.withDisplayPicture(Integer.toString("harry@howgarts.com".hashCode()))
+            .build();
 
     // Manually added - Person's details found in {@code CommandTestUtil}
     public static final ReadOnlyPerson AMY = new PersonBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_AMY)

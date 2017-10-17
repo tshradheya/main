@@ -347,13 +347,16 @@ image::UndoRedoActivityDiagram.png[width="200"]
 
 === Toggling mechanism
 
+image::togglingMechanism1.png[width="790]
+_Figure 1: Component interactions for the toggling mechanism._
 
-The toggling mechanism is an event-driven mechanism. It is facilitated by events `BrowserAndRemindersPanelToggleEvent`, `TurnLabelsOffEvent` and `TurnLabelsOnEvent`. +
+The toggling mechanism is an event-driven mechanism. The above diagram shows the high-level overview of the component interactions for the toggling mechanism. +
 
-image::togglingMechanism1.png[width="790"]
-_Figure 1: High-level overview of the toggling mechanism._
+image::togglingMechanism2.png[width="790"]
+_Figure 2: Sequence diagram for the first part of the toggling mechanism._
 
-As seen from the diagram above, when the user type in the `toggle` command and the `Logic` component execute the command, the `BrowserAndRemindersPanelToggleEvent` will be posted. +
+As seen from the sequence diagram above, when the user type the command for toggle, an instance of `ToggleCommand` would be formed first. +
+Upon execution by `LogicManager`, the event `BrowserAndRemindersPanelToggleEvent` would be posted by the `EventCenter`, to the `EventBus`.
 
 [source, java]
 ----
@@ -369,8 +372,8 @@ public class ToggleCommand extends Command {
 The method `handleBrowserToggleEvent()` in the `BrowserAndRemindersPanel` class in the `UI` component will then listen for the event,
 and upon receiving the event, it will invoke the method `toggleBrowserPanel` to trigger the actual toggling.
 
-image::togglingMechanism2.png[width="790"]
-_Figure 2: Lower-level overview of the toggling mechanism._
+image::togglingMechanism3.png[width="790"]
+_Figure 3: Sequence diagram for the second part of the toggling mechanism._
 
 The `BrowserAndRemindersPanel` class has a variable `currentlyInFront` keeping track of which panel (browser or reminders) is currently being shown (in front).
 `toggleBrowserPanel` would then use the `currentlyInFront` variable to toggle to the correct panel, and then update `currentlyInFront` appropriately. +

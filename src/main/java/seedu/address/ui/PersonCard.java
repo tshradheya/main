@@ -104,9 +104,40 @@ public class PersonCard extends UiPart<Region> {
         String url = "src\\main\\resources\\pictures\\" + person.getDisplayPicture().path + ".jpg";
 
         File fileImageStored = new File(url);
-        Image image = new Image(fileImageStored.toURI().toString());
+        Image image = new Image(fileImageStored.toURI().toString(), 100, 100,
+                false, false);
+        centerImage();
+
         displayPicture.setImage(image);
 
+    }
+
+    /**
+     * Centre the image in ImageView
+     */
+    public void centerImage() {
+        Image img = displayPicture.getImage();
+        if (img != null) {
+            double w = 0;
+            double h = 0;
+
+            double ratioX = displayPicture.getFitWidth() / img.getWidth();
+            double ratioY = displayPicture.getFitHeight() / img.getHeight();
+
+            double reducCoeff = 0;
+            if (ratioX >= ratioY) {
+                reducCoeff = ratioY;
+            } else {
+                reducCoeff = ratioX;
+            }
+
+            w = img.getWidth() * reducCoeff;
+            h = img.getHeight() * reducCoeff;
+
+            displayPicture.setX((displayPicture.getFitWidth() - w) / 2);
+            displayPicture.setY((displayPicture.getFitHeight() - h) / 2);
+
+        }
     }
 
     /**

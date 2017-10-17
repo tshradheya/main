@@ -25,7 +25,10 @@ public class ThemeCommandParser implements Parser<ThemeCommand> {
 
         switch(trimmedArgs) {
             case ThemeNames.THEME_DARK:
-                return new ThemeCommand(new Theme(trimmedArgs));
+                return new ThemeCommand(new Theme(trimmedArgs, ThemeNames.THEME_DARK_CSS));
+
+            case ThemeNames.THEME_SKY:
+                return new ThemeCommand(new Theme(trimmedArgs, ThemeNames.THEME_SKY_CSS));
 
             default:
                 throw new ParseException(

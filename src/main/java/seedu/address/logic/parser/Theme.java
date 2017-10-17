@@ -5,13 +5,19 @@ package seedu.address.logic.parser;
  */
 public class Theme {
     private final String theme;
+    private final String CSS;
 
-    public Theme(String theme) {
+    public Theme(String theme, String CSS) {
         this.theme = theme;
+        this.CSS = CSS;
     }
 
     public String getTheme() {
         return theme;
+    }
+
+    public String getCSS() {
+        return CSS;
     }
 
     public String toString() {
@@ -33,6 +39,6 @@ public class Theme {
         }
 
         Theme otherTheme = (Theme) obj;
-        return otherTheme.getTheme().equals(getTheme());
+        return otherTheme.getTheme().equals(getTheme()) && otherTheme.getCSS().equals(getCSS());
     }
 }

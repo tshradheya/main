@@ -17,10 +17,12 @@ import javafx.stage.Stage;
 import seedu.address.commons.core.Config;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
+import seedu.address.commons.events.ui.ChangeThemeRequestEvent;
 import seedu.address.commons.events.ui.ExitAppRequestEvent;
 import seedu.address.commons.events.ui.ShowHelpRequestEvent;
 import seedu.address.commons.util.FxViewUtil;
 import seedu.address.logic.Logic;
+import seedu.address.logic.parser.Theme;
 import seedu.address.model.UserPrefs;
 
 /**
@@ -217,5 +219,20 @@ public class MainWindow extends UiPart<Region> {
     private void handleShowHelpEvent(ShowHelpRequestEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
         handleHelp();
+    }
+
+    @Subscribe
+    private void handleChangeThemeEvent(ChangeThemeRequestEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event));
+        changeTheme(event.theme);
+    }
+
+    private void changeTheme(Theme theme) {
+        Scene newScene = primaryStage.getScene();
+        newScene.getStylesheets().clear();
+        newScene.getStylesheets().add(this.getClass().getResource("/view/" + theme.getCSS()).toExternalForm());
+        newScene.getStylesheets().add(this.getClass().getResource("/view/Extensions.css").toExternalForm());
+        primaryStage.setScene(newScene);
+        primaryStage.show();
     }
 }

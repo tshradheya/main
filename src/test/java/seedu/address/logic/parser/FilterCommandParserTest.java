@@ -17,13 +17,13 @@ public class FilterCommandParserTest {
     private FilterCommandParser parser = new FilterCommandParser();
 
     @Test
-    public void parse_emptyArg_throwsParseException() {
+    public void parse_emptyArg_throwsParseException() throws Exception {
         assertParseFailure(parser, " ", String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                 FilterCommand.MESSAGE_USAGE));
     }
 
     @Test
-    public void parse_invalidArgs_returnsFilterCommand() {
+    public void parse_invalidArgs_returnsFilterCommand() throws Exception {
         // No name specified after name prefix -> fail
         assertParseFailure(parser, " n/", String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                 FilterCommand.MESSAGE_USAGE));
@@ -50,7 +50,7 @@ public class FilterCommandParserTest {
     }
 
     @Test
-    public void parse_validArgs_returnsFilterCommand() {
+    public void parse_validArgs_returnsFilterCommand() throws Exception {
         List<String> nameKeywords = new ArrayList<>();
         List<String> tagKeywords = new ArrayList<>();
 

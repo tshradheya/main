@@ -101,23 +101,82 @@ Edits the name of the 2nd person to be `Betsy Crower` and clears all existing ta
 * `edit 3 b/` +
 Clear the birthday of the 3rd person.
 
-=== Adding nickname to a person : `nickname`
+=== Adding a nickname to a person : `nickname`
 
 Adds a nickname to an existing person in the address book. +
-Format: nickname INDEX nk/[NICKNAME]
+Format: `nickname INDEX [NICKNAME]`
 
 ****
 * Adds a nickname to the person at the specified `INDEX`. The index refers to the index number shown in the last person listing. The index *must be a positive integer* 1, 2, 3, ...
 * Existing values will be updated to the input values.
-* You can remove the person's nickname by typing `nk/` without specifying anything after it.
+* You can remove the person's nickname without specifying anything after the `INDEX`.
 ****
 
 Examples:
 
-* `nickname 1 nk/Addy` +
-Adds a nickname `Addy` to the 1st person.
-* `nickname 1 nk/` +
+* `nickname 1 Eddie` +
+Adds a nickname `Eddie` to the 1st person.
+* `nickname 1` +
 Removes the nickname from the the 1st person.
+
+=== Adding Display picture for each person : `displaypic` [Coming in v2.0]
+
+Adds a Display Picture to an existing person in the address book. +
+Format: displaypic INDEX PATHOFIMAGE
+
+****
+* The picture at the path address will be added to the person at the specified `INDEX` of current list
+* The person can have either 0 or 1 display picture
+* Existing picture will be updated to with the new input path
+* Picture can be removed by typing `remove` instead of `PATHOFIMAGE`
+****
+
+Examples:
+
+* `displaypic 1 C:\Users\Admin\Desktop\Sem 3 Mods\CS2103T\mypic.jpg`
+Adds the `mypic.jpg` at the given path to the person at `INDEX` 1 as his display picture
+* `displaypic 2 remove`
+Removes the existing display picture for the person as `INDEX` 2
+
+image::displaypic.png[width="790"]
+
+=== Displaying direction to a contact's address: `direction`[Coming in v2.0]
+
+Uses Google Maps to show direction from the current location to the address of the selected `INDEX`
+Format: direction INDEX
+
+****
+* The directions shown are in browser panel using Google Maps
+* The current location is the location of device from where the command is executed
+* The command is only valid for INDEX which have an valid address
+****
+
+Examples:
+
+* `direction 2`
+Returns direction to the address of person at `INDEX` 2
+
+image::directon.png[width="790"]
+
+
+=== Email directly to a group of people having a particular tag: `email` [Coming in v2.0]
+
+Opens up the link to send email to all people of having a particular tag
+Format: email KEYWORD
+
+****
+* The `KEYWORD` should be a tag which has atleast 1 person associated with it
+* The email drafting will open up in the browser panel to write in your message
+* The command will add all people with the `KEYWORD` tag as the recepeints
+****
+
+Examples:
+
+* `email cs2103`
+Allows to send email after drafting message to everyone with the tag `cs2103`
+
+image::email.png[width="790"]
+
 
 === Locating persons by name: `find`
 
@@ -277,6 +336,23 @@ Format: `exit`
 Address book data are saved in the hard disk automatically after any command that changes the data. +
 There is no need to save manually.
 
+=== Exporting the list: `export`[Coming in v2.0]
+
+Exports the last displayed list to a specified location. +
+Format: `export [SAVE LOCATION]NAME`
+
+****
+* Exports the last displayed list as `NAME.xml` to a specified `SAVE LOCATION`.
+* If `SAVE LOCATION` is omitted, the list will be saved at a default folder "data".
+****
+
+Examples:
+
+* `export newData/newList` +
+Exports the last displayed list to `newData` folder as `newList.xml`.
+* `export newList` +
+Saves the last displayed list to the default location as `newList.xml`.
+
 == FAQ
 
 *Q*: How do I transfer my data to another Computer? +
@@ -291,8 +367,8 @@ e.g. `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 123466
 e.g. `delete 3`
 * *Edit* : `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [b/BIRTHDAY] [t/TAG]...` +
 e.g. `edit 2 n/James Lee e/jameslee@example.com`
-* *Nickname* : `edit INDEX nk/[NICKNAME]` +
-e.g. `add 1 nk/Jam`
+* *Nickname* : `edit INDEX [NICKNAME]` +
+e.g. `add 1 Jamie`
 * *Find* : `find KEYWORD [MORE_KEYWORDS]` +
 e.g. `find James Jake`
 * *ViewTag* : `viewtag KEYWORD` +
@@ -305,3 +381,89 @@ e.g.`select 2`
 * *History* : `history`
 * *Undo* : `undo`
 * *Redo* : `redo`
+
+
+== Coming in v2.0
+
+=== Search Command +
+Users will be able to search for persons fulfilling *all* keywords provided by the users. +
+This allow a more focused and efficient search for users. +
+Format: `search KEYWORD [MORE KEYWORDS]` +
+`KEYWORD` is either `n/PHONE` or `t/TAG`
+
+****
+* The search is case insensitive. e.g `hans` will match `Hans`.
+* The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`.
+* Both name and tags are searched.
+* Only full words and tags will be matched e.g. `Han` will not match `Hans`, `volleyball` will not match `vball`.
+* Persons matching *all* the keywords will be returned.
+****
+
+Examples:
+
+* `search n/Dickson t/volleyball` +
+Returns all persons with name matching `Dickson` (case-insensitive) *and* tag matching `volleyball` (case-insensitive).
+* `search t/friend t/NUS t/Computing` +
+Returns all persons having tags `friend`, `NUS`, and `Computing` (all case-insensitive).
+
+=== listThemes and changeTheme command +
+Users will be able to switch to different color themes. They will be able to choose from a list of themes. +
+This allows users to better customise their address book.
+
+==== listTheme +
+Format: `listTheme` +
+A window will pop up displaying the list of available themes. Users need only take note of the theme name of the theme they are interested in for the next step.
+
+==== changeTheme +
+Format: `changeTheme KEYWORD` +
+`KEYWORD` is the theme name of the theme the user is interested in switching to.
+
+****
+* The search is case insensitive. e.g `groovy` will match `Groovy`.
+* Only full theme names will be matched e.g. `groovy` will not match `groov`.
+****
+
+Examples:
+
+* `changeTheme light` +
+* `changeTheme rainbow`
+
+=== Command Format Validation +
+The text field where users type commands into would be outlined with colors. +
+
+* if the outline is green, it means that the format of the command currently in the text field is valid. +
+* if the outline is orange, it means that the format of command currently in the text field is not wrong, but is incomplete. +
+* if the outline is red, it means the the format of the command currently in the text field is wrong, and needs to be changed. +
+
+This allows users to be able to check for the format of the command they are typing, and rectify as soon as there is an error.
+
+=== Find by similar keywords +
+Users would be able to obtain a list of contacts by entering similar keywords that is not identical. +
+This is an enhancement to the existing `find` command, so format of command would remain the same. +
+
+Examples:
+
+* `find john` +
+Returns `john` and `John Doe` and `Jon` +
+* `find delylah justin`
+One possible list of contacts returned might be `delilah`, `justinn` and `Justin Lim`.
+
+=== Authentication +
+Users would be required to provide authentication to access the application. This is so as to ensure the privacy of the contact information within the application. +
+Users would be prompted to sign up when they use the application for the first time. +
+To change the password, users need only type the command `reset`. Users would then be prompted for the new password.
+
+=== Integration with online Cloud Storage services +
+Users would be able to store and synchronize their contacts in the application within popular Cloud Storage services such as Google Drive. +
+Users would be required to provide authentication for the Cloud Storage services of their choice, and then any changes to the contacts of the application
+would be synchronized with the copy within the Cloud service. +
+This way, users would have a backup copy of their contacts. Users would also be able to access their contacts from other devices, bringing about portability.
+
+
+
+=== Color coded commands for easy viewing*
+=== Frequently viewed contacts*
+=== Import data file*
+=== Reminders for birthdays*
+=== Search with wild cards*
+=== Sort by attribute* : e.g. name, email, tags

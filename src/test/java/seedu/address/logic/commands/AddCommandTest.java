@@ -149,6 +149,12 @@ public class AddCommandTest {
         public void deleteTag(Tag toBeRemoved) {
             fail("This method should not be called.");
         }
+
+        @Override
+        public ObservableList<ReadOnlyPerson> getBirthdayPanelFilteredPersonList() {
+            fail("This method should not be called");
+            return null;
+        }
     }
 
     /**

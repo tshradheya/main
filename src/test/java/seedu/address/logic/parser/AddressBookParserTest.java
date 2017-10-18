@@ -25,6 +25,7 @@ import seedu.address.logic.commands.DisplayPictureCommand;
 import seedu.address.logic.commands.EditCommand;
 import seedu.address.logic.commands.EditCommand.EditPersonDescriptor;
 import seedu.address.logic.commands.ExitCommand;
+import seedu.address.logic.commands.FilterCommand;
 import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.HistoryCommand;
@@ -33,10 +34,12 @@ import seedu.address.logic.commands.NicknameCommand;
 import seedu.address.logic.commands.RedoCommand;
 import seedu.address.logic.commands.SelectCommand;
 import seedu.address.logic.commands.SortCommand;
+import seedu.address.logic.commands.ToggleCommand;
 import seedu.address.logic.commands.UndoCommand;
 import seedu.address.logic.commands.ViewTagCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.DisplayPicture;
+import seedu.address.model.person.NameAndTagsContainsKeywordsPredicate;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
 import seedu.address.model.person.Nickname;
 import seedu.address.model.person.Person;
@@ -137,6 +140,12 @@ public class AddressBookParserTest {
     }
 
     @Test
+    public void parseCommand_toggle() throws Exception {
+        assertTrue(parser.parseCommand(ToggleCommand.COMMAND_WORD) instanceof ToggleCommand);
+        assertTrue(parser.parseCommand(ToggleCommand.COMMAND_WORD + " 3") instanceof ToggleCommand);
+    }
+
+    @Test
     public void parseCommand_viewtag() throws Exception {
         String keyword = "foo";
         ViewTagCommand command = (ViewTagCommand) parser.parseCommand(ViewTagCommand.COMMAND_WORD + " " + keyword);
@@ -233,6 +242,15 @@ public class AddressBookParserTest {
         SelectCommand command = (SelectCommand) parser.parseCommand(
                 SelectCommand.COMMAND_ALIAS + " " + INDEX_FIRST_PERSON.getOneBased());
         assertEquals(new SelectCommand(INDEX_FIRST_PERSON), command);
+    }
+
+    @Test
+    public void parseCommand_filter() throws Exception {
+        List<String> nameKeywords = Arrays.asList("foo", "bar", "baz");
+        List<String> tagKeywords = Arrays.asList("friends");
+        FilterCommand command = (FilterCommand) parser.parseCommand(
+                FilterCommand.COMMAND_WORD + " n/foo bar baz t/friends");
+        assertEquals(new FilterCommand(new NameAndTagsContainsKeywordsPredicate(nameKeywords, tagKeywords)), command);
     }
 
     @Test

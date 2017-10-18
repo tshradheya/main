@@ -126,12 +126,7 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public void sortFilteredPersonList() {
 
-        Comparator<ReadOnlyPerson> sortByName = new Comparator<ReadOnlyPerson>() {
-            @Override
-            public int compare(ReadOnlyPerson o1, ReadOnlyPerson o2) {
-                return o1.getName().fullName.compareTo(o2.getName().fullName);
-            }
-        };
+        Comparator<ReadOnlyPerson> sortByName = (o1, o2) -> o1.getName().fullName.compareTo(o2.getName().fullName);
         sortedfilteredPersons.setComparator(sortByName);
         indicateAddressBookChanged();
     }
@@ -140,6 +135,11 @@ public class ModelManager extends ComponentManager implements Model {
     public void updateFilteredPersonList(Predicate<ReadOnlyPerson> predicate) {
         requireNonNull(predicate);
         filteredPersons.setPredicate(predicate);
+    }
+
+    @Override
+    public void updateFilteredListToShowAll() {
+        filteredPersons.setPredicate(null);
     }
 
     @Override

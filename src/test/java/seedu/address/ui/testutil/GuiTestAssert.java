@@ -25,6 +25,7 @@ public class GuiTestAssert {
         assertEquals(expectedCard.getName(), actualCard.getName());
         assertEquals(expectedCard.getPhone(), actualCard.getPhone());
         assertEquals(expectedCard.getNickname(), actualCard.getNickname());
+        //assertEquals(expectedCard.getDisplayPictureImageView(), actualCard.getDisplayPictureImageView());
         assertEquals(expectedCard.getTags(), actualCard.getTags());
     }
 

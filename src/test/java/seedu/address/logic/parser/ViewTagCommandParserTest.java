@@ -14,13 +14,13 @@ public class ViewTagCommandParserTest {
     private ViewTagCommandParser parser = new ViewTagCommandParser();
 
     @Test
-    public void parse_emptyArg_throwsParseException() {
+    public void parse_emptyArg_throwsParseException() throws Exception {
         assertParseFailure(parser, "   ", String.format(MESSAGE_INVALID_COMMAND_FORMAT, ViewTagCommand.MESSAGE_USAGE));
     }
 
 
     @Test
-    public void parse_validArgs_returnsViewTagCommand() {
+    public void parse_validArgs_returnsViewTagCommand() throws Exception {
 
         ViewTagCommand expectedViewTagCommand =
                 new ViewTagCommand(new PersonContainsTagPredicate("foo"));

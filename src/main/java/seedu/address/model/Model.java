@@ -51,6 +51,8 @@ public interface Model {
      */
     void updateFilteredPersonList(Predicate<ReadOnlyPerson> predicate);
 
+    void updateFilteredListToShowAll();
+
     /** Returns an unmodifiable view of the birthday panel filtered person list */
     ObservableList<ReadOnlyPerson> getBirthdayPanelFilteredPersonList();
 

@@ -5,6 +5,7 @@ import java.util.Set;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Birthday;
+import seedu.address.model.person.DisplayPicture;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Nickname;
@@ -26,6 +27,7 @@ public class PersonBuilder {
     public static final String DEFAULT_NICKNAME = "";
     public static final String DEFAULT_BIRTHDAY = "21/10/1995";
     public static final String DEFAULT_TAGS = "friends";
+    public static final String DEFAULT_DISPLAYPICTURE = "";
 
     private Person person;
 
@@ -37,9 +39,10 @@ public class PersonBuilder {
             Address defaultAddress = new Address(DEFAULT_ADDRESS);
             Nickname defaultNickname = new Nickname(DEFAULT_NICKNAME);
             Birthday defaultBirthday = new Birthday(DEFAULT_BIRTHDAY);
+            DisplayPicture defaultDisplayPicture = new DisplayPicture(DEFAULT_DISPLAYPICTURE);
             Set<Tag> defaultTags = SampleDataUtil.getTagSet(DEFAULT_TAGS);
             this.person = new Person(defaultName, defaultPhone, defaultEmail, defaultAddress,
-                    defaultBirthday, defaultNickname, defaultTags);
+                    defaultBirthday, defaultNickname, defaultDisplayPicture,  defaultTags);
         } catch (IllegalValueException ive) {
             throw new AssertionError("Default person's values are invalid.");
         }
@@ -129,6 +132,14 @@ public class PersonBuilder {
      */
     public PersonBuilder withNickname(String nickname) {
         this.person.setNickname(new Nickname(nickname));
+        return this;
+    }
+
+    /**
+     * Sets the {@code DisplayPicture} of the {@code Person} that we are building.
+     */
+    public PersonBuilder withDisplayPicture(String displayPicture) {
+        this.person.setDisplayPicture(new DisplayPicture(displayPicture));
         return this;
     }
 

@@ -55,6 +55,7 @@ public class Birthday {
         requireNonNull(birthday);
 
         if (!isValidBirthday(birthday)) {
+            System.out.println(birthday);
             throw new IllegalValueException(MESSAGE_BIRTHDAY_CONSTRAINTS);
         }
         String trimmedBirthday = birthday.trim();

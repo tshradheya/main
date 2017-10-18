@@ -50,7 +50,7 @@ public interface Model {
      * @throws NullPointerException if {@code predicate} is null.
      */
     void updateFilteredPersonList(Predicate<ReadOnlyPerson> predicate);
-    
+
     void updateFilteredListToShowAll();
 
     /** Returns an unmodifiable view of the birthday panel filtered person list */

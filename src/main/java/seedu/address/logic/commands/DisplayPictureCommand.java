@@ -65,17 +65,33 @@ public class DisplayPictureCommand extends UndoableCommand {
             throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
         }
 
-        ReadAndStoreImage readAndStoreImage = new ReadAndStoreImage();
+        if (displayPicture.getPath().equalsIgnoreCase("")) {
+            displayPicture.setPath("");
+
+            Person editedPerson = new Person(personToEdit.getName(), personToEdit.getPhone(), personToEdit.getEmail(),
+                    personToEdit.getAddress(), personToEdit.getBirthday(), personToEdit.getNickname(),
+                    displayPicture, personToEdit.getTags());
+
+            try {
+                model.updatePerson(personToEdit, editedPerson);
+            } catch (DuplicatePersonException dpe) {
+                throw new CommandException(MESSAGE_DUPLICATE_PERSON);
+            } catch (PersonNotFoundException pnfe) {
+                throw new AssertionError("The target person cannot be missing");
+            }
+            model.updateFilteredListToShowAll();
+
+            return new CommandResult(generateSuccessMessage(editedPerson));
+        }
+
         try {
+            ReadAndStoreImage readAndStoreImage = new ReadAndStoreImage();
             displayPicture.setPath(readAndStoreImage.execute(displayPicture.getPath(),
                     personToEdit.getEmail().hashCode()));
         } catch (IOException ioe) {
             displayPicture.setPath("");
-        }
-        if (displayPicture.getPath().equalsIgnoreCase("")) {
             return new CommandResult(generateFailureMessage());
         }
-
 
         Person editedPerson = new Person(personToEdit.getName(), personToEdit.getPhone(), personToEdit.getEmail(),
                 personToEdit.getAddress(), personToEdit.getBirthday(), personToEdit.getNickname(),
@@ -94,7 +110,7 @@ public class DisplayPictureCommand extends UndoableCommand {
     }
 
     /**
-     * Generates success message
+     * Generates failure message
      * @return String
      */
     private String generateFailureMessage() {
@@ -102,7 +118,7 @@ public class DisplayPictureCommand extends UndoableCommand {
     }
 
     /**
-     * Generates failure message
+     * Generates success message
      * @param personToEdit is checked
      * @return String
      */

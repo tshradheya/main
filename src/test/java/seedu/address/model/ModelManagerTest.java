@@ -30,6 +30,13 @@ public class ModelManagerTest {
     }
 
     @Test
+    public void getBirthdayPanelFilteredPersonList_modifyList_throwsUnsupportedOperationException() {
+        ModelManager modelManager = new ModelManager();
+        thrown.expect(UnsupportedOperationException.class);
+        modelManager.getBirthdayPanelFilteredPersonList().remove(0);
+    }
+
+    @Test
     public void equals() {
         AddressBook addressBook = new AddressBookBuilder().withPerson(ALICE).withPerson(BENSON).build();
         AddressBook differentAddressBook = new AddressBook();

@@ -145,7 +145,9 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public void updateFilteredListToShowAll() {
         filteredPersons.setPredicate(null);
-
+    }
+    
+    @Override
     public ObservableList<ReadOnlyPerson> getBirthdayPanelFilteredPersonList() {
         return FXCollections.unmodifiableObservableList(sortedFilteredPersonsForBirthdayListPanel);
     }

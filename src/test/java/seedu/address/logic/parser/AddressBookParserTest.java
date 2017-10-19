@@ -203,6 +203,14 @@ public class AddressBookParserTest {
     }
 
     @Test
+    public void parseCommand_theme() throws Exception {
+        ThemeCommand command = (ThemeCommand) parser.parseCommand(
+                ThemeCommand.COMMAND_WORD + " " + ThemeNames.THEME_DARK);
+        Theme theme = new Theme(ThemeNames.THEME_DARK, ThemeNames.THEME_DARK_CSS);
+        assertEquals(new ThemeCommand(theme), command);
+    }
+
+    @Test
     public void parseAliasCommand_list() throws Exception {
         assertTrue(parser.parseCommand(ListCommand.COMMAND_ALIAS) instanceof ListCommand);
         assertTrue(parser.parseCommand(ListCommand.COMMAND_ALIAS + " 3") instanceof ListCommand);
@@ -244,12 +252,6 @@ public class AddressBookParserTest {
     public void parseAliasCommand_undoCommandWord_returnsUndoCommand() throws Exception {
         assertTrue(parser.parseCommand(UndoCommand.COMMAND_ALIAS) instanceof UndoCommand);
         assertTrue(parser.parseCommand("u 3") instanceof UndoCommand);
-    }
-
-    @Test
-    public void parseAliasCommand_theme() throws Exception {
-        assertTrue(parser.parseCommand(ThemeCommand.COMMAND_WORD) instanceof ThemeCommand);
-        assertTrue(parser.parseCommand("theme 2") instanceof ThemeCommand);
     }
 
     @Test

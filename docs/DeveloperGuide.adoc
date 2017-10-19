@@ -406,6 +406,8 @@ The command is implemented in this manner because of the following reasons
 **Pros:** Easier for new developers to understand the sequence diagram and maintains event-driven nature. +
 **Cons:** There might be clash in naming of two different images for large database of contacts
 
+---
+
 **Aspect:** How should the image be taken from user +
 **Alternative 1 (current choice):** User has to enter absolute path of image by checking his local device   +
 **Pros:** Complete CLI process  +

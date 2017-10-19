@@ -33,6 +33,7 @@ public class MainWindow extends UiPart<Region> {
 
     private static final String ICON = "/images/address_book_32.png";
     private static final String FXML = "MainWindow.fxml";
+    private static final String STYLE = "view/Extensions.css";
     private static final int MIN_HEIGHT = 600;
     private static final int MIN_WIDTH = 450;
 
@@ -80,6 +81,7 @@ public class MainWindow extends UiPart<Region> {
         setWindowMinSize();
         setWindowDefaultSize(prefs);
         Scene scene = new Scene(getRoot());
+        scene = setTheme(prefs, scene);
         primaryStage.setScene(scene);
 
         setAccelerators();
@@ -179,6 +181,15 @@ public class MainWindow extends UiPart<Region> {
     }
 
     /**
+     * Sets the theme and return the updated Scene
+     */
+    private Scene setTheme(UserPrefs prefs, Scene scene) {
+        scene.getStylesheets().add(prefs.getThemePath());
+        scene.getStylesheets().add(STYLE);
+        return scene;
+    }
+
+    /**
      * Returns the current size and the position of the main Window.
      */
     GuiSettings getCurrentGuiSetting() {
@@ -228,11 +239,9 @@ public class MainWindow extends UiPart<Region> {
     }
 
     private void changeTheme(Theme theme) {
-        Scene newScene = primaryStage.getScene();
-        newScene.getStylesheets().clear();
-        newScene.getStylesheets().add(this.getClass().getResource("/view/" + theme.getCSS()).toExternalForm());
-        newScene.getStylesheets().add(this.getClass().getResource("/view/Extensions.css").toExternalForm());
-        primaryStage.setScene(newScene);
-        primaryStage.show();
+        Scene scene = primaryStage.getScene();
+        scene.getStylesheets().clear();
+        scene.getStylesheets().add("view/" + theme.getCSS());
+        scene.getStylesheets().add(STYLE);
     }
 }

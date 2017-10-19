@@ -5,7 +5,7 @@ import seedu.address.commons.events.ui.ChangeThemeRequestEvent;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.Theme;
 
-public class ThemeCommand extends UndoableCommand {
+public class ThemeCommand extends Command {
 
     public static final String COMMAND_WORD = "theme";
 
@@ -22,7 +22,7 @@ public class ThemeCommand extends UndoableCommand {
     }
 
     @Override
-    public CommandResult executeUndoableCommand() throws CommandException {
+    public CommandResult execute() {
         EventsCenter.getInstance().post(new ChangeThemeRequestEvent(theme));
         return new CommandResult(String.format(MESSAGE_SET_THEME_SUCCESS, theme.getTheme()));
     }

@@ -454,6 +454,24 @@ public class BrowserAndRemindersPanel extends UIPart<Region> {
 The `PersonPanelSelectionChangedEvent` is posted whenever the `select` command is executed. Within the `handlePersonPanelSelectionChangedEvent`
 method, there is the method `bringBrowserToFront`, which would then bring the browser panel to the front no matter what.
 
+==== Design Considerations
+
+**Aspect:** Usage of browser area +
+**Alternative 1 (current choice):** Allow users to toggle between browser and reminders +
+Pros: Can use the entire space for either browser or reminders +
+Cons: Users need to manually switch between browser and reminders +
+**Alternative 2:** Put reminders and browser side-by-side +
+Pros: Users do not need to manually switch between browser and reminders +
+Cons: Too little space for browser and reminders. Difficult to read.
+
+**Aspect:** Implementation of toggling mechanism +
+**Alternative 1 (current choice):** Bring browser and reminders panel to the front as required +
+Pros: Users can interact with both browser and reminders (can scroll through reminders etc) +
+Cons: More difficult to implement +
+**Alternative 2:** Set visibility of browser as required (set browser visibility to false to display reminders and vice versa) +
+Pros: Easier to implement +
+Cons: Users cannot interact with the reminders panel (since the browser is technically still at the front)
+
 === Logging
 
 We are using `java.util.logging` package for logging. The `LogsCenter` class is used to manage the logging levels and logging destinations.

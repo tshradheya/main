@@ -3,8 +3,11 @@ package seedu.address.logic.commands;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PATH;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_RANGE;
+
 import java.io.IOException;
+
 import java.util.List;
+
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.AddressBook;
 import seedu.address.model.person.ReadOnlyPerson;
@@ -12,6 +15,9 @@ import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.storage.AddressBookStorage;
 import seedu.address.storage.XmlAddressBookStorage;
 
+/**
+ * Export selected person/s by the index number or range in the last person listing.
+ */
 public class ExportCommand extends Command {
 
     public static final String COMMAND_WORD = "export";

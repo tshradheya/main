@@ -136,6 +136,11 @@ public class AddCommandTest {
         }
 
         @Override
+        public void updateFilteredListToShowAll() {
+            fail("This method should not be called");
+        }
+
+        @Override
         public void sortFilteredPersonList() {
             fail("This method should not be called.");
         }
@@ -143,6 +148,12 @@ public class AddCommandTest {
         @Override
         public void deleteTag(Tag toBeRemoved) {
             fail("This method should not be called.");
+        }
+
+        @Override
+        public ObservableList<ReadOnlyPerson> getBirthdayPanelFilteredPersonList() {
+            fail("This method should not be called");
+            return null;
         }
     }
 

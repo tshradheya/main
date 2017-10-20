@@ -34,6 +34,7 @@ public class EditPersonDescriptorBuilder {
         descriptor.setAddress(person.getAddress());
         descriptor.setNickname(person.getNickname());
         descriptor.setBirthday(person.getBirthday());
+        descriptor.setDisplayPicture(person.getDisplayPicture());
         descriptor.setTags(person.getTags());
     }
 
@@ -91,6 +92,18 @@ public class EditPersonDescriptorBuilder {
     public EditPersonDescriptorBuilder withNickname(String nickname) {
         try {
             ParserUtil.parseNickname(Optional.of(nickname)).ifPresent(descriptor::setNickname);
+        } catch (IllegalValueException ive) {
+            throw new IllegalArgumentException("nickname cannot be null");
+        }
+        return this;
+    }
+
+    /**
+     * Sets the {@code path} of the {@code EditPersonDescriptor} that we are building.
+     */
+    public EditPersonDescriptorBuilder withDisplayPicture(String path) {
+        try {
+            ParserUtil.parseDisplayPicture(Optional.of(path)).ifPresent(descriptor::setDisplayPicture);
         } catch (IllegalValueException ive) {
             throw new IllegalArgumentException("nickname cannot be null");
         }

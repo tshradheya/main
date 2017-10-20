@@ -3,9 +3,15 @@ package seedu.address.model.person;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 public class BirthdayTest {
+
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
+
     @Test
     public void isValidBirthday() {
         // day out of bounds -> returns false
@@ -61,10 +67,12 @@ public class BirthdayTest {
 
         // valid leap year day -> returns true
         assertTrue(Birthday.isValidBirthday("29-2-2016"));
+        assertTrue(Birthday.isValidBirthday("29-2-2000"));
 
         // flexible day-month-year separator -> returns true
         assertTrue(Birthday.isValidBirthday("01/03.1995"));
         assertTrue(Birthday.isValidBirthday("31.03/1995"));
         assertTrue(Birthday.isValidBirthday("01/03-1995"));
     }
+
 }

@@ -101,6 +101,7 @@ Edits the name of the 2nd person to be `Betsy Crower` and clears all existing ta
 * `edit 3 b/` +
 Clear the birthday of the 3rd person.
 
+// tag::nickname[]
 === Adding a nickname to a person : `nickname`
 
 Adds a nickname to an existing person in the address book. +
@@ -118,29 +119,31 @@ Examples:
 Adds a nickname `Eddie` to the 1st person.
 * `nickname 1` +
 Removes the nickname from the the 1st person.
+// end::nickname[]
 
-=== Adding Display picture for each person : `displaypic` [Coming in v2.0]
+=== Adding Display picture for each person : `displaypic`
 
 Adds a Display Picture to an existing person in the address book. +
-Format: displaypic INDEX PATHOFIMAGE
+Format: `displaypic INDEX PATHOFIMAGE`
 
 ****
 * The picture at the path address will be added to the person at the specified `INDEX` of current list
 * The person can have either 0 or 1 display picture
 * Existing picture will be updated to with the new input path
-* Picture can be removed by typing `remove` instead of `PATHOFIMAGE`
+* Picture can be removed by leaving the PATHOFIMAGE empty
+* The image should be on the local computer and the PATHOFIMAGE must be valid
 ****
 
 Examples:
 
 * `displaypic 1 C:\Users\Admin\Desktop\Sem 3 Mods\CS2103T\mypic.jpg`
 Adds the `mypic.jpg` at the given path to the person at `INDEX` 1 as his display picture
-* `displaypic 2 remove`
-Removes the existing display picture for the person as `INDEX` 2
+* `displaypic 2 `
+Removes the existing display picture for the person at `INDEX` 2
 
 image::displaypic.png[width="790"]
 
-=== Displaying direction to a contact's address: `direction`[Coming in v2.0]
+=== Displaying direction to a contact's address: `direction`[Since V1.2]
 
 Uses Google Maps to show direction from the current location to the address of the selected `INDEX`
 Format: direction INDEX
@@ -159,7 +162,7 @@ Returns direction to the address of person at `INDEX` 2
 image::directon.png[width="790"]
 
 
-=== Email directly to a group of people having a particular tag: `email` [Coming in v2.0]
+=== Email directly to a group of people having a particular tag: `email` [Since V1.2]
 
 Opens up the link to send email to all people of having a particular tag
 Format: email KEYWORD
@@ -205,7 +208,7 @@ Finds all people who have the tag given in the keyword. +
 Format: `viewtag KEYWORD`
 
 ****
-* The search is case insensetive. e.g `friends` tag matches witg `Friends`
+* The search is case insensitive. e.g `friends` tag matches with `Friends`
 * There should only be exactly 1 keyword
 * Only tags of people are searched
 * The entire keyword should match with the tag
@@ -220,6 +223,34 @@ Returns all people who have the tag `cs2103` associated with them
 Returns `Alex` and `Bernice1 as they are having the tag `friends`
 
 image::viewtag.png[width="790"]
+
+// tag::filter[]
+=== Finding all people by name and associated with one or more tags: `filter`
+
+Finds persons whose names and/or tag(s) contain any of the given keywords. +
+Format: `filter [n/NAME] [t/TAG]`
+
+****
+* To search by name, type the keywords after the `n/`.
+* To search by tag, type the keywords after the `t/`.
+* The search is case insensitive. e.g `hans` will match `Hans`
+* Only full words will be matched e.g. `Han` will not match `Hans`
+* Persons matching at least one keyword will be returned (i.e. `OR` search). e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`
+****
+
+Examples:
+
+* `filter n/John` +
+Returns `john` and `John Doe`
+* `filter n/Betsy Tim John` +
+Returns any person having names `Betsy`, `Tim`, or `John`
+* `filter t/friends` +
+Returns any person with the tag `friends`.
+* `filter t/friends colleagues` +
+Returns any person with the tag `friends` and `colleagues`.
+* `filter n/John t/friends` +
+Returns any person having the name `John` and with the tag `friends`.
+// end::filter[]
 
 === Deleting a person : `delete`
 
@@ -279,7 +310,7 @@ Format: `undo`
 
 [NOTE]
 ====
-Undoable commands: those commands that modify the address book's content (`add`, `delete`, `edit` and `clear`).
+Undoable commands: those commands that modify the address book's content (`add`, `delete`, `edit`, `clear` and `nickname`).
 ====
 
 Examples:
@@ -336,7 +367,7 @@ Format: `exit`
 Address book data are saved in the hard disk automatically after any command that changes the data. +
 There is no need to save manually.
 
-=== Exporting the list: `export`[Coming in v2.0]
+=== Exporting the list: `export`[Since V1.2]
 
 Exports the last displayed list to a specified location. +
 Format: `export [SAVE LOCATION]NAME`
@@ -352,6 +383,30 @@ Examples:
 Exports the last displayed list to `newData` folder as `newList.xml`.
 * `export newList` +
 Saves the last displayed list to the default location as `newList.xml`.
+
+=== Toggling between reminders panel and browser: `toggle`
+
+Toggle between the reminders panel (Refer to Figure 1) and the browser (Refer to Figure 2) as needed. +
+The reminders panel would display birthday reminders for contacts having birthday in the current month and
+also reminders (coming in further milestones) that users can set for themselves. The birthday reminders and reminders are
+displayed chronologically. +
+Format: `toggle`
+
+****
+* Application would display the reminders panel at start up.
+* Executing the `select` command would always bring the browser to the front.
+* Toggling to the browser without first executing a `select` command would display a default background (Refer to Figure 3).
+****
+
+
+image::RemindersPanel.png[width="790"]
+_Figure 1 : The reminders panel._
+
+image::BrowserPanel.png[width="790"]
+_Figure 2 : The browser panel._
+
+image::DefaultBackground.png[width="790"]
+_Figure 3 : The default panel._
 
 == FAQ
 
@@ -373,6 +428,10 @@ e.g. `add 1 Jamie`
 e.g. `find James Jake`
 * *ViewTag* : `viewtag KEYWORD` +
 e.g. `viewtag enemy`
+* *Display Picture* : `displaypic INDEX PATHOFIMAGE` +
+e.g. `displaypic 2 C:\Users\Admin\Desktop\Sem 3 Mods\CS2103T\mypic.jpg`
+* *Filter* : `filter [n/NAME] [t/TAG]` +
+e.g. `filter n/John t/friends`
 * *List* : `list`
 * *Sort* : `sort`
 * *Help* : `help`
@@ -381,9 +440,10 @@ e.g.`select 2`
 * *History* : `history`
 * *Undo* : `undo`
 * *Redo* : `redo`
+* *Toggle* : `toggle`
 
 
-== Coming in v2.0
+== Since V1.2
 
 === Search Command +
 Users will be able to search for persons fulfilling *all* keywords provided by the users. +

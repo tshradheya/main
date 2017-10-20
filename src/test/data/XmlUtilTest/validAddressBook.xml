@@ -7,6 +7,7 @@
         <address isPrivate="false">4th street</address>
         <nickname isPrivate="false">Hans</nickname>
         <birthday isPrivate="false">21/10/1995</birthday>
+        <displayPicture></displayPicture>
     </persons>
     <persons>
         <name>Ruth Mueller</name>
@@ -15,6 +16,7 @@
         <address isPrivate="false">81th street</address>
         <nickname isPrivate="false">Rue</nickname>
         <birthday isPrivate="false">22/10/1995</birthday>
+        <displayPicture></displayPicture>
     </persons>
     <persons>
         <name>Heinz Kurz</name>
@@ -23,6 +25,7 @@
         <address isPrivate="false">wall street</address>
         <nickname isPrivate="false"></nickname>
         <birthday isPrivate="false">23/10/1995</birthday>
+        <displayPicture></displayPicture>
     </persons>
     <persons>
         <name>Cornelia Meier</name>
@@ -31,6 +34,7 @@
         <address isPrivate="false">10th street</address>
         <nickname isPrivate="false">Corleen</nickname>
         <birthday isPrivate="false">24/10/1995</birthday>
+        <displayPicture></displayPicture>
     </persons>
     <persons>
         <name>Werner Meyer</name>
@@ -39,6 +43,7 @@
         <address isPrivate="false">michegan ave</address>
         <nickname isPrivate="false">Weiner</nickname>
         <birthday isPrivate="false">25/10/1995</birthday>
+        <displayPicture></displayPicture>
     </persons>
     <persons>
         <name>Lydia Kunz</name>
@@ -47,6 +52,7 @@
         <address isPrivate="false">little tokyo</address>
         <nickname isPrivate="false">Linda</nickname>
         <birthday isPrivate="false">26/10/1995</birthday>
+        <displayPicture></displayPicture>
     </persons>
     <persons>
         <name>Anna Best</name>
@@ -55,6 +61,7 @@
         <address isPrivate="false">4th street</address>
         <nickname isPrivate="false">Ann</nickname>
         <birthday isPrivate="false">27/10/1995</birthday>
+        <displayPicture></displayPicture>
     </persons>
     <persons>
         <name>Stefan Meier</name>
@@ -63,6 +70,7 @@
         <address isPrivate="false">little india</address>
         <nickname isPrivate="false">Stef</nickname>
         <birthday isPrivate="false">28/10/1995</birthday>
+        <displayPicture></displayPicture>
     </persons>
     <persons>
         <name>Martin Mueller</name>
@@ -71,5 +79,6 @@
         <address isPrivate="false">chicago ave</address>
         <nickname isPrivate="false">Mart</nickname>
         <birthday isPrivate="false">29/10/1995</birthday>
+        <displayPicture></displayPicture>
     </persons>
 </addressbook>

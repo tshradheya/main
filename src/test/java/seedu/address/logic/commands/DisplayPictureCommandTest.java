@@ -33,7 +33,7 @@ public class DisplayPictureCommandTest {
     public static final String INDEX_FIRST_PERSON_EMAIL = "alice@example.com";
 
     public static final  String DISPLAY_PICTURE_ALICE_PATH =
-            new File("./src/test/resources/pictures/" + VALID_DISPLAYPIC_ALICE )
+            new File("./src/test/resources/pictures/" + VALID_DISPLAYPIC_ALICE)
                     .getAbsolutePath();
     private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
 

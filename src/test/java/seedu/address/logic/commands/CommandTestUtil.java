@@ -87,7 +87,7 @@ public class CommandTestUtil {
             new DisplayPicture(new File("./src/test/resources/pictures/" + VALID_DISPLAYPIC_AMY)
                     .getAbsolutePath());
     public static final DisplayPicture DISPLAY_PICTURE_BOB =
-            new DisplayPicture(new File("./src/test/resources/pictures/" + VALID_DISPLAYPIC_BOB )
+            new DisplayPicture(new File("./src/test/resources/pictures/" + VALID_DISPLAYPIC_BOB)
                     .getAbsolutePath());
 
 

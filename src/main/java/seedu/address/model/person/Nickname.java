@@ -9,7 +9,7 @@ import static java.util.Objects.requireNonNull;
 public class Nickname {
 
     public static final String MESSAGE_ADDRESS_CONSTRAINTS =
-            "Person's nickname can take any values, and it should not be blank";
+            "Person's nickname can take any values.";
 
     public final String value;
 

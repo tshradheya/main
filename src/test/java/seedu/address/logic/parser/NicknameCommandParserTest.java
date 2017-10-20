@@ -15,7 +15,7 @@ public class NicknameCommandParserTest {
     private NicknameCommandParser parser = new NicknameCommandParser();
 
     @Test
-    public void parse_validParts_returnsNicknameCommand() {
+    public void parse_validParts_returnsNicknameCommand() throws Exception {
         // Index and nickname included - nickname accepted
         assertParseSuccess(parser, "1 john",
                 new NicknameCommand(INDEX_FIRST_PERSON, new Nickname("john")));
@@ -42,13 +42,13 @@ public class NicknameCommandParserTest {
     }
 
     @Test
-    public void parse_invalidArgs_throwsParseException() {
+    public void parse_invalidArgs_throwsParseException() throws Exception {
         assertParseFailure(parser, "a", String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                 NicknameCommand.MESSAGE_USAGE));
     }
 
     @Test
-    public void parse_missingPartsFailure() {
+    public void parse_missingPartsFailure() throws Exception {
         assertParseFailure(parser, "", String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                 NicknameCommand.MESSAGE_USAGE));
     }

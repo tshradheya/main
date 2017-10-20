@@ -383,6 +383,30 @@ Exports the last displayed list to `newData` folder as `newList.xml`.
 * `export newList` +
 Saves the last displayed list to the default location as `newList.xml`.
 
+=== Toggling between reminders panel and browser: `toggle`
+
+Toggle between the reminders panel (Refer to Figure 1) and the browser (Refer to Figure 2) as needed. +
+The reminders panel would display birthday reminders for contacts having birthday in the current month and
+also reminders (coming in further milestones) that users can set for themselves. The birthday reminders and reminders are
+displayed chronologically. +
+Format: `toggle`
+
+****
+* Application would display the reminders panel at start up.
+* Executing the `select` command would always bring the browser to the front.
+* Toggling to the browser without first executing a `select` command would display a default background (Refer to Figure 3).
+****
+
+
+image::RemindersPanel.png[width="790"]
+_Figure 1 : The reminders panel._
+
+image::BrowserPanel.png[width="790"]
+_Figure 2 : The browser panel._
+
+image::DefaultBackground.png[width="790"]
+_Figure 3 : The default panel._
+
 == FAQ
 
 *Q*: How do I transfer my data to another Computer? +
@@ -413,6 +437,7 @@ e.g.`select 2`
 * *History* : `history`
 * *Undo* : `undo`
 * *Redo* : `redo`
+* *Toggle* : `toggle`
 
 
 == Coming in v2.0

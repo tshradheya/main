@@ -15,6 +15,7 @@ import javafx.collections.transformation.SortedList;
 import seedu.address.commons.core.ComponentManager;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.model.AddressBookChangedEvent;
+import seedu.address.model.person.BirthdayInCurrentMonthPredicate;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.ReadOnlyPerson;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
@@ -30,8 +31,10 @@ public class ModelManager extends ComponentManager implements Model {
 
     private final AddressBook addressBook;
     private final FilteredList<ReadOnlyPerson> filteredPersons;
+    private final FilteredList<ReadOnlyPerson> filteredPersonsForBirthdayListPanel;
 
     private SortedList<ReadOnlyPerson> sortedfilteredPersons;
+    private SortedList<ReadOnlyPerson> sortedFilteredPersonsForBirthdayListPanel;
 
     /**
      * Initializes a ModelManager with the given addressBook and userPrefs.
@@ -44,7 +47,11 @@ public class ModelManager extends ComponentManager implements Model {
 
         this.addressBook = new AddressBook(addressBook);
         filteredPersons = new FilteredList<>(this.addressBook.getPersonList());
-        sortedfilteredPersons = new SortedList<ReadOnlyPerson>(filteredPersons);
+        filteredPersonsForBirthdayListPanel = new FilteredList<>(this.addressBook.getPersonList());
+        filteredPersonsForBirthdayListPanel.setPredicate(new BirthdayInCurrentMonthPredicate());
+        sortedfilteredPersons = new SortedList<>(filteredPersons);
+        sortedFilteredPersonsForBirthdayListPanel = new SortedList<>(filteredPersonsForBirthdayListPanel,
+                Comparator.comparingInt(birthday -> birthday.getBirthday().getDayOfBirthday()));
 
     }
 
@@ -119,12 +126,7 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public void sortFilteredPersonList() {
 
-        Comparator<ReadOnlyPerson> sortByName = new Comparator<ReadOnlyPerson>() {
-            @Override
-            public int compare(ReadOnlyPerson o1, ReadOnlyPerson o2) {
-                return o1.getName().fullName.compareTo(o2.getName().fullName);
-            }
-        };
+        Comparator<ReadOnlyPerson> sortByName = (o1, o2) -> o1.getName().fullName.compareTo(o2.getName().fullName);
         sortedfilteredPersons.setComparator(sortByName);
         indicateAddressBookChanged();
     }
@@ -133,6 +135,16 @@ public class ModelManager extends ComponentManager implements Model {
     public void updateFilteredPersonList(Predicate<ReadOnlyPerson> predicate) {
         requireNonNull(predicate);
         filteredPersons.setPredicate(predicate);
+    }
+
+    @Override
+    public void updateFilteredListToShowAll() {
+        filteredPersons.setPredicate(null);
+    }
+
+    @Override
+    public ObservableList<ReadOnlyPerson> getBirthdayPanelFilteredPersonList() {
+        return FXCollections.unmodifiableObservableList(sortedFilteredPersonsForBirthdayListPanel);
     }
 
     @Override

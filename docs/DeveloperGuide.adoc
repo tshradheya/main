@@ -345,6 +345,133 @@ image::UndoRedoActivityDiagram.png[width="200"]
 **Cons:** Requires dealing with commands that have already been undone: We must remember to skip these commands. Violates Single Responsibility Principle and Separation of Concerns as `HistoryManager` now needs to do two different things. +
 // end::undoredo[]
 
+=== Toggling mechanism
+
+image::togglingMechanism1.png[width="790]
+_Figure 1: Component interactions for the toggling mechanism._
+
+The toggling mechanism is an event-driven mechanism. The above diagram shows the high-level overview of the component interactions for the toggling mechanism. +
+
+image::togglingMechanism2.png[width="790"]
+_Figure 2: Sequence diagram for the first part of the toggling mechanism._
+
+As seen from the sequence diagram above, when the user type the command for toggle, an instance of `ToggleCommand` would be formed first. +
+Upon execution by `LogicManager`, the event `BrowserAndRemindersPanelToggleEvent` would be posted by the `EventCenter`, to the `EventBus`.
+
+[source, java]
+----
+public class ToggleCommand extends Command {
+    @Override
+    public CommandResult execute() {
+        EventsCenter.getInstance().post(new BrowserAndRemindersPanelToggleEvent());
+        // ... return some object or null ...
+    }
+}
+----
+
+The method `handleBrowserToggleEvent()` in the `BrowserAndRemindersPanel` class in the `UI` component will then listen for the event,
+and upon receiving the event, it will invoke the method `toggleBrowserPanel` to trigger the actual toggling.
+
+image::togglingMechanism3.png[width="790"]
+_Figure 3: Sequence diagram for the second part of the toggling mechanism._
+
+The `BrowserAndRemindersPanel` class has a variable `currentlyInFront` keeping track of which panel (browser or reminders) is currently being shown (in front).
+`toggleBrowserPanel` would then use the `currentlyInFront` variable to toggle to the correct panel, and then update `currentlyInFront` appropriately. +
+
+[source, java]
+----
+public class BrowserAndRemindersPanel extends UIPart<Region> {
+    @Subscribe
+    private void handleBrowserPanelToggleEvent(BrowserAndRemindersPanelToggleEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event));
+        toggleBrowserPanel();
+    }
+
+    private void toggleBrowserPanel() {
+        switch(currentlyInFront) {
+        case BROWSER:
+            birthdayList.toFront();
+            currentlyInFront = Node.REMINDERS;
+            raise(new TurnLabelsOnEvent());
+            break;
+        case REMINDERS:
+            browser.toFront();
+            currentlyInFront = Node.BROWSER;
+            raise(new TurnLabelsOffEvent());
+            break;
+        default:
+            //... Should not come to the default case ...
+        }
+    }
+}
+----
+
+As seen from the code snippet above, 2 other events can still be raised; the `TurnLabelsOnEvent` and `TurnLabelsOffEvent`.
+When the browser is being brought to the front, the *birthdays* and *reminders* heading just above the list of birthday reminders and
+reminders should be turned off, and when the reminders panel is brought to the front, these heading should be turned on. The handling of these 2 events
+are in the `HeaderPane` class, where the variables `birthdays` and `reminders`, representing the `Label` header object for birthday reminders and reminders
+respectively, are turned on and off by simply setting their visibility appropriately.
+
+[source, java]
+----
+public class HeaderPane extends UIPart<Region> {
+    @Subscribe
+    private void handleTurnLabelsOffEvent(TurnLabelsOffEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event));
+        birthdays.setVisible(false);
+        reminders.setVisible(false);
+    }
+
+    @Subscribe
+    private void handleTurnLabelsOnEvent(TurnLabelsOnEvent event) {
+         logger.info(LogsCenter.getEventHandlingLogMessage(event));
+         birthdays.setVisible(true);
+         reminders.setVisible(true);
+    }
+}
+----
+
+One important thing to note is that when the `select` command is executed, the browser panel would be brought forward no matter what.
+
+[source, java]
+----
+public class BrowserAndRemindersPanel extends UIPart<Region> {
+    @Subscribe
+    private void handlePersonPanelSelectionChangedEvent(PersonPanelSelectionChangedEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event));
+        loadPersonPage(event.getNewSelection().person);
+        bringBrowserToFront();
+        raise(new TurnLabelsOffEvent());
+    }
+
+    private void bringBrowserToFront() {
+        browser.toFront();
+        currentlyInFront = Node.BROWSER;
+    }
+}
+----
+
+The `PersonPanelSelectionChangedEvent` is posted whenever the `select` command is executed. Within the `handlePersonPanelSelectionChangedEvent`
+method, there is the method `bringBrowserToFront`, which would then bring the browser panel to the front no matter what.
+
+==== Design Considerations
+
+**Aspect:** Usage of browser area +
+**Alternative 1 (current choice):** Allow users to toggle between browser and reminders +
+Pros: Can use the entire space for either browser or reminders +
+Cons: Users need to manually switch between browser and reminders +
+**Alternative 2:** Put reminders and browser side-by-side +
+Pros: Users do not need to manually switch between browser and reminders +
+Cons: Too little space for browser and reminders. Difficult to read.
+
+**Aspect:** Implementation of toggling mechanism +
+**Alternative 1 (current choice):** Bring browser and reminders panel to the front as required +
+Pros: Users can interact with both browser and reminders (can scroll through reminders etc) +
+Cons: More difficult to implement +
+**Alternative 2:** Set visibility of browser as required (set browser visibility to false to display reminders and vice versa) +
+Pros: Easier to implement +
+Cons: Users cannot interact with the reminders panel (since the browser is technically still at the front)
+
 === Logging
 
 We are using `java.util.logging` package for logging. The `LogsCenter` class is used to manage the logging levels and logging destinations.

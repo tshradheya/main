@@ -218,6 +218,73 @@ Classes used by multiple components are in the `seedu.addressbook.commons` packa
 
 This section describes some noteworthy details on how certain features are implemented.
 
+// tag::filter[]
+=== Filter mechanism
+
+The `FilterCommand` uses `NameAndTagsContainsKeywordsPredicate` to filter the persons with matching name and/or tags. It accepts `List<String> nameKeywords` and `List<String> tagKeywords` as parameters that are parsed by `FilterCommandParser`. Below is the constructor for the class:
+
+[source,java]
+----
+public NameAndTagsContainsKeywordsPredicate(List<String> nameKeywords, List<String> tagKeywords) {
+        this.nameKeywords = nameKeywords;
+        this.tagKeywords = tagKeywords;
+    }
+}
+----
+
+The method `test(ReadOnlyPerson person)` iterates through `nameKeywords` and `tagKeywords` to find a match of every `person` from the address book.
+
+Below is an extract of the method `test(ReadOnlyPerson person`. The tags of each person are retrieved by the `getTags()` method. This method iterates through `tagKeywords` and counts the number of matches against `tagsOfPerson`. If the count is equal to the size of `tagKeywords`, this means all the keywords in `tagKeywords` matches. The `tagFound` will then be set to `true`.
+
+[source,java]
+----
+boolean tagFound = false;
+
+int numTagKeywords = tagKeywords.size();
+int tagsMatchedCount = 0;
+
+if (!tagKeywords.isEmpty()) {
+    Set<Tag> tagsOfPerson = person.getTags();
+    for (Tag personTag : tagsOfPerson) {
+        for (String findTag : tagKeywords) {
+            if (personTag.tagName.equalsIgnoreCase(findTag)) {
+                tagsMatchedCount++;
+            }
+        }
+    }
+
+    if (tagsMatchedCount == numTagKeywords) {
+        tagFound = true;
+    }
+}
+----
+
+Below is an extract of the same method for name. Each keywords in `nameKeywords` will be compared against the name list retrieved from the person `getName()` method. If all matches, the `nameFound` will be set to `true`.
+
+[source,java]
+----
+boolean nameFound = false;
+    if (!nameKeywords.isEmpty()) {
+        nameFound = nameKeywords.stream().anyMatch(nameKeywords -> StringUtil
+        .containsWordIgnoreCase(person.getName().fullName, nameKeywords));
+}
+----
+
+For the `FilterCommand` to work properly, either `nameKeywords` or `tagKeywords` must be non-empty. The code extract from the same method below takes care of all four possibilities:
+
+----
+if (nameKeywords.isEmpty() && tagKeywords.isEmpty()) {
+    throw new AssertionError("Either name or tag must be non-empty");
+    } else if (nameKeywords.isEmpty()) {
+        return tagFound;
+    } else if (tagKeywords.isEmpty()) {
+        return nameFound;
+    }
+
+return nameFound && tagFound;
+----
+// end::filter[]
+
 // tag::undoredo[]
 === Undo/Redo mechanism
 

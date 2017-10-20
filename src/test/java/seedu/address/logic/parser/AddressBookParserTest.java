@@ -7,7 +7,11 @@ import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT
 import static seedu.address.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
 import static seedu.address.logic.commands.CommandTestUtil.NICKNAME_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NICKNAME_AMY;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_PATH;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_RANGE;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
+import static seedu.address.testutil.TypicalPath.PATH_EXPORT;
+import static seedu.address.testutil.TypicalRange.RANGE_ALL;
 
 import java.util.Arrays;
 import java.util.List;
@@ -262,7 +266,8 @@ public class AddressBookParserTest {
 
     @Test
     public void parseCommand_export() throws Exception {
-        ExportCommand command = (ExportCommand) parser.parseCommand(ExportCommand.COMMAND_WORD);
-        assertTrue(command instanceof  ExportCommand);
+        ExportCommand command = (ExportCommand) parser.parseCommand(ExportCommand.COMMAND_WORD + " "
+        + PREFIX_RANGE + RANGE_ALL + " " + PREFIX_PATH + PATH_EXPORT);
+        assertEquals(new ExportCommand(RANGE_ALL, PATH_EXPORT), command);
     }
 }

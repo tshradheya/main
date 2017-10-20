@@ -267,7 +267,7 @@ public class AddressBookParserTest {
     @Test
     public void parseCommand_export() throws Exception {
         ExportCommand command = (ExportCommand) parser.parseCommand(ExportCommand.COMMAND_WORD + " "
-        + PREFIX_RANGE + RANGE_ALL + " " + PREFIX_PATH + PATH_EXPORT);
+            + PREFIX_RANGE + RANGE_ALL + " " + PREFIX_PATH + PATH_EXPORT);
         assertEquals(new ExportCommand(RANGE_ALL, PATH_EXPORT), command);
     }
 }

@@ -9,6 +9,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.List;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
+import seedu.address.model.person.DisplayPicture;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
 import seedu.address.model.person.Nickname;
 import seedu.address.model.person.ReadOnlyPerson;
@@ -37,6 +39,9 @@ public class CommandTestUtil {
     public static final String VALID_ADDRESS_BOB = "Block 123, Bobby Street 3";
     public static final String VALID_NICKNAME_AMY = "Amy";
     public static final String VALID_NICKNAME_BOB = "Bob";
+    public static final String VALID_DISPLAYPIC_AMY = "amy.jpg";
+    public static final String VALID_DISPLAYPIC_ALICE = "amy.jpg";
+    public static final String VALID_DISPLAYPIC_BOB = "bob.jpg";
     public static final String VALID_BIRTHDAY_AMY = "22/10/1995";
     public static final String VALID_BIRTHDAY_BOB = "21/10/1995";
     public static final String VALID_TAG_HUSBAND = "husband";
@@ -77,6 +82,14 @@ public class CommandTestUtil {
 
     public static final Nickname NICKNAME_AMY = new Nickname(VALID_NICKNAME_AMY);
     public static final Nickname NICKNAME_BOB = new Nickname(VALID_NICKNAME_BOB);
+
+    public static final DisplayPicture DISPLAY_PICTURE_AMY =
+            new DisplayPicture(new File("./src/test/resources/pictures/" + VALID_DISPLAYPIC_AMY)
+                    .getAbsolutePath());
+    public static final DisplayPicture DISPLAY_PICTURE_BOB =
+            new DisplayPicture(new File("./src/test/resources/pictures/" + VALID_DISPLAYPIC_BOB )
+                    .getAbsolutePath());
+
 
     /**
      * Executes the given {@code command}, confirms that <br>

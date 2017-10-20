@@ -1,11 +1,14 @@
 package seedu.address.ui;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Random;
 
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
@@ -50,6 +53,9 @@ public class PersonCard extends UiPart<Region> {
     private Label birthday;
     @FXML
     private FlowPane tags;
+    @FXML
+    private ImageView displayPicture;
+
 
     public PersonCard(ReadOnlyPerson person, int displayedIndex) {
         super(FXML);
@@ -86,6 +92,51 @@ public class PersonCard extends UiPart<Region> {
             tags.getChildren().clear();
             initTags(person);
         });
+        assignImage(person);
+    }
+
+    /**
+     *  Assigns URL to the image depending on the path
+     *
+     */
+    private void assignImage(ReadOnlyPerson person) {
+
+        String url = "src\\main\\resources\\pictures\\" + person.getDisplayPicture().getPath() + ".jpg";
+
+        File fileImageStored = new File(url);
+        Image image = new Image(fileImageStored.toURI().toString(), 100, 100, false, false);
+        centerImage();
+
+        displayPicture.setImage(image);
+
+    }
+
+    /**
+     * Centre the image in ImageView
+     */
+    public void centerImage() {
+        Image img = displayPicture.getImage();
+        if (img != null) {
+            double w = 0;
+            double h = 0;
+
+            double ratioX = displayPicture.getFitWidth() / img.getWidth();
+            double ratioY = displayPicture.getFitHeight() / img.getHeight();
+
+            double reducCoeff = 0;
+            if (ratioX >= ratioY) {
+                reducCoeff = ratioY;
+            } else {
+                reducCoeff = ratioX;
+            }
+
+            w = img.getWidth() * reducCoeff;
+            h = img.getHeight() * reducCoeff;
+
+            displayPicture.setX((displayPicture.getFitWidth() - w) / 2);
+            displayPicture.setY((displayPicture.getFitHeight() - h) / 2);
+
+        }
     }
 
     /**

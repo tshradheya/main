@@ -17,6 +17,8 @@ public class Birthday {
             + "Month field: 1-12 (allows leading zeroes).\n"
             + "Year field: 1900 - 2099.\n"
             + "Example: 21/10/1995, 21-05-1996. 8.10.1987";
+    public static final int EMPTY_BIRTHDAY_FIELD_MONTH = 0;
+    public static final int EMPTY_BIRTHDAY_FIELD_DAY = 0;
     private static final int[] MONTH_TO_DAY_MAPPING = {31, 28, 31, 30, 31, 30, 31, 31,
         30, 31, 30, 31};
 
@@ -53,6 +55,7 @@ public class Birthday {
         requireNonNull(birthday);
 
         if (!isValidBirthday(birthday)) {
+            System.out.println(birthday);
             throw new IllegalValueException(MESSAGE_BIRTHDAY_CONSTRAINTS);
         }
         String trimmedBirthday = birthday.trim();
@@ -61,6 +64,36 @@ public class Birthday {
         } else {
             this.value = convertToDefaultDateFormat(birthday);
         }
+    }
+
+    /**
+     * Get the month of the birthday in this Birthday object.
+     * If the birthday field is empty, return EMPTY_BIRTHDAY_FIELD_MONTH
+     */
+    public int getMonthOfBirthday() {
+        if (value.isEmpty()) {
+            return EMPTY_BIRTHDAY_FIELD_MONTH;
+        }
+        String[] splitDate = value.split(BIRTHDAY_DASH_SEPARATOR);
+        try {
+            final int month = Integer.parseInt(splitDate[DATE_MONTH_INDEX]);
+            return month;
+        } catch (NumberFormatException nfe) {
+            throw new AssertionError("Should not happen");
+        }
+    }
+
+    /**
+     * Get the day of the birthday in this Birthday object.
+     * If the birthday field is empty, return EMPTY_BIRTHDAY_FIELD_DAY
+     */
+    public int getDayOfBirthday() {
+        if (value.isEmpty()) {
+            return EMPTY_BIRTHDAY_FIELD_DAY;
+        }
+        String[] splitDate = value.split(BIRTHDAY_DASH_SEPARATOR);
+        final int day = Integer.parseInt(splitDate[DATE_DAY_INDEX]);
+        return day;
     }
 
     /**
@@ -102,7 +135,6 @@ public class Birthday {
         } catch (NumberFormatException nfe) {
             throw new AssertionError("Not possible as birthday has passed through the regex");
         }
-
         return true;
     }
 

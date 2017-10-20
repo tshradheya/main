@@ -90,6 +90,9 @@ public class ExportCommand extends Command {
         return range.equals(e.range) && path.equals(e.path);
     }
 
+    /**
+     *Export all contacts from last shown list
+     */
     private void exportAll() {
         List<ReadOnlyPerson> lastShownList = model.getFilteredPersonList();
         try {
@@ -99,6 +102,9 @@ public class ExportCommand extends Command {
         }
     }
 
+    /**
+     *Export a specific contact from last shown list
+     */
     private void exportSpecific(int index) {
         List<ReadOnlyPerson> lastShownList = model.getFilteredPersonList();
         try {
@@ -108,6 +114,9 @@ public class ExportCommand extends Command {
         }
     }
 
+    /**
+     *Export a range of contacts from last shown list
+     */
     private void exportRange(int start, int end) {
         List<ReadOnlyPerson> lastShownList = model.getFilteredPersonList();
         try {

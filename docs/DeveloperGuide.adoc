@@ -412,6 +412,78 @@ image::UndoRedoActivityDiagram.png[width="200"]
 **Cons:** Requires dealing with commands that have already been undone: We must remember to skip these commands. Violates Single Responsibility Principle and Separation of Concerns as `HistoryManager` now needs to do two different things. +
 // end::undoredo[]
 
+=== Display Picture Mechanism
+
+The Display Picture mechanism is done by using ImageView in JavaFX which is a part of the UI Component. It is an undoable command that modifies the display picture for the specified contact. The command will inherit from `UndoableCommand`.
+
+The `displaypic` command adds/updates the display picture for the contact specified. The image is then displayed as ImageView in PersonCard.
+The arguments of the command are `INDEX` and `PATHOFIMAGE`. The image needs to be present in the local device of the user.
+
+This command works by retrieving the image using `BufferedImage`. The command extracts the image from the specified absolute path of image e.g. `C:\Users\Admin\Desktop\My files\pic.jpg`.
+It then stores the image in the working directory's `\src\main\resources\images\` folder by giving it a unique hashcode based on user's email address.
+The reading and writing of images is done using the `ImageIO` class.
+
+
+The sequence diagram for adding a display picture is shown below: +
+
+image::SDforDisplayPicture.png[width="800"]
+
+The wireframe used to display the image for each person is shown below:
+
+image::WireFramePersonCard.png[width="800"]
+
+
+The binder for refreshing the image every time the picture is updated is implemented by the following function
+
+[source,java]
+----
+    private void assignImage(ReadOnlyPerson person) {
+            // ... assigning image logic ...
+            displayPicture.setImage(image);
+        }
+----
+
+The new image stored in directory is given a unique name which is formed using hashcode of the unique email address of each contact.
+
+[source,java]
+----
+    ReadAndStoreImage readAndStoreImage = new ReadAndStoreImage();
+
+    displayPicture.setPath(readAndStoreImage.execute(displayPicture.getPath(),
+                        personToEdit.getEmail().hashCode())); // image name formed in this line
+----
+
+==== Reason for this type of implementation
+
+The command is implemented in this manner because of the following reasons
+
+* By specifying the index, there is no ambiguity as to who should be assigned the display picture
+* The `PATHOFIMAGE` must be absolute path on the local device to make sure the image is referenced.
+* The image is stored in directory with a unique name to avoid conflict. Hashcode of user's email address is used to maintain uniqueness
+* The task is done using CLI and follows as NFR
+* The image is stored in jpg format to ensure maximum compatibility.
+
+==== Design Considerations
+
+**Aspect:** At what stage should the image be read and stored +
+**Alternative 1 (current choice):** Invoke 'ReadAndStoreImage' from Logic Component  +
+**Pros:** We will be able to get the contact's address for unique hash code  +
+**Cons:** Hard for new developers to understand the sequence diagram and flow. +
+**Alternative 2:** Invoke 'ReadAndStoreImage' from Model Component +
+**Pros:** Easier for new developers to understand the sequence diagram and maintains event-driven nature. +
+**Cons:** There might be clash in naming of two different images for large database of contacts
+
+---
+
+**Aspect:** How should the image be taken from user +
+**Alternative 1 (current choice):** User has to enter absolute path of image by checking his local device   +
+**Pros:** Complete CLI process  +
+**Cons:** Might be problematic for user to copy and paste and might result in error of path giving fail command +
+**Alternative 2:** Pop up a `FileChooser` after command is entered +
+**Pros:** Easier for users to mention the correct image at a quick pace +
+**Cons:** Will no longer be a CLI process completely
+
+
 === Toggling mechanism
 
 image::togglingMechanism1.png[width="790]

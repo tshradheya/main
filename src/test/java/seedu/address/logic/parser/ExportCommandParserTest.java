@@ -17,7 +17,7 @@ public class ExportCommandParserTest {
     @Test
     public void parse_indexSpecified_failure() throws Exception {
 
-        String userInput = PREFIX_RANGE + RANGE_ALL + " " + PREFIX_PATH + PATH_EXPORT;
+        String userInput = " " + PREFIX_RANGE + RANGE_ALL + " " + PREFIX_PATH + PATH_EXPORT;
         ExportCommand expectedCommand = new ExportCommand(RANGE_ALL, PATH_EXPORT);
         assertParseSuccess(parser, userInput, expectedCommand);
     }

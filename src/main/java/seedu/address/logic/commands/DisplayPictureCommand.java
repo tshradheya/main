@@ -59,11 +59,12 @@ public class DisplayPictureCommand extends UndoableCommand {
     @Override
     public CommandResult executeUndoableCommand() throws CommandException, IOException {
         List<ReadOnlyPerson> lastShownList = model.getFilteredPersonList();
-        ReadOnlyPerson personToEdit = lastShownList.get(index.getZeroBased());
 
         if (index.getZeroBased() >= lastShownList.size()) {
             throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
         }
+
+        ReadOnlyPerson personToEdit = lastShownList.get(index.getZeroBased());
 
         if (displayPicture.getPath().equalsIgnoreCase("")) {
             displayPicture.setPath("");

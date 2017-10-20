@@ -12,6 +12,7 @@ import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.commons.util.StringUtil;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Birthday;
+import seedu.address.model.person.DisplayPicture;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Nickname;
@@ -88,6 +89,17 @@ public class ParserUtil {
     public static Optional<Nickname> parseNickname(Optional<String> nickname) throws IllegalValueException {
         requireNonNull(nickname);
         return nickname.isPresent() ? Optional.of(new Nickname(nickname.get())) : Optional.empty();
+    }
+
+    /**
+     * Parses a {@code Optional<String> displayPicture} into an {@code Optional<DisplayPicture>}
+     * if {@code path} is present.
+     * See header comment of this class regarding the use of {@code Optional} parameters.
+     */
+    public static Optional<DisplayPicture> parseDisplayPicture(Optional<String> displayPicture)
+            throws IllegalValueException {
+        requireNonNull(displayPicture);
+        return displayPicture.isPresent() ? Optional.of(new DisplayPicture(displayPicture.get())) : Optional.empty();
     }
 
     /**

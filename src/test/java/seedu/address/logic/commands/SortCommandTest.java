@@ -27,7 +27,7 @@ public class SortCommandTest {
     }
 
     @Test
-    public void executeSortUnsortedToSorted() {
+    public void executeSortUnsortedToSorted() throws Exception {
         assertCommandSuccess(sortCommand, model, SortCommand.MESSAGE_SUCCESS, expectedModel);
     }
 }

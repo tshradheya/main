@@ -3,9 +3,12 @@ package seedu.address.logic.parser;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PATH;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_RANGE;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
+
 import static seedu.address.testutil.TypicalPath.PATH_EXPORT;
 import static seedu.address.testutil.TypicalRange.RANGE_ALL;
+
 import org.junit.Test;
+
 import seedu.address.logic.commands.ExportCommand;
 
 public class ExportCommandParserTest {

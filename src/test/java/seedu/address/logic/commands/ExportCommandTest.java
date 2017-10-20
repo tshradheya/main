@@ -1,7 +1,7 @@
 package seedu.address.logic.commands;
 
 import static org.junit.Assert.*;
-import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
+import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.address.logic.commands.ExportCommand.MESSAGE_ARGUMENTS;
 import static seedu.address.testutil.TypicalPath.PATH_CONTACT;
 import static seedu.address.testutil.TypicalPath.PATH_EXPORT;
@@ -18,12 +18,6 @@ import seedu.address.model.UserPrefs;
 public class ExportCommandTest {
 
     private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
-
-    @Test
-    public void execute() throws Exception {
-        assertCommandFailure(prepareCommand(RANGE_ALL, PATH_EXPORT), model,
-                String.format(MESSAGE_ARGUMENTS, RANGE_ALL, PATH_EXPORT));
-    }
 
     @Test
     public void equals() {

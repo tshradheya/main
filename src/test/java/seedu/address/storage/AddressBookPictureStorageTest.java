@@ -11,7 +11,7 @@ import org.junit.rules.ExpectedException;
 public class AddressBookPictureStorageTest {
 
     private static String PATH = "/pictures/default.png";
-    private static String INVALID_PATH = ".2?2./";
+    private static String INVALID_PATH = ".2? 2./";
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();

@@ -496,14 +496,7 @@ This command works by retrieving the image using `BufferedImage`. The command ex
 It then stores the image in the working directory's `\src\main\resources\images\` folder by giving it a unique hashcode based on user's email address.
 The reading and writing of images is done using the `ImageIO` class.
 
-
 The sequence diagram for adding a display picture is shown below: +
-
-image::SDforDisplayPicture.png[width="800"]
-
-The wireframe used to display the image for each person is shown below:
-
-image::WireFramePersonCard.png[width="800"]
 
 image::SDforDisplayPicture.PNG[width="800"]
 _Figure 1: Sequence Diagram for Display Picture Command._

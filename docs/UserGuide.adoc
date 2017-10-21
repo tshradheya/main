@@ -183,7 +183,7 @@ Examples:
 * `direction 2`
 Returns direction to the address of person at `INDEX` 2
 
-image::directon.png[width="790"]
+image::directon.PNG[width="790"]
 
 
 === Email directly to a group of people having a particular tag: `email` [Since V1.2]
@@ -202,7 +202,7 @@ Examples:
 * `email cs2103`
 Allows to send email after drafting message to everyone with the tag `cs2103`
 
-image::email.png[width="790"]
+image::email.PNG[width="790"]
 
 
 === Locating persons by name: `find`
@@ -246,7 +246,7 @@ Returns all people who have the tag `cs2103` associated with them
 * `viewtag friends` +
 Returns `Alex` and `Bernice1 as they are having the tag `friends`
 
-image::viewtag.png[width="790"]
+image::viewtag.PNG[width="790"]
 
 // tag::filter[]
 === Finding all people by name and associated with one or more tags: `filter`

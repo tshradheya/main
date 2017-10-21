@@ -35,6 +35,8 @@ public class DisplayPictureCommandTest {
     public static final  String DISPLAY_PICTURE_ALICE_PATH =
             new File("./src/test/resources/pictures/" + VALID_DISPLAYPIC_ALICE)
                     .getAbsolutePath();
+
+    private static final String INVALID_PATH = "/?nothing";
     private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
 
     @Test
@@ -46,6 +48,38 @@ public class DisplayPictureCommandTest {
                 DISPLAY_PICTURE_ALICE_PATH);
 
         String expectedMessage = String.format(DisplayPictureCommand.MESSAGE_ADD_DISPLAYPICTURE_SUCCESS, editedPerson);
+
+        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        expectedModel.updatePerson(model.getFilteredPersonList().get(0), editedPerson);
+
+        assertCommandSuccess(displayPictureCommand, model, expectedMessage, expectedModel);
+    }
+
+    @Test
+    public void execute_setDisplayPicture_failure() throws Exception {
+        Person editedPerson = new PersonBuilder(model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased()))
+                .withDisplayPicture("").build();
+
+        DisplayPictureCommand displayPictureCommand = prepareCommand(INDEX_FIRST_PERSON,
+                INVALID_PATH);
+
+        String expectedMessage = String.format(DisplayPictureCommand.MESSAGE_IMAGE_PATH_FAIL, editedPerson);
+
+        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        expectedModel.updatePerson(model.getFilteredPersonList().get(0), editedPerson);
+
+        assertCommandSuccess(displayPictureCommand, model, expectedMessage, expectedModel);
+    }
+
+    @Test
+    public void execute_setDisplayPicture_successWithNoPath() throws Exception {
+        Person editedPerson = new PersonBuilder(model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased()))
+                .withDisplayPicture("").build();
+
+        DisplayPictureCommand displayPictureCommand = prepareCommand(INDEX_FIRST_PERSON,
+                "");
+
+        String expectedMessage = String.format(DisplayPictureCommand.MESSAGE_DELETE_DISPLAYPICTURE_SUCCESS, editedPerson);
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
         expectedModel.updatePerson(model.getFilteredPersonList().get(0), editedPerson);

@@ -5,6 +5,7 @@ import static seedu.address.commons.core.Messages.MESSAGE_INVALID_IMAGE;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 import javax.imageio.ImageIO;
 
@@ -20,7 +21,7 @@ public class ReadAndStoreImage {
      * @param path
      * @return uniquePath new path in directory
      */
-    public String execute(String path, int newPath) throws IOException {
+    public String execute(String path, int newPath) throws IOException, URISyntaxException {
 
         File fileToRead = null;
         BufferedImage image = null;
@@ -36,8 +37,8 @@ public class ReadAndStoreImage {
 
             uniquePath = Integer.toString(newPath);
 
-            fileToWrite = new File("src\\main\\resources\\pictures\\" + uniquePath + ".jpg");
-            ImageIO.write(image, "jpg", fileToWrite);
+            fileToWrite = new File("pictures/" + uniquePath + ".png");
+            ImageIO.write(image, "png", fileToWrite);
 
 
         } catch (IOException e) {

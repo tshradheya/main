@@ -505,6 +505,14 @@ The wireframe used to display the image for each person is shown below:
 
 image::WireFramePersonCard.png[width="800"]
 
+image::SDforDisplayPicture.PNG[width="800"]
+_Figure 1: Sequence Diagram for Display Picture Command._
+
+The wireframe used to display the image for each person is shown below:
+
+image::WireFramePersonCard.PNG[width="800"]
+_Figure 2: Wireframe for the UI._
+
 
 The binder for refreshing the image every time the picture is updated is implemented by the following function
 

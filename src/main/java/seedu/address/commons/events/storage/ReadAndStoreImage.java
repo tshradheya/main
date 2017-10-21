@@ -5,9 +5,11 @@ import static seedu.address.commons.core.Messages.MESSAGE_INVALID_IMAGE;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 import javax.imageio.ImageIO;
 
+import seedu.address.MainApp;
 import seedu.address.logic.commands.DisplayPictureCommand;
 import seedu.address.logic.parser.exceptions.ImageException;
 
@@ -20,7 +22,7 @@ public class ReadAndStoreImage {
      * @param path
      * @return uniquePath new path in directory
      */
-    public String execute(String path, int newPath) throws IOException {
+    public String execute(String path, int newPath) throws IOException, URISyntaxException {
 
         File fileToRead = null;
         BufferedImage image = null;
@@ -36,12 +38,19 @@ public class ReadAndStoreImage {
 
             uniquePath = Integer.toString(newPath);
 
-            fileToWrite = new File("src\\main\\resources\\pictures\\" + uniquePath + ".jpg");
-            ImageIO.write(image, "jpg", fileToWrite);
+            String absolutePath = MainApp.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
+
+            fileToWrite = new File(absolutePath.substring(1, absolutePath.length() - 15)
+                    + "pictures/" + uniquePath + ".png");
+
+            ImageIO.write(image, "png", fileToWrite);
 
 
         } catch (IOException e) {
             throw  new ImageException(String.format(MESSAGE_INVALID_IMAGE,
+                    DisplayPictureCommand.MESSAGE_IMAGE_PATH_FAIL));
+        } catch (URISyntaxException urise) {
+            throw new ImageException(String.format(MESSAGE_INVALID_IMAGE,
                     DisplayPictureCommand.MESSAGE_IMAGE_PATH_FAIL));
         }
 

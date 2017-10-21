@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -23,7 +24,7 @@ public class ReadAndStoreImageTest {
 
 
     @Test
-    public void test_execute() throws IOException {
+    public void test_execute() throws IOException, URISyntaxException {
 
         String initialPath = new File("./src/test/resources/pictures/" + IMAGE_NAME + ".jpg").getAbsolutePath();
 
@@ -36,7 +37,7 @@ public class ReadAndStoreImageTest {
     }
 
     @Test
-    public void throwsImageException() throws IOException {
+    public void throwsImageException() throws IOException, URISyntaxException {
 
         String initialPath = "src\\test\\resources\\pictures\\" + INVALID_IMAGE_NAME + ".jpg";
 

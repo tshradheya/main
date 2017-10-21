@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_DISPLAYPICTURE;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.List;
 
 import seedu.address.commons.core.Messages;
@@ -57,7 +58,7 @@ public class DisplayPictureCommand extends UndoableCommand {
     }
 
     @Override
-    public CommandResult executeUndoableCommand() throws CommandException, IOException {
+    public CommandResult executeUndoableCommand() throws CommandException, IOException, URISyntaxException {
         List<ReadOnlyPerson> lastShownList = model.getFilteredPersonList();
 
         if (index.getZeroBased() >= lastShownList.size()) {

@@ -5,6 +5,7 @@ import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.AddressBook;
@@ -16,7 +17,7 @@ import seedu.address.model.ReadOnlyAddressBook;
 public abstract class UndoableCommand extends Command {
     private ReadOnlyAddressBook previousAddressBook;
 
-    protected abstract CommandResult executeUndoableCommand() throws CommandException, IOException;
+    protected abstract CommandResult executeUndoableCommand() throws CommandException, IOException, URISyntaxException;
 
     /**
      * Stores the current state of {@code model#addressBook}.
@@ -41,7 +42,7 @@ public abstract class UndoableCommand extends Command {
      * Executes the command and updates the filtered person
      * list to show all persons.
      */
-    protected final void redo() throws IOException {
+    protected final void redo() throws IOException, URISyntaxException {
         requireNonNull(model);
         try {
             executeUndoableCommand();
@@ -53,7 +54,7 @@ public abstract class UndoableCommand extends Command {
     }
 
     @Override
-    public final CommandResult execute() throws CommandException, IOException {
+    public final CommandResult execute() throws CommandException, IOException, URISyntaxException {
         saveAddressBookSnapshot();
         return executeUndoableCommand();
     }

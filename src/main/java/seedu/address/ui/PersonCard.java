@@ -1,6 +1,5 @@
 package seedu.address.ui;
 
-import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -12,7 +11,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
-import seedu.address.MainApp;
 import seedu.address.model.person.ReadOnlyPerson;
 
 
@@ -97,31 +95,22 @@ public class PersonCard extends UiPart<Region> {
     }
 
     /**
-     *  Assigns URL to the image depending on the path
-     *
+     * Assigns URL to the image depending on the path
      */
     private void assignImage(ReadOnlyPerson person) {
 
         if (!person.getDisplayPicture().getPath().equals("")) {
 
-            try {
-                String url = MainApp.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
+            Image image = new Image("file:" + "pictures/" + person.getDisplayPicture().getPath() + ".png",
+                    100, 100, false, false);
 
-                String pathToRead  = url.substring(1, url.length() - 15)
-                        + "pictures/" + person.getDisplayPicture().getPath() + ".png";
+            centerImage();
+            displayPicture.setImage(image);
 
-                Image image = new Image("file:" + pathToRead, 100, 100, false, false);
-
-                centerImage();
-                displayPicture.setImage(image);
-
-
-            } catch (URISyntaxException urise) {
-                assert(false);
-            }
         }
-
     }
+
+
 
     /**
      * Centre the image in ImageView

@@ -9,7 +9,6 @@ import java.net.URISyntaxException;
 
 import javax.imageio.ImageIO;
 
-import seedu.address.MainApp;
 import seedu.address.logic.commands.DisplayPictureCommand;
 import seedu.address.logic.parser.exceptions.ImageException;
 
@@ -38,19 +37,12 @@ public class ReadAndStoreImage {
 
             uniquePath = Integer.toString(newPath);
 
-            String absolutePath = MainApp.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath();
-
-            fileToWrite = new File(absolutePath.substring(1, absolutePath.length() - 15)
-                    + "pictures/" + uniquePath + ".png");
-
+            fileToWrite = new File("pictures/" + uniquePath + ".png");
             ImageIO.write(image, "png", fileToWrite);
 
 
         } catch (IOException e) {
             throw  new ImageException(String.format(MESSAGE_INVALID_IMAGE,
-                    DisplayPictureCommand.MESSAGE_IMAGE_PATH_FAIL));
-        } catch (URISyntaxException urise) {
-            throw new ImageException(String.format(MESSAGE_INVALID_IMAGE,
                     DisplayPictureCommand.MESSAGE_IMAGE_PATH_FAIL));
         }
 

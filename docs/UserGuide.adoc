@@ -78,6 +78,30 @@ Format: `list`
 Sorts and shows a list of all persons in the address book alphabetically. +
 Format: `sort`
 
+=== Exporting selected contacts : `export`
+
+Exports selected contacts in iContacts. +
+Format: `export [r/RANGE] [p/PATH]`
+
+****
+* Exports the person/s at the specified `RANGE` to a specified `PATH`.
+* The range refers to any index number shown in the most recent listing.
+* The range *must be a positive integer and must not be larger than the last index of the list* 1, 2, 3, 4-7, ...
+* The path *must include the file name without the file extension* c:\exports\classmates
+****
+
+Examples:
+
+* `list` +
+`export r/all p/c:\exports\classmates` +
+Exports all the contacts to the file *classmates.xml* in path *c:\exports*.
+
+`export r/1-4 p/c:\exports\classmates` +
+Exports the contacts from index 1 to index 4 to the file *classmates.xml* in path *c:\exports*.
+
+`export r/1-4,6,8 p/c:\exports\classmates` +
+Exports the contacts at index 1 to index 4 with index 6 and index 8 to the file *classmates.xml* in path *c:\exports*.
+
 === Editing a person : `edit`
 
 Edits an existing person in the address book. +

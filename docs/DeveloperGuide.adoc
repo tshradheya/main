@@ -285,6 +285,79 @@ return nameFound && tagFound;
 ----
 // end::filter[]
 
+// tag::export[]
+=== Export mechanism
+
+The `ExportCommand` uses `XmlAddressBookStorage` class to generate a xml file based on a given range and saves it to the path provided. It takes in two String values range and path. Below is the constructor for the class:
+
+[source,java]
+----
+    public ExportCommand(String range, String path) {
+        requireNonNull(range);
+        requireNonNull(path);
+
+        this.range = range;
+        this.path = path;
+        exportBook = new AddressBook();
+    }
+----
+
+The method `getRangefromInput()` splits the String range using the regex "," and returns a String array for the different values in the String range.
+
+Below is an extract of the method `getRangefromInput()`.
+
+[source,java]
+----
+private String[] getRangeFromInput() {
+        String[] splitStringComma = this.range.split(",");
+
+        return splitStringComma;
+    }
+----
+
+To determine which contacts should be added to the exportBook we have to check the the user input, there are 3 cases:
+
+* all (Priority)
+** if the case *all* is present in the user input we will just export all the contacts in the last shown list
+* specific index (1, 2, 3)
+** if the user input contains a specific index we will add that index(One-based) to the exportBook.
+* range of index (1-5,8-10)
+** if the user input contains a range which is identified by *-* character we will add that range of index(One-based) to the exportBook.
+
+Below is the code snippet to identify the 3 cases in the user input
+[source,java]
+----
+String[] multipleRange = getRangeFromInput();
+
+        if (multipleRange[0].equals("all")) {
+            exportAll();
+        } else {
+            for (int i = 0; i < multipleRange.length; i++) {
+                if (multipleRange[i].contains("-")) {
+                    String[] rangeToExport = multipleRange[i].split("-");
+                    exportRange(Integer.parseInt(rangeToExport[0]), Integer.parseInt(rangeToExport[1]));
+                } else {
+                    exportSpecific(Integer.parseInt(multipleRange[i]));
+                }
+            }
+        }
+----
+
+Lastly is to create the xml file from the exportBook.
+
+Below is the code snippet to export the data into an xml file using AddressBookStorage Class
+[source,java]
+----
+try {
+            AddressBookStorage storage = new XmlAddressBookStorage(path + ".xml");
+            storage.saveAddressBook(exportBook);
+        } catch (IOException ioe) {
+            return new CommandResult(MESSAGE_EXPORT_FAIL);
+        }
+        return new CommandResult(MESSAGE_EXPORT_SUCCESS);
+----
+// end::export[]
+
 // tag::undoredo[]
 === Undo/Redo mechanism
 
@@ -423,18 +496,15 @@ This command works by retrieving the image using `BufferedImage`. The command ex
 It then stores the image in the working directory's `\src\main\resources\images\` folder by giving it a unique hashcode based on user's email address.
 The reading and writing of images is done using the `ImageIO` class.
 
-
 The sequence diagram for adding a display picture is shown below: +
 
 image::SDforDisplayPicture.PNG[width="800"]
 _Figure 1: Sequence Diagram for Display Picture Command._
 
-
 The wireframe used to display the image for each person is shown below:
 
 image::WireFramePersonCard.PNG[width="800"]
 _Figure 2: Wireframe for the UI._
-
 
 
 The binder for refreshing the image every time the picture is updated is implemented by the following function

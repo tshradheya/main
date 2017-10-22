@@ -130,7 +130,7 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
      * Creates url from given address
      * @param address of the specified person
      */
-    private void loadPersonLocation(String address) {
+    public String loadPersonLocation(String address) {
 
         String[] splitAddressByWords = address.split("\\s");
 
@@ -142,6 +142,8 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
         }
 
         loadPage(GOOGLE_MAPS_URL + keywordsOfUrl);
+
+        return GOOGLE_MAPS_URL + keywordsOfUrl;
     }
 
     @Subscribe
@@ -163,6 +165,6 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
         logger.info(LogsCenter.getEventHandlingLogMessage(event,
                 "Processing Location of " + event.person.getName().fullName));
         setUpToShowLocation();
-        loadPersonLocation(event.person.getAddress().value);
+        String url = loadPersonLocation(event.person.getAddress().value);
     }
 }

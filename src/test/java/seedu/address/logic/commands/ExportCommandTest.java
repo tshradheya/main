@@ -27,7 +27,9 @@ import seedu.address.model.UserPrefs;
 
 public class ExportCommandTest {
 
-    public static final String  VALID_PATH = "/storage/classmates";
+    public static final String VALID_PATH = "/storage/classmates";
+    public static final String INVALID_PATH = ".>/ 2 f.";
+
 
     private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
 
@@ -52,34 +54,33 @@ public class ExportCommandTest {
     }
 
     @Test
-    public void execute_exportOne_success() throws Exception {
+    public void execute_exportOne_failure() throws Exception {
+
+        ExportCommand exportCommand = prepareCommand(Integer.toString(INDEX_FIRST_PERSON.getOneBased()), INVALID_PATH);
+
+        String expectedMessage = ExportCommand.MESSAGE_EXPORT_FAIL;
+        CommandResult commandResult = exportCommand.execute();
+        assertEquals(expectedMessage, commandResult.feedbackToUser);
+    }
+
+    @Test
+    public void execute_exportAll_failure() throws Exception {
 
 
-        ExportCommand exportCommand = prepareCommand(Integer.toString(INDEX_FIRST_PERSON.getOneBased()), VALID_PATH);
+        ExportCommand exportCommand = prepareCommand("all", INVALID_PATH);
 
-        String expectedMessage = ExportCommand.MESSAGE_EXPORT_SUCCESS;
+        String expectedMessage = ExportCommand.MESSAGE_EXPORT_FAIL;
         CommandResult commandResult = exportCommand.execute();
         assertEquals(commandResult.feedbackToUser, expectedMessage);
     }
 
     @Test
-    public void execute_exportAll_success() throws Exception {
+    public void execute_exportRange_failure() throws Exception {
 
 
-        ExportCommand exportCommand = prepareCommand("all", VALID_PATH);
+        ExportCommand exportCommand = prepareCommand("1-3", INVALID_PATH);
 
-        String expectedMessage = ExportCommand.MESSAGE_EXPORT_SUCCESS;
-        CommandResult commandResult = exportCommand.execute();
-        assertEquals(commandResult.feedbackToUser, expectedMessage);
-    }
-
-    @Test
-    public void execute_exportRange_success() throws Exception {
-
-
-        ExportCommand exportCommand = prepareCommand("1-3", VALID_PATH);
-
-        String expectedMessage = ExportCommand.MESSAGE_EXPORT_SUCCESS;
+        String expectedMessage = ExportCommand.MESSAGE_EXPORT_FAIL;
         CommandResult commandResult = exportCommand.execute();
         assertEquals(commandResult.feedbackToUser, expectedMessage);
     }

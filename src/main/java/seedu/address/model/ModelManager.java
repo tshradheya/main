@@ -112,6 +112,15 @@ public class ModelManager extends ComponentManager implements Model {
 
     }
 
+    /**
+     * Shows location of the given person
+     */
+    @Override
+    public void showLocation(ReadOnlyPerson person) {
+        raise();
+
+    }
+
     //=========== Filtered Person List Accessors =============================================================
 
     /**

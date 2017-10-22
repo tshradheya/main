@@ -38,7 +38,7 @@ public class LocationCommand extends Command {
         ReadOnlyPerson personWhoseLocationIsToBeShown = lastShownList.get(index.getZeroBased());
 
         try {
-            model.findLocation(personWhoseLocationIsToBeShown);
+            model.showLocation(personWhoseLocationIsToBeShown);
         } catch (PersonNotFoundException pnfe) {
             assert false : "The target person cannot be missing";
         }

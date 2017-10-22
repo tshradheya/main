@@ -70,6 +70,18 @@ public class DueDate {
     }
 
     @Override
+    public boolean equals(Object other) {
+        return this == other
+                || (other instanceof DueDate
+                && this.getLocalDateTime().equals(((DueDate) other).getLocalDateTime()));
+    }
+
+    @Override
+    public int hashCode() {
+        return this.dueDate.hashCode();
+    }
+
+    @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
         LocalDate tempDate = dueDate.toLocalDate();

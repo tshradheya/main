@@ -129,7 +129,8 @@ public class MainWindow extends UiPart<Region> {
      * Fills up all the placeholders of this window.
      */
     void fillInnerParts() {
-        browserAndRemindersPanel = new BrowserAndRemindersPanel(logic.getBirthdayPanelFilteredPersonList());
+        browserAndRemindersPanel = new BrowserAndRemindersPanel(logic.getBirthdayPanelFilteredPersonList(),
+                logic.getReminderList());
         browserPlaceholder.getChildren().add(browserAndRemindersPanel.getRoot());
 
         personListPanel = new PersonListPanel(logic.getFilteredPersonList());

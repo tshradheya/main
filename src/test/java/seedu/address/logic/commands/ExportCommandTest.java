@@ -1,10 +1,10 @@
 package seedu.address.logic.commands;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
+import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.address.logic.commands.CommandTestUtil.showFirstPersonOnly;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
@@ -21,6 +21,7 @@ import seedu.address.commons.core.index.Index;
 import seedu.address.logic.CommandHistory;
 import seedu.address.logic.UndoRedoStack;
 
+import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
@@ -54,13 +55,42 @@ public class ExportCommandTest {
     }
 
     @Test
+    public void execute_exportOne_success() throws Exception {
+
+
+        ExportCommand exportCommand = prepareCommand(Integer.toString(INDEX_FIRST_PERSON.getOneBased()), VALID_PATH);
+
+        String expectedMessage = ExportCommand.MESSAGE_EXPORT_SUCCESS;
+
+        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+
+        assertCommandSuccess(exportCommand, model, expectedMessage, expectedModel);
+    }
+
+    @Test
     public void execute_exportOne_failure() throws Exception {
+
 
         ExportCommand exportCommand = prepareCommand(Integer.toString(INDEX_FIRST_PERSON.getOneBased()), INVALID_PATH);
 
         String expectedMessage = ExportCommand.MESSAGE_EXPORT_FAIL;
-        CommandResult commandResult = exportCommand.execute();
-        assertEquals(expectedMessage, commandResult.feedbackToUser);
+
+        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+
+        assertCommandSuccess(exportCommand, model, expectedMessage, expectedModel);
+    }
+
+    @Test
+    public void execute_exportAll_success() throws Exception {
+
+
+        ExportCommand exportCommand = prepareCommand("all", VALID_PATH);
+
+        String expectedMessage = ExportCommand.MESSAGE_EXPORT_SUCCESS;
+
+        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+
+        assertCommandSuccess(exportCommand, model, expectedMessage, expectedModel);
     }
 
     @Test
@@ -70,8 +100,23 @@ public class ExportCommandTest {
         ExportCommand exportCommand = prepareCommand("all", INVALID_PATH);
 
         String expectedMessage = ExportCommand.MESSAGE_EXPORT_FAIL;
-        CommandResult commandResult = exportCommand.execute();
-        assertEquals(commandResult.feedbackToUser, expectedMessage);
+
+        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+
+        assertCommandSuccess(exportCommand, model, expectedMessage, expectedModel);
+    }
+
+    @Test
+    public void execute_exportRange_success() throws Exception {
+
+
+        ExportCommand exportCommand = prepareCommand("1-3", VALID_PATH);
+
+        String expectedMessage = ExportCommand.MESSAGE_EXPORT_SUCCESS;
+
+        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+
+        assertCommandSuccess(exportCommand, model, expectedMessage, expectedModel);
     }
 
     @Test
@@ -81,8 +126,10 @@ public class ExportCommandTest {
         ExportCommand exportCommand = prepareCommand("1-3", INVALID_PATH);
 
         String expectedMessage = ExportCommand.MESSAGE_EXPORT_FAIL;
-        CommandResult commandResult = exportCommand.execute();
-        assertEquals(commandResult.feedbackToUser, expectedMessage);
+
+        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+
+        assertCommandSuccess(exportCommand, model, expectedMessage, expectedModel);
     }
 
     @Test

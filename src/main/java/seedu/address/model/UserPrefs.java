@@ -11,6 +11,7 @@ public class UserPrefs {
 
     private GuiSettings guiSettings;
     private String addressBookFilePath = "data/addressbook.xml";
+    private String remindersFilePath = "data/reminders.xml";
     private String addressBookName = "MyAddressBook";
 
     public UserPrefs() {
@@ -27,6 +28,15 @@ public class UserPrefs {
 
     public void setGuiSettings(double width, double height, int x, int y) {
         guiSettings = new GuiSettings(width, height, x, y);
+    }
+
+
+    public String getRemindersFilePath() {
+        return remindersFilePath;
+    }
+
+    public void setRemindersFilePath(String remindersFilePath) {
+        this.remindersFilePath = remindersFilePath;
     }
 
     public String getAddressBookFilePath() {
@@ -58,12 +68,13 @@ public class UserPrefs {
 
         return Objects.equals(guiSettings, o.guiSettings)
                 && Objects.equals(addressBookFilePath, o.addressBookFilePath)
+                && Objects.equals(remindersFilePath, o.remindersFilePath)
                 && Objects.equals(addressBookName, o.addressBookName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(guiSettings, addressBookFilePath, addressBookName);
+        return Objects.hash(guiSettings, addressBookFilePath, remindersFilePath, addressBookName);
     }
 
     @Override
@@ -71,6 +82,7 @@ public class UserPrefs {
         StringBuilder sb = new StringBuilder();
         sb.append("Gui Settings : " + guiSettings.toString());
         sb.append("\nLocal data file location : " + addressBookFilePath);
+        sb.append("\nLocal reminders file location : " + remindersFilePath);
         sb.append("\nAddressBook name : " + addressBookName);
         return sb.toString();
     }

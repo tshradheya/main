@@ -8,6 +8,7 @@ import java.io.IOException;
 
 import java.util.List;
 
+import seedu.address.commons.core.Messages;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.AddressBook;
 import seedu.address.model.person.ReadOnlyPerson;
@@ -105,9 +106,12 @@ public class ExportCommand extends Command {
     /**
      *Export a specific contact from last shown list
      */
-    private void exportSpecific(int index) {
+    private void exportSpecific(int index) throws CommandException {
         List<ReadOnlyPerson> lastShownList = model.getFilteredPersonList();
         try {
+            if (index >= lastShownList.size()) {
+                throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+            }
             exportBook.addPerson(lastShownList.get(index - 1));
         } catch (DuplicatePersonException e) {
             e.printStackTrace();

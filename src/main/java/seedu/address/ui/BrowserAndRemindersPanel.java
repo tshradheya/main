@@ -142,7 +142,6 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
         }
 
         loadPage(GOOGLE_MAPS_URL + keywordsOfUrl);
-
         return GOOGLE_MAPS_URL + keywordsOfUrl;
     }
 

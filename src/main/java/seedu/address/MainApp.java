@@ -25,6 +25,7 @@ import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.UserPrefs;
+import seedu.address.model.reminders.UniqueReminderList;
 import seedu.address.model.util.SampleDataUtil;
 import seedu.address.storage.AddressBookStorage;
 import seedu.address.storage.JsonUserPrefsStorage;
@@ -122,7 +123,7 @@ public class MainApp extends Application {
             initialReminders = new XmlSerializableReminders();
         }
 
-        return new ModelManager(initialData, initialReminders, userPrefs);
+        return new ModelManager(initialData, new UniqueReminderList(initialReminders), userPrefs);
     }
 
     private void initLogging(Config config) {

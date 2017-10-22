@@ -45,7 +45,7 @@ public class ModelManager extends ComponentManager implements Model {
     /**
      * Initializes a ModelManager with the given addressBook and userPrefs.
      */
-    public ModelManager(ReadOnlyAddressBook addressBook, XmlSerializableReminders reminders, UserPrefs userPrefs) {
+    public ModelManager(ReadOnlyAddressBook addressBook, UniqueReminderList reminders, UserPrefs userPrefs) {
         super();
         requireAllNonNull(addressBook, reminders, userPrefs);
 
@@ -53,7 +53,7 @@ public class ModelManager extends ComponentManager implements Model {
                 " and user prefs " + userPrefs);
 
         this.addressBook = new AddressBook(addressBook);
-        this.reminderList = new UniqueReminderList(reminders);
+        this.reminderList = reminders;
         filteredPersons = new FilteredList<>(this.addressBook.getPersonList());
         filteredPersonsForBirthdayListPanel = new FilteredList<>(this.addressBook.getPersonList());
         filteredPersonsForBirthdayListPanel.setPredicate(new BirthdayInCurrentMonthPredicate());
@@ -64,7 +64,7 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     public ModelManager() {
-        this(new AddressBook(), new XmlSerializableReminders(), new UserPrefs());
+        this(new AddressBook(), new UniqueReminderList(), new UserPrefs());
     }
 
     @Override
@@ -188,7 +188,8 @@ public class ModelManager extends ComponentManager implements Model {
         // state check
         ModelManager other = (ModelManager) obj;
         return addressBook.equals(other.addressBook)
-                && filteredPersons.equals(other.filteredPersons);
+                && filteredPersons.equals(other.filteredPersons)
+                && reminderList.equals(other.reminderList);
     }
 
 }

@@ -19,6 +19,7 @@ import seedu.address.commons.events.ui.PersonPanelSelectionChangedEvent;
 import seedu.address.commons.events.ui.TurnLabelsOffEvent;
 import seedu.address.commons.events.ui.TurnLabelsOnEvent;
 import seedu.address.model.person.ReadOnlyPerson;
+import seedu.address.model.reminders.Reminder;
 
 /**
  * The Browser Panel of the App.
@@ -40,16 +41,17 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
     private static final String FXML = "BrowserAndRemindersPanel.fxml";
 
     private final Logger logger = LogsCenter.getLogger(this.getClass());
-    private BirthdayListPanel birthdayListPanel;
+    private BirthdayAndReminderListPanel birthdayAndReminderListPanel;
     private Node currentlyInFront = Node.REMINDERS;
 
     @FXML
     private WebView browser;
 
     @FXML
-    private StackPane birthdayList;
+    private StackPane RemindersPanel;
 
-    public BrowserAndRemindersPanel(ObservableList<ReadOnlyPerson> birthdayPanelFilteredPersonList) {
+    public BrowserAndRemindersPanel(ObservableList<ReadOnlyPerson> birthdayPanelFilteredPersonList,
+                                    ObservableList<Reminder> reminderList) {
         super(FXML);
 
         // To prevent triggering events for typing inside the loaded Web page.
@@ -57,10 +59,10 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
 
         loadDefaultPage();
 
-        birthdayListPanel = new BirthdayListPanel(birthdayPanelFilteredPersonList);
+        birthdayAndReminderListPanel = new BirthdayAndReminderListPanel(birthdayPanelFilteredPersonList, reminderList);
 
-        //birthdayListPanel should be displayed first so no need to shift it to the back.
-        birthdayList.getChildren().add(birthdayListPanel.getRoot());
+        //RemindersPanel should be displayed first so no need to shift it to the back.
+        RemindersPanel.getChildren().add(birthdayAndReminderListPanel.getRoot());
         registerAsAnEventHandler(this);
     }
 
@@ -94,7 +96,7 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
     private void toggleBrowserPanel() {
         switch(currentlyInFront) {
         case BROWSER:
-            birthdayList.toFront();
+            RemindersPanel.toFront();
             currentlyInFront = Node.REMINDERS;
             raise(new TurnLabelsOnEvent());
             break;

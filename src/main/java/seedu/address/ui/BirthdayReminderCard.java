@@ -13,7 +13,7 @@ import seedu.address.model.person.ReadOnlyPerson;
  */
 public class BirthdayReminderCard extends UiPart<Region> {
 
-    private static final String FXML = "BirthdayListCard.fxml";
+    private static final String FXML = "BirthdayReminderCard.fxml";
 
     /**
      * Note: Certain keywords such as "location" and "resources" are reserved keywords in JavaFX.

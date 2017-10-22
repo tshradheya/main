@@ -4,9 +4,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
-import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.address.logic.commands.CommandTestUtil.showFirstPersonOnly;
-import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
 import static seedu.address.testutil.TypicalPath.PATH_CONTACT;
 import static seedu.address.testutil.TypicalPath.PATH_EXPORT;
@@ -21,7 +19,6 @@ import seedu.address.commons.core.index.Index;
 import seedu.address.logic.CommandHistory;
 import seedu.address.logic.UndoRedoStack;
 
-import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
@@ -29,7 +26,6 @@ import seedu.address.model.UserPrefs;
 public class ExportCommandTest {
 
     public static final String VALID_PATH = "/storage/classmates";
-    public static final String INVALID_PATH = ".>/ 2 f.";
 
 
     private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
@@ -52,84 +48,6 @@ public class ExportCommandTest {
         ExportCommand exportCommand = prepareCommand(Integer.toString(outOfBoundIndex.getOneBased()), VALID_PATH);
 
         assertCommandFailure(exportCommand, model, Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
-    }
-
-    @Test
-    public void execute_exportOne_success() throws Exception {
-
-
-        ExportCommand exportCommand = prepareCommand(Integer.toString(INDEX_FIRST_PERSON.getOneBased()), VALID_PATH);
-
-        String expectedMessage = ExportCommand.MESSAGE_EXPORT_SUCCESS;
-
-        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
-
-        assertCommandSuccess(exportCommand, model, expectedMessage, expectedModel);
-    }
-
-    @Test
-    public void execute_exportOne_failure() throws Exception {
-
-
-        ExportCommand exportCommand = prepareCommand(Integer.toString(INDEX_FIRST_PERSON.getOneBased()), INVALID_PATH);
-
-        String expectedMessage = ExportCommand.MESSAGE_EXPORT_FAIL;
-
-        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
-
-        assertCommandSuccess(exportCommand, model, expectedMessage, expectedModel);
-    }
-
-    @Test
-    public void execute_exportAll_success() throws Exception {
-
-
-        ExportCommand exportCommand = prepareCommand("all", VALID_PATH);
-
-        String expectedMessage = ExportCommand.MESSAGE_EXPORT_SUCCESS;
-
-        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
-
-        assertCommandSuccess(exportCommand, model, expectedMessage, expectedModel);
-    }
-
-    @Test
-    public void execute_exportAll_failure() throws Exception {
-
-
-        ExportCommand exportCommand = prepareCommand("all", INVALID_PATH);
-
-        String expectedMessage = ExportCommand.MESSAGE_EXPORT_FAIL;
-
-        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
-
-        assertCommandSuccess(exportCommand, model, expectedMessage, expectedModel);
-    }
-
-    @Test
-    public void execute_exportRange_success() throws Exception {
-
-
-        ExportCommand exportCommand = prepareCommand("1-3", VALID_PATH);
-
-        String expectedMessage = ExportCommand.MESSAGE_EXPORT_SUCCESS;
-
-        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
-
-        assertCommandSuccess(exportCommand, model, expectedMessage, expectedModel);
-    }
-
-    @Test
-    public void execute_exportRange_failure() throws Exception {
-
-
-        ExportCommand exportCommand = prepareCommand("1-3", INVALID_PATH);
-
-        String expectedMessage = ExportCommand.MESSAGE_EXPORT_FAIL;
-
-        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
-
-        assertCommandSuccess(exportCommand, model, expectedMessage, expectedModel);
     }
 
     @Test

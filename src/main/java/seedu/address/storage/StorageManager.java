@@ -9,10 +9,12 @@ import com.google.common.eventbus.Subscribe;
 import seedu.address.commons.core.ComponentManager;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.model.AddressBookChangedEvent;
+import seedu.address.commons.events.model.RemindersChangedEvent;
 import seedu.address.commons.events.storage.DataSavingExceptionEvent;
 import seedu.address.commons.exceptions.DataConversionException;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.UserPrefs;
+import seedu.address.model.reminders.UniqueReminderList;
 
 /**
  * Manages storage of AddressBook data in local storage.
@@ -22,10 +24,13 @@ public class StorageManager extends ComponentManager implements Storage {
     private static final Logger logger = LogsCenter.getLogger(StorageManager.class);
     private AddressBookStorage addressBookStorage;
     private UserPrefsStorage userPrefsStorage;
+    private RemindersStorage remindersStorage;
 
 
-    public StorageManager(AddressBookStorage addressBookStorage, UserPrefsStorage userPrefsStorage) {
+    public StorageManager(AddressBookStorage addressBookStorage, RemindersStorage remindersStorage,
+                          UserPrefsStorage userPrefsStorage) {
         super();
+        this.remindersStorage = remindersStorage;
         this.addressBookStorage = addressBookStorage;
         this.userPrefsStorage = userPrefsStorage;
     }
@@ -77,7 +82,6 @@ public class StorageManager extends ComponentManager implements Storage {
         addressBookStorage.saveAddressBook(addressBook, filePath);
     }
 
-
     @Override
     @Subscribe
     public void handleAddressBookChangedEvent(AddressBookChangedEvent event) {
@@ -90,8 +94,50 @@ public class StorageManager extends ComponentManager implements Storage {
     }
 
     @Override
+    @Subscribe
+    public void handleRemindersChangedEvent(RemindersChangedEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event, "Local reminders data changed,"
+                + " saving to file"));
+
+        try{
+            saveReminders(event.reminderList);
+        } catch (IOException e) {
+            raise (new DataSavingExceptionEvent(e));
+        }
+    }
+
+    @Override
     public void backupAddressBook(ReadOnlyAddressBook addressBook) throws IOException {
         saveAddressBook(addressBook, addressBookStorage.getAddressBookFilePath() + "-backup.xml");
+    }
+
+    // ================ Reminders methods ==============================
+
+    @Override
+    public String getRemindersFilePath() {
+        return remindersStorage.getRemindersFilePath();
+    }
+
+    @Override
+    public Optional<XmlSerializableReminders> readReminders() throws DataConversionException, IOException {
+        return readReminders(remindersStorage.getRemindersFilePath());
+    }
+
+    @Override
+    public Optional<XmlSerializableReminders> readReminders(String filePath) throws DataConversionException, IOException {
+        logger.fine("Attempting to read data from file: " + filePath);
+        return remindersStorage.readReminders(filePath);
+    }
+
+    @Override
+    public void saveReminders(UniqueReminderList reminderList) throws IOException {
+        saveReminders(reminderList, remindersStorage.getRemindersFilePath());
+    }
+
+    @Override
+    public void saveReminders(UniqueReminderList reminderList, String filePath) throws IOException {
+        logger.fine("Attempting to write to data file: " + filePath);
+        remindersStorage.saveReminders(reminderList, filePath);
     }
 
 }

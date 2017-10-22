@@ -15,12 +15,17 @@ import javafx.collections.transformation.SortedList;
 import seedu.address.commons.core.ComponentManager;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.model.AddressBookChangedEvent;
+import seedu.address.commons.events.model.RemindersChangedEvent;
 import seedu.address.model.person.BirthdayInCurrentMonthPredicate;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.ReadOnlyPerson;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
+import seedu.address.model.reminders.exceptions.DuplicateReminderException;
+import seedu.address.model.reminders.Reminder;
+import seedu.address.model.reminders.UniqueReminderList;
 import seedu.address.model.tag.Tag;
+import seedu.address.storage.XmlSerializableReminders;
 
 /**
  * Represents the in-memory model of the address book data.
@@ -32,6 +37,7 @@ public class ModelManager extends ComponentManager implements Model {
     private final AddressBook addressBook;
     private final FilteredList<ReadOnlyPerson> filteredPersons;
     private final FilteredList<ReadOnlyPerson> filteredPersonsForBirthdayListPanel;
+    private final UniqueReminderList reminderList;
 
     private SortedList<ReadOnlyPerson> sortedfilteredPersons;
     private SortedList<ReadOnlyPerson> sortedFilteredPersonsForBirthdayListPanel;
@@ -39,13 +45,15 @@ public class ModelManager extends ComponentManager implements Model {
     /**
      * Initializes a ModelManager with the given addressBook and userPrefs.
      */
-    public ModelManager(ReadOnlyAddressBook addressBook, UserPrefs userPrefs) {
+    public ModelManager(ReadOnlyAddressBook addressBook, XmlSerializableReminders reminders, UserPrefs userPrefs) {
         super();
-        requireAllNonNull(addressBook, userPrefs);
+        requireAllNonNull(addressBook, reminders, userPrefs);
 
-        logger.fine("Initializing with address book: " + addressBook + " and user prefs " + userPrefs);
+        logger.fine("Initializing with address book: " + addressBook +  " and reminders " + reminders +
+                " and user prefs " + userPrefs);
 
         this.addressBook = new AddressBook(addressBook);
+        this.reminderList = new UniqueReminderList(reminders);
         filteredPersons = new FilteredList<>(this.addressBook.getPersonList());
         filteredPersonsForBirthdayListPanel = new FilteredList<>(this.addressBook.getPersonList());
         filteredPersonsForBirthdayListPanel.setPredicate(new BirthdayInCurrentMonthPredicate());
@@ -56,7 +64,7 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     public ModelManager() {
-        this(new AddressBook(), new UserPrefs());
+        this(new AddressBook(), new XmlSerializableReminders(), new UserPrefs());
     }
 
     @Override
@@ -73,6 +81,11 @@ public class ModelManager extends ComponentManager implements Model {
     /** Raises an event to indicate the model has changed */
     private void indicateAddressBookChanged() {
         raise(new AddressBookChangedEvent(addressBook));
+    }
+
+    /** Raises an event to indicate the reminders have changed */
+    private void indicateRemindersChanged() {
+        raise(new RemindersChangedEvent(reminderList));
     }
 
     @Override
@@ -145,6 +158,19 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public ObservableList<ReadOnlyPerson> getBirthdayPanelFilteredPersonList() {
         return FXCollections.unmodifiableObservableList(sortedFilteredPersonsForBirthdayListPanel);
+    }
+
+    //=========== UniqueReminderList Accessors =================================================================
+
+    @Override
+    public ObservableList<Reminder> getReminderList() {
+        return reminderList.asObservableList();
+    }
+
+    @Override
+    public void addReminder(Reminder toAdd) throws DuplicateReminderException {
+        reminderList.add(toAdd);
+        indicateRemindersChanged();
     }
 
     @Override

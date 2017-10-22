@@ -6,6 +6,8 @@ import javafx.collections.ObservableList;
 import seedu.address.model.person.ReadOnlyPerson;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
+import seedu.address.model.reminders.exceptions.DuplicateReminderException;
+import seedu.address.model.reminders.Reminder;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -21,11 +23,17 @@ public interface Model {
     /** Returns the AddressBook */
     ReadOnlyAddressBook getAddressBook();
 
+    /** Returns an unmodifiable view of the list of reminders */
+    ObservableList<Reminder> getReminderList();
+
     /** Deletes the given person. */
     void deletePerson(ReadOnlyPerson target) throws PersonNotFoundException;
 
     /** Adds the given person */
     void addPerson(ReadOnlyPerson person) throws DuplicatePersonException;
+
+    /** Adds the given reminder */
+    void addReminder(Reminder reminder) throws DuplicateReminderException;
 
     /** Deletes the tag from all people in Address Book**/
     void deleteTag(Tag target) throws DuplicatePersonException, PersonNotFoundException;

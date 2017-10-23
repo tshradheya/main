@@ -9,6 +9,7 @@ import static seedu.address.testutil.TypicalPersons.DANIEL;
 import static seedu.address.testutil.TypicalPersons.ELLE;
 import static seedu.address.testutil.TypicalPersons.FIONA;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
+import static seedu.address.testutil.TypicalReminders.getUniqueTypicalReminders;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -27,7 +28,7 @@ import seedu.address.model.person.ReadOnlyPerson;
 
 public class FilterCommandTest {
 
-    private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+    private Model model = new ModelManager(getTypicalAddressBook(), getUniqueTypicalReminders(), new UserPrefs());
 
     @Test
     public void execute_nonExistentNameKeyword_noPersonFound() throws Exception {

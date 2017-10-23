@@ -1,6 +1,7 @@
 package seedu.address.logic.commands;
 
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
+import static seedu.address.testutil.TypicalReminders.getUniqueTypicalReminders;
 import static seedu.address.testutil.UnsortedPersons.getUnsortedAddressBook;
 
 import org.junit.Before;
@@ -19,8 +20,8 @@ public class SortCommandTest {
 
     @Before
     public void setUp() {
-        model = new ModelManager(getUnsortedAddressBook(), new UserPrefs());
-        expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+        model = new ModelManager(getUnsortedAddressBook(), getUniqueTypicalReminders(), new UserPrefs());
+        expectedModel = new ModelManager(model.getAddressBook(), model.getUniqueReminderList(), new UserPrefs());
 
         sortCommand = new SortCommand();
         sortCommand.setData(model, new CommandHistory(), new UndoRedoStack());

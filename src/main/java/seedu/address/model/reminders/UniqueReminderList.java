@@ -7,7 +7,6 @@ import java.util.List;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import seedu.address.commons.util.CollectionUtil;
 import seedu.address.model.reminders.exceptions.DuplicateReminderException;
 import seedu.address.model.reminders.exceptions.ReminderNotFoundException;
 import seedu.address.storage.XmlSerializableReminders;
@@ -18,7 +17,6 @@ import seedu.address.storage.XmlSerializableReminders;
  * Supports a minimal set of list operations.
  *
  * @see Reminder#equals(Object)
- * @see CollectionUtil#elementsAreUnique(Collection)
  */
 public class UniqueReminderList implements Iterable<Reminder> {
     private final ObservableList<Reminder> internalList = FXCollections.observableArrayList();
@@ -97,5 +95,17 @@ public class UniqueReminderList implements Iterable<Reminder> {
     @Override
     public Iterator<Reminder> iterator() {
         return internalList.iterator();
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return other == this // short circuit if same object
+                || (other instanceof UniqueReminderList // instanceof handles nulls
+                && this.internalList.equals(((UniqueReminderList) other).internalList));
+    }
+
+    @Override
+    public int hashCode() {
+        return internalList.hashCode();
     }
 }

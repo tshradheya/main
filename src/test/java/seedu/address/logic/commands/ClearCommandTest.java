@@ -3,6 +3,7 @@ package seedu.address.logic.commands;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 import static seedu.address.testutil.TypicalReminders.getTypicalReminders;
+import static seedu.address.testutil.TypicalReminders.getUniqueTypicalReminders;
 
 import java.util.List;
 
@@ -26,8 +27,7 @@ public class ClearCommandTest {
 
     @Test
     public void execute_nonEmptyAddressBook_success() throws Exception {
-        List<Reminder> listOfReminders = getTypicalReminders();
-        Model model = new ModelManager(getTypicalAddressBook(), new XmlSerializableReminders(listOfReminders), new UserPrefs());
+        Model model = new ModelManager(getTypicalAddressBook(), getUniqueTypicalReminders(), new UserPrefs());
         assertCommandSuccess(prepareCommand(model), model, ClearCommand.MESSAGE_SUCCESS, model);
     }
 

@@ -226,7 +226,7 @@ public class AddressBookParserTest {
         Theme theme = new Theme(ThemeNames.THEME_DARK, ThemeNames.THEME_DARK_CSS);
         assertEquals(new ThemeCommand(theme), command);
     }
-  
+
     @Test
     public void parseCommand_displayPicture() throws  Exception {
         final DisplayPicture displayPicture  = new DisplayPicture(Integer.toString(VALID_EMAIL_AMY.hashCode()));

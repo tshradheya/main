@@ -50,7 +50,8 @@ public class DisplayPictureCommandTest {
 
         String expectedMessage = String.format(DisplayPictureCommand.MESSAGE_ADD_DISPLAYPICTURE_SUCCESS, editedPerson);
 
-        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), getUniqueTypicalReminders(), new UserPrefs());
+        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()),
+                getUniqueTypicalReminders(), new UserPrefs());
         expectedModel.updatePerson(model.getFilteredPersonList().get(0), editedPerson);
 
         assertCommandSuccess(displayPictureCommand, model, expectedMessage, expectedModel);
@@ -66,7 +67,8 @@ public class DisplayPictureCommandTest {
 
         String expectedMessage = String.format(DisplayPictureCommand.MESSAGE_IMAGE_PATH_FAIL, editedPerson);
 
-        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), getUniqueTypicalReminders(), new UserPrefs());
+        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()),
+                getUniqueTypicalReminders(), new UserPrefs());
         expectedModel.updatePerson(model.getFilteredPersonList().get(0), editedPerson);
 
         assertCommandSuccess(displayPictureCommand, model, expectedMessage, expectedModel);
@@ -80,9 +82,11 @@ public class DisplayPictureCommandTest {
         DisplayPictureCommand displayPictureCommand = prepareCommand(INDEX_FIRST_PERSON,
                 "");
 
-        String expectedMessage = String.format(DisplayPictureCommand.MESSAGE_DELETE_DISPLAYPICTURE_SUCCESS, editedPerson);
+        String expectedMessage = String.format(DisplayPictureCommand.MESSAGE_DELETE_DISPLAYPICTURE_SUCCESS,
+                editedPerson);
 
-        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), getUniqueTypicalReminders(), new UserPrefs());
+        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()),
+                getUniqueTypicalReminders(), new UserPrefs());
         expectedModel.updatePerson(model.getFilteredPersonList().get(0), editedPerson);
 
         assertCommandSuccess(displayPictureCommand, model, expectedMessage, expectedModel);

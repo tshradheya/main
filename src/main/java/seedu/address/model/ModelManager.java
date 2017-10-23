@@ -74,6 +74,12 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
+    public void resetReminders(UniqueReminderList newReminders) {
+        reminderList.setReminders(newReminders);
+        indicateRemindersChanged();
+    }
+
+    @Override
     public ReadOnlyAddressBook getAddressBook() {
         return addressBook;
     }
@@ -165,6 +171,11 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public ObservableList<Reminder> getReminderList() {
         return reminderList.asObservableList();
+    }
+
+    @Override
+    public UniqueReminderList getUniqueReminderList() {
+        return reminderList;
     }
 
     @Override

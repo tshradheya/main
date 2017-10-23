@@ -21,11 +21,17 @@ public interface Model {
     /** Clears existing backing model and replaces with the provided new data. */
     void resetData(ReadOnlyAddressBook newData);
 
+    /** Clears existing backing model and replaces with the provided new reminders. */
+    void resetReminders(UniqueReminderList newReminders);
+
     /** Returns the AddressBook */
     ReadOnlyAddressBook getAddressBook();
 
     /** Returns an unmodifiable view of the list of reminders */
     ObservableList<Reminder> getReminderList();
+
+    /** Returns the reminders */
+    UniqueReminderList getUniqueReminderList();
 
     /** Deletes the given person. */
     void deletePerson(ReadOnlyPerson target) throws PersonNotFoundException;

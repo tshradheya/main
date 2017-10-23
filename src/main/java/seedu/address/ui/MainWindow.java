@@ -241,7 +241,7 @@ public class MainWindow extends UiPart<Region> {
     private void changeTheme(Theme theme) {
         Scene scene = primaryStage.getScene();
         scene.getStylesheets().clear();
-        scene.getStylesheets().add("view/" + theme.getCSS());
+        scene.getStylesheets().add("view/" + theme.getCss());
         scene.getStylesheets().add(STYLE);
     }
 }

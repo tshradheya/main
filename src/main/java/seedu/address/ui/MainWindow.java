@@ -238,6 +238,9 @@ public class MainWindow extends UiPart<Region> {
         changeTheme(event.theme);
     }
 
+    /**
+     * Changes the theme
+     */
     private void changeTheme(Theme theme) {
         Scene scene = primaryStage.getScene();
         scene.getStylesheets().clear();

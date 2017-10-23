@@ -11,7 +11,7 @@ import seedu.address.model.reminders.Reminder;
  * An UI component that displays the content, date and time of a Reminder.
  */
 public class ReminderCard extends UiPart<Region> {
-    private static final String FXML = "ReminderListCard.fxml";
+    private static final String FXML = "ReminderCard.fxml";
     public final Reminder source;
 
     @FXML

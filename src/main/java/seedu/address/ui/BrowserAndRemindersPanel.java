@@ -48,7 +48,7 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
     private WebView browser;
 
     @FXML
-    private StackPane RemindersPanel;
+    private StackPane remindersPanel;
 
     public BrowserAndRemindersPanel(ObservableList<ReadOnlyPerson> birthdayPanelFilteredPersonList,
                                     ObservableList<Reminder> reminderList) {
@@ -61,8 +61,8 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
 
         birthdayAndReminderListPanel = new BirthdayAndReminderListPanel(birthdayPanelFilteredPersonList, reminderList);
 
-        //RemindersPanel should be displayed first so no need to shift it to the back.
-        RemindersPanel.getChildren().add(birthdayAndReminderListPanel.getRoot());
+        //remindersPanel should be displayed first so no need to shift it to the back.
+        remindersPanel.getChildren().add(birthdayAndReminderListPanel.getRoot());
         registerAsAnEventHandler(this);
     }
 
@@ -96,7 +96,7 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
     private void toggleBrowserPanel() {
         switch(currentlyInFront) {
         case BROWSER:
-            RemindersPanel.toFront();
+            remindersPanel.toFront();
             currentlyInFront = Node.REMINDERS;
             raise(new TurnLabelsOnEvent());
             break;

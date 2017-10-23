@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 
 
 import seedu.address.commons.exceptions.IllegalValueException;
+
 import seedu.address.logic.commands.AddReminderCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.reminders.DueDate;
@@ -30,21 +31,21 @@ public class AddReminderCommandParser implements Parser<AddReminderCommand> {
 
         String[] splitArgs = args.trim().split(ARGUMENT_SPLIT_REGEX);
         if (splitArgs.length < REMINDER_SMALLEST_SEGMENT_NUMBER) {
-           throw new ParseException("Format invalid.\n" + AddReminderCommand.MESSAGE_USAGE);
+            throw new ParseException("Format invalid.\n" + AddReminderCommand.MESSAGE_USAGE);
         }
         userInputTime = splitArgs[splitArgs.length - 1];
         userInputDate = splitArgs[splitArgs.length - 2];
         StringBuilder builder = new StringBuilder();
-        for (int i=0; i<splitArgs.length - 2; i++) {
+        for (int i = 0; i < splitArgs.length - 2; i++) {
             builder.append(splitArgs[i]);
             builder.append(" ");
         }
         reminder = builder.toString().trim();
 
         try {
-           DueDate dueDate = new DueDate(userInputDate, userInputTime);
-           Reminder toAdd = new Reminder(reminder, dueDate);
-           return new AddReminderCommand(toAdd);
+            DueDate dueDate = new DueDate(userInputDate, userInputTime);
+            Reminder toAdd = new Reminder(reminder, dueDate);
+            return new AddReminderCommand(toAdd);
         } catch (IllegalValueException ive) {
             throw new ParseException(ive.getMessage());
         }

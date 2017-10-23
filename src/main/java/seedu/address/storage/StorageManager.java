@@ -99,7 +99,7 @@ public class StorageManager extends ComponentManager implements Storage {
         logger.info(LogsCenter.getEventHandlingLogMessage(event, "Local reminders data changed,"
                 + " saving to file"));
 
-        try{
+        try {
             saveReminders(event.reminderList);
         } catch (IOException e) {
             raise (new DataSavingExceptionEvent(e));

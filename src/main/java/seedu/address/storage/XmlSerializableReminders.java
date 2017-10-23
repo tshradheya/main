@@ -34,6 +34,10 @@ public class XmlSerializableReminders {
         reminders.addAll(source.stream().map(XmlAdaptedReminder::new).collect(Collectors.toList()));
     }
 
+    /**
+     * Converts this jaxb-friendly list of XmlAdaptedReminder into a list of
+     * the model's Reminder objects.
+     */
     public List<Reminder> toModelType() {
         final List<Reminder> listOfReminders = new ArrayList<>();
         for (XmlAdaptedReminder reminder : reminders) {

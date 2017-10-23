@@ -25,7 +25,8 @@ public class BirthdayAndReminderListPanel extends UiPart<Region> {
     @FXML
     private ListView<ReminderCard> reminderListView;
 
-    public BirthdayAndReminderListPanel(ObservableList<ReadOnlyPerson> birthdayList, ObservableList<Reminder> reminderList) {
+    public BirthdayAndReminderListPanel(ObservableList<ReadOnlyPerson> birthdayList,
+                                        ObservableList<Reminder> reminderList) {
         super(FXML);
         setConnections(birthdayList, reminderList);
         registerAsAnEventHandler(this);

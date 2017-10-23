@@ -3,8 +3,8 @@ package seedu.address.logic.commands;
 import static java.util.Objects.requireNonNull;
 
 import seedu.address.logic.commands.exceptions.CommandException;
-import seedu.address.model.reminders.exceptions.DuplicateReminderException;
 import seedu.address.model.reminders.Reminder;
+import seedu.address.model.reminders.exceptions.DuplicateReminderException;
 
 /**
  *  Adds a reminder to the program.
@@ -41,7 +41,7 @@ public class AddReminderCommand extends Command {
             model.addReminder(toAdd);
             return new CommandResult(MESSAGE_SUCCESS);
         } catch (DuplicateReminderException dre) {
-           throw new CommandException(MESSAGE_DUPLICATE_REMINDER);
+            throw new CommandException(MESSAGE_DUPLICATE_REMINDER);
         }
     }
 

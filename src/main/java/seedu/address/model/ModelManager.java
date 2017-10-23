@@ -21,11 +21,10 @@ import seedu.address.model.person.Person;
 import seedu.address.model.person.ReadOnlyPerson;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
-import seedu.address.model.reminders.exceptions.DuplicateReminderException;
 import seedu.address.model.reminders.Reminder;
 import seedu.address.model.reminders.UniqueReminderList;
+import seedu.address.model.reminders.exceptions.DuplicateReminderException;
 import seedu.address.model.tag.Tag;
-import seedu.address.storage.XmlSerializableReminders;
 
 /**
  * Represents the in-memory model of the address book data.
@@ -50,8 +49,8 @@ public class ModelManager extends ComponentManager implements Model {
         super();
         requireAllNonNull(addressBook, reminders, userPrefs);
 
-        logger.fine("Initializing with address book: " + addressBook +  " and reminders " + reminders +
-                " and user prefs " + userPrefs);
+        logger.fine("Initializing with address book: " + addressBook +  " and reminders " + reminders
+                + " and user prefs " + userPrefs);
 
         this.addressBook = new AddressBook(addressBook);
         this.reminderList = reminders;

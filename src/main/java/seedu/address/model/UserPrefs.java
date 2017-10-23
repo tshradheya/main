@@ -11,6 +11,7 @@ public class UserPrefs {
 
     private GuiSettings guiSettings;
     private String addressBookFilePath = "data/addressbook.xml";
+    private String addressBookPicturesPath = "pictures/default.png";
     private String addressBookName = "MyAddressBook";
     private String themePath = "view/DarkTheme.css";
 
@@ -34,8 +35,16 @@ public class UserPrefs {
         return addressBookFilePath;
     }
 
+    public String getAddressBookPicturesPath() {
+        return addressBookPicturesPath;
+    }
+
     public void setAddressBookFilePath(String addressBookFilePath) {
         this.addressBookFilePath = addressBookFilePath;
+    }
+
+    public void setAddressBookPicturesPath(String addressBookPicturesPath) {
+        this.addressBookPicturesPath = addressBookPicturesPath;
     }
 
     public String getAddressBookName() {
@@ -67,12 +76,13 @@ public class UserPrefs {
 
         return Objects.equals(guiSettings, o.guiSettings)
                 && Objects.equals(addressBookFilePath, o.addressBookFilePath)
+                && Objects.equals(addressBookPicturesPath, o.addressBookPicturesPath)
                 && Objects.equals(addressBookName, o.addressBookName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(guiSettings, addressBookFilePath, addressBookName);
+        return Objects.hash(guiSettings, addressBookFilePath, addressBookPicturesPath, addressBookName);
     }
 
     @Override

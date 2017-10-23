@@ -6,8 +6,13 @@ import static org.junit.Assert.fail;
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
 import static seedu.address.logic.commands.CommandTestUtil.NICKNAME_DESC_AMY;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_EMAIL_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NICKNAME_AMY;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_PATH;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_RANGE;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
+import static seedu.address.testutil.TypicalPath.PATH_EXPORT;
+import static seedu.address.testutil.TypicalRange.RANGE_ALL;
 
 import java.util.Arrays;
 import java.util.List;
@@ -20,9 +25,12 @@ import org.junit.rules.ExpectedException;
 import seedu.address.logic.commands.AddCommand;
 import seedu.address.logic.commands.ClearCommand;
 import seedu.address.logic.commands.DeleteCommand;
+import seedu.address.logic.commands.DisplayPictureCommand;
 import seedu.address.logic.commands.EditCommand;
 import seedu.address.logic.commands.EditCommand.EditPersonDescriptor;
 import seedu.address.logic.commands.ExitCommand;
+import seedu.address.logic.commands.ExportCommand;
+import seedu.address.logic.commands.FilterCommand;
 import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.HistoryCommand;
@@ -32,9 +40,12 @@ import seedu.address.logic.commands.RedoCommand;
 import seedu.address.logic.commands.SelectCommand;
 import seedu.address.logic.commands.SortCommand;
 import seedu.address.logic.commands.ThemeCommand;
+import seedu.address.logic.commands.ToggleCommand;
 import seedu.address.logic.commands.UndoCommand;
 import seedu.address.logic.commands.ViewTagCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.person.DisplayPicture;
+import seedu.address.model.person.NameAndTagsContainsKeywordsPredicate;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
 import seedu.address.model.person.Nickname;
 import seedu.address.model.person.Person;
@@ -135,6 +146,12 @@ public class AddressBookParserTest {
     }
 
     @Test
+    public void parseCommand_toggle() throws Exception {
+        assertTrue(parser.parseCommand(ToggleCommand.COMMAND_WORD) instanceof ToggleCommand);
+        assertTrue(parser.parseCommand(ToggleCommand.COMMAND_WORD + " 3") instanceof ToggleCommand);
+    }
+
+    @Test
     public void parseCommand_viewtag() throws Exception {
         String keyword = "foo";
         ViewTagCommand command = (ViewTagCommand) parser.parseCommand(ViewTagCommand.COMMAND_WORD + " " + keyword);
@@ -209,6 +226,17 @@ public class AddressBookParserTest {
         Theme theme = new Theme(ThemeNames.THEME_DARK, ThemeNames.THEME_DARK_CSS);
         assertEquals(new ThemeCommand(theme), command);
     }
+  
+    @Test
+    public void parseCommand_displayPicture() throws  Exception {
+        final DisplayPicture displayPicture  = new DisplayPicture(Integer.toString(VALID_EMAIL_AMY.hashCode()));
+
+        DisplayPictureCommand displayPictureCommand =
+                (DisplayPictureCommand) parser.parseCommand(DisplayPictureCommand.COMMAND_WORD + " "
+                + INDEX_FIRST_PERSON.getOneBased() + " " + displayPicture.getPath());
+
+        assertEquals(new DisplayPictureCommand(INDEX_FIRST_PERSON, displayPicture), displayPictureCommand);
+    }
 
     @Test
     public void parseAliasCommand_list() throws Exception {
@@ -228,6 +256,15 @@ public class AddressBookParserTest {
         SelectCommand command = (SelectCommand) parser.parseCommand(
                 SelectCommand.COMMAND_ALIAS + " " + INDEX_FIRST_PERSON.getOneBased());
         assertEquals(new SelectCommand(INDEX_FIRST_PERSON), command);
+    }
+
+    @Test
+    public void parseCommand_filter() throws Exception {
+        List<String> nameKeywords = Arrays.asList("foo", "bar", "baz");
+        List<String> tagKeywords = Arrays.asList("friends");
+        FilterCommand command = (FilterCommand) parser.parseCommand(
+                FilterCommand.COMMAND_WORD + " n/foo bar baz t/friends");
+        assertEquals(new FilterCommand(new NameAndTagsContainsKeywordsPredicate(nameKeywords, tagKeywords)), command);
     }
 
     @Test
@@ -266,5 +303,12 @@ public class AddressBookParserTest {
         thrown.expect(ParseException.class);
         thrown.expectMessage(MESSAGE_UNKNOWN_COMMAND);
         parser.parseCommand("unknownCommand");
+    }
+
+    @Test
+    public void parseCommand_export() throws Exception {
+        ExportCommand command = (ExportCommand) parser.parseCommand(ExportCommand.COMMAND_WORD + " "
+            + PREFIX_RANGE + RANGE_ALL + " " + PREFIX_PATH + PATH_EXPORT);
+        assertEquals(new ExportCommand(RANGE_ALL, PATH_EXPORT), command);
     }
 }

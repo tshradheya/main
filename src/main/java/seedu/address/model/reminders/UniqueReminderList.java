@@ -79,7 +79,7 @@ public class UniqueReminderList implements Iterable<Reminder> {
 
     public void setReminders(List<Reminder> reminders) throws DuplicateReminderException {
         final UniqueReminderList replacement = new UniqueReminderList();
-        for(final Reminder reminder : reminders) {
+        for (final Reminder reminder : reminders) {
             replacement.add(new Reminder(reminder));
         }
         setReminders(replacement);

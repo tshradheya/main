@@ -36,7 +36,7 @@ public class XmlSerializableReminders {
 
     public List<Reminder> toModelType() {
         final List<Reminder> listOfReminders = new ArrayList<>();
-        for(XmlAdaptedReminder reminder : reminders) {
+        for (XmlAdaptedReminder reminder : reminders) {
             listOfReminders.add(reminder.toModelType());
         }
         return listOfReminders;

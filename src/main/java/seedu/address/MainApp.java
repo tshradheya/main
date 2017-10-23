@@ -27,6 +27,7 @@ import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.reminders.UniqueReminderList;
 import seedu.address.model.util.SampleDataUtil;
+import seedu.address.storage.AddressBookPictureStorage;
 import seedu.address.storage.AddressBookStorage;
 import seedu.address.storage.JsonUserPrefsStorage;
 import seedu.address.storage.RemindersStorage;
@@ -68,6 +69,9 @@ public class MainApp extends Application {
         AddressBookStorage addressBookStorage = new XmlAddressBookStorage(userPrefs.getAddressBookFilePath());
         RemindersStorage reminderStorage = new XmlRemindersStorage(userPrefs.getRemindersFilePath());
         storage = new StorageManager(addressBookStorage, reminderStorage, userPrefsStorage);
+        AddressBookPictureStorage addressBookPictureStorage =
+                new AddressBookPictureStorage(userPrefs.getAddressBookPicturesPath());
+        addressBookPictureStorage.createPictureStorageFolder();
 
         initLogging(config);
 
@@ -84,6 +88,7 @@ public class MainApp extends Application {
         Map<String, String> applicationParameters = getParameters().getNamed();
         return applicationParameters.get(parameterName);
     }
+
 
     /**
      * Returns a {@code ModelManager} with the data from {@code storage}'s address book and {@code userPrefs}. <br>

@@ -1,6 +1,5 @@
 package seedu.address.ui;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -96,20 +95,22 @@ public class PersonCard extends UiPart<Region> {
     }
 
     /**
-     *  Assigns URL to the image depending on the path
-     *
+     * Assigns URL to the image depending on the path
      */
     private void assignImage(ReadOnlyPerson person) {
 
-        String url = "src\\main\\resources\\pictures\\" + person.getDisplayPicture().getPath() + ".jpg";
+        if (!person.getDisplayPicture().getPath().equals("")) {
 
-        File fileImageStored = new File(url);
-        Image image = new Image(fileImageStored.toURI().toString(), 100, 100, false, false);
-        centerImage();
+            Image image = new Image("file:" + "pictures/" + person.getDisplayPicture().getPath() + ".png",
+                    100, 100, false, false);
 
-        displayPicture.setImage(image);
+            centerImage();
+            displayPicture.setImage(image);
 
+        }
     }
+
+
 
     /**
      * Centre the image in ImageView

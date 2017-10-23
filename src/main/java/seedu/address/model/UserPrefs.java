@@ -12,6 +12,7 @@ public class UserPrefs {
     private GuiSettings guiSettings;
     private String addressBookFilePath = "data/addressbook.xml";
     private String remindersFilePath = "data/reminders.xml";
+    private String addressBookPicturesPath = "pictures/default.png";
     private String addressBookName = "MyAddressBook";
 
     public UserPrefs() {
@@ -43,8 +44,16 @@ public class UserPrefs {
         return addressBookFilePath;
     }
 
+    public String getAddressBookPicturesPath() {
+        return addressBookPicturesPath;
+    }
+
     public void setAddressBookFilePath(String addressBookFilePath) {
         this.addressBookFilePath = addressBookFilePath;
+    }
+
+    public void setAddressBookPicturesPath(String addressBookPicturesPath) {
+        this.addressBookPicturesPath = addressBookPicturesPath;
     }
 
     public String getAddressBookName() {
@@ -69,12 +78,14 @@ public class UserPrefs {
         return Objects.equals(guiSettings, o.guiSettings)
                 && Objects.equals(addressBookFilePath, o.addressBookFilePath)
                 && Objects.equals(remindersFilePath, o.remindersFilePath)
+                && Objects.equals(addressBookPicturesPath, o.addressBookPicturesPath)
                 && Objects.equals(addressBookName, o.addressBookName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(guiSettings, addressBookFilePath, remindersFilePath, addressBookName);
+        return Objects.hash(guiSettings, addressBookFilePath, addressBookPicturesPath,
+                            remindersFilePath, addressBookName);
     }
 
     @Override

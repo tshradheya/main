@@ -1,6 +1,7 @@
 package seedu.address.logic;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 import javafx.collections.ObservableList;
 import seedu.address.logic.commands.CommandResult;
@@ -20,7 +21,7 @@ public interface Logic {
      * @throws CommandException If an error occurs during command execution.
      * @throws ParseException If an error occurs during parsing.
      */
-    CommandResult execute(String commandText) throws CommandException, ParseException, IOException;
+    CommandResult execute(String commandText) throws CommandException, ParseException, IOException, URISyntaxException;
 
     /** Returns an unmodifiable view of the filtered list of persons */
     ObservableList<ReadOnlyPerson> getFilteredPersonList();

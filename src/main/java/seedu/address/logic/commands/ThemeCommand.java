@@ -2,10 +2,12 @@ package seedu.address.logic.commands;
 
 import seedu.address.commons.core.EventsCenter;
 import seedu.address.commons.events.ui.ChangeThemeRequestEvent;
-import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.Theme;
 import seedu.address.logic.parser.ThemeNames;
 
+/**
+ * Changes the theme of the address book.
+ */
 public class ThemeCommand extends Command {
 
     public static final String COMMAND_WORD = "theme";
@@ -17,9 +19,9 @@ public class ThemeCommand extends Command {
             + ThemeNames.THEME_SKY + "\n"
             + "Example: " + COMMAND_WORD + " dark";
 
-    private final Theme theme;
-
     public static final String MESSAGE_SET_THEME_SUCCESS = "Successfully set theme: %1$s";
+
+    private final Theme theme;
 
     public ThemeCommand(Theme theme) {
         this.theme = theme;

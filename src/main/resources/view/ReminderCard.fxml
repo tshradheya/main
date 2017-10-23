@@ -27,7 +27,7 @@
                 </Label>
                 <Label fx:id="reminder" styleClass="cell_big_label" text="\$reminder" />
             </HBox>
-            <Label fx:id="duedate" styleClass="cell_big_label" text="\$duedate" />
+            <Label fx:id="dueDate" styleClass="cell_big_label" text="\$duedate" />
         </VBox>
         <rowConstraints>
             <RowConstraints />

@@ -21,7 +21,7 @@ public class ReminderCard extends UiPart<Region> {
     @FXML
     private Label id;
     @FXML
-    private Label duedate;
+    private Label dueDate;
 
     public ReminderCard(Reminder reminder, int displayedIndex) {
         super(FXML);
@@ -36,6 +36,24 @@ public class ReminderCard extends UiPart<Region> {
      */
     private void bindListeners(Reminder source) {
         reminder.textProperty().bind(Bindings.convert(source.reminderProperty()));
-        duedate.textProperty().bind(Bindings.convert(source.dueDateProperty()));
+        dueDate.textProperty().bind(Bindings.convert(source.dueDateProperty()));
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        // short circuit if same object
+        if (other == this) {
+            return true;
+        }
+
+        // instanceof handles nulls
+        if (!(other instanceof ReminderCard)) {
+            return false;
+        }
+
+        // state check
+        ReminderCard card = (ReminderCard) other;
+        return id.getText().equals(card.id.getText())
+                && source.equals(card.source);
     }
 }

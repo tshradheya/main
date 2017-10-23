@@ -17,8 +17,8 @@ public class ReminderBuilder {
 
     public ReminderBuilder() {
         try {
-           DueDate dueDate = new DueDate(DEFAULT_DATE, DEFAULT_TIME);
-           this.reminder = new Reminder(DEFAULT_REMINDER, dueDate);
+            DueDate dueDate = new DueDate(DEFAULT_DATE, DEFAULT_TIME);
+            this.reminder = new Reminder(DEFAULT_REMINDER, dueDate);
         } catch (IllegalValueException ive) {
             throw new AssertionError("Default values cannot be wrong!");
         }

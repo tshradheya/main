@@ -27,8 +27,8 @@ public interface Model {
     /** Returns the AddressBook */
     ReadOnlyAddressBook getAddressBook();
 
-    /** Returns an unmodifiable view of the list of reminders */
-    ObservableList<Reminder> getReminderList();
+    /** Returns an unmodifiable view of the sorted list of reminders */
+    ObservableList<Reminder> getSortedReminderList();
 
     /** Returns the reminders */
     UniqueReminderList getUniqueReminderList();

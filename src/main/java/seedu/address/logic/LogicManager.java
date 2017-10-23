@@ -59,7 +59,7 @@ public class LogicManager extends ComponentManager implements Logic {
 
     @Override
     public ObservableList<Reminder> getReminderList() {
-        return model.getReminderList();
+        return model.getSortedReminderList();
     }
 
     @Override

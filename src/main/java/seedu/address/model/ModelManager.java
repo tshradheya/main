@@ -41,6 +41,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     private SortedList<ReadOnlyPerson> sortedfilteredPersons;
     private SortedList<ReadOnlyPerson> sortedFilteredPersonsForBirthdayListPanel;
+    private SortedList<Reminder> sortedReminderList;
 
     /**
      * Initializes a ModelManager with the given addressBook and userPrefs.
@@ -60,6 +61,8 @@ public class ModelManager extends ComponentManager implements Model {
         sortedfilteredPersons = new SortedList<>(filteredPersons);
         sortedFilteredPersonsForBirthdayListPanel = new SortedList<>(filteredPersonsForBirthdayListPanel,
                 Comparator.comparingInt(birthday -> birthday.getBirthday().getDayOfBirthday()));
+        sortedReminderList = new SortedList<>(reminderList.asObservableList(),
+                (Comparator.comparing(reminder -> reminder.getDueDate().getLocalDateTime())));
 
     }
 
@@ -169,8 +172,8 @@ public class ModelManager extends ComponentManager implements Model {
     //=========== UniqueReminderList Accessors =================================================================
 
     @Override
-    public ObservableList<Reminder> getReminderList() {
-        return reminderList.asObservableList();
+    public ObservableList<Reminder> getSortedReminderList() {
+        return sortedReminderList;
     }
 
     @Override

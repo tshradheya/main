@@ -165,7 +165,7 @@ public class AddCommandTest {
         }
 
         @Override
-        public ObservableList<Reminder> getReminderList() {
+        public ObservableList<Reminder> getSortedReminderList() {
             fail("This method should not be called");
             return null;
         }

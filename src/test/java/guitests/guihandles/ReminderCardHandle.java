@@ -3,6 +3,9 @@ package guitests.guihandles;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 
+/**
+ * Provides a handle to a reminder card in the reminder list panel.
+ */
 public class ReminderCardHandle extends NodeHandle<Node> {
     private static final String ID_FIELD_ID = "#id";
     private static final String REMINDER_FIELD_ID = "#reminder";

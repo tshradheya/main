@@ -19,6 +19,12 @@ public class TypicalReminders {
     public static final Reminder DINNER_REMINDER = new ReminderBuilder().withReminder("Dinner with family")
                                                         .withDueDate("25/12/2017", "1800").build();
 
+    // Manually added
+    public static Reminder MEETING_REMINDER = new ReminderBuilder().withReminder("Meet with CS2103 group")
+                                                  .withDueDate("09/09/2017", "1200").build();
+    public static Reminder DENTIST_REMINDER = new ReminderBuilder().withReminder("Go for dental checkup")
+            .withDueDate("10/10/2017", "1400").build();
+
     private TypicalReminders() {} //prevents instantiation
 
     public static List<Reminder> getTypicalReminders() {

@@ -14,7 +14,9 @@ import static seedu.address.ui.UiPart.FXML_FILE_FOLDER;
 import java.net.URL;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import guitests.guihandles.BrowserAndRemindersPanelHandle;
 import javafx.collections.FXCollections;
@@ -27,6 +29,8 @@ import seedu.address.model.person.ReadOnlyPerson;
 public class BrowserAndRemindersPanelTest extends GuiUnitTest {
     private static final ObservableList<ReadOnlyPerson> TYPICAL_PERSONS =
             FXCollections.observableList(getTypicalPersons());
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
 
     private PersonPanelSelectionChangedEvent selectionChangedEventStub;
     private ShowLocationEvent showLocationEventStub;

@@ -198,7 +198,7 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
      * @param subject
      * @param body
      */
-    private void loadEmailUrlGmail(String recipients, String subject, String body) {
+    public void loadEmailUrlGmail(String recipients, String subject, String body) {
         try {
             Desktop.getDesktop().browse(new URI(String.format(GMAIL_EMAIL_URL, recipients, subject, body)));
         } catch (URISyntaxException urise) {

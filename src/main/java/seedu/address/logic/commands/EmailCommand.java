@@ -20,6 +20,8 @@ public class EmailCommand extends Command {
     public static final String COMMAND_WORD = "email";
     public static final String MESSAGE_EMAIL_SENT = "Email .";
     public static final String MESSAGE_NOT_SENT = "Please enter a valid name/tag with a valid Email ID.";
+    public static final String EMAIL_SERVICE_GMAIL = "gmail";
+    public static final String EMAIL_SERVICE_OUTLOOK = "outlook";
     public static final String MESSAGE_USAGE = COMMAND_WORD + ":  people in the Address Book.\n"
             + "The 'to' field is compulsory\n"
             + "The 'to' field can take tag and it only supports one parameter.\n"
@@ -61,11 +63,25 @@ public class EmailCommand extends Command {
         model.processEmailEvent(recipients, subject, body, service);
     }
 
+    /**
+     * Checks if service is one of the offered service of "gmail" or "outlook"
+     * @param service mentioned by the user
+     * @throws ParseException if not an offered service
+     */
+    public void checkServiceValid(Service service) throws ParseException {
+        if (!service.service.equalsIgnoreCase(EMAIL_SERVICE_GMAIL)
+                && !service.service.equalsIgnoreCase(EMAIL_SERVICE_OUTLOOK)) {
+            throw new ParseException("Invalid service");
+        }
+    }
+
 
     @Override
     public CommandResult execute() {
+
         String emailTo = model.createEmailRecipients(predicate);
         try {
+            checkServiceValid(service);
             processEmail(emailTo);
         } catch (ParseException e) {
             e.printStackTrace();

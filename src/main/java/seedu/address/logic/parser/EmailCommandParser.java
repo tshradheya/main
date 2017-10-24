@@ -40,9 +40,9 @@ public class EmailCommandParser implements Parser<EmailCommand> {
             String tagToWhichEmailHasToBeSent =
                     ParserUtil.parseRecipientTag(argMultimap.getValue(PREFIX_EMAIL_TO).get());
             Subject subject = new Subject(String.join("",
-                    argMultimap.getAllValues(PREFIX_EMAIL_SUBJECT)).replace(" ", "%20"));
+                    argMultimap.getAllValues(PREFIX_EMAIL_SUBJECT)).replace(" ", "+"));
             Body body = new Body(String.join("",
-                    argMultimap.getAllValues(PREFIX_EMAIL_BODY)).replace(" ", "%20"));
+                    argMultimap.getAllValues(PREFIX_EMAIL_BODY)).replace(" ", "+"));
             return new EmailCommand(new PersonContainsTagPredicate(tagToWhichEmailHasToBeSent), subject, body, service);
         } catch (IllegalValueException ive) {
             throw new ParseException(ive.getMessage(), ive);

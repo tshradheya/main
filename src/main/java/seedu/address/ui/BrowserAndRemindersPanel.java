@@ -16,6 +16,7 @@ import seedu.address.MainApp;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.ui.BrowserAndRemindersPanelToggleEvent;
 import seedu.address.commons.events.ui.PersonPanelSelectionChangedEvent;
+import seedu.address.commons.events.ui.SendingEmailEvent;
 import seedu.address.commons.events.ui.ShowLocationEvent;
 import seedu.address.commons.events.ui.TurnLabelsOffEvent;
 import seedu.address.commons.events.ui.TurnLabelsOnEvent;
@@ -38,6 +39,15 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
     public static final String GOOGLE_SEARCH_URL_PREFIX = "https://www.google.com.sg/search?safe=off&q=";
     public static final String GOOGLE_SEARCH_URL_SUFFIX = "&cad=h";
     public static final String GOOGLE_MAPS_URL = "https://www.google.com.sg/maps/place/";
+
+    public static final String EMAIL_SERVICE_GMAIL = "gmail";
+    public static final String EMAIL_SERVICE_OUTLOOK = "outlook";
+
+    public static final String GMAIL_EMAIL_URL =
+            "https://mail.google.com/mail/?view=cm&fs=1&tf=1&source=mailto&to=%1$s&su=%2$s&body=%3$s";
+
+    public static final String OUTLOOK_EMAIL_URL =
+            "https://outlook.office.com/?path=/mail/action/compose&to=%1$s&subject=%2$s&body=%3$s";
 
     private static final String FXML = "BrowserAndRemindersPanel.fxml";
 
@@ -118,7 +128,7 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
     /**
      * Set's up the UI to bring browser to front and show location
      */
-    private void setUpToShowLocation() {
+    private void setUpToShowLocationOrMap() {
         if (currentlyInFront == Node.REMINDERS) {
             browser.toFront();
             currentlyInFront = Node.BROWSER;
@@ -145,6 +155,29 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
         return GOOGLE_MAPS_URL + keywordsOfUrl;
     }
 
+    /**
+     * Sets up email Url for processing Email in Browser panel
+     * @param service mentioned email service
+     * @param recipients formed recipients string
+     * @param subject
+     * @param body
+     */
+    private void setUpEmailUrl(String service, String recipients, String subject, String body) {
+        if (service.equalsIgnoreCase(EMAIL_SERVICE_GMAIL)) {
+            loadEmailUrlGmail(recipients, subject, body);
+        } else if (service.equalsIgnoreCase(EMAIL_SERVICE_OUTLOOK)) {
+            loadEmailUrlOutlook(recipients, subject, body);
+        }
+    }
+
+    private void loadEmailUrlGmail(String recipeints, String subject, String body) {
+        loadPage(String.format(GMAIL_EMAIL_URL, recipeints, subject, body));
+    }
+
+    private void loadEmailUrlOutlook(String recipeints, String subject, String body) {
+        loadPage(String.format(OUTLOOK_EMAIL_URL, recipeints, subject, body));
+    }
+
     @Subscribe
     private void handlePersonPanelSelectionChangedEvent(PersonPanelSelectionChangedEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
@@ -163,7 +196,16 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
     private void handleShowLocationEvent(ShowLocationEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event,
                 "Processing Location of " + event.person.getName().fullName));
-        setUpToShowLocation();
+        setUpToShowLocationOrMap();
         String url = loadPersonLocation(event.person.getAddress().value);
     }
+
+    @Subscribe
+    private void handleSendingEmailEvent(SendingEmailEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event,
+                "Processing email through service of " + event.service.service));
+        setUpToShowLocationOrMap();
+        setUpEmailUrl(event.service.service, event.recipients, event.subject.subject, event.body.body);
+    }
+
 }

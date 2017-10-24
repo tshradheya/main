@@ -26,8 +26,8 @@ import seedu.address.model.UserPrefs;
 
 public class ExportCommandTest {
 
-    private Model model = new ModelManager(getTypicalAddressBook(), getUniqueTypicalReminders(), new UserPrefs());
     public static final String VALID_PATH = "/storage/classmates";
+    private Model model = new ModelManager(getTypicalAddressBook(), getUniqueTypicalReminders(), new UserPrefs());
 
     @Test
     public void execute_invalidPersonIndexUnfilteredList_failure() throws Exception {

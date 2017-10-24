@@ -159,6 +159,11 @@ public class AddCommandTest {
         }
 
         @Override
+        public void showLocation(ReadOnlyPerson person) {
+            fail("This method should not be called");
+        }
+
+        @Override
         public ObservableList<ReadOnlyPerson> getBirthdayPanelFilteredPersonList() {
             fail("This method should not be called");
             return null;

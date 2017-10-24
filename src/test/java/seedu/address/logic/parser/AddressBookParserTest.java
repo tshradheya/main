@@ -43,10 +43,12 @@ import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.HistoryCommand;
 import seedu.address.logic.commands.ListCommand;
+import seedu.address.logic.commands.LocationCommand;
 import seedu.address.logic.commands.NicknameCommand;
 import seedu.address.logic.commands.RedoCommand;
 import seedu.address.logic.commands.SelectCommand;
 import seedu.address.logic.commands.SortCommand;
+import seedu.address.logic.commands.ThemeCommand;
 import seedu.address.logic.commands.ToggleCommand;
 import seedu.address.logic.commands.UndoCommand;
 import seedu.address.logic.commands.ViewTagCommand;
@@ -237,6 +239,14 @@ public class AddressBookParserTest {
     }
 
     @Test
+    public void parseCommand_theme() throws Exception {
+        ThemeCommand command = (ThemeCommand) parser.parseCommand(
+                ThemeCommand.COMMAND_WORD + " " + ThemeNames.THEME_DARK);
+        Theme theme = new Theme(ThemeNames.THEME_DARK, ThemeNames.THEME_DARK_CSS);
+        assertEquals(new ThemeCommand(theme), command);
+    }
+
+    @Test
     public void parseCommand_displayPicture() throws  Exception {
         final DisplayPicture displayPicture  = new DisplayPicture(Integer.toString(VALID_EMAIL_AMY.hashCode()));
 
@@ -265,6 +275,13 @@ public class AddressBookParserTest {
         SelectCommand command = (SelectCommand) parser.parseCommand(
                 SelectCommand.COMMAND_ALIAS + " " + INDEX_FIRST_PERSON.getOneBased());
         assertEquals(new SelectCommand(INDEX_FIRST_PERSON), command);
+    }
+
+    @Test
+    public void parseCommand_location() throws Exception {
+        LocationCommand command = (LocationCommand) parser.parseCommand(
+                LocationCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased());
+        assertEquals(new LocationCommand(INDEX_FIRST_PERSON), command);
     }
 
     @Test

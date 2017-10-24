@@ -20,10 +20,12 @@ import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.HistoryCommand;
 import seedu.address.logic.commands.ListCommand;
+import seedu.address.logic.commands.LocationCommand;
 import seedu.address.logic.commands.NicknameCommand;
 import seedu.address.logic.commands.RedoCommand;
 import seedu.address.logic.commands.SelectCommand;
 import seedu.address.logic.commands.SortCommand;
+import seedu.address.logic.commands.ThemeCommand;
 import seedu.address.logic.commands.ToggleCommand;
 import seedu.address.logic.commands.UndoCommand;
 import seedu.address.logic.commands.ViewTagCommand;
@@ -89,6 +91,9 @@ public class AddressBookParser {
         case ViewTagCommand.COMMAND_WORD:
             return new ViewTagCommandParser().parse(arguments);
 
+        case LocationCommand.COMMAND_WORD:
+            return new LocationCommandParser().parse(arguments);
+
         case HistoryCommand.COMMAND_ALIAS:
         case HistoryCommand.COMMAND_WORD:
             return new HistoryCommand();
@@ -117,6 +122,9 @@ public class AddressBookParser {
 
         case NicknameCommand.COMMAND_WORD:
             return new NicknameCommandParser().parse(arguments);
+
+        case ThemeCommand.COMMAND_WORD:
+            return new ThemeCommandParser().parse(arguments);
 
         case ExportCommand.COMMAND_WORD:
             return new ExportCommandParser().parse(arguments);

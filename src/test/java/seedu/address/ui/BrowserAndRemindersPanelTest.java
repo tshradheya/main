@@ -7,6 +7,7 @@ import static seedu.address.testutil.TypicalPersons.ALICE;
 import static seedu.address.testutil.TypicalPersons.getTypicalPersons;
 import static seedu.address.testutil.TypicalReminders.getTypicalReminders;
 import static seedu.address.ui.BrowserAndRemindersPanel.DEFAULT_PAGE;
+import static seedu.address.ui.BrowserAndRemindersPanel.GOOGLE_MAPS_URL;
 import static seedu.address.ui.BrowserAndRemindersPanel.GOOGLE_SEARCH_URL_PREFIX;
 import static seedu.address.ui.BrowserAndRemindersPanel.GOOGLE_SEARCH_URL_SUFFIX;
 import static seedu.address.ui.UiPart.FXML_FILE_FOLDER;
@@ -21,6 +22,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import seedu.address.MainApp;
 import seedu.address.commons.events.ui.PersonPanelSelectionChangedEvent;
+import seedu.address.commons.events.ui.ShowLocationEvent;
 import seedu.address.model.person.ReadOnlyPerson;
 import seedu.address.model.reminders.Reminder;
 
@@ -31,12 +33,14 @@ public class BrowserAndRemindersPanelTest extends GuiUnitTest {
             FXCollections.observableList(getTypicalReminders());
 
     private PersonPanelSelectionChangedEvent selectionChangedEventStub;
+    private ShowLocationEvent showLocationEventStub;
     private BrowserAndRemindersPanel browserAndRemindersPanel;
     private BrowserAndRemindersPanelHandle browserAndRemindersPanelHandle;
 
     @Before
     public void setUp() {
         selectionChangedEventStub = new PersonPanelSelectionChangedEvent(new PersonCard(ALICE, 0));
+        showLocationEventStub = new ShowLocationEvent(ALICE);
 
         guiRobot.interact(() -> browserAndRemindersPanel = new BrowserAndRemindersPanel(TYPICAL_PERSONS,
                 TYPICAL_REMINDERS));
@@ -58,6 +62,16 @@ public class BrowserAndRemindersPanelTest extends GuiUnitTest {
 
         waitUntilBrowserLoaded(browserAndRemindersPanelHandle);
         assertEquals(expectedPersonUrl, browserAndRemindersPanelHandle.getLoadedUrl());
+
+
+    }
+
+    @Test
+    public void checkUrlFormation() {
+        postNow(showLocationEventStub);
+        String expectedUrl = GOOGLE_MAPS_URL + ALICE.getAddress().value.replaceAll(" ", "+") + "+";
+        String url = browserAndRemindersPanel.loadPersonLocation(ALICE.getAddress().value);
+        assertEquals(expectedUrl, url);
     }
 
 }

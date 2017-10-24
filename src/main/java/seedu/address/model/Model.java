@@ -45,6 +45,9 @@ public interface Model {
     /** Deletes the tag from all people in Address Book**/
     void deleteTag(Tag target) throws DuplicatePersonException, PersonNotFoundException;
 
+    /** Shows location of given person */
+    void showLocation(ReadOnlyPerson person) throws PersonNotFoundException;
+
     /**
      * Replaces the given person {@code target} with {@code editedPerson}.
      *

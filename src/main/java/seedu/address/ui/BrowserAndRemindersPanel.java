@@ -16,6 +16,7 @@ import seedu.address.MainApp;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.ui.BrowserAndRemindersPanelToggleEvent;
 import seedu.address.commons.events.ui.PersonPanelSelectionChangedEvent;
+import seedu.address.commons.events.ui.ShowLocationEvent;
 import seedu.address.commons.events.ui.TurnLabelsOffEvent;
 import seedu.address.commons.events.ui.TurnLabelsOnEvent;
 import seedu.address.model.person.ReadOnlyPerson;
@@ -37,6 +38,7 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
     public static final String DEFAULT_PAGE = "default.html";
     public static final String GOOGLE_SEARCH_URL_PREFIX = "https://www.google.com.sg/search?safe=off&q=";
     public static final String GOOGLE_SEARCH_URL_SUFFIX = "&cad=h";
+    public static final String GOOGLE_MAPS_URL = "https://www.google.com.sg/maps/place/";
 
     private static final String FXML = "BrowserAndRemindersPanel.fxml";
 
@@ -115,6 +117,36 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
         currentlyInFront = Node.BROWSER;
     }
 
+    /**
+     * Set's up the UI to bring browser to front and show location
+     */
+    private void setUpToShowLocation() {
+        if (currentlyInFront == Node.REMINDERS) {
+            browser.toFront();
+            currentlyInFront = Node.BROWSER;
+            raise(new TurnLabelsOffEvent());
+        }
+    }
+
+    /**
+     * Creates url from given address
+     * @param address of the specified person
+     */
+    public String loadPersonLocation(String address) {
+
+        String[] splitAddressByWords = address.split("\\s");
+
+        String keywordsOfUrl = "";
+
+        for (String word: splitAddressByWords) {
+            keywordsOfUrl += word;
+            keywordsOfUrl += "+";
+        }
+
+        loadPage(GOOGLE_MAPS_URL + keywordsOfUrl);
+        return GOOGLE_MAPS_URL + keywordsOfUrl;
+    }
+
     @Subscribe
     private void handlePersonPanelSelectionChangedEvent(PersonPanelSelectionChangedEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
@@ -127,5 +159,13 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
     private void handleBrowserPanelToggleEvent(BrowserAndRemindersPanelToggleEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
         toggleBrowserPanel();
+    }
+
+    @Subscribe
+    private void handleShowLocationEvent(ShowLocationEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event,
+                "Processing Location of " + event.person.getName().fullName));
+        setUpToShowLocation();
+        String url = loadPersonLocation(event.person.getAddress().value);
     }
 }

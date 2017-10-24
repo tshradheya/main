@@ -50,6 +50,9 @@ public class NameAndTagsContainsKeywordsPredicate implements Predicate<ReadOnlyP
         return nameFound && tagFound;
     }
 
+    /**
+     * Counts the number of matching tags from person and returns the count
+     */
     public int countTagMatches(ReadOnlyPerson person) {
         int tagsMatchedCount = 0;
 

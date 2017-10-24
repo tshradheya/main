@@ -122,4 +122,17 @@ public class ParserUtil {
         }
         return tagSet;
     }
+
+    /**
+     * Parses the given keyword tag into trimmed string
+     * @param tag keyword given by user
+     * @return trimmedTag which is trimmed for comparison purposes
+     * @throws IllegalValueException
+     */
+    public static String parseRecipientTag(String tag) throws IllegalValueException {
+        requireNonNull(tag);
+        String trimmedTag = tag.trim();
+
+        return trimmedTag;
+    }
 }

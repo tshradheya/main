@@ -4,6 +4,7 @@ import java.util.function.Predicate;
 
 import javafx.collections.ObservableList;
 import seedu.address.model.email.Body;
+import seedu.address.model.email.Service;
 import seedu.address.model.email.Subject;
 import seedu.address.model.person.ReadOnlyPerson;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
@@ -39,7 +40,7 @@ public interface Model {
     String createEmailRecipients(Predicate<ReadOnlyPerson> predicate);
 
     /** Raises event to send email through Browser panel */
-    void processEmailEvent(String recipients, Subject subject, Body body);
+    void processEmailEvent(String recipients, Subject subject, Body body, Service service);
     /**
      * Replaces the given person {@code target} with {@code editedPerson}.
      *

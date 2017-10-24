@@ -20,6 +20,7 @@ import seedu.address.commons.events.model.AddressBookChangedEvent;
 import seedu.address.commons.events.ui.SendingEmailEvent;
 import seedu.address.commons.events.ui.ShowLocationEvent;
 import seedu.address.model.email.Body;
+import seedu.address.model.email.Service;
 import seedu.address.model.email.Subject;
 import seedu.address.model.person.BirthdayInCurrentMonthPredicate;
 import seedu.address.model.person.Email;
@@ -133,8 +134,8 @@ public class ModelManager extends ComponentManager implements Model {
      * Raises event for processing Email
      */
     @Override
-    public void processEmailEvent(String recipients, Subject subject, Body body) {
-        raise(new SendingEmailEvent(recipients, subject, body));
+    public void processEmailEvent(String recipients, Subject subject, Body body, Service service) {
+        raise(new SendingEmailEvent(recipients, subject, body, service));
     }
 
     /**

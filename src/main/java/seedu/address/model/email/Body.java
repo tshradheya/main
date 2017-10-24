@@ -11,9 +11,9 @@ public class Body {
 
     public Body(String body) {
         requireNonNull(body);
-        String trimmedSubject = body.trim();
+        String trimmedBody = body.trim();
 
-        this.body = trimmedSubject;
+        this.body = trimmedBody;
     }
 
     @Override

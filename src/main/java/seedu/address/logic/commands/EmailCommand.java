@@ -2,11 +2,13 @@ package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL_BODY;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL_SERVICE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL_SUBJECT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL_TO;
 
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.email.Body;
+import seedu.address.model.email.Service;
 import seedu.address.model.email.Subject;
 import seedu.address.model.person.PersonContainsTagPredicate;
 
@@ -20,30 +22,34 @@ public class EmailCommand extends Command {
     public static final String MESSAGE_NOT_SENT = "Please enter a valid name/tag with a valid Email ID.";
     public static final String MESSAGE_USAGE = COMMAND_WORD + ":  people in the Address Book.\n"
             + "The 'to' field is compulsory\n"
-            + "The 'to' field can take tags and it also supports more than one parameter.\n"
+            + "The 'to' field can take tag and it only supports one parameter.\n"
             + "Parameters: "
+            + PREFIX_EMAIL_SERVICE + "SERVICE "
             + PREFIX_EMAIL_TO + "TAGS "
             + PREFIX_EMAIL_SUBJECT + "SUBJECT "
             + PREFIX_EMAIL_BODY + "BODY \n"
             + "Example: " + COMMAND_WORD + " "
-            + PREFIX_EMAIL_TO + "cs2103 cs2101"
+            + PREFIX_EMAIL_SERVICE + "gmail"
+            + PREFIX_EMAIL_TO + "cs2103"
             + PREFIX_EMAIL_SUBJECT + "Meeting "
             + PREFIX_EMAIL_BODY + "On Monday ";
 
     private final PersonContainsTagPredicate predicate;
     private final Subject subject;
     private final Body body;
+    private final Service service;
 
-    public EmailCommand(PersonContainsTagPredicate predicate, Subject subject, Body body) {
+    public EmailCommand(PersonContainsTagPredicate predicate, Subject subject, Body body, Service service) {
         this.predicate = predicate;
         this.subject = subject;
         this.body = body;
+        this.service = service;
 
     }
 
     /**
      * Calls event for opening the url in browser panel
-     * @param recipients String of all recipeints
+     * @param recipients String of all recipients
      * @throws ParseException when wrong recipients
      */
     public void processEmail(String recipients) throws ParseException {
@@ -52,7 +58,7 @@ public class EmailCommand extends Command {
         if (recipients.equals("")) {
             throw new ParseException("Invalid recipients");
         }
-        model.processEmailEvent(recipients, subject, body);
+        model.processEmailEvent(recipients, subject, body, service);
     }
 
 

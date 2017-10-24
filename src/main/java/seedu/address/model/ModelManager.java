@@ -153,7 +153,6 @@ public class ModelManager extends ComponentManager implements Model {
                 validEmails.add(person.getEmail().value);
             }
         }
-        System.out.println(String.join(",", validEmails));
         return String.join(",", validEmails);
     }
 

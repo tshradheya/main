@@ -1,6 +1,14 @@
 package seedu.address.ui;
 
+import java.awt.Desktop;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import com.google.common.eventbus.Subscribe;
@@ -81,7 +89,21 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
                 + GOOGLE_SEARCH_URL_SUFFIX);
     }
 
+    /**
+     * Loads the specified url with cookies and javascript enabled
+     * @param url of specified web page
+     */
     public void loadPage(String url) {
+        System.setProperty("sun.net.http.allowRestrictedHeaders", "true");
+        URI uri = URI.create(url);
+        Map<String, List<String>> headers = new LinkedHashMap<String, List<String>>();
+        headers.put("Set-Cookie", Arrays.asList("name=value"));
+        try {
+            java.net.CookieHandler.getDefault().put(uri, headers);
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+        browser.getEngine().setJavaScriptEnabled(true);
         Platform.runLater(() -> browser.getEngine().load(url));
     }
 
@@ -128,7 +150,7 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
     /**
      * Set's up the UI to bring browser to front and show location
      */
-    private void setUpToShowLocationOrMap() {
+    private void setUpToShowLocationOrEmail() {
         if (currentlyInFront == Node.REMINDERS) {
             browser.toFront();
             currentlyInFront = Node.BROWSER;
@@ -170,12 +192,38 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
         }
     }
 
-    private void loadEmailUrlGmail(String recipeints, String subject, String body) {
-        loadPage(String.format(GMAIL_EMAIL_URL, recipeints, subject, body));
+    /**
+     * Loads page to send email through gmail
+     * @param recipients
+     * @param subject
+     * @param body
+     */
+    private void loadEmailUrlGmail(String recipients, String subject, String body) {
+        try {
+            Desktop.getDesktop().browse(new URI(String.format(GMAIL_EMAIL_URL, recipients, subject, body)));
+        } catch (URISyntaxException urise) {
+            urise.printStackTrace();
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+        loadPage(String.format(GMAIL_EMAIL_URL, recipients, subject, body));
     }
 
-    private void loadEmailUrlOutlook(String recipeints, String subject, String body) {
-        loadPage(String.format(OUTLOOK_EMAIL_URL, recipeints, subject, body));
+    /**
+     * Loads page to send email through outlook
+     * @param recipients
+     * @param subject
+     * @param body
+     */
+    private void loadEmailUrlOutlook(String recipients, String subject, String body) {
+        try {
+            Desktop.getDesktop().browse(new URI(String.format(OUTLOOK_EMAIL_URL, recipients, subject, body)));
+        } catch (URISyntaxException urise) {
+            urise.printStackTrace();
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+        loadPage(String.format(OUTLOOK_EMAIL_URL, recipients, subject, body));
     }
 
     @Subscribe
@@ -196,7 +244,7 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
     private void handleShowLocationEvent(ShowLocationEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event,
                 "Processing Location of " + event.person.getName().fullName));
-        setUpToShowLocationOrMap();
+        setUpToShowLocationOrEmail();
         String url = loadPersonLocation(event.person.getAddress().value);
     }
 
@@ -204,7 +252,7 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
     private void handleSendingEmailEvent(SendingEmailEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event,
                 "Processing email through service of " + event.service.service));
-        setUpToShowLocationOrMap();
+        setUpToShowLocationOrEmail();
         setUpEmailUrl(event.service.service, event.recipients, event.subject.subject, event.body.body);
     }
 

@@ -79,9 +79,10 @@ public class EmailCommand extends Command {
     @Override
     public CommandResult execute() {
 
-        String emailTo = model.createEmailRecipients(predicate);
+
         try {
             checkServiceValid(service);
+            String emailTo = model.createEmailRecipients(predicate);
             processEmail(emailTo);
         } catch (ParseException e) {
             e.printStackTrace();

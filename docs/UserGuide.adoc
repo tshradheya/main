@@ -382,7 +382,7 @@ Clears all entries from the address book. +
 Format: `clear`
 
 // tag::theme[]
-=== Changing the theme : `theme`
+=== Changing the theme : `theme` [Since V1.3]
 
 Changes the theme of the address book to a specific theme. +
 Format: `theme THEME`

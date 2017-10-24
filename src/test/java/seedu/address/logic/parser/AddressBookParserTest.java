@@ -39,6 +39,7 @@ import seedu.address.logic.commands.NicknameCommand;
 import seedu.address.logic.commands.RedoCommand;
 import seedu.address.logic.commands.SelectCommand;
 import seedu.address.logic.commands.SortCommand;
+import seedu.address.logic.commands.ThemeCommand;
 import seedu.address.logic.commands.ToggleCommand;
 import seedu.address.logic.commands.UndoCommand;
 import seedu.address.logic.commands.ViewTagCommand;
@@ -216,6 +217,14 @@ public class AddressBookParserTest {
                 NicknameCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased()
                 + NICKNAME_DESC_AMY);
         assertEquals(new NicknameCommand(INDEX_FIRST_PERSON, new Nickname(VALID_NICKNAME_AMY)), command);
+    }
+
+    @Test
+    public void parseCommand_theme() throws Exception {
+        ThemeCommand command = (ThemeCommand) parser.parseCommand(
+                ThemeCommand.COMMAND_WORD + " " + ThemeNames.THEME_DARK);
+        Theme theme = new Theme(ThemeNames.THEME_DARK, ThemeNames.THEME_DARK_CSS);
+        assertEquals(new ThemeCommand(theme), command);
     }
 
     @Test

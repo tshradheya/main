@@ -150,7 +150,7 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
     /**
      * Set's up the UI to bring browser to front and show location
      */
-    private void setUpToShowLocationOrEmail() {
+    private void setUpToShowLocation() {
         if (currentlyInFront == Node.REMINDERS) {
             browser.toFront();
             currentlyInFront = Node.BROWSER;
@@ -206,7 +206,6 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
-        loadPage(String.format(GMAIL_EMAIL_URL, recipients, subject, body));
     }
 
     /**
@@ -223,7 +222,6 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
-        loadPage(String.format(OUTLOOK_EMAIL_URL, recipients, subject, body));
     }
 
     @Subscribe
@@ -244,7 +242,7 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
     private void handleShowLocationEvent(ShowLocationEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event,
                 "Processing Location of " + event.person.getName().fullName));
-        setUpToShowLocationOrEmail();
+        setUpToShowLocation();
         String url = loadPersonLocation(event.person.getAddress().value);
     }
 
@@ -252,7 +250,6 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
     private void handleSendingEmailEvent(SendingEmailEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event,
                 "Processing email through service of " + event.service.service));
-        setUpToShowLocationOrEmail();
         setUpEmailUrl(event.service.service, event.recipients, event.subject.subject, event.body.body);
     }
 

@@ -51,20 +51,30 @@ public class NameAndTagsContainsKeywordsPredicate implements Predicate<ReadOnlyP
     }
 
     /**
-     * Counts the number of matching tags from person and returns the count
+     * Counts the number of matching tags of a person person and returns the count
      */
     public int countTagMatches(ReadOnlyPerson person) {
         int tagsMatchedCount = 0;
 
         Set<Tag> tagsOfPerson = person.getTags();
         for (Tag personTag : tagsOfPerson) {
-            for (String findTag : tagKeywords) {
-                if (personTag.tagName.equalsIgnoreCase(findTag)) {
-                    tagsMatchedCount++;
-                }
+            if (hasTag(personTag)) {
+                tagsMatchedCount++;
             }
         }
         return tagsMatchedCount;
+    }
+
+    /**
+     * Returns true if the tag can be found in the tag keywords. Otherwise returns false.
+     */
+    public boolean hasTag(Tag tag) {
+        for (String findTag : tagKeywords) {
+            if (tag.tagName.equalsIgnoreCase(findTag)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

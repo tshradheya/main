@@ -15,6 +15,7 @@ import javafx.collections.transformation.SortedList;
 import seedu.address.commons.core.ComponentManager;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.model.AddressBookChangedEvent;
+import seedu.address.commons.events.ui.ShowLocationEvent;
 import seedu.address.model.person.BirthdayInCurrentMonthPredicate;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.ReadOnlyPerson;
@@ -109,6 +110,15 @@ public class ModelManager extends ComponentManager implements Model {
             addressBook.updatePerson(originalPerson, personWithTagRemoved);
         }
 
+
+    }
+
+    /**
+     * Shows location of the given person
+     */
+    @Override
+    public void showLocation(ReadOnlyPerson person) throws PersonNotFoundException {
+        raise(new ShowLocationEvent(person));
 
     }
 

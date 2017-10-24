@@ -1,0 +1,60 @@
+package seedu.address.logic.commands;
+
+import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL_BODY;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL_SUBJECT;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL_TO;
+
+import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.person.PersonContainsTagPredicate;
+
+/**
+ * Emails all people with a particular tag either using gmail/outlook
+ */
+public class EmailCommand extends Command {
+
+    public static final String COMMAND_WORD = "email";
+    public static final String MESSAGE_EMAIL_SENT = "Email .";
+    public static final String MESSAGE_NOT_SENT = "Please enter a valid name/tag with a valid Email ID.";
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ":  people in the Address Book.\n"
+            + "The 'to' field is compulsory\n"
+            + "The 'to' field can take tags and it also supports more than one parameter.\n"
+            + "Parameters: "
+            + PREFIX_EMAIL_TO + "TAGS "
+            + PREFIX_EMAIL_SUBJECT + "SUBJECT "
+            + PREFIX_EMAIL_BODY + "BODY \n"
+            + "Example: " + COMMAND_WORD + " "
+            + PREFIX_EMAIL_TO + "cs2103 cs2101"
+            + PREFIX_EMAIL_SUBJECT + "Meeting "
+            + PREFIX_EMAIL_BODY + "On Monday ";
+
+    private final PersonContainsTagPredicate predicate;
+    private final String subject;
+    private final String body;
+
+    public EmailCommand(PersonContainsTagPredicate predicate, String subject, String body) {
+        this.predicate = predicate;
+        this.subject = subject;
+        this.body = body;
+
+    }
+
+
+    @Override
+    public CommandResult execute() {
+        String emailTo = model.formEmailRecepients(predicate);
+        try {
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return new CommandResult(MESSAGE_NOT_SENT);
+        }
+        return new CommandResult(MESSAGE_EMAIL_SENT);
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return other == this // short circuit if same object
+                || (other instanceof EmailCommand // instanceof handles nulls
+                && this.predicate.equals(((EmailCommand) other).predicate)); // state check
+    }
+}

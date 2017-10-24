@@ -16,5 +16,9 @@ public class CliSyntax {
     public static final Prefix PREFIX_PATH = new Prefix("p/");
     public static final Prefix PREFIX_DISPLAYPICTURE = new Prefix("dp/");
     public static final Prefix PREFIX_NICKNAME = new Prefix("nk/");
+    public static final Prefix PREFIX_EMAIL_TO = new Prefix("to/");
+    public static final Prefix PREFIX_EMAIL_SERVICE = new Prefix("s/");
+    public static final Prefix PREFIX_EMAIL_SUBJECT = new Prefix("sub/");
+    public static final Prefix PREFIX_EMAIL_BODY = new Prefix("body/");
 
 }

@@ -17,7 +17,10 @@ import javafx.collections.transformation.SortedList;
 import seedu.address.commons.core.ComponentManager;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.model.AddressBookChangedEvent;
+import seedu.address.commons.events.ui.SendingEmailEvent;
 import seedu.address.commons.events.ui.ShowLocationEvent;
+import seedu.address.model.email.Body;
+import seedu.address.model.email.Subject;
 import seedu.address.model.person.BirthdayInCurrentMonthPredicate;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Person;
@@ -124,7 +127,14 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public void showLocation(ReadOnlyPerson person) throws PersonNotFoundException {
         raise(new ShowLocationEvent(person));
+    }
 
+    /**
+     * Raises event for processing Email
+     */
+    @Override
+    public void processEmailEvent(String recipients, Subject subject, Body body) {
+        raise(new SendingEmailEvent(recipients, subject, body));
     }
 
     /**

@@ -1,5 +1,6 @@
 package seedu.address.logic.commands;
 
+import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL_BODY;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL_SUBJECT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL_TO;
@@ -40,12 +41,26 @@ public class EmailCommand extends Command {
 
     }
 
+    /**
+     * Calls event for opening the url in browser panel
+     * @param recipients String of all recipeints
+     * @throws ParseException when wrong recipients
+     */
+    public void processEmail(String recipients) throws ParseException {
+        requireNonNull(recipients);
+
+        if (recipients.equals("")) {
+            throw new ParseException("Invalid recipients");
+        }
+        model.processEmailEvent(recipients, subject, body);
+    }
+
 
     @Override
     public CommandResult execute() {
         String emailTo = model.createEmailRecipients(predicate);
         try {
-
+            processEmail(emailTo);
         } catch (ParseException e) {
             e.printStackTrace();
             return new CommandResult(MESSAGE_NOT_SENT);

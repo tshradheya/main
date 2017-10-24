@@ -667,6 +667,26 @@ public class BrowserAndRemindersPanel extends UIPart<Region> {
 The `PersonPanelSelectionChangedEvent` is posted whenever the `select` command is executed. Within the `handlePersonPanelSelectionChangedEvent`
 method, there is the method `bringBrowserToFront`, which would then bring the browser panel to the front no matter what.
 
+=== Reminder Implementation
+image::RemindersUML.png[width="790"]
+_Figure 1: UML diagram showing the implementation of reminders_
++
+The `Reminder` object represents a reminder in iContacts. It contains a `String` object `reminder`, which represents
+the actual reminder from the user, and also a `DueDate` object which represents the date and time for the reminder.
++
+In terms of how `Reminder` objects are kept in-memory during the execution of the program, `Reminder` objects are
+kept within `UniqueReminderList`, which assures that there are no duplicate `Reminder` objects. The `UniqueReminderList`
+object is then used by `ModelManager` to carry out commands related to reminders.
++
+`Reminder` objects are stored in a XML storage file in a JAXB-friendly version `XmlAdaptedReminder`. +
+When the program starts, `XmlAdaptedReminder` objects are read in as `XmlSerializableReminders`. The `XmlSerializableReminders`
+object is then passed to `UniqueReminderList`, which then converts it into a list of `Reminder` objects for in-memory use.
++
+To save, the `saveReminders` method in `StorageManager` is called, which trickles down to `XmlRemindersStorage` and eventually
+calls the `saveRemindersToFile` method in `XmlUtil`.
+
+
+
 ==== Design Considerations
 
 **Aspect:** Usage of browser area +

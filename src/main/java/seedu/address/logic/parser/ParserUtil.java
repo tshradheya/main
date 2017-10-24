@@ -111,9 +111,6 @@ public class ParserUtil {
         return birthday.isPresent() ? Optional.of(new Birthday(birthday.get())) : Optional.empty();
     }
 
-    /**
-     * Parses {@code Collection<String> tags} into a {@code Set<Tag>}.
-     */
     public static Set<Tag> parseTags(Collection<String> tags) throws IllegalValueException {
         requireNonNull(tags);
         final Set<Tag> tagSet = new HashSet<>();

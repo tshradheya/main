@@ -1,6 +1,12 @@
 package seedu.address.logic.parser;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_DATE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_REMINDER;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TIME;
+
+import java.util.stream.Stream;
 
 import seedu.address.commons.exceptions.IllegalValueException;
 
@@ -14,9 +20,6 @@ import seedu.address.model.reminders.Reminder;
  */
 public class AddReminderCommandParser implements Parser<AddReminderCommand> {
 
-    private static final String ARGUMENT_SPLIT_REGEX = "[\\s]+";
-    private static final int REMINDER_SMALLEST_SEGMENT_NUMBER = 3;
-
     /**
      * Parses the given {@code String} of arguments in the context of the AddReminderCommand
      * and returns an AddReminderCommand object for execution.
@@ -28,26 +31,35 @@ public class AddReminderCommandParser implements Parser<AddReminderCommand> {
         final String userInputDate;
         final String userInputTime;
 
-        String[] splitArgs = args.trim().split(ARGUMENT_SPLIT_REGEX);
-        if (splitArgs.length < REMINDER_SMALLEST_SEGMENT_NUMBER) {
-            throw new ParseException("Format invalid.\n" + AddReminderCommand.MESSAGE_USAGE);
+        ArgumentMultimap argMultimap =
+                ArgumentTokenizer.tokenize(args, PREFIX_REMINDER, PREFIX_DATE, PREFIX_TIME);
+
+        if (!arePrefixesPresent(argMultimap, PREFIX_REMINDER, PREFIX_DATE, PREFIX_TIME)) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddReminderCommand.MESSAGE_USAGE));
         }
-        userInputTime = splitArgs[splitArgs.length - 1];
-        userInputDate = splitArgs[splitArgs.length - 2];
-        StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < splitArgs.length - 2; i++) {
-            builder.append(splitArgs[i]);
-            builder.append(" ");
+
+        reminder = argMultimap.getValue(PREFIX_REMINDER).get();
+        if (reminder.isEmpty()) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddReminderCommand.MESSAGE_USAGE));
         }
-        reminder = builder.toString().trim();
 
         try {
+            userInputDate = argMultimap.getValue(PREFIX_DATE).get();
+            userInputTime = argMultimap.getValue(PREFIX_TIME).get();
             DueDate dueDate = new DueDate(userInputDate, userInputTime);
             Reminder toAdd = new Reminder(reminder, dueDate);
             return new AddReminderCommand(toAdd);
         } catch (IllegalValueException ive) {
             throw new ParseException(ive.getMessage());
         }
+    }
+
+    /**
+     * Returns true if none of the prefixes contains empty {@code Optional} values in the given
+     * {@code ArgumentMultimap}.
+     */
+    private static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
+        return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
     }
 
 }

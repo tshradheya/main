@@ -58,6 +58,7 @@ public class AddressBookParser {
         case AddCommand.COMMAND_ALIAS:
         case AddCommand.COMMAND_WORD:
             return new AddCommandParser().parse(arguments);
+
         case AddReminderCommand.COMMAND_WORD:
             return new AddReminderCommandParser().parse(arguments);
 

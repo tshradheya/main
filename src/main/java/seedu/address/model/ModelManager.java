@@ -3,7 +3,9 @@ package seedu.address.model;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
@@ -17,6 +19,7 @@ import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.model.AddressBookChangedEvent;
 import seedu.address.commons.events.ui.ShowLocationEvent;
 import seedu.address.model.person.BirthdayInCurrentMonthPredicate;
+import seedu.address.model.person.Email;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.ReadOnlyPerson;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
@@ -33,6 +36,7 @@ public class ModelManager extends ComponentManager implements Model {
     private final AddressBook addressBook;
     private final FilteredList<ReadOnlyPerson> filteredPersons;
     private final FilteredList<ReadOnlyPerson> filteredPersonsForBirthdayListPanel;
+    private final FilteredList<ReadOnlyPerson> filteredPersonsForEmail;
 
     private SortedList<ReadOnlyPerson> sortedfilteredPersons;
     private SortedList<ReadOnlyPerson> sortedFilteredPersonsForBirthdayListPanel;
@@ -50,6 +54,7 @@ public class ModelManager extends ComponentManager implements Model {
         filteredPersons = new FilteredList<>(this.addressBook.getPersonList());
         filteredPersonsForBirthdayListPanel = new FilteredList<>(this.addressBook.getPersonList());
         filteredPersonsForBirthdayListPanel.setPredicate(new BirthdayInCurrentMonthPredicate());
+        filteredPersonsForEmail = new FilteredList<>(this.addressBook.getPersonList());
         sortedfilteredPersons = new SortedList<>(filteredPersons);
         sortedFilteredPersonsForBirthdayListPanel = new SortedList<>(filteredPersonsForBirthdayListPanel,
                 Comparator.comparingInt(birthday -> birthday.getBirthday().getDayOfBirthday()));
@@ -120,6 +125,24 @@ public class ModelManager extends ComponentManager implements Model {
     public void showLocation(ReadOnlyPerson person) throws PersonNotFoundException {
         raise(new ShowLocationEvent(person));
 
+    }
+
+    /**
+     * Makes a string of all intended recipient through the given @predicate
+     */
+    @Override
+    public String createEmailRecipients(Predicate<ReadOnlyPerson> predicate) {
+        requireNonNull(predicate);
+
+        filteredPersonsForEmail.setPredicate(predicate);
+
+        List<String> validEmails = new ArrayList<>();
+        for (ReadOnlyPerson person : filteredPersonsForEmail) {
+            if (Email.isValidEmail(person.getEmail().value)) {
+                validEmails.add(person.getEmail().value);
+            }
+        }
+        return String.join(",", validEmails);
     }
 
     //=========== Filtered Person List Accessors =============================================================

@@ -5,6 +5,8 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL_SUBJECT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL_TO;
 
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.email.Body;
+import seedu.address.model.email.Subject;
 import seedu.address.model.person.PersonContainsTagPredicate;
 
 /**
@@ -28,10 +30,10 @@ public class EmailCommand extends Command {
             + PREFIX_EMAIL_BODY + "On Monday ";
 
     private final PersonContainsTagPredicate predicate;
-    private final String subject;
-    private final String body;
+    private final Subject subject;
+    private final Body body;
 
-    public EmailCommand(PersonContainsTagPredicate predicate, String subject, String body) {
+    public EmailCommand(PersonContainsTagPredicate predicate, Subject subject, Body body) {
         this.predicate = predicate;
         this.subject = subject;
         this.body = body;
@@ -41,7 +43,7 @@ public class EmailCommand extends Command {
 
     @Override
     public CommandResult execute() {
-        String emailTo = model.formEmailRecepients(predicate);
+        String emailTo = model.createEmailRecipients(predicate);
         try {
 
         } catch (ParseException e) {

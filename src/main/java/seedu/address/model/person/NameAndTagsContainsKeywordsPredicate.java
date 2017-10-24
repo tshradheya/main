@@ -25,16 +25,8 @@ public class NameAndTagsContainsKeywordsPredicate implements Predicate<ReadOnlyP
 
         int numTagKeywords = tagKeywords.size();
         int tagsMatchedCount = 0;
-
         if (!tagKeywords.isEmpty()) {
-            Set<Tag> tagsOfPerson = person.getTags();
-            for (Tag personTag : tagsOfPerson) {
-                for (String findTag : tagKeywords) {
-                    if (personTag.tagName.equalsIgnoreCase(findTag)) {
-                        tagsMatchedCount++;
-                    }
-                }
-            }
+            tagsMatchedCount = countTagMatches(person);
         }
 
         if (tagsMatchedCount == numTagKeywords) {
@@ -56,6 +48,20 @@ public class NameAndTagsContainsKeywordsPredicate implements Predicate<ReadOnlyP
         }
 
         return nameFound && tagFound;
+    }
+
+    public int countTagMatches(ReadOnlyPerson person) {
+        int tagsMatchedCount = 0;
+
+        Set<Tag> tagsOfPerson = person.getTags();
+        for (Tag personTag : tagsOfPerson) {
+            for (String findTag : tagKeywords) {
+                if (personTag.tagName.equalsIgnoreCase(findTag)) {
+                    tagsMatchedCount++;
+                }
+            }
+        }
+        return tagsMatchedCount;
     }
 
     @Override

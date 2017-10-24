@@ -179,6 +179,11 @@ public class AddReminderCommandTest {
         public void addReminder(Reminder reminder) throws DuplicateReminderException {
             fail("This method should not be called");
         }
+
+        @Override
+        public void showLocation(ReadOnlyPerson person) {
+            fail("This method should not be called");
+        }
     }
 
     /**

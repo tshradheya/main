@@ -11,6 +11,10 @@ import static seedu.address.logic.commands.CommandTestUtil.REMINDER_DESC_DATE;
 import static seedu.address.logic.commands.CommandTestUtil.REMINDER_DESC_TIME;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_EMAIL_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NICKNAME_AMY;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL_BODY;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL_SERVICE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL_SUBJECT;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL_TO;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PATH;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_RANGE;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
@@ -32,6 +36,7 @@ import seedu.address.logic.commands.DeleteCommand;
 import seedu.address.logic.commands.DisplayPictureCommand;
 import seedu.address.logic.commands.EditCommand;
 import seedu.address.logic.commands.EditCommand.EditPersonDescriptor;
+import seedu.address.logic.commands.EmailCommand;
 import seedu.address.logic.commands.ExitCommand;
 import seedu.address.logic.commands.ExportCommand;
 import seedu.address.logic.commands.FilterCommand;
@@ -49,6 +54,9 @@ import seedu.address.logic.commands.ToggleCommand;
 import seedu.address.logic.commands.UndoCommand;
 import seedu.address.logic.commands.ViewTagCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.email.Body;
+import seedu.address.model.email.Service;
+import seedu.address.model.email.Subject;
 import seedu.address.model.person.DisplayPicture;
 import seedu.address.model.person.NameAndTagsContainsKeywordsPredicate;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
@@ -172,6 +180,20 @@ public class AddressBookParserTest {
         ViewTagCommand command = (ViewTagCommand) parser.parseCommand(ViewTagCommand.COMMAND_WORD + " " + keyword);
 
         assertEquals(new ViewTagCommand(new PersonContainsTagPredicate(keyword)), command);
+    }
+
+    @Test
+    public void parseCommand_email() throws Exception {
+        String tag = "friends";
+        Service service = new Service("gmail");
+        Subject subject = new Subject("hello");
+        Body body = new Body("meeting at 8pm");
+
+        EmailCommand command = (EmailCommand) parser.parseCommand(EmailCommand.COMMAND_WORD
+                + " " + PREFIX_EMAIL_SERVICE + service.service + " " + PREFIX_EMAIL_TO + tag
+                + " " + PREFIX_EMAIL_SUBJECT + subject.subject + " " + PREFIX_EMAIL_BODY + body.body);
+
+        assertEquals(new EmailCommand(new PersonContainsTagPredicate(tag), subject, body, service), command);
     }
 
     @Test

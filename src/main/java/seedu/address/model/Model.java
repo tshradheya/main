@@ -3,6 +3,9 @@ package seedu.address.model;
 import java.util.function.Predicate;
 
 import javafx.collections.ObservableList;
+import seedu.address.model.email.Body;
+import seedu.address.model.email.Service;
+import seedu.address.model.email.Subject;
 import seedu.address.model.person.ReadOnlyPerson;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
@@ -48,6 +51,11 @@ public interface Model {
     /** Shows location of given person */
     void showLocation(ReadOnlyPerson person) throws PersonNotFoundException;
 
+    /** Creates String of valid recipients */
+    String createEmailRecipients(Predicate<ReadOnlyPerson> predicate);
+
+    /** Raises event to send email through Browser panel */
+    void processEmailEvent(String recipients, Subject subject, Body body, Service service);
     /**
      * Replaces the given person {@code target} with {@code editedPerson}.
      *

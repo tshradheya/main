@@ -416,6 +416,8 @@ Examples:
 
 * `theme dark` +
 * `theme sky`
+
+image::themeDisplay.png[width="790"]
 // end::theme[]
 
 === Exiting the program : `exit`

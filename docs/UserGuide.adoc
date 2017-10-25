@@ -144,7 +144,7 @@ Edits the name of the 2nd person to be `Betsy Crower` and clears all existing ta
 Clear the birthday of the 3rd person.
 
 // tag::nickname[]
-=== Adding a nickname to a person : `nickname`
+=== Adding a nickname to a person : `nickname`[V1.1]
 
 Adds a nickname to an existing person in the address book. +
 Format: `nickname INDEX [NICKNAME]`
@@ -163,7 +163,7 @@ Adds a nickname `Eddie` to the 1st person.
 Removes the nickname from the the 1st person.
 // end::nickname[]
 
-=== Adding Display picture for each person : `displaypic`
+=== Adding Display picture for each person : `displaypic`[V1.2]
 
 Adds a Display Picture to an existing person in the address book. +
 Format: `displaypic INDEX PATHOFIMAGE`
@@ -185,42 +185,44 @@ Removes the existing display picture for the person at `INDEX` 2
 
 image::displaypic.png[width="790"]
 
-=== Displaying direction to a contact's address: `direction`[Since V1.2]
+=== Displaying location to a contact's address: `location`[V1.3]
 
-Uses Google Maps to show direction from the current location to the address of the selected `INDEX`
-Format: direction INDEX
+Uses Google Maps to show location of the address of the selected `INDEX`
+Format: location INDEX
 
 ****
-* The directions shown are in browser panel using Google Maps
+* The location is shown in browser panel using Google Maps
 * The current location is the location of device from where the command is executed
 * The command is only valid for INDEX which have an valid address
 ****
 
 Examples:
 
-* `direction 2`
-Returns direction to the address of person at `INDEX` 2
+* `location 2`
+Returns location of the address of person at `INDEX` 2
 
 image::directon.PNG[width="790"]
 
 
-=== Email directly to a group of people having a particular tag: `email` [Since V1.2]
+=== Email to a group of people having a particular tag: `email` [V1.3]
 
 Opens up the link to send email to all people of having a particular tag
-Format: email KEYWORD
+Format: email s/SERVICE to/KEYWORD sub/SUBJECT b/BODY
 
 ****
 * The `KEYWORD` should be a tag which has atleast 1 person associated with it
-* The email drafting will open up in the browser panel to write in your message
-* The command will add all people with the `KEYWORD` tag as the recepeints
+* The `SERVICE` supported are only `gmail` and `outlook`
+* The `SUBJECT` and `BODY` prefix are optional and can be not mentioned
+* The email drafting will open up in the default browser of your local device
+* The command will add all people with the `KEYWORD` tag as the recepeints, subject as `SUBJECT` and body as `BODY`
 ****
 
 Examples:
 
-* `email cs2103`
-Allows to send email after drafting message to everyone with the tag `cs2103`
+* `email s/gmail to/cs2103 sub/Meeting body/Morning 10 am `
+Allows to send email after drafting message to everyone with the tag `cs2103` in the default browser
 
-image::email.PNG[width="790"]
+//image::email.PNG[width="790"]
 
 
 === Locating persons by name: `find`
@@ -244,7 +246,7 @@ Returns `john` and `John Doe`
 Returns any person having names `Betsy`, `Tim`, or `John`
 
 
-=== Finding all people associated with a particular Tag: `viewtag`
+=== Finding all people associated with a particular Tag: `viewtag`[V1.1]
 
 Finds all people who have the tag given in the keyword. +
 Format: `viewtag KEYWORD`
@@ -267,7 +269,7 @@ Returns `Alex` and `Bernice1 as they are having the tag `friends`
 image::viewtag.PNG[width="790"]
 
 // tag::filter[]
-=== Finding all people by name and associated with one or more tags: `filter`
+=== Finding all people by name and associated with one or more tags: `filter`[V1.2]
 
 Finds persons whose names and/or tag(s) contain any of the given keywords. +
 Format: `filter [n/NAME] [t/TAG]`
@@ -426,7 +428,7 @@ Format: `exit`
 Address book data are saved in the hard disk automatically after any command that changes the data. +
 There is no need to save manually.
 
-=== Exporting the list: `export`[Since V1.2]
+=== Exporting the list: `export`[V1.2]
 
 Exports the last displayed list to a specified location. +
 Format: `export [SAVE LOCATION]NAME`
@@ -443,7 +445,7 @@ Exports the last displayed list to `newData` folder as `newList.xml`.
 * `export newList` +
 Saves the last displayed list to the default location as `newList.xml`.
 
-=== Toggling between reminders panel and browser: `toggle`
+=== Toggling between reminders panel and browser: `toggle`[V1.2]
 
 Toggle between the reminders panel (Refer to Figure 1) and the browser (Refer to Figure 2) as needed. +
 The reminders panel would display birthday reminders for contacts having birthday in the current month and

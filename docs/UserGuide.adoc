@@ -414,8 +414,8 @@ Format: `theme THEME`
 
 Examples:
 
-* `theme dark` +
-* `theme sky`
+* `theme sky` +
+Changes the theme to `sky`.
 
 image::themeDisplay.png[width="790"]
 // end::theme[]

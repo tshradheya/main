@@ -399,6 +399,23 @@ The `redo` command fails as there are no `undo` commands executed previously.
 Clears all entries from the address book. +
 Format: `clear`
 
+// tag::theme[]
+=== Changing the theme : `theme` [Since V1.3]
+
+Changes the theme of the address book to a specific theme. +
+Format: `theme THEME`
+
+****
+* The search is case insensitive. e.g `dark` will match `Dark`.
+* Only full theme names will be matched e.g. `dark` will not match `dar`.
+****
+
+Examples:
+
+* `theme dark` +
+* `theme sky`
+// end::theme[]
+
 === Exiting the program : `exit`
 
 Exits the program. +
@@ -485,6 +502,8 @@ e.g.`select 2`
 * *Undo* : `undo`
 * *Redo* : `redo`
 * *Toggle* : `toggle`
+* *Theme* : `theme THEME` +
+e.g. `theme sky`
 
 
 == Since V1.2
@@ -510,27 +529,13 @@ Returns all persons with name matching `Dickson` (case-insensitive) *and* tag ma
 * `search t/friend t/NUS t/Computing` +
 Returns all persons having tags `friend`, `NUS`, and `Computing` (all case-insensitive).
 
-=== listThemes and changeTheme command +
+=== listThemes command +
 Users will be able to switch to different color themes. They will be able to choose from a list of themes. +
 This allows users to better customise their address book.
 
 ==== listTheme +
 Format: `listTheme` +
 A window will pop up displaying the list of available themes. Users need only take note of the theme name of the theme they are interested in for the next step.
-
-==== changeTheme +
-Format: `changeTheme KEYWORD` +
-`KEYWORD` is the theme name of the theme the user is interested in switching to.
-
-****
-* The search is case insensitive. e.g `groovy` will match `Groovy`.
-* Only full theme names will be matched e.g. `groovy` will not match `groov`.
-****
-
-Examples:
-
-* `changeTheme light` +
-* `changeTheme rainbow`
 
 === Command Format Validation +
 The text field where users type commands into would be outlined with colors. +

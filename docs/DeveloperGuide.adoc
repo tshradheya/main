@@ -705,6 +705,33 @@ Cons: More difficult to implement +
 Pros: Easier to implement +
 Cons: Users cannot interact with the reminders panel (since the browser is technically still at the front)
 
+// tag::theme[]
+=== Theme-changing mechanism
+
+image::themeChangingMechanism1.png[width="790"]
+_Figure 1 : Component interactions for the theme-changing mechanism_
+
+The theme-changing mechanism is an event-driven mechanism. The above diagram shows the high-level overview of the component interactions for the theme-changing mechanism.
+
+image::themeChangingMechanism2.png[width="790"]
+_Figure 2 : Sequence diagram for the first part of the theme-changing mechanism_
+
+As shown from the sequence diagram above, after the user entered the command `theme sky`, a new object `ThemeCommand` will be created. The `LogicManager` will then execute `ThemeCommand`, and the event `ChangeThemeRequestEvent` will be posted by `EventsCenter`. The code snippet below shows the `execute()` method of `ThemeCommand`:
+
+----
+@Override
+public CommandResult execute() {
+    EventsCenter.getInstance().post(new ChangeThemeRequestEvent(theme));
+    return new CommandResult(String.format(MESSAGE_SET_THEME_SUCCESS, theme.getTheme()));
+}
+----
+
+image::themeChangingMechanism3.png[width="790"]
+_Figure 3 : Sequence diagram for the second part of the theme-changing mechanism_
+
+As shown from the sequence diagram above, the method `handleChangeThemeEvent()` in `MainWindow` will handle the event and change the theme of the address book through the method `changeTheme()` accordingly.
+// end::theme[]
+
 === Logging
 
 We are using `java.util.logging` package for logging. The `LogsCenter` class is used to manage the logging levels and logging destinations.

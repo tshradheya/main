@@ -559,7 +559,8 @@ The command is implemented in this manner because of the following reasons
 
 === Location Mechanism
 The location command through an event driven mechanism. The below diagram shows sequence diagram for it.
-image::locationSD.PNG[width="790]
+
+image::locationSD.PNG[width="790"]
 
 The execution of command raises an event `ShowLocationEvent`. This causes the `BrowserAndReminderPanel` to switch to Node `Browser` irrespective of current state of the application.
 Following is the code written to ensure the GUI set up for the command.
@@ -594,6 +595,8 @@ public String loadPersonLocation(String address) {
 }
 ----
 
+
+
 ==== Design Considerations
 
 **Aspect:** What to use to show the location +
@@ -605,8 +608,50 @@ public String loadPersonLocation(String address) {
 **Cons:** Uses more resources for the exact same feature and doesn't utilise pre existing browser properly
 
 
+=== Email Mechanism
+
+The email command lets the user compose an email in default browser with filled in data like recipients, subject and body.
+
+[NOTE]
+The recipients are all contacts belonging to a particular tag.
+[NOTE]
+The only two services offered are `gmail` and `outlook` as our target users are students.
+
+The email command through an event driven mechanism. The below diagram shows sequence diagram for it.
+
+image::emailSD.PNG[width="790"]
+
+The given command is parsed to know the `Service` , `tag` to which email has to be sent, `Subject` and `Body`.
+
+The parsing takes place in the following manner:
+
+image::ParserSDEmail.PNG[width="790"]
 
 
+The execution of command raises an event `SendingEmailEvent`.
+
+The URL for composing the mail set up through the following code
+
+[source, java]
+----
+public static final String GMAIL_EMAIL_URL =
+            "https://mail.google.com/mail/?view=cm&fs=1&tf=1&source=mailto&to=%1$s&su=%2$s&body=%3$s";
+
+public static final String OUTLOOK_EMAIL_URL =
+            "https://outlook.office.com/?path=/mail/action/compose&to=%1$s&subject=%2$s&body=%3$s";
+
+Desktop.getDesktop().browse(new URI(String.format(GMAIL_EMAIL_URL, recipients, subject, body)));
+----
+
+==== Design Considerations
+
+**Aspect:** Where to compose the mail +
+**Alternative 1 (current choice):** Opens the default browser of Desktop  +
+**Pros:** The browser has user already signed up and browser supports the url +
+**Cons:** Depending on third party apps +
+**Alternative 2:** Open in `BrowserPanel` +
+**Pros:** No dependency on other apps +
+**Cons:** Does not auto fill in the text due to older version of browser
 
 
 === Toggling mechanism

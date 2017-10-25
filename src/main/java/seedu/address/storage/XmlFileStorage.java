@@ -9,7 +9,7 @@ import seedu.address.commons.exceptions.DataConversionException;
 import seedu.address.commons.util.XmlUtil;
 
 /**
- * Stores addressbook data in an XML file
+ * Stores addressbook and reminder data in an XML file
  */
 public class XmlFileStorage {
     /**
@@ -25,12 +25,36 @@ public class XmlFileStorage {
     }
 
     /**
+     * Saves the given reminders data to the specified file.
+     */
+    public static void saveRemindersToFile(File file, XmlSerializableReminders reminders)
+            throws FileNotFoundException {
+        try {
+            XmlUtil.saveDataToFile(file, reminders);
+        } catch (JAXBException e) {
+            assert false : "Unexpected exception " + e.getMessage();
+        }
+    }
+
+    /**
      * Returns address book in the file or an empty address book
      */
     public static XmlSerializableAddressBook loadDataFromSaveFile(File file) throws DataConversionException,
                                                                             FileNotFoundException {
         try {
             return XmlUtil.getDataFromFile(file, XmlSerializableAddressBook.class);
+        } catch (JAXBException e) {
+            throw new DataConversionException(e);
+        }
+    }
+
+    /**
+     * Returns reminders in the file or an empty reminder list
+     */
+    public static XmlSerializableReminders loadRemindersFromSaveFile(File file) throws DataConversionException,
+                                                                            FileNotFoundException {
+        try {
+            return XmlUtil.getDataFromFile(file, XmlSerializableReminders.class);
         } catch (JAXBException e) {
             throw new DataConversionException(e);
         }

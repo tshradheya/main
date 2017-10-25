@@ -3,6 +3,7 @@ package seedu.address.logic.commands;
 import static java.util.Objects.requireNonNull;
 
 import seedu.address.model.AddressBook;
+import seedu.address.model.reminders.UniqueReminderList;
 
 /**
  * Clears the address book.
@@ -18,6 +19,7 @@ public class ClearCommand extends UndoableCommand {
     public CommandResult executeUndoableCommand() {
         requireNonNull(model);
         model.resetData(new AddressBook());
+        model.resetReminders(new UniqueReminderList());
         return new CommandResult(MESSAGE_SUCCESS);
     }
 }

@@ -4,10 +4,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_BIRTHDAY;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_DATE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_REMINDER;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_TIME;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -46,6 +49,9 @@ public class CommandTestUtil {
     public static final String VALID_BIRTHDAY_BOB = "21/10/1995";
     public static final String VALID_TAG_HUSBAND = "husband";
     public static final String VALID_TAG_FRIEND = "friend";
+    public static final String VALID_REMINDER_COFFEE = "Drink coffee";
+    public static final String VALID_REMINDER_DATE = "01/11/2017";
+    public static final String VALID_REMINDER_TIME = "0800";
 
     public static final String NAME_DESC_AMY = " " + PREFIX_NAME + VALID_NAME_AMY;
     public static final String NAME_DESC_BOB = " " + PREFIX_NAME + VALID_NAME_BOB;
@@ -60,6 +66,14 @@ public class CommandTestUtil {
     public static final String BIRTHDAY_DESC_BOB = " " + PREFIX_BIRTHDAY + VALID_BIRTHDAY_BOB;
     public static final String TAG_DESC_FRIEND = " " + PREFIX_TAG + VALID_TAG_FRIEND;
     public static final String TAG_DESC_HUSBAND = " " + PREFIX_TAG + VALID_TAG_HUSBAND;
+
+    public static final String REMINDER_DESC_COFFEE = " " + PREFIX_REMINDER + VALID_REMINDER_COFFEE;
+    public static final String REMINDER_DESC_DATE = " " + PREFIX_DATE + VALID_REMINDER_DATE;
+    public static final String REMINDER_DESC_TIME = " " + PREFIX_TIME + VALID_REMINDER_TIME;
+
+    public static final String INVALID_REMINDER_DESC = " " + PREFIX_REMINDER + ""; // Empty reminder
+    public static final String INVALID_REMINDER_DESC_DATE = " " + PREFIX_DATE + "12 Mar 2017"; // Format not allowed
+    public static final String INVALID_REMINDER_DESC_TIME = " " + PREFIX_TIME + "2400"; // Violate 24-hr time system
 
     public static final String INVALID_NAME_DESC = " " + PREFIX_NAME + "James&"; // '&' not allowed in names
     public static final String INVALID_PHONE_DESC = " " + PREFIX_PHONE + "911a"; // 'a' not allowed in phones

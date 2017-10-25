@@ -11,6 +11,7 @@ import static seedu.address.testutil.TypicalPath.PATH_EXPORT;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 import static seedu.address.testutil.TypicalRange.RANGE_1;
 import static seedu.address.testutil.TypicalRange.RANGE_ALL;
+import static seedu.address.testutil.TypicalReminders.getUniqueTypicalReminders;
 
 import org.junit.Test;
 
@@ -26,9 +27,7 @@ import seedu.address.model.UserPrefs;
 public class ExportCommandTest {
 
     public static final String VALID_PATH = "/storage/classmates";
-
-
-    private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+    private Model model = new ModelManager(getTypicalAddressBook(), getUniqueTypicalReminders(), new UserPrefs());
 
     @Test
     public void execute_invalidPersonIndexUnfilteredList_failure() throws Exception {

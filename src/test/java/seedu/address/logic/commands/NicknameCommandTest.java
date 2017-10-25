@@ -11,6 +11,7 @@ import static seedu.address.logic.commands.CommandTestUtil.showFirstPersonOnly;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
+import static seedu.address.testutil.TypicalReminders.getUniqueTypicalReminders;
 
 import org.junit.Test;
 
@@ -29,7 +30,7 @@ import seedu.address.testutil.PersonBuilder;
 
 public class NicknameCommandTest {
 
-    private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+    private Model model = new ModelManager(getTypicalAddressBook(), getUniqueTypicalReminders(), new UserPrefs());
 
     @Test
     public void execute_setNickname_success() throws Exception {
@@ -40,7 +41,8 @@ public class NicknameCommandTest {
 
         String expectedMessage = String.format(NicknameCommand.MESSAGE_SET_NICKNAME_SUCCESS, editedPerson);
 
-        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()),
+                model.getUniqueReminderList(), new UserPrefs());
         expectedModel.updatePerson(model.getFilteredPersonList().get(0), editedPerson);
 
         assertCommandSuccess(nicknameCommand, model, expectedMessage, expectedModel);
@@ -61,7 +63,8 @@ public class NicknameCommandTest {
 
         String expectedMessage = String.format(NicknameCommand.MESSAGE_REMOVE_NICKNAME_SUCCESS, editedPerson);
 
-        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()),
+                model.getUniqueReminderList(), new UserPrefs());
         expectedModel.updatePerson(model.getFilteredPersonList().get(0), editedPerson);
 
         assertCommandSuccess(nicknameCommand, model, expectedMessage, expectedModel);
@@ -76,7 +79,8 @@ public class NicknameCommandTest {
 
         String expectedMessage = String.format(NicknameCommand.MESSAGE_UNCHANGED_NICKNAME, editedPerson);
 
-        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()),
+                model.getUniqueReminderList(), new UserPrefs());
         expectedModel.updatePerson(model.getFilteredPersonList().get(0), editedPerson);
 
         assertCommandSuccess(nicknameCommand, model, expectedMessage, expectedModel);
@@ -92,7 +96,8 @@ public class NicknameCommandTest {
 
         String expectedMessage = String.format(NicknameCommand.MESSAGE_SET_NICKNAME_SUCCESS, editedPerson);
 
-        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()),
+                model.getUniqueReminderList(), new UserPrefs());
         expectedModel.updatePerson(model.getFilteredPersonList().get(0), editedPerson);
 
         assertCommandSuccess(nicknameCommand, model, expectedMessage, expectedModel);

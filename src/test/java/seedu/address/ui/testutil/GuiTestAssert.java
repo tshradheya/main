@@ -8,8 +8,10 @@ import java.util.stream.Collectors;
 import guitests.guihandles.BirthdayReminderCardHandle;
 import guitests.guihandles.PersonCardHandle;
 import guitests.guihandles.PersonListPanelHandle;
+import guitests.guihandles.ReminderCardHandle;
 import guitests.guihandles.ResultDisplayHandle;
 import seedu.address.model.person.ReadOnlyPerson;
+import seedu.address.model.reminders.Reminder;
 
 /**
  * A set of assertion methods useful for writing GUI tests.
@@ -49,6 +51,15 @@ public class GuiTestAssert {
         assertEquals(expectedPerson.getName().fullName, actualCard.getName());
         assertEquals(expectedPerson.getBirthday().value, actualCard.getBirthday());
         assertEquals(expectedPerson.getNickname().value, actualCard.getNickname());
+    }
+
+    /**
+     * Asserts that {@code actualCard} displays the details of {@code expectedReminder}.
+     */
+    public static void assertReminderCardDisplaysReminder(Reminder expectedReminder,
+                                                                ReminderCardHandle actualCard) {
+        assertEquals(expectedReminder.getReminder(), actualCard.getReminder());
+        assertEquals(expectedReminder.getDueDate().toString(), actualCard.getDueDate());
     }
 
     /**

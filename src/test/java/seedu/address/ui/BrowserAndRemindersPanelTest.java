@@ -15,9 +15,7 @@ import static seedu.address.ui.UiPart.FXML_FILE_FOLDER;
 import java.net.URL;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import guitests.guihandles.BrowserAndRemindersPanelHandle;
 import javafx.collections.FXCollections;

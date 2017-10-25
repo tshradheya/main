@@ -234,7 +234,7 @@ public NameAndTagsContainsKeywordsPredicate(List<String> nameKeywords, List<Stri
 
 The method `test(ReadOnlyPerson person)` iterates through `nameKeywords` and `tagKeywords` to find a match of every `person` from the address book.
 
-Below is an extract of the method `test(ReadOnlyPerson person`. The tags of each person are retrieved by the `getTags()` method. This method iterates through `tagKeywords` and counts the number of matches against `tagsOfPerson`. If the count is equal to the size of `tagKeywords`, this means all the keywords in `tagKeywords` matches. The `tagFound` will then be set to `true`.
+Below is an extract of the method `test(ReadOnlyPerson person)`. The tags of each person are retrieved by the `getTags()` method. This method iterates through `tagKeywords` and counts the number of matches against `tagsOfPerson`. If the count is equal to the size of `tagKeywords`, this means all the keywords in `tagKeywords` matches. The `tagFound` will then be set to `true`.
 
 [source,java]
 ----
@@ -242,20 +242,12 @@ boolean tagFound = false;
 
 int numTagKeywords = tagKeywords.size();
 int tagsMatchedCount = 0;
-
 if (!tagKeywords.isEmpty()) {
-    Set<Tag> tagsOfPerson = person.getTags();
-    for (Tag personTag : tagsOfPerson) {
-        for (String findTag : tagKeywords) {
-            if (personTag.tagName.equalsIgnoreCase(findTag)) {
-                tagsMatchedCount++;
-            }
-        }
-    }
+    tagsMatchedCount = countTagMatches(person);
+}
 
-    if (tagsMatchedCount == numTagKeywords) {
-        tagFound = true;
-    }
+if (tagsMatchedCount == numTagKeywords) {
+    tagFound = true;
 }
 ----
 
@@ -667,6 +659,26 @@ public class BrowserAndRemindersPanel extends UIPart<Region> {
 The `PersonPanelSelectionChangedEvent` is posted whenever the `select` command is executed. Within the `handlePersonPanelSelectionChangedEvent`
 method, there is the method `bringBrowserToFront`, which would then bring the browser panel to the front no matter what.
 
+=== Reminder Implementation
+image::RemindersUML.png[width="790"]
+_Figure 1: UML diagram showing the implementation of reminders_
++
+The `Reminder` object represents a reminder in iContacts. It contains a `String` object `reminder`, which represents
+the actual reminder from the user, and also a `DueDate` object which represents the date and time for the reminder.
++
+In terms of how `Reminder` objects are kept in-memory during the execution of the program, `Reminder` objects are
+kept within `UniqueReminderList`, which assures that there are no duplicate `Reminder` objects. The `UniqueReminderList`
+object is then used by `ModelManager` to carry out commands related to reminders.
++
+`Reminder` objects are stored in a XML storage file in a JAXB-friendly version `XmlAdaptedReminder`. +
+When the program starts, `XmlAdaptedReminder` objects are read in as `XmlSerializableReminders`. The `XmlSerializableReminders`
+object is then passed to `UniqueReminderList`, which then converts it into a list of `Reminder` objects for in-memory use.
++
+To save, the `saveReminders` method in `StorageManager` is called, which trickles down to `XmlRemindersStorage` and eventually
+calls the `saveRemindersToFile` method in `XmlUtil`.
+
+
+
 ==== Design Considerations
 
 **Aspect:** Usage of browser area +
@@ -684,6 +696,33 @@ Cons: More difficult to implement +
 **Alternative 2:** Set visibility of browser as required (set browser visibility to false to display reminders and vice versa) +
 Pros: Easier to implement +
 Cons: Users cannot interact with the reminders panel (since the browser is technically still at the front)
+
+// tag::theme[]
+=== Theme-changing mechanism
+
+image::themeChangingMechanism1.png[width="790"]
+_Figure 1 : Component interactions for the theme-changing mechanism_
+
+The theme-changing mechanism is an event-driven mechanism. The above diagram shows the high-level overview of the component interactions for the theme-changing mechanism.
+
+image::themeChangingMechanism2.png[width="790"]
+_Figure 2 : Sequence diagram for the first part of the theme-changing mechanism_
+
+As shown from the sequence diagram above, after the user entered the command `theme sky`, a new object `ThemeCommand` will be created. The `LogicManager` will then execute `ThemeCommand`, and the event `ChangeThemeRequestEvent` will be posted by `EventsCenter`. The code snippet below shows the `execute()` method of `ThemeCommand`:
+
+----
+@Override
+public CommandResult execute() {
+    EventsCenter.getInstance().post(new ChangeThemeRequestEvent(theme));
+    return new CommandResult(String.format(MESSAGE_SET_THEME_SUCCESS, theme.getTheme()));
+}
+----
+
+image::themeChangingMechanism3.png[width="790"]
+_Figure 3 : Sequence diagram for the second part of the theme-changing mechanism_
+
+As shown from the sequence diagram above, the method `handleChangeThemeEvent()` in `MainWindow` will handle the event and change the theme of the address book through the method `changeTheme()` accordingly.
+// end::theme[]
 
 === Logging
 

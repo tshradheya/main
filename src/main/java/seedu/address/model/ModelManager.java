@@ -17,6 +17,7 @@ import javafx.collections.transformation.SortedList;
 import seedu.address.commons.core.ComponentManager;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.model.AddressBookChangedEvent;
+import seedu.address.commons.events.model.RemindersChangedEvent;
 import seedu.address.commons.events.ui.SendingEmailEvent;
 import seedu.address.commons.events.ui.ShowLocationEvent;
 import seedu.address.model.email.Body;
@@ -28,6 +29,9 @@ import seedu.address.model.person.Person;
 import seedu.address.model.person.ReadOnlyPerson;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
+import seedu.address.model.reminders.Reminder;
+import seedu.address.model.reminders.UniqueReminderList;
+import seedu.address.model.reminders.exceptions.DuplicateReminderException;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -41,20 +45,24 @@ public class ModelManager extends ComponentManager implements Model {
     private final FilteredList<ReadOnlyPerson> filteredPersons;
     private final FilteredList<ReadOnlyPerson> filteredPersonsForBirthdayListPanel;
     private final FilteredList<ReadOnlyPerson> filteredPersonsForEmail;
+    private final UniqueReminderList reminderList;
 
     private SortedList<ReadOnlyPerson> sortedfilteredPersons;
     private SortedList<ReadOnlyPerson> sortedFilteredPersonsForBirthdayListPanel;
+    private SortedList<Reminder> sortedReminderList;
 
     /**
      * Initializes a ModelManager with the given addressBook and userPrefs.
      */
-    public ModelManager(ReadOnlyAddressBook addressBook, UserPrefs userPrefs) {
+    public ModelManager(ReadOnlyAddressBook addressBook, UniqueReminderList reminders, UserPrefs userPrefs) {
         super();
-        requireAllNonNull(addressBook, userPrefs);
+        requireAllNonNull(addressBook, reminders, userPrefs);
 
-        logger.fine("Initializing with address book: " + addressBook + " and user prefs " + userPrefs);
+        logger.fine("Initializing with address book: " + addressBook +  " and reminders " + reminders
+                + " and user prefs " + userPrefs);
 
         this.addressBook = new AddressBook(addressBook);
+        this.reminderList = reminders;
         filteredPersons = new FilteredList<>(this.addressBook.getPersonList());
         filteredPersonsForBirthdayListPanel = new FilteredList<>(this.addressBook.getPersonList());
         filteredPersonsForBirthdayListPanel.setPredicate(new BirthdayInCurrentMonthPredicate());
@@ -62,17 +70,25 @@ public class ModelManager extends ComponentManager implements Model {
         sortedfilteredPersons = new SortedList<>(filteredPersons);
         sortedFilteredPersonsForBirthdayListPanel = new SortedList<>(filteredPersonsForBirthdayListPanel,
                 Comparator.comparingInt(birthday -> birthday.getBirthday().getDayOfBirthday()));
+        sortedReminderList = new SortedList<>(reminderList.asObservableList(),
+                Comparator.comparing(reminder -> reminder.getDueDate().getLocalDateTime()));
 
     }
 
     public ModelManager() {
-        this(new AddressBook(), new UserPrefs());
+        this(new AddressBook(), new UniqueReminderList(), new UserPrefs());
     }
 
     @Override
     public void resetData(ReadOnlyAddressBook newData) {
         addressBook.resetData(newData);
         indicateAddressBookChanged();
+    }
+
+    @Override
+    public void resetReminders(UniqueReminderList newReminders) {
+        reminderList.setReminders(newReminders);
+        indicateRemindersChanged();
     }
 
     @Override
@@ -83,6 +99,11 @@ public class ModelManager extends ComponentManager implements Model {
     /** Raises an event to indicate the model has changed */
     private void indicateAddressBookChanged() {
         raise(new AddressBookChangedEvent(addressBook));
+    }
+
+    /** Raises an event to indicate the reminders have changed */
+    private void indicateRemindersChanged() {
+        raise(new RemindersChangedEvent(reminderList));
     }
 
     @Override
@@ -191,6 +212,24 @@ public class ModelManager extends ComponentManager implements Model {
         return FXCollections.unmodifiableObservableList(sortedFilteredPersonsForBirthdayListPanel);
     }
 
+    //=========== UniqueReminderList Accessors =================================================================
+
+    @Override
+    public ObservableList<Reminder> getSortedReminderList() {
+        return sortedReminderList;
+    }
+
+    @Override
+    public UniqueReminderList getUniqueReminderList() {
+        return reminderList;
+    }
+
+    @Override
+    public void addReminder(Reminder toAdd) throws DuplicateReminderException {
+        reminderList.add(toAdd);
+        indicateRemindersChanged();
+    }
+
     @Override
     public boolean equals(Object obj) {
         // short circuit if same object
@@ -206,7 +245,8 @@ public class ModelManager extends ComponentManager implements Model {
         // state check
         ModelManager other = (ModelManager) obj;
         return addressBook.equals(other.addressBook)
-                && filteredPersons.equals(other.filteredPersons);
+                && filteredPersons.equals(other.filteredPersons)
+                && reminderList.equals(other.reminderList);
     }
 
 }

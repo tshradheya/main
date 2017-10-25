@@ -11,6 +11,7 @@ import static seedu.address.logic.commands.CommandTestUtil.showFirstPersonOnly;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
+import static seedu.address.testutil.TypicalReminders.getUniqueTypicalReminders;
 
 import java.io.File;
 
@@ -37,7 +38,7 @@ public class DisplayPictureCommandTest {
                     .getAbsolutePath();
 
     private static final String INVALID_PATH = "/?nothing";
-    private Model model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
+    private Model model = new ModelManager(getTypicalAddressBook(), getUniqueTypicalReminders(), new UserPrefs());
 
     @Test
     public void execute_setDisplayPicture_success() throws Exception {
@@ -49,7 +50,8 @@ public class DisplayPictureCommandTest {
 
         String expectedMessage = String.format(DisplayPictureCommand.MESSAGE_ADD_DISPLAYPICTURE_SUCCESS, editedPerson);
 
-        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()),
+                getUniqueTypicalReminders(), new UserPrefs());
         expectedModel.updatePerson(model.getFilteredPersonList().get(0), editedPerson);
 
         assertCommandSuccess(displayPictureCommand, model, expectedMessage, expectedModel);
@@ -65,7 +67,8 @@ public class DisplayPictureCommandTest {
 
         String expectedMessage = String.format(DisplayPictureCommand.MESSAGE_IMAGE_PATH_FAIL, editedPerson);
 
-        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()),
+                getUniqueTypicalReminders(), new UserPrefs());
         expectedModel.updatePerson(model.getFilteredPersonList().get(0), editedPerson);
 
         assertCommandSuccess(displayPictureCommand, model, expectedMessage, expectedModel);
@@ -79,9 +82,11 @@ public class DisplayPictureCommandTest {
         DisplayPictureCommand displayPictureCommand = prepareCommand(INDEX_FIRST_PERSON,
                 "");
 
-        String expectedMessage = String.format(DisplayPictureCommand.MESSAGE_DELETE_DISPLAYPICTURE_SUCCESS, editedPerson);
+        String expectedMessage = String.format(DisplayPictureCommand.MESSAGE_DELETE_DISPLAYPICTURE_SUCCESS,
+                editedPerson);
 
-        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()), new UserPrefs());
+        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()),
+                getUniqueTypicalReminders(), new UserPrefs());
         expectedModel.updatePerson(model.getFilteredPersonList().get(0), editedPerson);
 
         assertCommandSuccess(displayPictureCommand, model, expectedMessage, expectedModel);

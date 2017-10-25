@@ -6,6 +6,9 @@ import static org.junit.Assert.fail;
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
 import static seedu.address.logic.commands.CommandTestUtil.NICKNAME_DESC_AMY;
+import static seedu.address.logic.commands.CommandTestUtil.REMINDER_DESC_COFFEE;
+import static seedu.address.logic.commands.CommandTestUtil.REMINDER_DESC_DATE;
+import static seedu.address.logic.commands.CommandTestUtil.REMINDER_DESC_TIME;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_EMAIL_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NICKNAME_AMY;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL_BODY;
@@ -27,6 +30,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import seedu.address.logic.commands.AddCommand;
+import seedu.address.logic.commands.AddReminderCommand;
 import seedu.address.logic.commands.ClearCommand;
 import seedu.address.logic.commands.DeleteCommand;
 import seedu.address.logic.commands.DisplayPictureCommand;
@@ -59,9 +63,11 @@ import seedu.address.model.person.NameContainsKeywordsPredicate;
 import seedu.address.model.person.Nickname;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.PersonContainsTagPredicate;
+import seedu.address.model.reminders.Reminder;
 import seedu.address.testutil.EditPersonDescriptorBuilder;
 import seedu.address.testutil.PersonBuilder;
 import seedu.address.testutil.PersonUtil;
+import seedu.address.testutil.ReminderBuilder;
 
 public class AddressBookParserTest {
     @Rule
@@ -81,6 +87,14 @@ public class AddressBookParserTest {
         Person person = new PersonBuilder().build();
         AddCommand command = (AddCommand) parser.parseCommand(PersonUtil.getAddAliasCommand(person));
         assertEquals(new AddCommand(person), command);
+    }
+
+    @Test
+    public void parseCommand_addReminder() throws Exception {
+        Reminder reminder = new ReminderBuilder().build();
+        AddReminderCommand command = (AddReminderCommand) parser.parseCommand(AddReminderCommand.COMMAND_WORD
+                + REMINDER_DESC_COFFEE + REMINDER_DESC_DATE + REMINDER_DESC_TIME);
+        assertEquals(new AddReminderCommand(reminder), command);
     }
 
     @Test

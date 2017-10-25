@@ -9,6 +9,9 @@ import seedu.address.model.email.Subject;
 import seedu.address.model.person.ReadOnlyPerson;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
+import seedu.address.model.reminders.Reminder;
+import seedu.address.model.reminders.UniqueReminderList;
+import seedu.address.model.reminders.exceptions.DuplicateReminderException;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -21,14 +24,26 @@ public interface Model {
     /** Clears existing backing model and replaces with the provided new data. */
     void resetData(ReadOnlyAddressBook newData);
 
+    /** Clears existing backing model and replaces with the provided new reminders. */
+    void resetReminders(UniqueReminderList newReminders);
+
     /** Returns the AddressBook */
     ReadOnlyAddressBook getAddressBook();
+
+    /** Returns an unmodifiable view of the sorted list of reminders */
+    ObservableList<Reminder> getSortedReminderList();
+
+    /** Returns the reminders */
+    UniqueReminderList getUniqueReminderList();
 
     /** Deletes the given person. */
     void deletePerson(ReadOnlyPerson target) throws PersonNotFoundException;
 
     /** Adds the given person */
     void addPerson(ReadOnlyPerson person) throws DuplicatePersonException;
+
+    /** Adds the given reminder */
+    void addReminder(Reminder reminder) throws DuplicateReminderException;
 
     /** Deletes the tag from all people in Address Book**/
     void deleteTag(Tag target) throws DuplicatePersonException, PersonNotFoundException;

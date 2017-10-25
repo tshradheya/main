@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import static seedu.address.testutil.EventsUtil.postNow;
 import static seedu.address.testutil.TypicalPersons.ALICE;
 import static seedu.address.testutil.TypicalPersons.getTypicalPersons;
+import static seedu.address.testutil.TypicalReminders.getTypicalReminders;
 import static seedu.address.ui.BrowserAndRemindersPanel.DEFAULT_PAGE;
 import static seedu.address.ui.BrowserAndRemindersPanel.GOOGLE_MAPS_URL;
 import static seedu.address.ui.BrowserAndRemindersPanel.GOOGLE_SEARCH_URL_PREFIX;
@@ -25,13 +26,13 @@ import seedu.address.MainApp;
 import seedu.address.commons.events.ui.PersonPanelSelectionChangedEvent;
 import seedu.address.commons.events.ui.ShowLocationEvent;
 import seedu.address.model.person.ReadOnlyPerson;
+import seedu.address.model.reminders.Reminder;
 
 public class BrowserAndRemindersPanelTest extends GuiUnitTest {
     private static final ObservableList<ReadOnlyPerson> TYPICAL_PERSONS =
             FXCollections.observableList(getTypicalPersons());
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
-
+    private static final ObservableList<Reminder> TYPICAL_REMINDERS =
+            FXCollections.observableList(getTypicalReminders());
     private PersonPanelSelectionChangedEvent selectionChangedEventStub;
     private ShowLocationEvent showLocationEventStub;
     private BrowserAndRemindersPanel browserAndRemindersPanel;
@@ -42,7 +43,8 @@ public class BrowserAndRemindersPanelTest extends GuiUnitTest {
         selectionChangedEventStub = new PersonPanelSelectionChangedEvent(new PersonCard(ALICE, 0));
         showLocationEventStub = new ShowLocationEvent(ALICE);
 
-        guiRobot.interact(() -> browserAndRemindersPanel = new BrowserAndRemindersPanel(TYPICAL_PERSONS));
+        guiRobot.interact(() -> browserAndRemindersPanel = new BrowserAndRemindersPanel(TYPICAL_PERSONS,
+                TYPICAL_REMINDERS));
         uiPartRule.setUiPart(browserAndRemindersPanel);
 
         browserAndRemindersPanelHandle = new BrowserAndRemindersPanelHandle(browserAndRemindersPanel.getRoot());

@@ -19,6 +19,9 @@ import seedu.address.logic.UndoRedoStack;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.ReadOnlyAddressBook;
+import seedu.address.model.email.Body;
+import seedu.address.model.email.Service;
+import seedu.address.model.email.Subject;
 import seedu.address.model.person.ReadOnlyPerson;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
@@ -182,6 +185,17 @@ public class AddReminderCommandTest {
         @Override
         public void showLocation(ReadOnlyPerson person) {
             fail("This method should not be called");
+        }
+
+        @Override
+        public void processEmailEvent(String recipients, Subject subject, Body body, Service service) {
+            fail("This method should not be called");
+        }
+
+        @Override
+        public String createEmailRecipients(Predicate<ReadOnlyPerson> predicate) {
+            fail("This method should not be called");
+            return null;
         }
     }
 

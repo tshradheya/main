@@ -216,7 +216,7 @@ Classes used by multiple components are in the `seedu.addressbook.commons` packa
 
 == Implementation
 
-This section describes some noteworthy details on how certain features are implemented.
+This section describes some noteworthy details on how certain features are implemented, as well as design considerations for some features.
 
 // tag::filter[]
 === Filter mechanism
@@ -225,7 +225,8 @@ The `FilterCommand` uses `NameAndTagsContainsKeywordsPredicate` to filter the pe
 
 [source,java]
 ----
-public NameAndTagsContainsKeywordsPredicate(List<String> nameKeywords, List<String> tagKeywords) {
+public class NameAndTagsContainsKeywordsPredicate {
+    public NameAndTagsContainsKeywordsPredicate(List<String> nameKeywords, List<String> tagKeywords) {
         this.nameKeywords = nameKeywords;
         this.tagKeywords = tagKeywords;
     }
@@ -238,16 +239,21 @@ Below is an extract of the method `test(ReadOnlyPerson person)`. The tags of eac
 
 [source,java]
 ----
-boolean tagFound = false;
+public class NameAndTagsContainsKeywordsPredicate {
+    @Override
+    public boolean test(ReadOnlyPerson person) {
+        boolean tagFound = false;
 
-int numTagKeywords = tagKeywords.size();
-int tagsMatchedCount = 0;
-if (!tagKeywords.isEmpty()) {
-    tagsMatchedCount = countTagMatches(person);
-}
+        int numTagKeywords = tagKeywords.size();
+        int tagsMatchedCount = 0;
+        if (!tagKeywords.isEmpty()) {
+            tagsMatchedCount = countTagMatches(person);
+        }
 
-if (tagsMatchedCount == numTagKeywords) {
-    tagFound = true;
+        if (tagsMatchedCount == numTagKeywords) {
+            tagFound = true;
+        }
+    }
 }
 ----
 
@@ -255,26 +261,20 @@ Below is an extract of the same method for name. Each keywords in `nameKeywords`
 
 [source,java]
 ----
-boolean nameFound = false;
-    if (!nameKeywords.isEmpty()) {
-        nameFound = nameKeywords.stream().anyMatch(nameKeywords -> StringUtil
-        .containsWordIgnoreCase(person.getName().fullName, nameKeywords));
+public class NameAndTagsContainsKeywordsPredicate {
+    @Override
+    public boolean test(ReadOnlyPerson person) {
+        boolean nameFound = false;
+            if (!nameKeywords.isEmpty()) {
+                nameFound = nameKeywords.stream().anyMatch(nameKeywords -> StringUtil
+                .containsWordIgnoreCase(person.getName().fullName, nameKeywords));
+        }
+    }
 }
 ----
 
-For the `FilterCommand` to work properly, either `nameKeywords` or `tagKeywords` must be non-empty. The code extract from the same method below takes care of all four possibilities:
+For the `FilterCommand` to work properly, either `nameKeywords` or `tagKeywords` must be non-empty.
 
-----
-if (nameKeywords.isEmpty() && tagKeywords.isEmpty()) {
-    throw new AssertionError("Either name or tag must be non-empty");
-    } else if (nameKeywords.isEmpty()) {
-        return tagFound;
-    } else if (tagKeywords.isEmpty()) {
-        return nameFound;
-    }
-
-return nameFound && tagFound;
-----
 // end::filter[]
 
 // tag::export[]
@@ -284,6 +284,7 @@ The `ExportCommand` uses `XmlAddressBookStorage` class to generate a xml file ba
 
 [source,java]
 ----
+public class ExportCommand extends Command {
     public ExportCommand(String range, String path) {
         requireNonNull(range);
         requireNonNull(path);
@@ -292,22 +293,27 @@ The `ExportCommand` uses `XmlAddressBookStorage` class to generate a xml file ba
         this.path = path;
         exportBook = new AddressBook();
     }
+}
 ----
 
-The method `getRangefromInput()` splits the String range using the regex "," and returns a String array for the different values in the String range.
+The method `getRangefromInput()` splits the String range using a seperator and returns a String array for the different values in the String range.
 
-Below is an extract of the method `getRangefromInput()`.
+Below is an extract of the method `getRangefromInput()`:
 
 [source,java]
 ----
-private String[] getRangeFromInput() {
-        String[] splitStringComma = this.range.split(",");
+public class ExportCommand extends Command {
+    private String[] getRangeFromInput() {
+        private String[] getRangeFromInput() {
+            String[] splitStringComma = this.range.split(",");
 
-        return splitStringComma;
+            return splitStringComma;
+        }
     }
+}
 ----
 
-To determine which contacts should be added to the exportBook we have to check the the user input, there are 3 cases:
+To determine which contacts should be added to the exportBook we have to check the the user input. There are 3 cases:
 
 * all (Priority)
 ** if the case *all* is present in the user input we will just export all the contacts in the last shown list
@@ -316,10 +322,15 @@ To determine which contacts should be added to the exportBook we have to check t
 * range of index (1-5,8-10)
 ** if the user input contains a range which is identified by *-* character we will add that range of index(One-based) to the exportBook.
 
-Below is the code snippet to identify the 3 cases in the user input
+Below is the code snippet to identify the 3 cases in the user input:
+
 [source,java]
 ----
-String[] multipleRange = getRangeFromInput();
+public class ExportCommand extends Command {
+
+    @Override
+    public CommandResult execute() throws CommandException {
+        String[] multipleRange = getRangeFromInput();
 
         if (multipleRange[0].equals("all")) {
             exportAll();
@@ -333,6 +344,9 @@ String[] multipleRange = getRangeFromInput();
                 }
             }
         }
+        /... storage is resolved here ...
+    }
+}
 ----
 
 Lastly is to create the xml file from the exportBook.
@@ -340,13 +354,21 @@ Lastly is to create the xml file from the exportBook.
 Below is the code snippet to export the data into an xml file using AddressBookStorage Class
 [source,java]
 ----
-try {
+public class ExportCommand extends Command {
+    @Override
+    public CommandResult execute() throws CommandException {
+
+    /... the exporting is resolved here ...
+
+        try {
             AddressBookStorage storage = new XmlAddressBookStorage(path + ".xml");
             storage.saveAddressBook(exportBook);
         } catch (IOException ioe) {
             return new CommandResult(MESSAGE_EXPORT_FAIL);
         }
         return new CommandResult(MESSAGE_EXPORT_SUCCESS);
+    }
+}
 ----
 // end::export[]
 
@@ -499,24 +521,33 @@ image::WireFramePersonCard.PNG[width="500"]
 _Figure 2: Wireframe for the UI._
 
 
-The binder for refreshing the image every time the picture is updated is implemented by the following function
+The binder for refreshing the image every time the picture is updated is implemented by the following function:
 
 [source,java]
 ----
+public class PersonCard extends UiPart<Region> {
     private void assignImage(ReadOnlyPerson person) {
-            // ... assigning image logic ...
-            displayPicture.setImage(image);
-        }
+        // ... assigning image logic ...
+        displayPicture.setImage(image);
+    }
+}
 ----
 
 The new image stored in directory is given a unique name which is formed using hashcode of the unique email address of each contact.
 
 [source,java]
 ----
-    ReadAndStoreImage readAndStoreImage = new ReadAndStoreImage();
+public class DisplayPictureCommand extends UndoableCommand {
 
-    displayPicture.setPath(readAndStoreImage.execute(displayPicture.getPath(),
-                        personToEdit.getEmail().hashCode())); // image name formed in this line
+    @Override
+    public CommandResult executeUndoableCommand() throws CommandException, IOException, URISyntaxException {
+        /...
+        ReadAndStoreImage readAndStoreImage = new ReadAndStoreImage();
+
+        displayPicture.setPath(readAndStoreImage.execute(displayPicture.getPath(),
+                            personToEdit.getEmail().hashCode())); // image name formed in this line
+    }
+}
 ----
 
 ==== Reason for this type of implementation
@@ -755,7 +786,6 @@ public class BrowserAndRemindersPanel extends UIPart<Region> {
 The `PersonPanelSelectionChangedEvent` is posted whenever the `select` command is executed. Within the `handlePersonPanelSelectionChangedEvent`
 method, there is the method `bringBrowserToFront`, which would then bring the browser panel to the front no matter what.
 
-
 ==== Design Considerations
 
 **Aspect:** Usage of browser area +
@@ -879,10 +909,12 @@ _Figure 2 : Sequence diagram for the first part of the theme-changing mechanism_
 As shown from the sequence diagram above, after the user entered the command `theme sky`, a new object `ThemeCommand` will be created. The `LogicManager` will then execute `ThemeCommand`, and the event `ChangeThemeRequestEvent` will be posted by `EventsCenter`. The code snippet below shows the `execute()` method of `ThemeCommand`:
 
 ----
-@Override
-public CommandResult execute() {
-    EventsCenter.getInstance().post(new ChangeThemeRequestEvent(theme));
-    return new CommandResult(String.format(MESSAGE_SET_THEME_SUCCESS, theme.getTheme()));
+public class ThemeCommand extends Command {
+    @Override
+    public CommandResult execute() {
+        EventsCenter.getInstance().post(new ChangeThemeRequestEvent(theme));
+        return new CommandResult(String.format(MESSAGE_SET_THEME_SUCCESS, theme.getTheme()));
+    }
 }
 ----
 

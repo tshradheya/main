@@ -40,7 +40,7 @@ public class PopularContactCard extends UiPart<Region> {
     public PopularContactCard(ReadOnlyPerson person, int displayedIndex) {
         super(FXML);
         this.person = person;
-        rank.setText("#" + displayedIndex);
+        rank.setText("#" + displayedIndex + " ");
         bindListeners(person);
     }
 

@@ -755,25 +755,6 @@ public class BrowserAndRemindersPanel extends UIPart<Region> {
 The `PersonPanelSelectionChangedEvent` is posted whenever the `select` command is executed. Within the `handlePersonPanelSelectionChangedEvent`
 method, there is the method `bringBrowserToFront`, which would then bring the browser panel to the front no matter what.
 
-=== Reminder Implementation
-image::RemindersUML.png[width="790"]
-_Figure 1: UML diagram showing the implementation of reminders_
-+
-The `Reminder` object represents a reminder in iContacts. It contains a `String` object `reminder`, which represents
-the actual reminder from the user, and also a `DueDate` object which represents the date and time for the reminder.
-+
-In terms of how `Reminder` objects are kept in-memory during the execution of the program, `Reminder` objects are
-kept within `UniqueReminderList`, which assures that there are no duplicate `Reminder` objects. The `UniqueReminderList`
-object is then used by `ModelManager` to carry out commands related to reminders.
-+
-`Reminder` objects are stored in a XML storage file in a JAXB-friendly version `XmlAdaptedReminder`. +
-When the program starts, `XmlAdaptedReminder` objects are read in as `XmlSerializableReminders`. The `XmlSerializableReminders`
-object is then passed to `UniqueReminderList`, which then converts it into a list of `Reminder` objects for in-memory use.
-+
-To save, the `saveReminders` method in `StorageManager` is called, which trickles down to `XmlRemindersStorage` and eventually
-calls the `saveRemindersToFile` method in `XmlUtil`.
-
-
 
 ==== Design Considerations
 
@@ -792,6 +773,97 @@ Cons: More difficult to implement +
 **Alternative 2:** Set visibility of browser as required (set browser visibility to false to display reminders and vice versa) +
 Pros: Easier to implement +
 Cons: Users cannot interact with the reminders panel (since the browser is technically still at the front)
+
+
+
+=== Reminder Implementation
+image::RemindersUML.png[width="790"]
+_Figure 1: UML diagram showing the implementation of reminders_
+
+The `Reminder` object represents a reminder in iContacts. It contains a `String` variable, which represents
+the actual reminder from the user, and also a `DueDate` object which represents the date and time for the reminder. +
+
+In terms of how `Reminder` objects are kept in-memory during the execution of the program, `Reminder` objects are
+kept within `UniqueReminderList`, which assures that there are no duplicate `Reminder` objects. The `UniqueReminderList`
+object is then kept and used by `ModelManager` to carry out commands related to reminders while the program is running. +
+
+`Reminder` objects are stored in a XML storage file in a JAXB-friendly version `XmlAdaptedReminder`.
+When the program starts, `XmlAdaptedReminder` objects are read in as `XmlSerializableReminders` via `XmlFileStorage` and `XmlUtil`.
+This can be seen below:
+
+[source, java]
+----
+public class XmlFileStorage {
+
+    public static XmlSerializableReminders loadRemindersFromSaveFile(File file) throws DataConversionException, FileNotFoundException {
+        try{
+            return XmlUtil.getDataFromFile(file, XmlSerializableReminders.class);
+        } catch (JAXBException e) {
+            throw new DataConversionException(e);
+        }
+    )
+
+}
+----
+
+The `XmlSerializableReminders` object is then passed to `UniqueReminderList`, which then converts it into a list of `Reminder` objects for in-memory use.
+This can be seen below:
+
+[source, java]
+----
+public class UniqueReminderList implements Iterable<Reminder> {
+    public UniqueReminderList(XmlSerializableReminders xmlReminders) {
+        requireNonNull(xmlReminders);
+        try {
+            setReminders(xmlReminders.toModelType());
+        } catch (DuplicateReminderException dre) {
+            assert false : "Reminders from storage should not have duplicates";
+        }
+    }
+
+    public void setReminders(List<Reminder> reminders) throws DuplicateReminderException {
+        final UniqueReminderList replacement = new UniqueReminderList();
+        for (final Reminder reminder : reminders) {
+            replacement.add(new Reminder(reminder));
+        }
+        setReminders(replacement);
+    }
+
+    public void setReminders(UniqueReminderList replacement) {
+        this.internalList.setAll(replacement.internalList);
+    }
+}
+----
+
+To save, the `saveReminders` method in `StorageManager` is invoked:
+
+[source, java]
+----
+
+@Override
+    public void saveReminders(UniqueReminderList reminderList) throws IOException {
+        saveReminders(reminderList, remindersStorage.getRemindersFilePath());
+    }
+
+@Override
+    public void saveReminders(UniqueReminderList reminderList, String filePath) throws IOException {
+        logger.fine("Attempting to write to data file: " + filePath);
+        remindersStorage.saveReminders(reminderList, filePath);
+    }
+
+----
+
+This will then invoke the `saveReminders` method in `XmlRemindersStorage`, and go on to invoke the `saveRemindersToFile` method in `XmlFileStorage`,
+and the `saveDataToFile` method in `XmlUtil`.
+
+==== Design Consideration
+**Aspect:** How to store Reminders in-memory +
+**Alternative 1 (current choice):** Store Reminder objects in UniqueReminderList, independent of AddressBook +
+Pros: Makes more sense, because a Reminder should not be part of AddressBook +
+Cons: More changes have to be made to the existing program, making it tougher to implement +
+**Alternative 2:** Store Reminder objects within AddressBook +
+Pros: Does not make sense +
+Cons: Easier to implement
 
 // tag::theme[]
 === Theme-changing mechanism

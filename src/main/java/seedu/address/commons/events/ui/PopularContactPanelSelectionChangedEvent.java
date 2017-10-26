@@ -1,16 +1,16 @@
 package seedu.address.commons.events.ui;
 
 import seedu.address.commons.events.BaseEvent;
-import seedu.address.ui.PersonCard;
+import seedu.address.ui.PopularContactCard;
 
 /**
  * Represents a selection change in the Popular Contact Panel
  */
 public class PopularContactPanelSelectionChangedEvent extends BaseEvent {
 
-    private final PersonCard newSelection;
+    private final PopularContactCard newSelection;
 
-    public PopularContactPanelSelectionChangedEvent(PersonCard newSelection) {
+    public PopularContactPanelSelectionChangedEvent(PopularContactCard newSelection) {
         this.newSelection = newSelection;
     }
 
@@ -19,7 +19,7 @@ public class PopularContactPanelSelectionChangedEvent extends BaseEvent {
         return this.getClass().getSimpleName();
     }
 
-    public PersonCard getNewSelection() {
+    public PopularContactCard getNewSelection() {
         return newSelection;
     }
 }

@@ -10,7 +10,7 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.Region;
 import seedu.address.commons.core.LogsCenter;
-import seedu.address.commons.events.ui.PersonPanelSelectionChangedEvent;
+import seedu.address.commons.events.ui.PopularContactPanelSelectionChangedEvent;
 import seedu.address.model.person.ReadOnlyPerson;
 
 /**
@@ -22,7 +22,7 @@ public class PopularContactPanel extends UiPart<Region> {
     private final Logger logger = LogsCenter.getLogger(PersonListPanel.class);
 
     @FXML
-    private ListView<PersonCard> popularContactListView;
+    private ListView<PopularContactCard> popularContactListView;
 
     public PopularContactPanel(ObservableList<ReadOnlyPerson> popularContactList) {
         super(FXML);
@@ -31,8 +31,8 @@ public class PopularContactPanel extends UiPart<Region> {
     }
 
     private void setConnections(ObservableList<ReadOnlyPerson> popularContactList) {
-        ObservableList<PersonCard> mappedList = EasyBind.map(
-                popularContactList, (person) -> new PersonCard(person, popularContactList.indexOf(person) + 1));
+        ObservableList<PopularContactCard> mappedList = EasyBind.map(
+                popularContactList, (person) -> new PopularContactCard(person, popularContactList.indexOf(person) + 1));
         popularContactListView.setItems(mappedList);
         popularContactListView.setCellFactory(listView -> new PopularContactPanel.PersonListViewCell());
         setEventHandlerForSelectionChangeEvent();
@@ -43,18 +43,18 @@ public class PopularContactPanel extends UiPart<Region> {
                 .addListener((observable, oldValue, newValue) -> {
                     if (newValue != null) {
                         logger.fine("Selection in person list panel changed to : '" + newValue + "'");
-                        raise(new PersonPanelSelectionChangedEvent(newValue));
+                        raise(new PopularContactPanelSelectionChangedEvent(newValue));
                     }
                 });
     }
 
     /**
-     * Custom {@code ListCell} that displays the graphics of a {@code PersonCard}.
+     * Custom {@code ListCell} that displays the graphics of a {@code PopularContactCard}.
      */
-    class PersonListViewCell extends ListCell<PersonCard> {
+    class PersonListViewCell extends ListCell<PopularContactCard> {
 
         @Override
-        protected void updateItem(PersonCard person, boolean empty) {
+        protected void updateItem(PopularContactCard person, boolean empty) {
             super.updateItem(person, empty);
 
             if (empty || person == null) {

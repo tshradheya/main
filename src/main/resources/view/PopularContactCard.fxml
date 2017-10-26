@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox id="popularContactPane" fx:id="popularContactPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="94.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ImageView fx:id="popularContactDisplayPicture" fitHeight="76.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true">
+         <VBox.margin>
+            <Insets left="70.0" />
+         </VBox.margin>
+         <image>
+            <Image url="@../images/defaulddp.png" />
+         </image>
+      </ImageView>
+      <HBox prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <Label fx:id="popularContactName" styleClass="cell_small_label" text="\$name" textAlignment="CENTER">
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
+            </Label>
+            <Label fx:id="rank" prefHeight="10.0" prefWidth="10.0" />
+         </children>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+         <padding>
+            <Insets left="70.0" />
+         </padding>
+      </HBox>
+   </children>
+</VBox>

@@ -12,6 +12,7 @@ import seedu.address.model.person.exceptions.PersonNotFoundException;
 import seedu.address.model.reminders.Reminder;
 import seedu.address.model.reminders.UniqueReminderList;
 import seedu.address.model.reminders.exceptions.DuplicateReminderException;
+import seedu.address.model.reminders.exceptions.ReminderNotFoundException;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -44,6 +45,10 @@ public interface Model {
 
     /** Adds the given reminder */
     void addReminder(Reminder reminder) throws DuplicateReminderException;
+
+    /** Deletes the given reminder. */
+    void deleteReminder(Reminder target) throws ReminderNotFoundException;
+
 
     /** Deletes the tag from all people in Address Book**/
     void deleteTag(Tag target) throws DuplicatePersonException, PersonNotFoundException;

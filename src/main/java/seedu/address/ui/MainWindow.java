@@ -191,7 +191,7 @@ public class MainWindow extends UiPart<Region> {
      * Sets the theme and return the updated Scene
      */
     private Scene setTheme(UserPrefs prefs, Scene scene) {
-        scene.getStylesheets().add(prefs.getThemePath());
+        scene.getStylesheets().add(prefs.getThemeFilePath());
         scene.getStylesheets().add(STYLE);
         return scene;
     }

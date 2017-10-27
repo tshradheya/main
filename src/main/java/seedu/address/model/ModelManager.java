@@ -102,9 +102,13 @@ public class ModelManager extends ComponentManager implements Model {
     /** Raises an event to indicate the model has changed */
     private void indicateAddressBookChanged() {
         raise(new AddressBookChangedEvent(addressBook));
-        raise(new PopularContactChangedEvent(this));
     }
 
+    /** Raises an event to indicate model has changed and favourite contacts might be updated */
+    private void indicatePopularContactsChangedPossibility() {
+        raise(new PopularContactChangedEvent(this));
+
+    }
     /** Raises an event to indicate the reminders have changed */
     private void indicateRemindersChanged() {
         raise(new RemindersChangedEvent(reminderList));
@@ -181,7 +185,31 @@ public class ModelManager extends ComponentManager implements Model {
         return String.join(",", validEmails);
     }
 
-    //=========== Filtered Popular Contact List Accessors ====================================================
+    //=========== Update Popularity counter for the required commands =======================================
+
+    /**
+     * Increases the counter by 1 increasing popularity
+     * @param person whose popularity counter increased
+     */
+    @Override
+    public void updatePersonsPopularityCounterByOne(ReadOnlyPerson person) throws DuplicatePersonException,
+            PersonNotFoundException {
+        ReadOnlyPerson editedPerson = increaseCounterByOne(person);
+
+        addressBook.updatePerson(person, editedPerson);
+        indicateAddressBookChanged();
+        indicatePopularContactsChangedPossibility();
+    }
+
+    @Override
+    public ReadOnlyPerson increaseCounterByOne(ReadOnlyPerson person) {
+        person.getPopularityCounter().increasePopularityCounter();
+        return new Person(person.getName(), person.getPhone(), person.getEmail(), person.getAddress(),
+                person.getBirthday(), person.getNickname(), person.getDisplayPicture(), person.getPopularityCounter(),
+                person.getTags());
+    }
+
+    //=========== Filtered Popular Contact List Accessors and Mutators =======================================
 
     /**
      * Updates the popular contact list whenever address book is changed

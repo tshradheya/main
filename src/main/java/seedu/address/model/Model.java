@@ -90,4 +90,9 @@ public interface Model {
 
     void refreshWithPopulatingAddressBook();
 
+    void updatePersonsPopularityCounterByOne(ReadOnlyPerson person) throws DuplicatePersonException,
+            PersonNotFoundException;
+
+    ReadOnlyPerson increaseCounterByOne(ReadOnlyPerson person);
+
 }

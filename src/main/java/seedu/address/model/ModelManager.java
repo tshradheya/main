@@ -46,6 +46,7 @@ public class ModelManager extends ComponentManager implements Model {
     private final FilteredList<ReadOnlyPerson> filteredPersonsForBirthdayListPanel;
     private final FilteredList<ReadOnlyPerson> filteredPersonsForEmail;
     private final UniqueReminderList reminderList;
+    private FilteredList<ReadOnlyPerson> listOfPersonsForPopularContacts;
 
     private SortedList<ReadOnlyPerson> sortedfilteredPersons;
     private SortedList<ReadOnlyPerson> sortedFilteredPersonsForBirthdayListPanel;
@@ -67,6 +68,7 @@ public class ModelManager extends ComponentManager implements Model {
         filteredPersonsForBirthdayListPanel = new FilteredList<>(this.addressBook.getPersonList());
         filteredPersonsForBirthdayListPanel.setPredicate(new BirthdayInCurrentMonthPredicate());
         filteredPersonsForEmail = new FilteredList<>(this.addressBook.getPersonList());
+        listOfPersonsForPopularContacts = new FilteredList<>(this.addressBook.getPersonList());
         sortedfilteredPersons = new SortedList<>(filteredPersons);
         sortedFilteredPersonsForBirthdayListPanel = new SortedList<>(filteredPersonsForBirthdayListPanel,
                 Comparator.comparingInt(birthday -> birthday.getBirthday().getDayOfBirthday()));
@@ -175,6 +177,31 @@ public class ModelManager extends ComponentManager implements Model {
             }
         }
         return String.join(",", validEmails);
+    }
+
+    //=========== Filtered Popular Contact List Accessors ====================================================
+
+    /**
+     * Updates the popular contact list whenever address book is changed
+     */
+    @Override
+    public void updatePopularContactList() {
+        listOfPersonsForPopularContacts.sort(new Comparator<ReadOnlyPerson>() {
+            @Override
+            public int compare(ReadOnlyPerson o1, ReadOnlyPerson o2) {
+                return o1.getPopularityCounter().getCounter() - o2.getPopularityCounter().getCounter();
+            }
+        });
+
+        List<ReadOnlyPerson> getTopFive = listOfPersonsForPopularContacts.subList(0,
+                Math.min(getAddressBook().getPersonList().size(), 5));
+
+        listOfPersonsForPopularContacts = (FilteredList) getTopFive;
+    }
+
+    @Override
+    public ObservableList<ReadOnlyPerson> getPopularContactList() {
+        return FXCollections.unmodifiableObservableList(listOfPersonsForPopularContacts);
     }
 
     //=========== Filtered Person List Accessors =============================================================

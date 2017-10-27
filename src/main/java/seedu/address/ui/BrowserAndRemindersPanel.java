@@ -24,6 +24,7 @@ import seedu.address.MainApp;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.ui.BrowserAndRemindersPanelToggleEvent;
 import seedu.address.commons.events.ui.PersonPanelSelectionChangedEvent;
+import seedu.address.commons.events.ui.PopularContactPanelSelectionChangedEvent;
 import seedu.address.commons.events.ui.SendingEmailEvent;
 import seedu.address.commons.events.ui.ShowLocationEvent;
 import seedu.address.commons.events.ui.TurnLabelsOffEvent;
@@ -233,6 +234,15 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
         bringBrowserToFront();
         raise(new TurnLabelsOffEvent());
     }
+
+    @Subscribe
+    private void handlePopularContactPanelSelectionChangedEvent(PopularContactPanelSelectionChangedEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event));
+        loadPersonPage(event.getNewSelection().person);
+        bringBrowserToFront();
+        raise(new TurnLabelsOffEvent());
+    }
+
 
     @Subscribe
     private void handleBrowserPanelToggleEvent(BrowserAndRemindersPanelToggleEvent event) {

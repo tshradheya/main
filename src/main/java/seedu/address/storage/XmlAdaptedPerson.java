@@ -16,6 +16,7 @@ import seedu.address.model.person.Name;
 import seedu.address.model.person.Nickname;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.PopularityCounter;
 import seedu.address.model.person.ReadOnlyPerson;
 import seedu.address.model.tag.Tag;
 
@@ -38,6 +39,8 @@ public class XmlAdaptedPerson {
     private String birthday;
     @XmlElement(required = true)
     private String displayPicture;
+    @XmlElement(required = true)
+    private int popularityCounter;
 
     @XmlElement
     private List<XmlAdaptedTag> tagged = new ArrayList<>();
@@ -62,6 +65,7 @@ public class XmlAdaptedPerson {
         nickname = source.getNickname().value;
         birthday = source.getBirthday().value;
         displayPicture = source.getDisplayPicture().getPath();
+        popularityCounter = source.getPopularityCounter().getCounter();
         tagged = new ArrayList<>();
         for (Tag tag : source.getTags()) {
             tagged.add(new XmlAdaptedTag(tag));
@@ -85,7 +89,8 @@ public class XmlAdaptedPerson {
         final Nickname nickname = new Nickname(this.nickname);
         final Birthday birthday = new Birthday(this.birthday);
         final DisplayPicture displayPicture = new DisplayPicture(this.displayPicture);
+        final PopularityCounter popularityCounter = new PopularityCounter(this.popularityCounter);
         final Set<Tag> tags = new HashSet<>(personTags);
-        return new Person(name, phone, email, address, birthday, nickname, displayPicture, tags);
+        return new Person(name, phone, email, address, birthday, nickname, displayPicture, popularityCounter, tags);
     }
 }

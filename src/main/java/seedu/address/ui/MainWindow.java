@@ -144,7 +144,7 @@ public class MainWindow extends UiPart<Region> {
         personListPanel = new PersonListPanel(logic.getFilteredPersonList());
         personListPanelPlaceholder.getChildren().add(personListPanel.getRoot());
 
-        popularContactPanel = new PopularContactPanel(logic.getFilteredPersonList());
+        popularContactPanel = new PopularContactPanel(logic.getListOfPersonsForPopularContacts());
         popularContactsPanelPlaceHolder.getChildren().add(popularContactPanel.getRoot());
 
         ResultDisplay resultDisplay = new ResultDisplay();

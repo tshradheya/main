@@ -82,4 +82,8 @@ public interface Model {
     /** Returns an unmodifiable view of the birthday panel filtered person list */
     ObservableList<ReadOnlyPerson> getBirthdayPanelFilteredPersonList();
 
+    void updatePopularContactList();
+
+    ObservableList<ReadOnlyPerson> getPopularContactList();
+
 }

@@ -60,6 +60,11 @@ public class LogicManager extends ComponentManager implements Logic {
     }
 
     @Override
+    public ObservableList<ReadOnlyPerson> getListOfPersonsForPopularContacts() {
+        return model.getPopularContactList();
+    }
+
+    @Override
     public ObservableList<Reminder> getReminderList() {
         return model.getSortedReminderList();
     }

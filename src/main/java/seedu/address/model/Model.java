@@ -96,6 +96,6 @@ public interface Model {
 
     ReadOnlyPerson increaseCounterByOne(ReadOnlyPerson person);
 
-    void increaseCounterByOneForEmailRecipients(List<ReadOnlyPerson> filteredPersonsForEmail);
+    void increaseCounterByOneForATag(List<ReadOnlyPerson> filteredPersonsForEmail);
 
 }

@@ -175,7 +175,7 @@ public class ModelManager extends ComponentManager implements Model {
         requireNonNull(predicate);
 
         filteredPersonsForEmail.setPredicate(predicate);
-        increaseCounterByOneForEmailRecipients(filteredPersonsForEmail);
+        increaseCounterByOneForATag(filteredPersonsForEmail);
 
         List<String> validEmails = new ArrayList<>();
         for (ReadOnlyPerson person : filteredPersonsForEmail) {
@@ -187,7 +187,7 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public void increaseCounterByOneForEmailRecipients(List<ReadOnlyPerson> filteredPersonsForEmail) {
+    public void increaseCounterByOneForATag(List<ReadOnlyPerson> filteredPersonsForEmail) {
 
         for (ReadOnlyPerson person : filteredPersonsForEmail) {
             try {
@@ -281,6 +281,8 @@ public class ModelManager extends ComponentManager implements Model {
     public void updateFilteredPersonList(Predicate<ReadOnlyPerson> predicate) {
         requireNonNull(predicate);
         filteredPersons.setPredicate(predicate);
+
+        increaseCounterByOneForATag(filteredPersons);
     }
 
     @Override

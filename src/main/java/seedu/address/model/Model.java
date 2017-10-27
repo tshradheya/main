@@ -98,4 +98,6 @@ public interface Model {
 
     void increaseCounterByOneForATag(List<ReadOnlyPerson> filteredPersonsForEmail);
 
+    void updateFilteredPersonListForViewTag(Predicate<ReadOnlyPerson> predicate);
+
 }

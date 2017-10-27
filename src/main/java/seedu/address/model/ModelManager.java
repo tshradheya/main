@@ -234,7 +234,7 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public void deleteReminder(Reminder target) throws ReminderNotFoundException {
         reminderList.remove(target);
-        indicateAddressBookChanged();
+        indicateRemindersChanged();
     }
 
     @Override

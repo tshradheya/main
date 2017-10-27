@@ -80,7 +80,7 @@ public class AddressBookParser {
 
         case DeleteReminderCommand.COMMAND_WORD:
             return new DeleteReminderCommandParser().parse(arguments);
-            
+
         case ClearCommand.COMMAND_ALIAS:
         case ClearCommand.COMMAND_WORD:
             return new ClearCommand();

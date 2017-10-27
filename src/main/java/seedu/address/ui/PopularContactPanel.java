@@ -4,12 +4,15 @@ import java.util.logging.Logger;
 
 import org.fxmisc.easybind.EasyBind;
 
+import com.google.common.eventbus.Subscribe;
+
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.Region;
 import seedu.address.commons.core.LogsCenter;
+import seedu.address.commons.events.model.PopularContactChangedEvent;
 import seedu.address.commons.events.ui.PopularContactPanelSelectionChangedEvent;
 import seedu.address.model.person.ReadOnlyPerson;
 
@@ -66,5 +69,9 @@ public class PopularContactPanel extends UiPart<Region> {
         }
     }
 
+    @Subscribe
+    public void handlePopularContactChangedEvent(PopularContactChangedEvent ppce) {
+        setConnections(ppce.getModel().getPopularContactList());
+    }
 }
 

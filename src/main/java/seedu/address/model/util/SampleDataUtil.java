@@ -45,7 +45,7 @@ public class SampleDataUtil {
                     new DisplayPicture(""), new PopularityCounter(0), getTagSet("classmates")),
                 new Person(new Name("Roy Balakrishnan"), new Phone("92624417"), new Email("royb@example.com"),
                     new Address("Blk 45 Aljunied Street 85, #11-31"), new Birthday("26/10/1995"), new Nickname(""),
-                    new DisplayPicture(""), new PopularityCounter(0), getTagSet("colleagues"))
+                    new DisplayPicture(""), new PopularityCounter(2), getTagSet("colleagues"))
             };
         } catch (IllegalValueException e) {
             throw new AssertionError("sample data cannot be invalid", e);

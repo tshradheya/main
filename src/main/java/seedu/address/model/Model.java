@@ -86,4 +86,8 @@ public interface Model {
 
     ObservableList<ReadOnlyPerson> getPopularContactList();
 
+    void getOnlyTopFiveMaximum();
+
+    void refreshWithPopulatingAddressBook();
+
 }

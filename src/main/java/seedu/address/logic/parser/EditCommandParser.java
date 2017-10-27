@@ -56,7 +56,6 @@ public class EditCommandParser implements Parser<EditCommand> {
             ParserUtil.parseBirthday(argMultimap.getValue(PREFIX_BIRTHDAY))
                       .ifPresent(editPersonDescriptor::setBirthday);
             ParserUtil.parseNickname(argMultimap.getValue(PREFIX_NICKNAME)).ifPresent(editPersonDescriptor::setNickname);
-            System.out.println(editPersonDescriptor.getNickname());
             ParserUtil.parseDisplayPicture(argMultimap.getValue(PREFIX_DISPLAYPICTURE))
                     .ifPresent(editPersonDescriptor::setDisplayPicture);
             parseTagsForEdit(argMultimap.getAllValues(PREFIX_TAG)).ifPresent(editPersonDescriptor::setTags);

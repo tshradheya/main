@@ -17,6 +17,7 @@ import javafx.collections.transformation.SortedList;
 import seedu.address.commons.core.ComponentManager;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.model.AddressBookChangedEvent;
+import seedu.address.commons.events.model.PopularContactChangedEvent;
 import seedu.address.commons.events.model.RemindersChangedEvent;
 import seedu.address.commons.events.ui.SendingEmailEvent;
 import seedu.address.commons.events.ui.ShowLocationEvent;
@@ -46,7 +47,7 @@ public class ModelManager extends ComponentManager implements Model {
     private final FilteredList<ReadOnlyPerson> filteredPersonsForBirthdayListPanel;
     private final FilteredList<ReadOnlyPerson> filteredPersonsForEmail;
     private final UniqueReminderList reminderList;
-    private FilteredList<ReadOnlyPerson> listOfPersonsForPopularContacts;
+    private List<ReadOnlyPerson> listOfPersonsForPopularContacts;
 
     private SortedList<ReadOnlyPerson> sortedfilteredPersons;
     private SortedList<ReadOnlyPerson> sortedFilteredPersonsForBirthdayListPanel;
@@ -68,7 +69,7 @@ public class ModelManager extends ComponentManager implements Model {
         filteredPersonsForBirthdayListPanel = new FilteredList<>(this.addressBook.getPersonList());
         filteredPersonsForBirthdayListPanel.setPredicate(new BirthdayInCurrentMonthPredicate());
         filteredPersonsForEmail = new FilteredList<>(this.addressBook.getPersonList());
-        listOfPersonsForPopularContacts = new FilteredList<>(this.addressBook.getPersonList());
+        listOfPersonsForPopularContacts = new ArrayList<>(this.addressBook.getPersonList());
         sortedfilteredPersons = new SortedList<>(filteredPersons);
         sortedFilteredPersonsForBirthdayListPanel = new SortedList<>(filteredPersonsForBirthdayListPanel,
                 Comparator.comparingInt(birthday -> birthday.getBirthday().getDayOfBirthday()));
@@ -101,6 +102,7 @@ public class ModelManager extends ComponentManager implements Model {
     /** Raises an event to indicate the model has changed */
     private void indicateAddressBookChanged() {
         raise(new AddressBookChangedEvent(addressBook));
+        raise(new PopularContactChangedEvent(this));
     }
 
     /** Raises an event to indicate the reminders have changed */
@@ -186,22 +188,31 @@ public class ModelManager extends ComponentManager implements Model {
      */
     @Override
     public void updatePopularContactList() {
-        listOfPersonsForPopularContacts.sort(new Comparator<ReadOnlyPerson>() {
-            @Override
-            public int compare(ReadOnlyPerson o1, ReadOnlyPerson o2) {
-                return o1.getPopularityCounter().getCounter() - o2.getPopularityCounter().getCounter();
+        refreshWithPopulatingAddressBook();
+        listOfPersonsForPopularContacts.sort((o1, o2) ->
+                o2.getPopularityCounter().getCounter() - o1.getPopularityCounter().getCounter());
+
+        getOnlyTopFiveMaximum();
+    }
+
+    @Override
+    public void getOnlyTopFiveMaximum() {
+        if (listOfPersonsForPopularContacts.size() > 5) {
+            for (int i = 5; i < listOfPersonsForPopularContacts.size(); i++) {
+                listOfPersonsForPopularContacts.remove(i);
             }
-        });
+        }
+    }
 
-        List<ReadOnlyPerson> getTopFive = listOfPersonsForPopularContacts.subList(0,
-                Math.min(getAddressBook().getPersonList().size(), 5));
-
-        listOfPersonsForPopularContacts = (FilteredList) getTopFive;
+    @Override
+    public void refreshWithPopulatingAddressBook() {
+        listOfPersonsForPopularContacts = new ArrayList<>(this.addressBook.getPersonList());
     }
 
     @Override
     public ObservableList<ReadOnlyPerson> getPopularContactList() {
-        return FXCollections.unmodifiableObservableList(listOfPersonsForPopularContacts);
+        updatePopularContactList();
+        return FXCollections.observableList(listOfPersonsForPopularContacts);
     }
 
     //=========== Filtered Person List Accessors =============================================================

@@ -73,6 +73,6 @@ public class Reminder {
 
     @Override
     public String toString() {
-        return reminder + " " + dueDate;
+        return reminder.get() + "\n" + dueDate.get();
     }
 }

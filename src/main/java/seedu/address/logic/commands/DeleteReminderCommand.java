@@ -41,6 +41,6 @@ public class DeleteReminderCommand extends Command {
             assert false : "The target reminder cannot be missing";
         }
 
-        return new CommandResult(String.format(MESSAGE_DELETE_REMINDER_SUCCESS, reminderToDelete));
+        return new CommandResult(String.format(MESSAGE_DELETE_REMINDER_SUCCESS, reminderToDelete.toString()));
     }
 }

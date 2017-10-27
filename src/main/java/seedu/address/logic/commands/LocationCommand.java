@@ -1,11 +1,14 @@
 package seedu.address.logic.commands;
 
+import static seedu.address.logic.commands.EditCommand.MESSAGE_DUPLICATE_PERSON;
+
 import java.util.List;
 
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.person.ReadOnlyPerson;
+import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
 
 /**
@@ -41,6 +44,14 @@ public class LocationCommand extends Command {
             model.showLocation(personWhoseLocationIsToBeShown);
         } catch (PersonNotFoundException pnfe) {
             assert false : "The target person cannot be missing";
+        }
+
+        try {
+            model.updatePersonsPopularityCounterByOne(lastShownList.get(index.getZeroBased()));
+        } catch (DuplicatePersonException dpe) {
+            throw new CommandException(MESSAGE_DUPLICATE_PERSON);
+        } catch (PersonNotFoundException pnfe) {
+            throw new AssertionError("The target person cannot be missing");
         }
 
         return new CommandResult(String.format(MESSAGE_FIND_LOCATION_SUCCESS,

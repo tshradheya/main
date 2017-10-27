@@ -175,6 +175,7 @@ public class ModelManager extends ComponentManager implements Model {
         requireNonNull(predicate);
 
         filteredPersonsForEmail.setPredicate(predicate);
+        increaseCounterByOneForEmailRecipients(filteredPersonsForEmail);
 
         List<String> validEmails = new ArrayList<>();
         for (ReadOnlyPerson person : filteredPersonsForEmail) {
@@ -183,6 +184,20 @@ public class ModelManager extends ComponentManager implements Model {
             }
         }
         return String.join(",", validEmails);
+    }
+
+    @Override
+    public void increaseCounterByOneForEmailRecipients(List<ReadOnlyPerson> filteredPersonsForEmail) {
+
+        for (ReadOnlyPerson person : filteredPersonsForEmail) {
+            try {
+                this.updatePersonsPopularityCounterByOne(person);
+            } catch (DuplicatePersonException dpe) {
+                assert false : "Duplicate";
+            } catch (PersonNotFoundException pnfe) {
+                throw new AssertionError("The target person cannot be missing");
+            }
+        }
     }
 
     //=========== Update Popularity counter for the required commands =======================================

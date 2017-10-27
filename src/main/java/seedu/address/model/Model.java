@@ -1,5 +1,6 @@
 package seedu.address.model;
 
+import java.util.List;
 import java.util.function.Predicate;
 
 import javafx.collections.ObservableList;
@@ -94,5 +95,7 @@ public interface Model {
             PersonNotFoundException;
 
     ReadOnlyPerson increaseCounterByOne(ReadOnlyPerson person);
+
+    void increaseCounterByOneForEmailRecipients(List<ReadOnlyPerson> filteredPersonsForEmail);
 
 }

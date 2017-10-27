@@ -43,4 +43,11 @@ public class DeleteReminderCommand extends Command {
 
         return new CommandResult(String.format(MESSAGE_DELETE_REMINDER_SUCCESS, reminderToDelete.toString()));
     }
+
+    @Override
+    public boolean equals(Object other) {
+        return other == this // short circuit if same object
+                || (other instanceof DeleteReminderCommand // instanceof handles nulls
+                && this.targetIndex.equals(((DeleteReminderCommand) other).targetIndex)); // state check
+    }
 }

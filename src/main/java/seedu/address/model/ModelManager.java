@@ -63,7 +63,7 @@ public class ModelManager extends ComponentManager implements Model {
                 + " and user prefs " + userPrefs);
 
         this.addressBook = new AddressBook(addressBook);
-        this.reminderList = reminders;
+        this.reminderList = new UniqueReminderList(reminders);
         filteredPersons = new FilteredList<>(this.addressBook.getPersonList());
         filteredPersonsForBirthdayListPanel = new FilteredList<>(this.addressBook.getPersonList());
         filteredPersonsForBirthdayListPanel.setPredicate(new BirthdayInCurrentMonthPredicate());

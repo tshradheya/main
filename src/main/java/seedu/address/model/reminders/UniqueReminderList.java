@@ -24,6 +24,11 @@ public class UniqueReminderList implements Iterable<Reminder> {
     public UniqueReminderList() {
     }
 
+    public UniqueReminderList(UniqueReminderList uniqueReminderList) {
+        this();
+        setReminders(uniqueReminderList);
+    }
+
     /**
      * Constructor used for loading reminder from storage file into program.
      */

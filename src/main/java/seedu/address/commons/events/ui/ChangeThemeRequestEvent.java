@@ -1,3 +1,4 @@
+//@@author chuaweiwen
 package seedu.address.commons.events.ui;
 
 import seedu.address.commons.events.BaseEvent;
@@ -19,3 +20,4 @@ public class ChangeThemeRequestEvent extends BaseEvent {
         return this.getClass().getSimpleName();
     }
 }
+//@@author

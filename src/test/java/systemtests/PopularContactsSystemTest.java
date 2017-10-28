@@ -1,10 +1,11 @@
 package systemtests;
 
-import static seedu.address.commons.core.Messages.MESSAGE_PERSONS_LISTED_OVERVIEW;
+import static seedu.address.logic.commands.SelectCommand.MESSAGE_SELECT_PERSON_SUCCESS;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 
 import org.junit.Test;
 
+import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.SelectCommand;
 import seedu.address.model.Model;
 
@@ -12,26 +13,38 @@ public class PopularContactsSystemTest extends AddressBookSystemTest {
 
     @Test
     public void favouriteContactsTest() {
-        String command = "   " + SelectCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON + "   ";
+        String command = "   " + SelectCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased() + "   ";
         Model expectedModel = getModel();
         ModelHelper.setFilteredListPopularContacts(expectedModel);
-        assertCommandSuccess(command, expectedModel);
-        assertSelectedCardUnchanged();
+        assertCommandSuccessForSelect(command, INDEX_FIRST_PERSON);
+        assertSelectedCardChanged(INDEX_FIRST_PERSON);
 
     }
 
     /**
-     * Asserts command success
-     * @param command to be executed
-     * @param expectedModel the model expected
+     * Command success for Select
+     * @param command
+     * @param expectedSelectedCardIndex
      */
-    private void assertCommandSuccess(String command, Model expectedModel) {
+    private void assertCommandSuccessForSelect(String command, Index expectedSelectedCardIndex) {
+        Model expectedModel = getModel();
         String expectedResultMessage = String.format(
-                MESSAGE_PERSONS_LISTED_OVERVIEW, expectedModel.getFilteredPersonList().size());
+                MESSAGE_SELECT_PERSON_SUCCESS, expectedSelectedCardIndex.getOneBased());
+        int preExecutionSelectedCardIndex = getPersonListPanel().getSelectedCardIndex();
 
         executeCommand(command);
         assertApplicationDisplaysExpected("", expectedResultMessage, expectedModel);
+
+        if (preExecutionSelectedCardIndex == expectedSelectedCardIndex.getZeroBased()) {
+            assertSelectedCardUnchanged();
+        } else {
+            assertSelectedCardChanged(expectedSelectedCardIndex);
+        }
+
         assertCommandBoxShowsDefaultStyle();
-        assertStatusBarUnchanged();
+        assertStatusBarUnchangedExceptSyncStatus();
     }
+
 }
+
+

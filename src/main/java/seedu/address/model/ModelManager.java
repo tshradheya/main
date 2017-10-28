@@ -130,6 +130,15 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
+    public void updateReminder(Reminder target, Reminder editedReminder)
+            throws DuplicateReminderException, ReminderNotFoundException {
+        requireAllNonNull(target, editedReminder);
+
+        reminderList.setReminder(target, editedReminder);
+        indicateRemindersChanged();
+    }
+
+    @Override
     public void deleteTag(Tag tagToRemove) throws DuplicatePersonException, PersonNotFoundException {
         for (int i = 0; i < addressBook.getPersonList().size(); i++) {
             ReadOnlyPerson originalPerson = addressBook.getPersonList().get(i);

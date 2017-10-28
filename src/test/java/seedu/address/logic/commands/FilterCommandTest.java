@@ -1,3 +1,4 @@
+//@@author chuaweiwen
 package seedu.address.logic.commands;
 
 import static junit.framework.TestCase.assertEquals;
@@ -109,3 +110,4 @@ public class FilterCommandTest {
         assertEquals(expectedAddressBook, model.getAddressBook());
     }
 }
+//@@author

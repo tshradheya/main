@@ -1,3 +1,4 @@
+//@@author chuaweiwen
 package seedu.address.logic.parser;
 
 /**
@@ -42,3 +43,4 @@ public class Theme {
         return otherTheme.getTheme().equals(getTheme()) && otherTheme.getCss().equals(getCss());
     }
 }
+//@@author

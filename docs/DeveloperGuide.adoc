@@ -630,7 +630,11 @@ The location command through an event driven mechanism. The below diagram shows 
 
 image::locationSD.PNG[width="790"]
 
-The execution of command raises an event `ShowLocationEvent`. This causes the `BrowserAndReminderPanel` to switch to Node `Browser` irrespective of current state of the application.
+The execution of command raises an event `ShowLocationEvent`. This causes the `BrowserAndReminderPanel` to switch to Node `Browser` irrespective of current state of the application. The mechanism is shown through an Activity Diagram.
+
+image::locationAD.PNG[width="790"]
+
+
 Following is the code written to ensure the GUI set up for the command.
 
 [source, java]

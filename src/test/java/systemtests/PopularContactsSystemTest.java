@@ -14,7 +14,7 @@ public class PopularContactsSystemTest extends AddressBookSystemTest {
     public void favouriteContactsTest() {
         String command = "   " + SelectCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON + "   ";
         Model expectedModel = getModel();
-        ModelHelper.setFilteredListPopularContacts(expectedModel); // first names of Benson and Daniel are "Meier"
+        ModelHelper.setFilteredListPopularContacts(expectedModel);
         assertCommandSuccess(command, expectedModel);
         assertSelectedCardUnchanged();
 

@@ -89,7 +89,7 @@ public class LocationCommandTest {
         LocationCommand locationCommand = prepareCommand(INDEX_FIRST_PERSON);
         locationCommand.execute();
         assertTrue(eventsCollectorRule.eventsCollector.getMostRecent() instanceof ShowLocationEvent);
-        assertTrue(eventsCollectorRule.eventsCollector.getSize() == 1);
+        assertTrue(eventsCollectorRule.eventsCollector.getSize() == 3);
     }
 
     /**

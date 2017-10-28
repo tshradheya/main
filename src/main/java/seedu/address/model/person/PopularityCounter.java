@@ -34,4 +34,11 @@ public class PopularityCounter {
     public int getCounter() {
         return counter;
     }
+
+    @Override
+    public boolean equals(Object other) {
+        return other == this // short circuit if same object
+                || (other instanceof PopularityCounter // instanceof handles nulls
+                && this.getCounter() == ((PopularityCounter) other).getCounter()); // state check
+    }
 }

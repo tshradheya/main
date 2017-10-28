@@ -70,6 +70,7 @@ public class ModelManager extends ComponentManager implements Model {
         filteredPersonsForBirthdayListPanel.setPredicate(new BirthdayInCurrentMonthPredicate());
         filteredPersonsForEmail = new FilteredList<>(this.addressBook.getPersonList());
         listOfPersonsForPopularContacts = new ArrayList<>(this.addressBook.getPersonList());
+        updatePopularContactList();
         sortedfilteredPersons = new SortedList<>(filteredPersons);
         sortedFilteredPersonsForBirthdayListPanel = new SortedList<>(filteredPersonsForBirthdayListPanel,
                 Comparator.comparingInt(birthday -> birthday.getBirthday().getDayOfBirthday()));
@@ -118,6 +119,8 @@ public class ModelManager extends ComponentManager implements Model {
     public synchronized void deletePerson(ReadOnlyPerson target) throws PersonNotFoundException {
         addressBook.removePerson(target);
         indicateAddressBookChanged();
+        indicatePopularContactsChangedPossibility();
+        updatePopularContactList();
     }
 
     @Override
@@ -125,6 +128,8 @@ public class ModelManager extends ComponentManager implements Model {
         addressBook.addPerson(person);
         updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
         indicateAddressBookChanged();
+        indicatePopularContactsChangedPossibility();
+        updatePopularContactList();
     }
 
     @Override
@@ -134,6 +139,8 @@ public class ModelManager extends ComponentManager implements Model {
 
         addressBook.updatePerson(target, editedPerson);
         indicateAddressBookChanged();
+        indicatePopularContactsChangedPossibility();
+        updatePopularContactList();
     }
 
     @Override
@@ -240,10 +247,8 @@ public class ModelManager extends ComponentManager implements Model {
 
     @Override
     public void getOnlyTopFiveMaximum() {
-        if (listOfPersonsForPopularContacts.size() > 5) {
-            for (int i = 5; i < listOfPersonsForPopularContacts.size(); i++) {
-                listOfPersonsForPopularContacts.remove(i);
-            }
+        while (listOfPersonsForPopularContacts.size() > 5) {
+            listOfPersonsForPopularContacts.remove(listOfPersonsForPopularContacts.size() - 1);
         }
     }
 

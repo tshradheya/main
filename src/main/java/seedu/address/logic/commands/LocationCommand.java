@@ -41,12 +41,6 @@ public class LocationCommand extends Command {
         ReadOnlyPerson personWhoseLocationIsToBeShown = lastShownList.get(index.getZeroBased());
 
         try {
-            model.showLocation(personWhoseLocationIsToBeShown);
-        } catch (PersonNotFoundException pnfe) {
-            assert false : "The target person cannot be missing";
-        }
-
-        try {
             model.updatePersonsPopularityCounterByOne(lastShownList.get(index.getZeroBased()));
         } catch (DuplicatePersonException dpe) {
             throw new CommandException(MESSAGE_DUPLICATE_PERSON);
@@ -54,6 +48,11 @@ public class LocationCommand extends Command {
             throw new AssertionError("The target person cannot be missing");
         }
 
+        try {
+            model.showLocation(personWhoseLocationIsToBeShown);
+        } catch (PersonNotFoundException pnfe) {
+            assert false : "The target person cannot be missing";
+        }
         return new CommandResult(String.format(MESSAGE_FIND_LOCATION_SUCCESS,
                 personWhoseLocationIsToBeShown.getName().fullName, personWhoseLocationIsToBeShown.getAddress()));
     }

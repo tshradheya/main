@@ -4,6 +4,7 @@ import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_BIRTHDAY;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_DISPLAYPICTURE;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_DUMMY;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NICKNAME;
@@ -41,7 +42,7 @@ public class AddCommandParser implements Parser<AddCommand> {
     public AddCommand parse(String args) throws ParseException {
         ArgumentMultimap argMultimap =
                 ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ADDRESS,
-                        PREFIX_BIRTHDAY, PREFIX_NICKNAME, PREFIX_DISPLAYPICTURE, PREFIX_TAG);
+                        PREFIX_BIRTHDAY, PREFIX_NICKNAME, PREFIX_DISPLAYPICTURE, PREFIX_DUMMY, PREFIX_TAG);
 
         if (!arePrefixesPresent(argMultimap, PREFIX_NAME, PREFIX_ADDRESS, PREFIX_PHONE, PREFIX_EMAIL)) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
@@ -58,9 +59,9 @@ public class AddCommandParser implements Parser<AddCommand> {
                                 .orElse(new Nickname(("")));
             DisplayPicture displayPicture = ParserUtil.parseDisplayPicture(argMultimap.getValue(PREFIX_DISPLAYPICTURE))
                     .orElse(new DisplayPicture(("")));
-            PopularityCounter popularityCounter = new PopularityCounter();
+            PopularityCounter popularityCounter = ParserUtil.parsePopularityCounter(argMultimap.getValue(PREFIX_DUMMY))
+                    .orElse(new PopularityCounter());
             Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
-
             ReadOnlyPerson person = new Person(name, phone, email, address, birthday, nickname,
                     displayPicture, popularityCounter, tagList);
 

@@ -1,3 +1,4 @@
+//@@author chuaweiwen
 package seedu.address.logic.parser;
 
 import static java.util.Objects.requireNonNull;
@@ -113,3 +114,4 @@ public class FilterCommandParser implements Parser<FilterCommand> {
         return tagKeywords.trim().split(regex);
     }
 }
+//@@author

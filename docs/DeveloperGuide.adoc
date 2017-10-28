@@ -615,7 +615,7 @@ _Figure 21 : Sequence diagram for the Location Command._
 The execution of command raises an event `ShowLocationEvent`. This causes the `BrowserAndReminderPanel` to switch to Node `Browser` irrespective of current state of the application. The activity diagram for such a case is shown below:
 
 image::locationAD.PNG[width="790"]
-_Figure 22 : Sequence diagram for the Location Command._
+_Figure 22 : Activity diagram for the Location Command._
 
 Following is the code written to ensure the GUI set up for the command.
 

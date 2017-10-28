@@ -1,3 +1,4 @@
+//@@author chuaweiwen
 package seedu.address.logic.commands;
 
 import static junit.framework.TestCase.assertFalse;
@@ -49,3 +50,4 @@ public class ThemeCommandTest extends AddressBookGuiTest {
         assertFalse(standardCommand.equals(commandWithDifferentTheme));
     }
 }
+//@@author

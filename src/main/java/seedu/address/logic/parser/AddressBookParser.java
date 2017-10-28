@@ -124,7 +124,7 @@ public class AddressBookParser {
         case ToggleCommand.COMMAND_WORD:
             return new ToggleCommand();
 
-         //@@author chuaweiwen
+        //@@author chuaweiwen
         case NicknameCommand.COMMAND_WORD:
             return new NicknameCommandParser().parse(arguments);
 

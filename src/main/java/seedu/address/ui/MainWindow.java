@@ -239,6 +239,7 @@ public class MainWindow extends UiPart<Region> {
         handleHelp();
     }
 
+    //@@author chuaweiwen
     @Subscribe
     private void handleChangeThemeEvent(ChangeThemeRequestEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
@@ -254,4 +255,5 @@ public class MainWindow extends UiPart<Region> {
         scene.getStylesheets().add("view/" + theme.getCss());
         scene.getStylesheets().add(STYLE);
     }
+    //@@author
 }

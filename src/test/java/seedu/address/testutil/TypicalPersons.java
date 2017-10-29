@@ -82,6 +82,7 @@ public class TypicalPersons {
     public static final String KEYWORD_MATCHING_MEIER = "Meier"; // A keyword that matches MEIER
 
     public static final String KEYWORD_TAG_FRIEND = "friend";
+    public static final String KEYWORD_TAG_ENEMY = "enemy";
 
     private TypicalPersons() {} // prevents instantiation
 

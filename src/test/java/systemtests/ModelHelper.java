@@ -33,15 +33,15 @@ public class ModelHelper {
     /**
      * Updates {@code model}'s popular contact list list to display only {@code toDisplay}.
      */
-    public static void setPopularContactList(Model model, List<ReadOnlyPerson> toDisplay) {
+    public static void setFilteredListPopularContacts(Model model, List<ReadOnlyPerson> toDisplay) {
         model.updatePopularContactList();
     }
 
     /**
-     * @see ModelHelper#setPopularContactList(Model, List)
+     * @see ModelHelper#setFilteredListPopularContacts(Model, List) (Model, List)
      */
     public static void setFilteredListPopularContacts(Model model, ReadOnlyPerson... toDisplay) {
-        setPopularContactList(model, Arrays.asList(toDisplay));
+        setFilteredListPopularContacts(model, Arrays.asList(toDisplay));
     }
 
     /**

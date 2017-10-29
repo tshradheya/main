@@ -18,7 +18,7 @@ import seedu.address.logic.commands.DeleteReminderCommand;
  * The path variation for those two cases occur inside the ParserUtil, and
  * therefore should be covered by the ParserUtilTest.
  */
-public class DeleteReminderCommandTest {
+public class DeleteReminderCommandParserTest {
     private DeleteReminderCommandParser parser = new DeleteReminderCommandParser();
 
     @Test

@@ -202,6 +202,12 @@ public class AddReminderCommandTest {
             fail("This method should not be called");
             return null;
         }
+
+        @Override
+        public void updateReminder(Reminder target, Reminder editedReminder)
+                throws DuplicateReminderException, ReminderNotFoundException {
+            fail("This method should not be called");
+        }
     }
 
     /**

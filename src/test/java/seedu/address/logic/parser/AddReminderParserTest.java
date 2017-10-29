@@ -13,8 +13,9 @@ import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSucces
 import org.junit.Test;
 
 import seedu.address.logic.commands.AddReminderCommand;
-import seedu.address.model.reminders.DueDate;
+import seedu.address.model.reminders.Date;
 import seedu.address.model.reminders.Reminder;
+import seedu.address.model.reminders.Time;
 import seedu.address.testutil.ReminderBuilder;
 
 public class AddReminderParserTest {
@@ -52,10 +53,10 @@ public class AddReminderParserTest {
 
         //invalid date
         assertParseFailure(parser, REMINDER_DESC_COFFEE + INVALID_REMINDER_DESC_DATE + REMINDER_DESC_TIME,
-                DueDate.DUEDATE_FORMAT_MESSAGE);
+                Date.DATE_FORMAT_MESSAGE);
 
         //invalid time
         assertParseFailure(parser, REMINDER_DESC_COFFEE + REMINDER_DESC_DATE  + INVALID_REMINDER_DESC_TIME,
-                DueDate.DUEDATE_FORMAT_MESSAGE);
+                Time.TIME_FORMAT_MESSAGE);
     }
 }

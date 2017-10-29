@@ -9,18 +9,21 @@ import javafx.scene.control.Label;
 public class ReminderCardHandle extends NodeHandle<Node> {
     private static final String ID_FIELD_ID = "#id";
     private static final String REMINDER_FIELD_ID = "#reminder";
-    private static final String DUEDATE_FIELD_ID = "#dueDate";
+    private static final String DATE_FIELD_ID = "#date";
+    private static final String TIME_FIELD_ID = "#time";
 
     private final Label idLabel;
     private final Label reminderLabel;
-    private final Label dueDateLabel;
+    private final Label dateLabel;
+    private final Label timeLabel;
 
     public ReminderCardHandle(Node cardNode) {
         super(cardNode);
 
         this.idLabel = getChildNode(ID_FIELD_ID);
         this.reminderLabel = getChildNode(REMINDER_FIELD_ID);
-        this.dueDateLabel = getChildNode(DUEDATE_FIELD_ID);
+        this.dateLabel = getChildNode(DATE_FIELD_ID);
+        this.timeLabel = getChildNode(TIME_FIELD_ID);
     }
 
     public String getId() {
@@ -31,8 +34,11 @@ public class ReminderCardHandle extends NodeHandle<Node> {
         return reminderLabel.getText();
     }
 
-    public String getDueDate() {
-        return dueDateLabel.getText();
+    public String getDate() {
+        return dateLabel.getText();
     }
 
+    public String getTime() {
+        return timeLabel.getText();
+    }
 }

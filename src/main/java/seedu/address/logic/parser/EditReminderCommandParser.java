@@ -5,8 +5,6 @@ import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT
 import static seedu.address.logic.parser.CliSyntax.PREFIX_DATE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_REMINDER;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TIME;
-import static seedu.address.model.reminders.DueDate.DUEDATE_FORMAT_MESSAGE;
-import static seedu.address.model.reminders.DueDate.isValidDueDate;
 
 import java.util.Optional;
 
@@ -18,8 +16,6 @@ import seedu.address.logic.parser.exceptions.ParseException;
 
 public class EditReminderCommandParser implements Parser<EditReminderCommand> {
 
-    private static final String VALID_DATE = "01/01/2017";
-    private static final String VALID_TIME = "0800";
 
     /**
      * Parses the given {@code String} of arguments in the context of the EditReminderCommand
@@ -45,31 +41,18 @@ public class EditReminderCommandParser implements Parser<EditReminderCommand> {
         if (optionalReminder.isPresent()) {
             reminder = optionalReminder.get();
             if (reminder.isEmpty()) {
-                throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditReminderCommand.MESSAGE_USAGE));
+                throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                        EditReminderCommand.MESSAGE_REMINDER_FORMAT));
             }
             editReminderDescriptor.setReminder(reminder);
         }
 
-        Optional<String> optionalDate = argMultimap.getValue(PREFIX_DATE);
-        String date;
-        if (optionalDate.isPresent()) {
-            date = optionalDate.get();
-            if (!isValidDueDate(date, VALID_TIME)) {
-                throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, DUEDATE_FORMAT_MESSAGE));
-            }
-            editReminderDescriptor.setDate(date);
+        try {
+            ParserUtil.parseDate(argMultimap.getValue(PREFIX_DATE)).ifPresent(editReminderDescriptor::setDate);
+            ParserUtil.parseTime(argMultimap.getValue(PREFIX_TIME)).ifPresent(editReminderDescriptor::setTime);
+        } catch (IllegalValueException ive) {
+            throw new ParseException(ive.getMessage(), ive);
         }
-
-        Optional<String> optionalTime = argMultimap.getValue(PREFIX_TIME);
-        String time;
-        if (optionalTime.isPresent()) {
-            time = optionalTime.get();
-            if (!isValidDueDate(VALID_DATE, time)) {
-                throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, DUEDATE_FORMAT_MESSAGE));
-            }
-            editReminderDescriptor.setTime(time);
-        }
-
 
         if (!editReminderDescriptor.isAnyFieldEdited()) {
             throw new ParseException(EditReminderCommand.MESSAGE_NOT_EDITED);

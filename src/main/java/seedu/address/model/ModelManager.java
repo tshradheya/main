@@ -72,7 +72,7 @@ public class ModelManager extends ComponentManager implements Model {
         sortedFilteredPersonsForBirthdayListPanel = new SortedList<>(filteredPersonsForBirthdayListPanel,
                 Comparator.comparingInt(birthday -> birthday.getBirthday().getDayOfBirthday()));
         sortedReminderList = new SortedList<>(reminderList.asObservableList(),
-                Comparator.comparing(reminder -> reminder.getDueDate().getLocalDateTime()));
+                Comparator.comparing(reminder -> reminder.getLocalDateTime()));
 
     }
 

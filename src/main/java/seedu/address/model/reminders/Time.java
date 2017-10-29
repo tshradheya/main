@@ -1,0 +1,66 @@
+package seedu.address.model.reminders;
+
+import static java.util.Objects.requireNonNull;
+
+import java.time.LocalTime;
+
+import seedu.address.commons.exceptions.IllegalValueException;
+
+public class Time {
+
+    public static final String TIME_FORMAT_MESSAGE = "Time must be in 24-hour format,"
+            + " with a colon separating the hour and minute.\n"
+            + "Example: 09:00, 23:59, 17:56";
+
+    private static final String TIME_VALIDATION_REGEX = "(0[0-9]|1[0-9]|2[0-3]):"
+            + "(0[0-9]|1[0-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9])";
+    private static final int TIME_HOUR_DELIMITER = 0;
+    private static final int TIME_MIN_DELIMITER = 2;
+    private static final String HOUR_MIN_SEPARATOR = ":";
+
+    private static final int TIME_HOUR_INDEX = 0;
+    private static final int TIME_MIN_INDEX = 1;
+
+    public final String value;
+
+    public Time(String time) throws IllegalValueException {
+        requireNonNull(time);
+        if (!isValidTime(time)) {
+            throw new IllegalValueException(TIME_FORMAT_MESSAGE);
+        }
+
+        this.value = time;
+    }
+
+    public static boolean isValidTime(String time) {
+        if (!time.matches(TIME_VALIDATION_REGEX)) {
+            return false;
+        }
+        return true;
+    }
+
+    public LocalTime toLocalTime() {
+        String[] splitTime = value.split(HOUR_MIN_SEPARATOR);
+        final int hour = Integer.parseInt(splitTime[TIME_HOUR_INDEX]);
+        final int min = Integer.parseInt(splitTime[TIME_MIN_INDEX]);
+        return LocalTime.of(hour, min);
+    }
+
+
+    @Override
+    public boolean equals(Object other) {
+        return this == other
+                || (other instanceof Time
+                && this.value.equals(((Time) other).value));
+    }
+
+    @Override
+    public int hashCode() {
+        return value.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return value;
+    }
+}

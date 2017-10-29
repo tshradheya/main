@@ -6,19 +6,16 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_DATE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_REMINDER;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TIME;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.index.Index;
-import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.commons.util.CollectionUtil;
 import seedu.address.logic.commands.exceptions.CommandException;
-import seedu.address.model.reminders.DueDate;
+import seedu.address.model.reminders.Date;
 import seedu.address.model.reminders.Reminder;
+import seedu.address.model.reminders.Time;
 import seedu.address.model.reminders.exceptions.DuplicateReminderException;
 import seedu.address.model.reminders.exceptions.ReminderNotFoundException;
 
@@ -42,6 +39,8 @@ public class EditReminderCommand extends Command {
     public static final String MESSAGE_EDIT_REMINDER_SUCCESS = "Edited Reminder: %1$s";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
     public static final String MESSAGE_DUPLICATE_REMINDER = "This reminder already exists in iContacts.";
+
+    public static final String MESSAGE_REMINDER_FORMAT = "Reminder can be of any value, and cannot be empty.";
 
     private final Index index;
     private final EditReminderDescriptor editReminderDescriptor;
@@ -86,18 +85,18 @@ public class EditReminderCommand extends Command {
         assert reminderToEdit != null;
 
         String updatedReminder = editReminderDescriptor.getReminder().orElse(reminderToEdit.getReminder());
-        DueDate updatedDueDate = editReminderDescriptor.getDueDate(reminderToEdit.getDueDate())
-                .orElse(reminderToEdit.getDueDate());
+        Date updatedDate = editReminderDescriptor.getDate().orElse(reminderToEdit.getDate());
+        Time updatedTime = editReminderDescriptor.getTime().orElse(reminderToEdit.getTime());
 
-        return new Reminder(updatedReminder, updatedDueDate);
+        return new Reminder(updatedReminder, updatedDate, updatedTime);
     }
 
 
 
     public static class EditReminderDescriptor {
         private String reminder;
-        private String time;
-        private String date;
+        private Time time;
+        private Date date;
 
         public EditReminderDescriptor() {}
 
@@ -122,52 +121,19 @@ public class EditReminderCommand extends Command {
             return Optional.ofNullable(reminder);
         }
 
-        public Optional<String> getDate() {
+        public Optional<Date> getDate() {
             return Optional.ofNullable(date);
         }
 
-        public Optional<String> getTime() {
+        public Optional<Time> getTime() {
             return Optional.ofNullable(time);
         }
 
-        public Optional<DueDate> getDueDate(DueDate original) {
-            if (time == null && date == null) {
-               return Optional.empty();
-            } else if (time == null) {
-                DueDate newDueDate;
-                LocalTime originalTime = original.getLocalDateTime().toLocalTime();
-                DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HHmm");
-                try {
-                    newDueDate = new DueDate(date, originalTime.format(timeFormatter));
-                } catch (IllegalValueException ive) {
-                    throw new AssertionError("Date was already validated in EditReminderCommandParser.");
-                }
-                return Optional.of(newDueDate);
-            } else if (date == null) {
-                DueDate newDueDate;
-                LocalDate originalDate = original.getLocalDateTime().toLocalDate();
-                DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-                try {
-                    newDueDate = new DueDate(originalDate.format(dateFormatter), time);
-                } catch (IllegalValueException ive) {
-                    throw new AssertionError("Time was already validated in EditReminderCommandParser.");
-                }
-                return Optional.of(newDueDate);
-            } else {
-                try {
-                    DueDate newDueDate = new DueDate(date, time);
-                    return Optional.of(newDueDate);
-                } catch (IllegalValueException ive) {
-                    throw new AssertionError("Date and Time were already validated.");
-                }
-            }
-        }
-
-        public void setTime(String time) {
+        public void setTime(Time time) {
             this.time = time;
         }
 
-        public void setDate(String date) {
+        public void setDate(Date date) {
             this.date = date;
         }
 

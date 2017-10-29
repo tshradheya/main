@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 import seedu.address.commons.events.model.AddressBookChangedEvent;
+import seedu.address.commons.events.model.DisplayPictureChangedEvent;
 import seedu.address.commons.events.model.RemindersChangedEvent;
 import seedu.address.commons.events.storage.DataSavingExceptionEvent;
 import seedu.address.commons.exceptions.DataConversionException;
@@ -14,7 +15,7 @@ import seedu.address.model.reminders.UniqueReminderList;
 /**
  * API of the Storage component
  */
-public interface Storage extends AddressBookStorage, UserPrefsStorage, RemindersStorage {
+public interface Storage extends AddressBookStorage, UserPrefsStorage, RemindersStorage, DisplayPictureStorage {
 
     @Override
     Optional<UserPrefs> readUserPrefs() throws DataConversionException, IOException;
@@ -53,4 +54,6 @@ public interface Storage extends AddressBookStorage, UserPrefsStorage, Reminders
      * Raises {@link DataSavingExceptionEvent} if there was an error during saving.
      */
     void handleRemindersChangedEvent(RemindersChangedEvent rce);
+
+    void handleDisplayPictureChangedEvent(DisplayPictureChangedEvent event) throws IOException;
 }

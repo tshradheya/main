@@ -17,6 +17,7 @@ import javafx.collections.transformation.SortedList;
 import seedu.address.commons.core.ComponentManager;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.model.AddressBookChangedEvent;
+import seedu.address.commons.events.model.DisplayPictureChangedEvent;
 import seedu.address.commons.events.model.RemindersChangedEvent;
 import seedu.address.commons.events.ui.SendingEmailEvent;
 import seedu.address.commons.events.ui.ShowLocationEvent;
@@ -101,6 +102,11 @@ public class ModelManager extends ComponentManager implements Model {
         raise(new AddressBookChangedEvent(addressBook));
     }
 
+    /** Raises an event to indicate the picture has changed */
+    private void indicateDisplayPictureChanged(String path, int newPath) {
+        raise(new DisplayPictureChangedEvent(path, newPath));
+    }
+
     /** Raises an event to indicate the reminders have changed */
     private void indicateRemindersChanged() {
         raise(new RemindersChangedEvent(reminderList));
@@ -141,6 +147,10 @@ public class ModelManager extends ComponentManager implements Model {
         }
 
 
+    }
+    @Override
+    public void addDisplayPicture(String path, int newPath) {
+        indicateDisplayPictureChanged(path, newPath);
     }
 
     /**

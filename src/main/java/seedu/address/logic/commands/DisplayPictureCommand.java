@@ -9,7 +9,6 @@ import java.util.List;
 
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.index.Index;
-import seedu.address.commons.events.storage.ReadAndStoreImage;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.person.DisplayPicture;
 import seedu.address.model.person.Person;
@@ -20,7 +19,7 @@ import seedu.address.model.person.exceptions.PersonNotFoundException;
 /**
  * Adds a display picture to an existing person in address book
  */
-public class DisplayPictureCommand extends UndoableCommand {
+public class DisplayPictureCommand extends Command {
 
     public static final String COMMAND_WORD = "displaypic";
 
@@ -58,7 +57,7 @@ public class DisplayPictureCommand extends UndoableCommand {
     }
 
     @Override
-    public CommandResult executeUndoableCommand() throws CommandException, IOException, URISyntaxException {
+    public CommandResult execute() throws CommandException, IOException, URISyntaxException {
         List<ReadOnlyPerson> lastShownList = model.getFilteredPersonList();
 
         if (index.getZeroBased() >= lastShownList.size()) {
@@ -87,9 +86,9 @@ public class DisplayPictureCommand extends UndoableCommand {
         }
 
         try {
-            ReadAndStoreImage readAndStoreImage = new ReadAndStoreImage();
-            displayPicture.setPath(readAndStoreImage.execute(displayPicture.getPath(),
-                    personToEdit.getEmail().hashCode()));
+            model.addDisplayPicture(displayPicture.getPath(),
+                    personToEdit.getEmail().hashCode());
+            displayPicture.setPath(Integer.toString(personToEdit.getEmail().hashCode()));
         } catch (IOException ioe) {
             displayPicture.setPath("");
             return new CommandResult(generateFailureMessage());

@@ -1,5 +1,6 @@
 package seedu.address.model;
 
+import java.io.IOException;
 import java.util.function.Predicate;
 
 import javafx.collections.ObservableList;
@@ -44,6 +45,9 @@ public interface Model {
 
     /** Adds the given reminder */
     void addReminder(Reminder reminder) throws DuplicateReminderException;
+
+    /** Reads and Stores the image */
+    void addDisplayPicture(String path, int newPath) throws IOException;
 
     /** Deletes the tag from all people in Address Book**/
     void deleteTag(Tag target) throws DuplicatePersonException, PersonNotFoundException;

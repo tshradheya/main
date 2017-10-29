@@ -91,7 +91,23 @@ public class EditReminderCommand extends Command {
         return new Reminder(updatedReminder, updatedDate, updatedTime);
     }
 
+    @Override
+    public boolean equals(Object other) {
+        // short circuit if same object
+        if (other == this) {
+            return true;
+        }
 
+        // instanceof handles nulls
+        if (!(other instanceof EditReminderCommand)) {
+            return false;
+        }
+
+        // state check
+        EditReminderCommand e = (EditReminderCommand) other;
+        return index.equals(e.index)
+                && editReminderDescriptor.equals(e.editReminderDescriptor);
+    }
 
     public static class EditReminderDescriptor {
         private String reminder;

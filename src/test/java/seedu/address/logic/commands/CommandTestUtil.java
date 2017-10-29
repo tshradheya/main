@@ -26,6 +26,7 @@ import seedu.address.model.person.Nickname;
 import seedu.address.model.person.ReadOnlyPerson;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
 import seedu.address.testutil.EditPersonDescriptorBuilder;
+import seedu.address.testutil.EditReminderDescriptorBuilder;
 
 /**
  * Contains helper methods for testing commands.
@@ -50,8 +51,11 @@ public class CommandTestUtil {
     public static final String VALID_TAG_HUSBAND = "husband";
     public static final String VALID_TAG_FRIEND = "friend";
     public static final String VALID_REMINDER_COFFEE = "Drink coffee";
-    public static final String VALID_REMINDER_DATE = "01/11/2017";
-    public static final String VALID_REMINDER_TIME = "08:00";
+    public static final String VALID_REMINDER_DATE_COFFEE = "01/11/2017";
+    public static final String VALID_REMINDER_TIME_COFFEE = "08:00";
+    public static final String VALID_REMINDER_ASSIGNMENT = "CS2105 Assignment";
+    public static final String VALID_REMINDER_DATE_ASSIGNMENT = "26/10/2017";
+    public static final String VALID_REMINDER_TIME_ASSIGNMENT = "23:59";
 
     public static final String NAME_DESC_AMY = " " + PREFIX_NAME + VALID_NAME_AMY;
     public static final String NAME_DESC_BOB = " " + PREFIX_NAME + VALID_NAME_BOB;
@@ -68,8 +72,8 @@ public class CommandTestUtil {
     public static final String TAG_DESC_HUSBAND = " " + PREFIX_TAG + VALID_TAG_HUSBAND;
 
     public static final String REMINDER_DESC_COFFEE = " " + PREFIX_REMINDER + VALID_REMINDER_COFFEE;
-    public static final String REMINDER_DESC_DATE = " " + PREFIX_DATE + VALID_REMINDER_DATE;
-    public static final String REMINDER_DESC_TIME = " " + PREFIX_TIME + VALID_REMINDER_TIME;
+    public static final String REMINDER_DESC_DATE = " " + PREFIX_DATE + VALID_REMINDER_DATE_COFFEE;
+    public static final String REMINDER_DESC_TIME = " " + PREFIX_TIME + VALID_REMINDER_TIME_COFFEE;
 
     public static final String INVALID_REMINDER_DESC = " " + PREFIX_REMINDER + ""; // Empty reminder
     public static final String INVALID_REMINDER_DESC_DATE = " " + PREFIX_DATE + "12 Mar 2017"; // Format not allowed
@@ -84,6 +88,8 @@ public class CommandTestUtil {
 
     public static final EditCommand.EditPersonDescriptor DESC_AMY;
     public static final EditCommand.EditPersonDescriptor DESC_BOB;
+    public static final EditReminderCommand.EditReminderDescriptor REMINDER_COFFEE;
+    public static final EditReminderCommand.EditReminderDescriptor REMINDER_ASSIGNMENT;
 
     static {
         DESC_AMY = new EditPersonDescriptorBuilder().withName(VALID_NAME_AMY)
@@ -92,6 +98,10 @@ public class CommandTestUtil {
         DESC_BOB = new EditPersonDescriptorBuilder().withName(VALID_NAME_BOB)
                 .withPhone(VALID_PHONE_BOB).withEmail(VALID_EMAIL_BOB).withAddress(VALID_ADDRESS_BOB)
                 .withTags(VALID_TAG_HUSBAND, VALID_TAG_FRIEND).withBirthday(VALID_BIRTHDAY_BOB).build();
+        REMINDER_COFFEE = new EditReminderDescriptorBuilder().withReminder(VALID_REMINDER_COFFEE)
+                .withDate(VALID_REMINDER_DATE_COFFEE).withTime(VALID_REMINDER_TIME_COFFEE).build();
+        REMINDER_ASSIGNMENT = new EditReminderDescriptorBuilder().withReminder(VALID_REMINDER_ASSIGNMENT)
+                .withDate(VALID_REMINDER_DATE_ASSIGNMENT).withTime(VALID_REMINDER_TIME_ASSIGNMENT).build();
     }
 
     public static final Nickname NICKNAME_AMY = new Nickname(VALID_NICKNAME_AMY);

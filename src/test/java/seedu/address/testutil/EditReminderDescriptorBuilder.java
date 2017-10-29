@@ -1,11 +1,10 @@
 package seedu.address.testutil;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
+import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.logic.commands.EditReminderCommand.EditReminderDescriptor;
+import seedu.address.logic.parser.ParserUtil;
 import seedu.address.model.reminders.Reminder;
 
 /**
@@ -33,11 +32,39 @@ public class EditReminderDescriptorBuilder {
     /**
      * Sets the reminder of the {@code EditReminderDescriptor} that we are building.
      */
-    public EditReminderDescriptorBuilder withPhone(String reminder) {
+    public EditReminderDescriptorBuilder withReminder(String reminder) {
         if (reminder.trim().isEmpty()) {
             throw new IllegalArgumentException("reminder is expected to be unique.");
         }
         descriptor.setReminder(reminder);
         return this;
+    }
+
+    /**
+     * Sets the {@code Date} of the {@code EditReminderDescriptor} that we are building.
+     */
+    public EditReminderDescriptorBuilder withDate(String date) {
+        try {
+            ParserUtil.parseDate(Optional.of(date)).ifPresent(descriptor::setDate);
+        } catch (IllegalValueException ive) {
+            throw new IllegalArgumentException("date is expected to be unique.");
+        }
+        return this;
+    }
+
+    /**
+     * Sets the {@code Date} of the {@code EditReminderDescriptor} that we are building.
+     */
+    public EditReminderDescriptorBuilder withTime(String time) {
+        try {
+            ParserUtil.parseTime(Optional.of(time)).ifPresent(descriptor::setTime);
+        } catch (IllegalValueException ive) {
+            throw new IllegalArgumentException("time is expected to be unique.");
+        }
+        return this;
+    }
+
+    public EditReminderDescriptor build() {
+        return descriptor;
     }
 }

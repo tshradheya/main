@@ -18,7 +18,7 @@ import seedu.address.model.reminders.Reminder;
 import seedu.address.model.reminders.Time;
 import seedu.address.testutil.ReminderBuilder;
 
-public class AddReminderParserTest {
+public class AddReminderCommandParserTest {
 
     private AddReminderCommandParser parser = new AddReminderCommandParser();
 

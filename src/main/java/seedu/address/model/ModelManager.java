@@ -3,6 +3,7 @@ package seedu.address.model;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -103,8 +104,10 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     /** Raises an event to indicate the picture has changed */
-    private void indicateDisplayPictureChanged(String path, int newPath) {
-        raise(new DisplayPictureChangedEvent(path, newPath));
+    private boolean indicateDisplayPictureChanged(String path, int newPath) throws IOException {
+        DisplayPictureChangedEvent displayPictureChangedEvent = new DisplayPictureChangedEvent(path, newPath);
+        raise(displayPictureChangedEvent);
+        return displayPictureChangedEvent.isRead();
     }
 
     /** Raises an event to indicate the reminders have changed */
@@ -149,8 +152,8 @@ public class ModelManager extends ComponentManager implements Model {
 
     }
     @Override
-    public void addDisplayPicture(String path, int newPath) {
-        indicateDisplayPictureChanged(path, newPath);
+    public boolean addDisplayPicture(String path, int newPath) throws IOException {
+        return indicateDisplayPictureChanged(path, newPath);
     }
 
     /**

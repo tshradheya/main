@@ -85,11 +85,12 @@ public class DisplayPictureCommand extends Command {
             return new CommandResult(generateSuccessMessage(editedPerson));
         }
 
-        try {
-            model.addDisplayPicture(displayPicture.getPath(),
+
+        boolean isExecutedProperly = model.addDisplayPicture(displayPicture.getPath(),
                     personToEdit.getEmail().hashCode());
+        if (isExecutedProperly) {
             displayPicture.setPath(Integer.toString(personToEdit.getEmail().hashCode()));
-        } catch (IOException ioe) {
+        } else {
             displayPicture.setPath("");
             return new CommandResult(generateFailureMessage());
         }

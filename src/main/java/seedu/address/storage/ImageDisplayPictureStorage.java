@@ -17,7 +17,6 @@ import seedu.address.logic.parser.exceptions.ImageException;
 public class ImageDisplayPictureStorage implements DisplayPictureStorage {
 
     public ImageDisplayPictureStorage() {
-
     }
 
     /**
@@ -40,6 +39,7 @@ public class ImageDisplayPictureStorage implements DisplayPictureStorage {
         } catch (IOException ioe) {
             throw new ImageException(String.format(MESSAGE_INVALID_IMAGE,
                     DisplayPictureCommand.MESSAGE_IMAGE_PATH_FAIL));
+
         }
     }
 
@@ -57,4 +57,5 @@ public class ImageDisplayPictureStorage implements DisplayPictureStorage {
                     DisplayPictureCommand.MESSAGE_IMAGE_PATH_FAIL));
         }
     }
+
 }

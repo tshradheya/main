@@ -47,7 +47,7 @@ public interface Model {
     void addReminder(Reminder reminder) throws DuplicateReminderException;
 
     /** Reads and Stores the image */
-    void addDisplayPicture(String path, int newPath) throws IOException;
+    boolean addDisplayPicture(String path, int newPath) throws IOException;
 
     /** Deletes the tag from all people in Address Book**/
     void deleteTag(Tag target) throws DuplicatePersonException, PersonNotFoundException;

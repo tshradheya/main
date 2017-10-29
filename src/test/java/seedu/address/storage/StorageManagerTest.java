@@ -36,7 +36,9 @@ public class StorageManagerTest {
         XmlAddressBookStorage addressBookStorage = new XmlAddressBookStorage(getTempFilePath("ab"));
         JsonUserPrefsStorage userPrefsStorage = new JsonUserPrefsStorage(getTempFilePath("prefs"));
         RemindersStorage reminderStorage = new XmlRemindersStorage(getTempFilePath("reminder"));
-        storageManager = new StorageManager(addressBookStorage, reminderStorage, userPrefsStorage);
+        DisplayPictureStorage displayPictureStorage = new ImageDisplayPictureStorage();
+        storageManager = new StorageManager(addressBookStorage, reminderStorage,
+                userPrefsStorage, displayPictureStorage);
     }
 
     private String getTempFilePath(String fileName) {
@@ -103,7 +105,8 @@ public class StorageManagerTest {
         // Create a StorageManager while injecting a stub that  throws an exception when the save method is called
         Storage storage = new StorageManager(new XmlAddressBookStorageExceptionThrowingStub("dummy"),
                                              new XmlRemindersStorage("dummy"),
-                                             new JsonUserPrefsStorage("dummy"));
+                                             new JsonUserPrefsStorage("dummy"),
+                new ImageDisplayPictureStorage());
         storage.handleAddressBookChangedEvent(new AddressBookChangedEvent(new AddressBook()));
         assertTrue(eventsCollectorRule.eventsCollector.getMostRecent() instanceof DataSavingExceptionEvent);
     }
@@ -129,7 +132,7 @@ public class StorageManagerTest {
         // Create a StorageManager while injecting a stub that  throws an exception when the save method is called
         Storage storage = new StorageManager(new XmlAddressBookStorage("dummy"),
                 new XmlRemindersStorageExceptionThrowingStub("dummy"),
-                new JsonUserPrefsStorage("dummy"));
+                new JsonUserPrefsStorage("dummy"), new ImageDisplayPictureStorage());
         storage.handleRemindersChangedEvent(new RemindersChangedEvent(new UniqueReminderList()));
         assertTrue(eventsCollectorRule.eventsCollector.getMostRecent() instanceof DataSavingExceptionEvent);
     }

@@ -158,11 +158,13 @@ public class StorageManager extends ComponentManager implements Storage {
 
     @Override
     @Subscribe
-    public void handleDisplayPictureChangedEvent(DisplayPictureChangedEvent event) {
-        logger.info(LogsCenter.getEventHandlingLogMessage(event, "Image changed, saving to file"));
+    public void handleDisplayPictureChangedEvent(DisplayPictureChangedEvent event) throws IOException {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event, " Image changed, saving to file"));
         try {
             readImageFromDevice(event.path, event.newPath);
+            event.setRead(true);
         } catch (IOException e) {
+            event.setRead(false);
             raise(new DataSavingExceptionEvent(e));
         }
     }

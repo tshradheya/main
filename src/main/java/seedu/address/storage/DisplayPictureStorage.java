@@ -11,4 +11,5 @@ public interface DisplayPictureStorage {
     void readImageFromDevice(String imagePath, int newPath) throws IOException;
 
     void saveImageInDirectory(BufferedImage image, String uniquePath) throws IOException;
+
 }

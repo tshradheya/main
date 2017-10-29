@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import guitests.guihandles.BirthdayReminderCardHandle;
 import guitests.guihandles.PersonCardHandle;
 import guitests.guihandles.PersonListPanelHandle;
+import guitests.guihandles.PopularContactCardHandle;
 import guitests.guihandles.ReminderCardHandle;
 import guitests.guihandles.ResultDisplayHandle;
 import seedu.address.model.person.ReadOnlyPerson;
@@ -27,8 +28,16 @@ public class GuiTestAssert {
         assertEquals(expectedCard.getName(), actualCard.getName());
         assertEquals(expectedCard.getPhone(), actualCard.getPhone());
         assertEquals(expectedCard.getNickname(), actualCard.getNickname());
-        //assertEquals(expectedCard.getDisplayPictureImageView(), actualCard.getDisplayPictureImageView());
         assertEquals(expectedCard.getTags(), actualCard.getTags());
+    }
+
+    /**
+     * Asserts that {@code actualCard} displays the same values as {@code expectedCard}.
+     */
+    public static void assertPopularCardEquals(PopularContactCardHandle expectedCard,
+                                               PopularContactCardHandle actualCard) {
+        assertEquals(expectedCard.getRank(), actualCard.getRank());
+        assertEquals(expectedCard.getName(), actualCard.getName());
     }
 
     /**
@@ -41,6 +50,15 @@ public class GuiTestAssert {
         assertEquals(expectedPerson.getAddress().value, actualCard.getAddress());
         assertEquals(expectedPerson.getTags().stream().map(tag -> tag.tagName).collect(Collectors.toList()),
                 actualCard.getTags());
+    }
+
+    /**
+     * Asserts that {@code actualCard} displays the details of {@code expectedPerson}.
+     */
+    public static void assertCardDisplaysPopularPerson(ReadOnlyPerson expectedPerson,
+                                                       PopularContactCardHandle actualCard) {
+        assertEquals(expectedPerson.getName().fullName, actualCard.getName());
+
     }
 
     /**

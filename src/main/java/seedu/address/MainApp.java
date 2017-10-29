@@ -233,12 +233,14 @@ public class MainApp extends Application {
         this.stop();
     }
 
+    //@@author chuaweiwen
     @Subscribe
     public void handleChangeThemeRequestEvent(ChangeThemeRequestEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
         String filePath = "view/" + event.theme.getCss();
         userPrefs.setThemeFilePath(filePath);
     }
+    //@@author
 
     public static void main(String[] args) {
         launch(args);

@@ -58,14 +58,15 @@ public class DisplayPictureCommandTest {
     }
 
     @Test
-    public void execute_setDisplayPicture_failure() throws Exception {
+    public void execute_setDisplayPicture_successWithNoPath() throws Exception {
         Person editedPerson = new PersonBuilder(model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased()))
                 .withDisplayPicture("").build();
 
         DisplayPictureCommand displayPictureCommand = prepareCommand(INDEX_FIRST_PERSON,
-                INVALID_PATH);
+                "");
 
-        String expectedMessage = String.format(DisplayPictureCommand.MESSAGE_IMAGE_PATH_FAIL, editedPerson);
+        String expectedMessage = String.format(DisplayPictureCommand.MESSAGE_DELETE_DISPLAYPICTURE_SUCCESS,
+                editedPerson);
 
         Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()),
                 getUniqueTypicalReminders(), new UserPrefs());
@@ -73,7 +74,6 @@ public class DisplayPictureCommandTest {
 
         assertCommandSuccess(displayPictureCommand, model, expectedMessage, expectedModel);
     }
-
 
     @Test
     public void execute_invalidPersonIndexUnfilteredList_failure() throws Exception {

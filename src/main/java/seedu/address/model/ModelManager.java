@@ -6,7 +6,6 @@ import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Set;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
 
@@ -33,7 +32,6 @@ import seedu.address.model.person.exceptions.PersonNotFoundException;
 import seedu.address.model.reminders.Reminder;
 import seedu.address.model.reminders.UniqueReminderList;
 import seedu.address.model.reminders.exceptions.DuplicateReminderException;
-import seedu.address.model.tag.Tag;
 
 /**
  * Represents the in-memory model of the address book data.
@@ -143,21 +141,6 @@ public class ModelManager extends ComponentManager implements Model {
         indicateAddressBookChanged();
         indicatePopularContactsChangedPossibility();
         updatePopularContactList();
-    }
-
-    @Override
-    public void deleteTag(Tag tagToRemove) throws DuplicatePersonException, PersonNotFoundException {
-        for (int i = 0; i < addressBook.getPersonList().size(); i++) {
-            ReadOnlyPerson originalPerson = addressBook.getPersonList().get(i);
-
-            Person personWithTagRemoved = new Person(originalPerson);
-            Set<Tag> updatedTags = personWithTagRemoved.getTags();
-            updatedTags.remove(tagToRemove);
-
-            addressBook.updatePerson(originalPerson, personWithTagRemoved);
-        }
-
-
     }
 
     /**

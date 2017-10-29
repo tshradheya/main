@@ -103,4 +103,5 @@ public class PersonCardTest extends GuiUnitTest {
         // verify person details are displayed correctly
         assertCardDisplaysPerson(expectedPerson, personCardHandle);
     }
+
 }

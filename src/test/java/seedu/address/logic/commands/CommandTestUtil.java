@@ -72,8 +72,11 @@ public class CommandTestUtil {
     public static final String TAG_DESC_HUSBAND = " " + PREFIX_TAG + VALID_TAG_HUSBAND;
 
     public static final String REMINDER_DESC_COFFEE = " " + PREFIX_REMINDER + VALID_REMINDER_COFFEE;
-    public static final String REMINDER_DESC_DATE = " " + PREFIX_DATE + VALID_REMINDER_DATE_COFFEE;
-    public static final String REMINDER_DESC_TIME = " " + PREFIX_TIME + VALID_REMINDER_TIME_COFFEE;
+    public static final String REMINDER_DESC_DATE_COFFEE = " " + PREFIX_DATE + VALID_REMINDER_DATE_COFFEE;
+    public static final String REMINDER_DESC_TIME_COFFEE = " " + PREFIX_TIME + VALID_REMINDER_TIME_COFFEE;
+    public static final String REMINDER_DESC_ASSIGNMENT = " " + PREFIX_REMINDER + VALID_REMINDER_ASSIGNMENT;
+    public static final String REMINDER_DESC_DATE_ASSIGNMENT = " " + PREFIX_DATE + VALID_REMINDER_DATE_ASSIGNMENT;
+    public static final String REMINDER_DESC_TIME_ASSIGNMENT = " " + PREFIX_TIME + VALID_REMINDER_TIME_ASSIGNMENT;
 
     public static final String INVALID_REMINDER_DESC = " " + PREFIX_REMINDER + ""; // Empty reminder
     public static final String INVALID_REMINDER_DESC_DATE = " " + PREFIX_DATE + "12 Mar 2017"; // Format not allowed

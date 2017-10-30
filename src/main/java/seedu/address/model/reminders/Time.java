@@ -8,7 +8,7 @@ import seedu.address.commons.exceptions.IllegalValueException;
 
 public class Time {
 
-    public static final String TIME_FORMAT_MESSAGE = "Time must be in 24-hour format,"
+    public static final String MESSAGE_TIME_CONSTRAINTS = "Time must be in 24-hour format,"
             + " with a colon separating the hour and minute.\n"
             + "Example: 09:00, 23:59, 17:56";
 
@@ -26,7 +26,7 @@ public class Time {
     public Time(String time) throws IllegalValueException {
         requireNonNull(time);
         if (!isValidTime(time)) {
-            throw new IllegalValueException(TIME_FORMAT_MESSAGE);
+            throw new IllegalValueException(MESSAGE_TIME_CONSTRAINTS);
         }
 
         this.value = time;

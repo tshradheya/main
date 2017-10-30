@@ -77,14 +77,14 @@ Format: `addReminder rd/REMINDER d/DATE ti/TIME`
 * All three parameters REMINDER, DATE and TIME must be filled. +
 * The order of the parameters cannot be changed. +
 * DATE must be in the format dd/mm/yyyy, dd.mm.yyyy or dd-mm-yyyy. +
-* TIME must be in 24-hr format. Example: 0800, 1600, 2359. +
+* TIME must be in 24-hr format, with a colon separating the hour and minute values. Example: 08:00, 16:00, 23:59. +
 * REMINDER can be of any value, as long as it is not empty.
 ****
 
 Examples:
 
-* `addReminder rd/Dinner with family d/25/12/2017 ti/1800`
-* `addReminder rd/CS2105 Assignment d/26/10/2017 ti/2359`
+* `addReminder rd/Dinner with family d/25/12/2017 ti/18:00`
+* `addReminder rd/CS2105 Assignment d/26/10/2017 ti/23:59`
 
 === Listing all persons : `list`
 
@@ -142,6 +142,24 @@ Edits the phone number and email address of the 1st person to be `91234567` and 
 Edits the name of the 2nd person to be `Betsy Crower` and clears all existing tags.
 * `edit 3 b/` +
 Clear the birthday of the 3rd person.
+
+=== Editing a reminder: `editReminder`
+
+Edits an existing reminder in iContacts. +
+Format: `editReminders INDEX [rd/REMINDER] [d/DATE] [ti/TIME]`
+
+****
+* Edits the reminder at the specified `INDEX`. The index refers to the index number shown in the list of reminders. The index *must be a positive integer* 1, 2, 3...
+* At least one of the optional fields must be provided.
+* Existing values will be updated to the input values. If the field is left empty, the original value will be used instead.
+****
+
+Examples:
+
+* `editReminder 1 rd/Drink coffee` +
+Edits the content of the 1st reminder to be `Drink coffee`.
+* `editReminder 3 d/25/12/2017 ti/19:00` +
+Edits the date and time of the 3rd reminder to be `25/12/2017` and `19:00` respectively.
 
 // tag::nickname[]
 === Adding a nickname to a person : `nickname`[V1.1]
@@ -315,6 +333,24 @@ Deletes the 2nd person in the address book.
 * `find Betsy` +
 `delete 1` +
 Deletes the 1st person in the results of the `find` command.
+
+=== Deleting a reminder: `deleteReminder`
+
+Deletes the specified reminder from iContacts. +
+Format: `deleteReminder INDEX`
+
+****
+* Deletes the reminder at the specified `INDEX`.
+* The index refers to the index number shown in the list of reminders.
+* The index *must be a positive integer* 1, 2, 3, ...
+****
+
+Examples:
+
+* `deleteReminder 1` +
+Deletes the 1st reminder in iContacts.
+* `deleteReminder 20` +
+Deletes the 20th reminder in iContacts.
 
 === Selecting a person : `select`
 

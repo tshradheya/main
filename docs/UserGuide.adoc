@@ -83,8 +83,11 @@ Format: `addReminder rd/REMINDER d/DATE ti/TIME`
 
 Examples:
 
-* `addReminder rd/Dinner with family d/25/12/2017 ti/18:00`
+* `addReminder rd/Dinner with family d/25/12/2017 ti/18:00` (See Figure 1)
 * `addReminder rd/CS2105 Assignment d/26/10/2017 ti/23:59`
+
+image::addReminder.png[width=500]
+_Figure 1: Reminder for a dinner with family on 25/12/2017 at 18:00_
 
 === Listing all persons : `list`
 

@@ -1,4 +1,3 @@
-//@@author chuaweiwen
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
@@ -103,4 +102,3 @@ public class NicknameCommand extends UndoableCommand {
         return index.equals(e.index) && nickname.equals(e.nickname);
     }
 }
-//@@author

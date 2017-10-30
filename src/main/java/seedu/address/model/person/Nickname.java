@@ -1,4 +1,3 @@
-//@@author chuaweiwen
 package seedu.address.model.person;
 
 import static java.util.Objects.requireNonNull;
@@ -37,4 +36,3 @@ public class Nickname {
     }
 
 }
-//@@author

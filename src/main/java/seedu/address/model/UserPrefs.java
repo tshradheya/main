@@ -65,7 +65,6 @@ public class UserPrefs {
         this.addressBookName = addressBookName;
     }
 
-    //@@author chuaweiwen
     public String getThemePath() {
         return themePath;
     }
@@ -73,7 +72,6 @@ public class UserPrefs {
     public void setThemePath(String themePath) {
         this.themePath = themePath;
     }
-    //@@author
 
     @Override
     public boolean equals(Object other) {

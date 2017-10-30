@@ -1,4 +1,3 @@
-//@@author chuaweiwen
 package seedu.address.logic.parser;
 
 import static java.util.Objects.requireNonNull;
@@ -42,4 +41,3 @@ public class NicknameCommandParser implements Parser<NicknameCommand> {
         return new NicknameCommand(index, new Nickname(nickname));
     }
 }
-//@@author

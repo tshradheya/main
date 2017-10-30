@@ -1,4 +1,3 @@
-//@@author chuaweiwen
 package seedu.address.model.person;
 
 import static org.junit.Assert.assertFalse;
@@ -32,4 +31,3 @@ public class NicknameTest {
         assertTrue(standardNickname.equals(sameNickname));
     }
 }
-//@@author

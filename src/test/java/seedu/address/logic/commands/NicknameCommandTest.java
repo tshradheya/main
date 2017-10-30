@@ -1,4 +1,3 @@
-//@@author chuaweiwen
 package seedu.address.logic.commands;
 
 import static org.junit.Assert.assertFalse;
@@ -163,4 +162,3 @@ public class NicknameCommandTest {
         return nicknameCommand;
     }
 }
-//@@author

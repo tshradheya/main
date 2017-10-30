@@ -15,7 +15,7 @@ public class ToggleCommandTest {
     public final EventsCollectorRule eventsCollectorRule = new EventsCollectorRule();
 
     @Test
-    public void execute_exit_success() {
+    public void execute_toggle_success() {
         CommandResult result = new ToggleCommand().execute();
         assertEquals(MESSAGE_TOGGLE_SUCCESS, result.feedbackToUser);
         assertTrue(eventsCollectorRule.eventsCollector.getMostRecent() instanceof BrowserAndRemindersPanelToggleEvent);

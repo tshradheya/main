@@ -13,7 +13,7 @@ import seedu.address.commons.exceptions.IllegalValueException;
  */
 public class Date {
     public static final String MESSAGE_DATE_CONSTRAINTS = "Date must be in the format dd-mm-yyyy,"
-            + " dd/mm/yyyy or dd.mm.yyyy,and must be a valid date.\n"
+            + " dd/mm/yyyy or dd.mm.yyyy, and must be a valid date.\n"
             + "Example: 22-10-2019, 23.12.1997, 24/12/1989.\n";
     private static final String DATE_VALIDATION_REGEX = "(0[1-9]|[1-9]|1[0-9]|2[0-9]|3[01])[///./-]"
             + "(0[1-9]|1[0-2]|[1-9])[///./-](19|20)[0-9][0-9]";

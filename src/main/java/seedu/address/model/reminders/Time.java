@@ -18,8 +18,6 @@ public class Time {
 
     private static final String TIME_VALIDATION_REGEX = "(0[0-9]|1[0-9]|2[0-3]):"
             + "(0[0-9]|1[0-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9])";
-    private static final int TIME_HOUR_DELIMITER = 0;
-    private static final int TIME_MIN_DELIMITER = 2;
     private static final String HOUR_MIN_SEPARATOR = ":";
 
     private static final int TIME_HOUR_INDEX = 0;

@@ -91,7 +91,8 @@ public class EditReminderCommandParserTest {
     @Test
     public void parse_allFieldsSpecified_success() throws IOException {
         Index targetIndex = INDEX_SECOND_PERSON;
-        String userInput = targetIndex.getOneBased() + REMINDER_DESC_COFFEE + REMINDER_DESC_DATE_COFFEE + REMINDER_DESC_TIME_COFFEE;
+        String userInput = targetIndex.getOneBased() + REMINDER_DESC_COFFEE + REMINDER_DESC_DATE_COFFEE
+                + REMINDER_DESC_TIME_COFFEE;
 
         EditReminderDescriptor descriptor = new EditReminderDescriptorBuilder().withReminder(VALID_REMINDER_COFFEE)
                 .withDate(VALID_REMINDER_DATE_COFFEE).withTime(VALID_REMINDER_TIME_COFFEE).build();

@@ -2,7 +2,6 @@ package seedu.address.testutil;
 
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.reminders.Date;
-import seedu.address.model.reminders.DueDate;
 import seedu.address.model.reminders.Reminder;
 import seedu.address.model.reminders.Time;
 

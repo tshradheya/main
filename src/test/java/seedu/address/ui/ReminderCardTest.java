@@ -9,8 +9,6 @@ import static seedu.address.ui.testutil.GuiTestAssert.assertReminderCardDisplays
 import org.junit.Test;
 
 import guitests.guihandles.ReminderCardHandle;
-import seedu.address.commons.exceptions.IllegalValueException;
-import seedu.address.model.reminders.DueDate;
 import seedu.address.model.reminders.Reminder;
 import seedu.address.testutil.ReminderBuilder;
 

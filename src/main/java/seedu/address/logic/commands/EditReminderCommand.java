@@ -2,6 +2,7 @@ package seedu.address.logic.commands;
 
 
 import static java.util.Objects.requireNonNull;
+
 import static seedu.address.logic.parser.CliSyntax.PREFIX_DATE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_REMINDER;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TIME;
@@ -79,7 +80,10 @@ public class EditReminderCommand extends Command {
         return new CommandResult(String.format(MESSAGE_EDIT_REMINDER_SUCCESS, editedReminder));
     }
 
-
+    /**
+     * Creates and returns a {@code Reminder} with the details of {@code reminderToEdit}
+     * edited with {@code editReminderDescriptor}.
+     */
     private static Reminder createEditedReminder (Reminder reminderToEdit,
                                                   EditReminderDescriptor editReminderDescriptor) {
         assert reminderToEdit != null;
@@ -109,6 +113,10 @@ public class EditReminderCommand extends Command {
                 && editReminderDescriptor.equals(e.editReminderDescriptor);
     }
 
+    /**
+     * Stores the details to edit the reminder with. Each non-empty field value will replace the
+     * corresponding field value of the reminder.
+     */
     public static class EditReminderDescriptor {
         private String reminder;
         private Time time;

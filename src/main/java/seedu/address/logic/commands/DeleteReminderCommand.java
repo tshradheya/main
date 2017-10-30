@@ -8,6 +8,9 @@ import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.reminders.Reminder;
 import seedu.address.model.reminders.exceptions.ReminderNotFoundException;
 
+/**
+ * Deletes a reminder identified using it's index.
+ */
 public class DeleteReminderCommand extends Command {
 
     public static final String COMMAND_WORD = "deleteReminder";
@@ -27,7 +30,7 @@ public class DeleteReminderCommand extends Command {
 
     @Override
     public CommandResult execute() throws CommandException {
-       List<Reminder> reminderListing = model.getSortedReminderList();
+        List<Reminder> reminderListing = model.getSortedReminderList();
 
         if (targetIndex.getZeroBased() >= reminderListing.size()) {
             throw new CommandException(Messages.MESSAGE_INVALID_REMINDER_DISPLAYED_INDEX);

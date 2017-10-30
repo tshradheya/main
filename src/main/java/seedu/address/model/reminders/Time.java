@@ -6,6 +6,10 @@ import java.time.LocalTime;
 
 import seedu.address.commons.exceptions.IllegalValueException;
 
+/**
+ * Represents a Reminder's time in the program.
+ * Guarantees: immutable; is valid as declared in {@link #isValidTime(String)}
+ */
 public class Time {
 
     public static final String MESSAGE_TIME_CONSTRAINTS = "Time must be in 24-hour format,"
@@ -23,6 +27,11 @@ public class Time {
 
     public final String value;
 
+    /**
+     * Validates given time.
+     *
+     * @throws IllegalValueException if given time string is invalid.
+     */
     public Time(String time) throws IllegalValueException {
         requireNonNull(time);
         if (!isValidTime(time)) {
@@ -32,6 +41,9 @@ public class Time {
         this.value = time;
     }
 
+    /**
+     * Returns true if a given string is a valid reminder time.
+     */
     public static boolean isValidTime(String time) {
         if (!time.matches(TIME_VALIDATION_REGEX)) {
             return false;
@@ -39,6 +51,9 @@ public class Time {
         return true;
     }
 
+    /**
+     * Returns the time as a LocalTime object for easy comparison of chronology between reminders.
+     */
     public LocalTime toLocalTime() {
         String[] splitTime = value.split(HOUR_MIN_SEPARATOR);
         final int hour = Integer.parseInt(splitTime[TIME_HOUR_INDEX]);

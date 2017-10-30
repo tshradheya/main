@@ -7,6 +7,10 @@ import java.time.LocalDate;
 
 import seedu.address.commons.exceptions.IllegalValueException;
 
+/**
+ * Represents a Reminder's date in the program.
+ * Guarantees: immutable; is valid as declared in {@link #isValidDate(String)}
+ */
 public class Date {
     public static final String MESSAGE_DATE_CONSTRAINTS = "Date must be in the format dd-mm-yyyy, dd/mm/yyyy or dd.mm.yyyy,"
             + "and must be a valid date.\n"
@@ -22,6 +26,11 @@ public class Date {
 
     public final String value;
 
+    /**
+     * Validates given date.
+     *
+     * @throws IllegalValueException if given date string is invalid.
+     */
     public Date(String date) throws IllegalValueException {
         requireNonNull(date);
         if (!isValidDate(date)) {
@@ -30,6 +39,9 @@ public class Date {
         this.value = convertToPresentableForm(date);
     }
 
+    /**
+     * Returns true if a given string is a valid reminder date.
+     */
     public static boolean isValidDate(String date) {
         if (!date.matches(DATE_VALIDATION_REGEX)) {
             return false;
@@ -49,6 +61,9 @@ public class Date {
         return true;
     }
 
+    /**
+     * Returns the date as a LocalDate object for easy comparison of chronology between reminders.
+     */
     public LocalDate toLocalDate() {
         String[] splitDate = value.split(DATE_SPLIT_REGEX);
         final int year = Integer.parseInt(splitDate[DATE_YEAR_INDEX]);

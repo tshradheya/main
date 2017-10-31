@@ -1,5 +1,6 @@
 package seedu.address.storage;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -9,6 +10,7 @@ import com.google.common.eventbus.Subscribe;
 import seedu.address.commons.core.ComponentManager;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.model.AddressBookChangedEvent;
+import seedu.address.commons.events.model.DisplayPictureChangedEvent;
 import seedu.address.commons.events.model.RemindersChangedEvent;
 import seedu.address.commons.events.storage.DataSavingExceptionEvent;
 import seedu.address.commons.exceptions.DataConversionException;
@@ -25,14 +27,16 @@ public class StorageManager extends ComponentManager implements Storage {
     private AddressBookStorage addressBookStorage;
     private UserPrefsStorage userPrefsStorage;
     private RemindersStorage remindersStorage;
+    private DisplayPictureStorage displayPictureStorage;
 
 
     public StorageManager(AddressBookStorage addressBookStorage, RemindersStorage remindersStorage,
-                          UserPrefsStorage userPrefsStorage) {
+                          UserPrefsStorage userPrefsStorage, DisplayPictureStorage displayPictureStorage) {
         super();
         this.remindersStorage = remindersStorage;
         this.addressBookStorage = addressBookStorage;
         this.userPrefsStorage = userPrefsStorage;
+        this.displayPictureStorage = displayPictureStorage;
     }
 
     // ================ UserPrefs methods ==============================
@@ -138,6 +142,31 @@ public class StorageManager extends ComponentManager implements Storage {
     public void saveReminders(UniqueReminderList reminderList, String filePath) throws IOException {
         logger.fine("Attempting to write to data file: " + filePath);
         remindersStorage.saveReminders(reminderList, filePath);
+    }
+
+    @Override
+    public void readImageFromDevice(String path, int newPath) throws IOException {
+        logger.fine("Attempting to read from file: " + path);
+        displayPictureStorage.readImageFromDevice(path, newPath);
+    }
+
+    @Override
+    public void saveImageInDirectory(BufferedImage image, String uniquePath) throws IOException {
+        logger.fine("Attempting to write to file: " + uniquePath);
+        displayPictureStorage.saveImageInDirectory(image, uniquePath);
+    }
+
+    @Override
+    @Subscribe
+    public void handleDisplayPictureChangedEvent(DisplayPictureChangedEvent event) throws IOException {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event, " Image changed, saving to file"));
+        try {
+            readImageFromDevice(event.path, event.newPath);
+            event.setRead(true);
+        } catch (IOException e) {
+            event.setRead(false);
+            raise(new DataSavingExceptionEvent(e));
+        }
     }
 
 }

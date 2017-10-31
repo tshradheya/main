@@ -36,10 +36,10 @@ public class EmailCommand extends Command {
             + PREFIX_EMAIL_SUBJECT + "Meeting "
             + PREFIX_EMAIL_BODY + "On Monday ";
 
-    private final PersonContainsTagPredicate predicate;
-    private final Subject subject;
-    private final Body body;
-    private final Service service;
+    private PersonContainsTagPredicate predicate;
+    private Subject subject;
+    private Body body;
+    private Service service;
 
     public EmailCommand(PersonContainsTagPredicate predicate, Subject subject, Body body, Service service) {
         this.predicate = predicate;
@@ -89,6 +89,22 @@ public class EmailCommand extends Command {
             return new CommandResult(MESSAGE_NOT_SENT);
         }
         return new CommandResult(MESSAGE_EMAIL_SENT);
+    }
+
+    public void setService(Service service) {
+        this.service = service;
+    }
+
+    public void setBody(Body body) {
+        this.body = body;
+    }
+
+    public void setSubject(Subject subject) {
+        this.subject = subject;
+    }
+
+    public void setPredicate(PersonContainsTagPredicate predicate) {
+        this.predicate = predicate;
     }
 
     @Override

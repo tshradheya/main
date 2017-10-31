@@ -5,6 +5,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -177,6 +178,7 @@ public class AddReminderCommandTest {
         }
 
         @Override
+
         public ObservableList<ReadOnlyPerson> getPopularContactList() {
             fail("This method should not be called");
             return new ImmutableObservableList<>();
@@ -195,7 +197,12 @@ public class AddReminderCommandTest {
 
         @Override
         public void sortFilteredPersonList() {
-            fail("This method should not be called.");
+            fail("This method should not be called");
+        }
+
+        public boolean addDisplayPicture(String path, int newPath) throws IOException {
+            fail("This method should not be called");
+            return false;
         }
 
         @Override

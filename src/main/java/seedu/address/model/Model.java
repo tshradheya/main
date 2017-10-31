@@ -1,6 +1,7 @@
 package seedu.address.model;
 
 import java.util.List;
+import java.io.IOException;
 import java.util.function.Predicate;
 
 import javafx.collections.ObservableList;
@@ -44,6 +45,9 @@ public interface Model {
 
     /** Adds the given reminder */
     void addReminder(Reminder reminder) throws DuplicateReminderException;
+
+    /** Reads and Stores the image */
+    boolean addDisplayPicture(String path, int newPath) throws IOException;
 
     /** Shows location of given person */
     void showLocation(ReadOnlyPerson person) throws PersonNotFoundException;

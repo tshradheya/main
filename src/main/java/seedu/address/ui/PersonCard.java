@@ -20,6 +20,8 @@ import seedu.address.model.person.ReadOnlyPerson;
 public class PersonCard extends UiPart<Region> {
 
     private static final String FXML = "PersonListCard.fxml";
+    private static final Integer IMAGE_WIDTH = 100;
+    private static final Integer IMAGE_HEIGHT = 100;
     private static String[] colors = {"red", "blue", "green", "yellow", "pink"};
     private static HashMap<String, String> tagColors = new HashMap<String, String>();
     private static Random random = new Random();
@@ -102,7 +104,7 @@ public class PersonCard extends UiPart<Region> {
         if (!person.getDisplayPicture().getPath().equals("")) {
 
             Image image = new Image("file:" + "pictures/" + person.getDisplayPicture().getPath() + ".png",
-                    100, 100, false, false);
+                    IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
 
             centerImage();
             displayPicture.setImage(image);
@@ -118,13 +120,13 @@ public class PersonCard extends UiPart<Region> {
     public void centerImage() {
         Image img = displayPicture.getImage();
         if (img != null) {
-            double w = 0;
-            double h = 0;
+            double w;
+            double h;
 
             double ratioX = displayPicture.getFitWidth() / img.getWidth();
             double ratioY = displayPicture.getFitHeight() / img.getHeight();
 
-            double reducCoeff = 0;
+            double reducCoeff;
             if (ratioX >= ratioY) {
                 reducCoeff = ratioY;
             } else {

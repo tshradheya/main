@@ -65,7 +65,7 @@ public class ViewTagCommandSystemTest extends AddressBookSystemTest {
         assert !getModel().getAddressBook().getPersonList().contains(CARL);
         command = ViewTagCommand.COMMAND_WORD + " relative";
         expectedModel = getModel();
-        ModelHelper.setFilteredList(expectedModel, DANIEL);
+
         assertCommandSuccess(command, expectedModel);
         assertSelectedCardUnchanged();
 
@@ -126,7 +126,12 @@ public class ViewTagCommandSystemTest extends AddressBookSystemTest {
         executeCommand(command);
         assertApplicationDisplaysExpected("", expectedResultMessage, expectedModel);
         assertCommandBoxShowsDefaultStyle();
-        assertStatusBarUnchanged();
+        if (expectedModel.getFilteredPersonList().size() != 0) {
+            assertStatusBarUnchangedExceptSyncStatus();
+        } else {
+            assertStatusBarUnchanged();
+        }
+
     }
 
     /**

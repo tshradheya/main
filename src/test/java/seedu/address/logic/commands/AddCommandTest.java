@@ -5,13 +5,17 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.function.Predicate;
 
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+
+import com.sun.javafx.collections.ImmutableObservableList;
 
 import javafx.collections.ObservableList;
 import seedu.address.logic.CommandHistory;
@@ -30,7 +34,6 @@ import seedu.address.model.person.exceptions.PersonNotFoundException;
 import seedu.address.model.reminders.Reminder;
 import seedu.address.model.reminders.UniqueReminderList;
 import seedu.address.model.reminders.exceptions.DuplicateReminderException;
-import seedu.address.model.tag.Tag;
 import seedu.address.testutil.PersonBuilder;
 
 public class AddCommandTest {
@@ -130,6 +133,12 @@ public class AddCommandTest {
         }
 
         @Override
+        public boolean addDisplayPicture(String path, int newPath) throws IOException {
+            fail("This method should not be called");
+            return false;
+        }
+
+        @Override
         public void updatePerson(ReadOnlyPerson target, ReadOnlyPerson editedPerson)
                 throws DuplicatePersonException {
             fail("This method should not be called.");
@@ -147,6 +156,49 @@ public class AddCommandTest {
         }
 
         @Override
+        public void updateFilteredPersonListForViewTag(Predicate<ReadOnlyPerson> predicate) {
+            fail("This method should not be called.");
+        }
+
+        @Override
+        public void increaseCounterByOneForATag(List<ReadOnlyPerson> filteredPersonList) {
+            fail("This method should not be called");
+        }
+
+        @Override
+        public ReadOnlyPerson increaseCounterByOne(ReadOnlyPerson person) {
+            fail("This method should not be called");
+            return person;
+        }
+
+        @Override
+        public ObservableList<ReadOnlyPerson> getPopularContactList() {
+            fail("This method should not be called");
+            return new ImmutableObservableList<>();
+        }
+
+        @Override
+        public void refreshWithPopulatingAddressBook() {
+            fail("This method should not be called");
+        }
+
+        @Override
+        public void updatePopularContactList() {
+            fail("This method should not be called");
+        }
+
+        @Override
+        public void getOnlyTopFiveMaximum() {
+            fail("This method should not be called");
+        }
+
+        @Override
+        public void updatePersonsPopularityCounterByOne(ReadOnlyPerson person) throws DuplicatePersonException,
+                PersonNotFoundException {
+            fail("This method should not be called");
+        }
+
+        @Override
         public void updateFilteredListToShowAll() {
             fail("This method should not be called");
         }
@@ -156,10 +208,6 @@ public class AddCommandTest {
             fail("This method should not be called.");
         }
 
-        @Override
-        public void deleteTag(Tag toBeRemoved) {
-            fail("This method should not be called.");
-        }
 
         @Override
         public void showLocation(ReadOnlyPerson person) {

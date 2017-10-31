@@ -9,7 +9,6 @@ import java.util.List;
 
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.index.Index;
-import seedu.address.commons.events.storage.ReadAndStoreImage;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.person.DisplayPicture;
 import seedu.address.model.person.Person;
@@ -20,7 +19,7 @@ import seedu.address.model.person.exceptions.PersonNotFoundException;
 /**
  * Adds a display picture to an existing person in address book
  */
-public class DisplayPictureCommand extends UndoableCommand {
+public class DisplayPictureCommand extends Command {
 
     public static final String COMMAND_WORD = "displaypic";
 
@@ -58,7 +57,7 @@ public class DisplayPictureCommand extends UndoableCommand {
     }
 
     @Override
-    public CommandResult executeUndoableCommand() throws CommandException, IOException, URISyntaxException {
+    public CommandResult execute() throws CommandException, IOException, URISyntaxException {
         List<ReadOnlyPerson> lastShownList = model.getFilteredPersonList();
 
         if (index.getZeroBased() >= lastShownList.size()) {
@@ -72,7 +71,7 @@ public class DisplayPictureCommand extends UndoableCommand {
 
             Person editedPerson = new Person(personToEdit.getName(), personToEdit.getPhone(), personToEdit.getEmail(),
                     personToEdit.getAddress(), personToEdit.getBirthday(), personToEdit.getNickname(),
-                    displayPicture, personToEdit.getTags());
+                    displayPicture, personToEdit.getPopularityCounter(), personToEdit.getTags());
 
             try {
                 model.updatePerson(personToEdit, editedPerson);
@@ -86,18 +85,19 @@ public class DisplayPictureCommand extends UndoableCommand {
             return new CommandResult(generateSuccessMessage(editedPerson));
         }
 
-        try {
-            ReadAndStoreImage readAndStoreImage = new ReadAndStoreImage();
-            displayPicture.setPath(readAndStoreImage.execute(displayPicture.getPath(),
-                    personToEdit.getEmail().hashCode()));
-        } catch (IOException ioe) {
+
+        boolean isExecutedProperly = model.addDisplayPicture(displayPicture.getPath(),
+                    personToEdit.getEmail().hashCode());
+        if (isExecutedProperly) {
+            displayPicture.setPath(Integer.toString(personToEdit.getEmail().hashCode()));
+        } else {
             displayPicture.setPath("");
             return new CommandResult(generateFailureMessage());
         }
 
         Person editedPerson = new Person(personToEdit.getName(), personToEdit.getPhone(), personToEdit.getEmail(),
                 personToEdit.getAddress(), personToEdit.getBirthday(), personToEdit.getNickname(),
-                displayPicture, personToEdit.getTags());
+                displayPicture, personToEdit.getPopularityCounter(), personToEdit.getTags());
 
         try {
             model.updatePerson(personToEdit, editedPerson);

@@ -30,6 +30,8 @@ import seedu.address.model.reminders.UniqueReminderList;
 import seedu.address.model.util.SampleDataUtil;
 import seedu.address.storage.AddressBookPictureStorage;
 import seedu.address.storage.AddressBookStorage;
+import seedu.address.storage.DisplayPictureStorage;
+import seedu.address.storage.ImageDisplayPictureStorage;
 import seedu.address.storage.JsonUserPrefsStorage;
 import seedu.address.storage.RemindersStorage;
 import seedu.address.storage.Storage;
@@ -69,7 +71,8 @@ public class MainApp extends Application {
         userPrefs = initPrefs(userPrefsStorage);
         AddressBookStorage addressBookStorage = new XmlAddressBookStorage(userPrefs.getAddressBookFilePath());
         RemindersStorage reminderStorage = new XmlRemindersStorage(userPrefs.getRemindersFilePath());
-        storage = new StorageManager(addressBookStorage, reminderStorage, userPrefsStorage);
+        DisplayPictureStorage displayPictureStorage = new ImageDisplayPictureStorage();
+        storage = new StorageManager(addressBookStorage, reminderStorage, userPrefsStorage, displayPictureStorage);
         AddressBookPictureStorage addressBookPictureStorage =
                 new AddressBookPictureStorage(userPrefs.getAddressBookPicturesPath());
         addressBookPictureStorage.createPictureStorageFolder();

@@ -7,6 +7,7 @@ import static seedu.address.testutil.TypicalPersons.ALICE;
 import static seedu.address.testutil.TypicalPersons.BENSON;
 import static seedu.address.testutil.TypicalReminders.getUniqueTypicalReminders;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Set;
 
@@ -14,16 +15,24 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import seedu.address.commons.events.model.DisplayPictureChangedEvent;
+import seedu.address.commons.util.FileUtil;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
 import seedu.address.model.person.PersonContainsTagPredicate;
 import seedu.address.model.reminders.UniqueReminderList;
 import seedu.address.model.tag.Tag;
 import seedu.address.storage.XmlSerializableReminders;
 import seedu.address.testutil.AddressBookBuilder;
+import seedu.address.ui.testutil.EventsCollectorRule;
 
 public class ModelManagerTest {
+
+    private static final String TEST_DATA_FOLDER = FileUtil.getPath("./src/test/data/ImageDisplayPicture/");
+
     @Rule
     public ExpectedException thrown = ExpectedException.none();
+    @Rule
+    public final EventsCollectorRule eventsCollectorRule = new EventsCollectorRule();
 
     @Test
     public void getFilteredPersonList_modifyList_throwsUnsupportedOperationException() {
@@ -44,6 +53,13 @@ public class ModelManagerTest {
         ModelManager modelManager = new ModelManager();
         thrown.expect(UnsupportedOperationException.class);
         modelManager.getSortedReminderList().remove(0);
+    }
+
+    @Test
+    public void addDisplayPicture_eventRaised() throws IOException {
+        ModelManager modelManager = new ModelManager();
+        modelManager.addDisplayPicture(TEST_DATA_FOLDER + "1137944384.png", 1137944384);
+        assertTrue(eventsCollectorRule.eventsCollector.getMostRecent() instanceof DisplayPictureChangedEvent);
     }
 
     @Test

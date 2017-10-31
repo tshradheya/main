@@ -372,6 +372,51 @@ public class ExportCommand extends Command {
 ----
 // end::export[]
 
+// tag::find[]
+=== Find mechanism
+
+The `FindCommand` uses `NameContainsKeywordsPredicate` to find contacts with matching names or nicknames. It accepts `List<String> nameKeywords` as the parameter that is parsed by `FindCommandParser`. Below is the constructor for the class:
+
+[source,java]
+----
+public FindCommand(NameContainsKeywordsPredicate predicate) {
+        this.predicate = predicate;
+    }
+----
+
+The method `test(ReadOnlyPerson person)` iterates through `nameKeywords` to find a match with the name or nickname of every `person` from the address book.
+
+Below is an extract of the method `test(ReadOnlyPerson person`.
+
+[source,java]
+----
+   @Override
+    public boolean test(ReadOnlyPerson person) {
+        return keywords.stream()
+                .anyMatch(keyword -> StringUtil.containsWordIgnoreCase(person.getName().fullName, keyword))
+                || keywords.stream()
+                .anyMatch(keyword -> StringUtil.containsWordIgnoreCase(person.getNickname().value, keyword));
+    }
+----
+
+For the `FindCommand` to work properly `nameKeywords` must be non-empty. The code extract below checks for empty inputs:
+
+[source,java]
+----
+    public FindCommand parse(String args) throws ParseException {
+        String trimmedArgs = args.trim();
+        if (trimmedArgs.isEmpty()) {
+            throw new ParseException(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+        }
+
+        String[] nameKeywords = trimmedArgs.split("\\s+");
+
+        return new FindCommand(new NameContainsKeywordsPredicate(Arrays.asList(nameKeywords)));
+    }
+----
+// end::find[]
+
 // tag::undoredo[]
 === Undo/Redo mechanism
 
@@ -585,7 +630,11 @@ The location command through an event driven mechanism. The below diagram shows 
 
 image::locationSD.PNG[width="790"]
 
-The execution of command raises an event `ShowLocationEvent`. This causes the `BrowserAndReminderPanel` to switch to Node `Browser` irrespective of current state of the application.
+The execution of command raises an event `ShowLocationEvent`. This causes the `BrowserAndReminderPanel` to switch to Node `Browser` irrespective of current state of the application. The mechanism is shown through an Activity Diagram.
+
+image::locationAD.PNG[width="790"]
+
+
 Following is the code written to ensure the GUI set up for the command.
 
 [source, java]
@@ -786,26 +835,6 @@ public class BrowserAndRemindersPanel extends UIPart<Region> {
 The `PersonPanelSelectionChangedEvent` is posted whenever the `select` command is executed. Within the `handlePersonPanelSelectionChangedEvent`
 method, there is the method `bringBrowserToFront`, which would then bring the browser panel to the front no matter what.
 
-=== Reminder Implementation
-image::RemindersUML.png[width="790"]
-_Figure 1: UML diagram showing the implementation of reminders_
-
-The `Reminder` object represents a reminder in iContacts. It contains a `String` object `reminder`, which represents
-the actual reminder from the user, and also a `DueDate` object which represents the date and time for the reminder. +
-
-In terms of how `Reminder` objects are kept in-memory during the execution of the program, `Reminder` objects are
-kept within `UniqueReminderList`, which assures that there are no duplicate `Reminder` objects. The `UniqueReminderList`
-object is then used by `ModelManager` to carry out commands related to reminders. +
-
-`Reminder` objects are stored in a XML storage file in a JAXB-friendly version `XmlAdaptedReminder`. +
-When the program starts, `XmlAdaptedReminder` objects are read in as `XmlSerializableReminders`. The `XmlSerializableReminders`
-object is then passed to `UniqueReminderList`, which then converts it into a list of `Reminder` objects for in-memory use. +
-
-To save, the `saveReminders` method in `StorageManager` is called, which trickles down to `XmlRemindersStorage` and eventually
-calls the `saveRemindersToFile` method in `XmlUtil`.
-
-
-
 ==== Design Considerations
 
 **Aspect:** Usage of browser area +
@@ -823,6 +852,97 @@ Cons: More difficult to implement +
 **Alternative 2:** Set visibility of browser as required (set browser visibility to false to display reminders and vice versa) +
 Pros: Easier to implement +
 Cons: Users cannot interact with the reminders panel (since the browser is technically still at the front)
+
+
+
+=== Reminder Implementation
+image::RemindersUML.png[width="790"]
+_Figure 1: UML diagram showing the implementation of reminders_
+
+The `Reminder` object represents a reminder in iContacts. It contains a `String` variable, which represents
+the actual reminder from the user, and also a `DueDate` object which represents the date and time for the reminder. +
+
+In terms of how `Reminder` objects are kept in-memory during the execution of the program, `Reminder` objects are
+kept within `UniqueReminderList`, which assures that there are no duplicate `Reminder` objects. The `UniqueReminderList`
+object is then kept and used by `ModelManager` to carry out commands related to reminders while the program is running. +
+
+`Reminder` objects are stored in a XML storage file in a JAXB-friendly version `XmlAdaptedReminder`.
+When the program starts, `XmlAdaptedReminder` objects are read in as `XmlSerializableReminders` via `XmlFileStorage` and `XmlUtil`.
+This can be seen below:
+
+[source, java]
+----
+public class XmlFileStorage {
+
+    public static XmlSerializableReminders loadRemindersFromSaveFile(File file) throws DataConversionException, FileNotFoundException {
+        try{
+            return XmlUtil.getDataFromFile(file, XmlSerializableReminders.class);
+        } catch (JAXBException e) {
+            throw new DataConversionException(e);
+        }
+    )
+
+}
+----
+
+The `XmlSerializableReminders` object is then passed to `UniqueReminderList`, which then converts it into a list of `Reminder` objects for in-memory use.
+This can be seen below:
+
+[source, java]
+----
+public class UniqueReminderList implements Iterable<Reminder> {
+    public UniqueReminderList(XmlSerializableReminders xmlReminders) {
+        requireNonNull(xmlReminders);
+        try {
+            setReminders(xmlReminders.toModelType());
+        } catch (DuplicateReminderException dre) {
+            assert false : "Reminders from storage should not have duplicates";
+        }
+    }
+
+    public void setReminders(List<Reminder> reminders) throws DuplicateReminderException {
+        final UniqueReminderList replacement = new UniqueReminderList();
+        for (final Reminder reminder : reminders) {
+            replacement.add(new Reminder(reminder));
+        }
+        setReminders(replacement);
+    }
+
+    public void setReminders(UniqueReminderList replacement) {
+        this.internalList.setAll(replacement.internalList);
+    }
+}
+----
+
+To save, the `saveReminders` method in `StorageManager` is invoked:
+
+[source, java]
+----
+
+@Override
+    public void saveReminders(UniqueReminderList reminderList) throws IOException {
+        saveReminders(reminderList, remindersStorage.getRemindersFilePath());
+    }
+
+@Override
+    public void saveReminders(UniqueReminderList reminderList, String filePath) throws IOException {
+        logger.fine("Attempting to write to data file: " + filePath);
+        remindersStorage.saveReminders(reminderList, filePath);
+    }
+
+----
+
+This will then invoke the `saveReminders` method in `XmlRemindersStorage`, and go on to invoke the `saveRemindersToFile` method in `XmlFileStorage`,
+and the `saveDataToFile` method in `XmlUtil`.
+
+==== Design Consideration
+**Aspect:** How to store Reminders in-memory +
+**Alternative 1 (current choice):** Store Reminder objects in UniqueReminderList, independent of AddressBook +
+Pros: Makes more sense, because a Reminder should not be part of AddressBook +
+Cons: More changes have to be made to the existing program, making it tougher to implement +
+**Alternative 2:** Store Reminder objects within AddressBook +
+Pros: Does not make sense +
+Cons: Easier to implement
 
 // tag::theme[]
 === Theme-changing mechanism

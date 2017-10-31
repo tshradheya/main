@@ -3,13 +3,12 @@ package seedu.address.ui;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static seedu.address.testutil.TypicalReminders.HOMEWORK_REMINDER;
 import static seedu.address.ui.testutil.GuiTestAssert.assertReminderCardDisplaysReminder;
 
 import org.junit.Test;
 
 import guitests.guihandles.ReminderCardHandle;
-import seedu.address.commons.exceptions.IllegalValueException;
-import seedu.address.model.reminders.DueDate;
 import seedu.address.model.reminders.Reminder;
 import seedu.address.testutil.ReminderBuilder;
 
@@ -25,12 +24,9 @@ public class ReminderCardTest extends GuiUnitTest {
 
         // changes made to Person reflects on card
         guiRobot.interact(() -> {
-            reminder.setReminder("New reminder");
-            try {
-                reminder.setDueDate(new DueDate("01/02/1909", "1000"));
-            } catch (IllegalValueException ive) {
-                throw new AssertionError("Manually written due date values cannot be wrong");
-            }
+            reminder.setReminder(HOMEWORK_REMINDER.getReminder());
+            reminder.setDate(HOMEWORK_REMINDER.getDate());
+            reminder.setTime(HOMEWORK_REMINDER.getTime());
         });
         assertCardDisplay(reminderCard, reminder, 1);
     }

@@ -34,6 +34,7 @@ import seedu.address.model.person.exceptions.PersonNotFoundException;
 import seedu.address.model.reminders.Reminder;
 import seedu.address.model.reminders.UniqueReminderList;
 import seedu.address.model.reminders.exceptions.DuplicateReminderException;
+import seedu.address.model.reminders.exceptions.ReminderNotFoundException;
 
 /**
  * Represents the in-memory model of the address book data.
@@ -64,7 +65,7 @@ public class ModelManager extends ComponentManager implements Model {
                 + " and user prefs " + userPrefs);
 
         this.addressBook = new AddressBook(addressBook);
-        this.reminderList = reminders;
+        this.reminderList = new UniqueReminderList(reminders);
         filteredPersons = new FilteredList<>(this.addressBook.getPersonList());
         filteredPersonsForBirthdayListPanel = new FilteredList<>(this.addressBook.getPersonList());
         filteredPersonsForBirthdayListPanel.setPredicate(new BirthdayInCurrentMonthPredicate());
@@ -75,7 +76,7 @@ public class ModelManager extends ComponentManager implements Model {
         sortedFilteredPersonsForBirthdayListPanel = new SortedList<>(filteredPersonsForBirthdayListPanel,
                 Comparator.comparingInt(birthday -> birthday.getBirthday().getDayOfBirthday()));
         sortedReminderList = new SortedList<>(reminderList.asObservableList(),
-                Comparator.comparing(reminder -> reminder.getDueDate().getLocalDateTime()));
+                Comparator.comparing(reminder -> reminder.getLocalDateTime()));
 
     }
 
@@ -152,6 +153,16 @@ public class ModelManager extends ComponentManager implements Model {
         indicatePopularContactsChangedPossibility();
         updatePopularContactList();
     }
+
+    @Override
+    public void updateReminder(Reminder target, Reminder editedReminder)
+            throws DuplicateReminderException, ReminderNotFoundException {
+        requireAllNonNull(target, editedReminder);
+
+        reminderList.setReminder(target, editedReminder);
+        indicateRemindersChanged();
+    }
+
     @Override
     public boolean addDisplayPicture(String path, int newPath) throws IOException {
         return indicateDisplayPictureChanged(path, newPath);
@@ -320,6 +331,12 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public void addReminder(Reminder toAdd) throws DuplicateReminderException {
         reminderList.add(toAdd);
+        indicateRemindersChanged();
+    }
+
+    @Override
+    public void deleteReminder(Reminder target) throws ReminderNotFoundException {
+        reminderList.remove(target);
         indicateRemindersChanged();
     }
 

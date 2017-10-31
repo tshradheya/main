@@ -77,7 +77,8 @@ public class GuiTestAssert {
     public static void assertReminderCardDisplaysReminder(Reminder expectedReminder,
                                                                 ReminderCardHandle actualCard) {
         assertEquals(expectedReminder.getReminder(), actualCard.getReminder());
-        assertEquals(expectedReminder.getDueDate().toString(), actualCard.getDueDate());
+        assertEquals(expectedReminder.getDate().toString(), actualCard.getDate());
+        assertEquals(expectedReminder.getTime().toString(), actualCard.getTime());
     }
 
     /**

@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.reminders.Reminder;
 
 /**
@@ -40,8 +41,12 @@ public class XmlSerializableReminders {
      */
     public List<Reminder> toModelType() {
         final List<Reminder> listOfReminders = new ArrayList<>();
-        for (XmlAdaptedReminder reminder : reminders) {
-            listOfReminders.add(reminder.toModelType());
+        try {
+            for (XmlAdaptedReminder reminder : reminders) {
+                listOfReminders.add(reminder.toModelType());
+            }
+        } catch (IllegalValueException ive) {
+            throw new AssertionError("Date in storage should not be problematic!");
         }
         return listOfReminders;
     }

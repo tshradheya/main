@@ -7,8 +7,8 @@ import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT
 import static seedu.address.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
 import static seedu.address.logic.commands.CommandTestUtil.NICKNAME_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.REMINDER_DESC_COFFEE;
-import static seedu.address.logic.commands.CommandTestUtil.REMINDER_DESC_DATE;
-import static seedu.address.logic.commands.CommandTestUtil.REMINDER_DESC_TIME;
+import static seedu.address.logic.commands.CommandTestUtil.REMINDER_DESC_DATE_COFFEE;
+import static seedu.address.logic.commands.CommandTestUtil.REMINDER_DESC_TIME_COFFEE;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_EMAIL_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_NICKNAME_AMY;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL_BODY;
@@ -33,9 +33,12 @@ import seedu.address.logic.commands.AddCommand;
 import seedu.address.logic.commands.AddReminderCommand;
 import seedu.address.logic.commands.ClearCommand;
 import seedu.address.logic.commands.DeleteCommand;
+import seedu.address.logic.commands.DeleteReminderCommand;
 import seedu.address.logic.commands.DisplayPictureCommand;
 import seedu.address.logic.commands.EditCommand;
 import seedu.address.logic.commands.EditCommand.EditPersonDescriptor;
+import seedu.address.logic.commands.EditReminderCommand;
+import seedu.address.logic.commands.EditReminderCommand.EditReminderDescriptor;
 import seedu.address.logic.commands.EmailCommand;
 import seedu.address.logic.commands.ExitCommand;
 import seedu.address.logic.commands.ExportCommand;
@@ -65,6 +68,7 @@ import seedu.address.model.person.Person;
 import seedu.address.model.person.PersonContainsTagPredicate;
 import seedu.address.model.reminders.Reminder;
 import seedu.address.testutil.EditPersonDescriptorBuilder;
+import seedu.address.testutil.EditReminderDescriptorBuilder;
 import seedu.address.testutil.PersonBuilder;
 import seedu.address.testutil.PersonUtil;
 import seedu.address.testutil.ReminderBuilder;
@@ -94,7 +98,7 @@ public class AddressBookParserTest {
     public void parseCommand_addReminder() throws Exception {
         Reminder reminder = new ReminderBuilder().build();
         AddReminderCommand command = (AddReminderCommand) parser.parseCommand(AddReminderCommand.COMMAND_WORD
-                + REMINDER_DESC_COFFEE + REMINDER_DESC_DATE + REMINDER_DESC_TIME);
+                + REMINDER_DESC_COFFEE + REMINDER_DESC_DATE_COFFEE + REMINDER_DESC_TIME_COFFEE);
         assertEquals(new AddReminderCommand(reminder), command);
     }
 
@@ -118,6 +122,13 @@ public class AddressBookParserTest {
     }
 
     @Test
+    public void parseCommand_deleteReminder() throws Exception {
+        DeleteReminderCommand command = (DeleteReminderCommand) parser.parseCommand(
+                DeleteReminderCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased());
+        assertEquals(new DeleteReminderCommand(INDEX_FIRST_PERSON), command);
+    }
+
+    @Test
     public void parseCommand_sort() throws Exception {
         SortCommand command = (SortCommand) parser.parseCommand(SortCommand.COMMAND_WORD);
         assertTrue(command instanceof SortCommand);
@@ -138,6 +149,16 @@ public class AddressBookParserTest {
         EditCommand command = (EditCommand) parser.parseCommand(EditCommand.COMMAND_WORD + " "
                 + INDEX_FIRST_PERSON.getOneBased() + " " + PersonUtil.getPersonDetails(person));
         assertEquals(new EditCommand(INDEX_FIRST_PERSON, descriptor), command);
+    }
+
+    @Test
+    public void parseCommand_editReminder() throws Exception {
+        Reminder reminder = new ReminderBuilder().build();
+        EditReminderDescriptor descriptor = new EditReminderDescriptorBuilder(reminder).build();
+        EditReminderCommand command = (EditReminderCommand) parser
+                .parseCommand(EditReminderCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased()
+                + " " + REMINDER_DESC_COFFEE + REMINDER_DESC_DATE_COFFEE + REMINDER_DESC_TIME_COFFEE);
+        assertEquals(new EditReminderCommand(INDEX_FIRST_PERSON, descriptor), command);
     }
 
     @Test

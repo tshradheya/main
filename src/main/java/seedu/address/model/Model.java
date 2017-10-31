@@ -14,6 +14,7 @@ import seedu.address.model.person.exceptions.PersonNotFoundException;
 import seedu.address.model.reminders.Reminder;
 import seedu.address.model.reminders.UniqueReminderList;
 import seedu.address.model.reminders.exceptions.DuplicateReminderException;
+import seedu.address.model.reminders.exceptions.ReminderNotFoundException;
 
 /**
  * The API of the Model component.
@@ -46,6 +47,9 @@ public interface Model {
     /** Adds the given reminder */
     void addReminder(Reminder reminder) throws DuplicateReminderException;
 
+    /** Deletes the given reminder. */
+    void deleteReminder(Reminder target) throws ReminderNotFoundException;
+
     /** Reads and Stores the image */
     boolean addDisplayPicture(String path, int newPath) throws IOException;
 
@@ -66,6 +70,16 @@ public interface Model {
      */
     void updatePerson(ReadOnlyPerson target, ReadOnlyPerson editedPerson)
             throws DuplicatePersonException, PersonNotFoundException;
+
+    /**
+     * Replaces the given reminder {@code target} with {@code editedReminder}.
+     *
+     * @throws DuplicateReminderException if updating the reminder's details causes the reminder to be equivalent to
+     *      another existing reminder in the list.
+     * @throws ReminderNotFoundException if {@code target} could not be found in the list.
+     */
+    void updateReminder(Reminder target, Reminder editedReminder)
+            throws DuplicateReminderException, ReminderNotFoundException;
 
     /** Returns an unmodifiable view of the filtered person list */
     ObservableList<ReadOnlyPerson> getFilteredPersonList();

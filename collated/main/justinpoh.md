@@ -1664,6 +1664,16 @@ public class BirthdayReminderCard extends UiPart<Region> {
 ```
 ###### /java/seedu/address/ui/BrowserAndRemindersPanel.java
 ``` java
+    /**
+     * An Enumeration to differentiate between the child nodes and to keep track of which is
+     * in front.
+     */
+    private enum Node {
+        BROWSER, REMINDERS
+    }
+```
+###### /java/seedu/address/ui/BrowserAndRemindersPanel.java
+``` java
         birthdayAndReminderListPanel = new BirthdayAndReminderListPanel(birthdayPanelFilteredPersonList, reminderList);
 
         //remindersPanel should be displayed first so no need to shift it to the back.

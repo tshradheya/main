@@ -33,7 +33,6 @@ import seedu.address.model.reminders.Reminder;
 import seedu.address.model.reminders.UniqueReminderList;
 import seedu.address.model.reminders.exceptions.DuplicateReminderException;
 import seedu.address.model.reminders.exceptions.ReminderNotFoundException;
-import seedu.address.model.tag.Tag;
 import seedu.address.testutil.ReminderBuilder;
 
 public class AddReminderCommandTest {

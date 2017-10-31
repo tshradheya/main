@@ -9,6 +9,7 @@ import static seedu.address.ui.testutil.GuiTestAssert.assertCardDisplaysPerson;
 import org.junit.Test;
 
 import guitests.guihandles.PersonCardHandle;
+import seedu.address.model.person.DisplayPicture;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.ReadOnlyPerson;
 import seedu.address.testutil.PersonBuilder;
@@ -40,6 +41,25 @@ public class PersonCardTest extends GuiUnitTest {
             personWithTags.setTags(ALICE.getTags());
         });
         assertCardDisplay(personCard, personWithTags, 2);
+    }
+
+    @Test
+    public void displayImage() {
+        Person personWithDisplayPicture = new PersonBuilder().withDisplayPicture("1137944384").build();
+        PersonCard personCard = new PersonCard(personWithDisplayPicture, 1);
+        uiPartRule.setUiPart(personCard);
+        assertCardDisplay(personCard, personWithDisplayPicture, 1);
+
+        // changes made to Person reflects on card
+        guiRobot.interact(() -> {
+            personWithDisplayPicture.setName(ALICE.getName());
+            personWithDisplayPicture.setAddress(ALICE.getAddress());
+            personWithDisplayPicture.setEmail(ALICE.getEmail());
+            personWithDisplayPicture.setPhone(ALICE.getPhone());
+            personWithDisplayPicture.setNickname(ALICE.getNickname());
+            personWithDisplayPicture.setDisplayPicture(new DisplayPicture("1137944384"));
+            personWithDisplayPicture.setTags(ALICE.getTags());
+        });
     }
 
     @Test
@@ -83,4 +103,5 @@ public class PersonCardTest extends GuiUnitTest {
         // verify person details are displayed correctly
         assertCardDisplaysPerson(expectedPerson, personCardHandle);
     }
+
 }

@@ -17,6 +17,7 @@ import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Nickname;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.PopularityCounter;
 import seedu.address.model.reminders.Date;
 import seedu.address.model.reminders.Time;
 import seedu.address.model.tag.Tag;
@@ -102,6 +103,19 @@ public class ParserUtil {
             throws IllegalValueException {
         requireNonNull(displayPicture);
         return displayPicture.isPresent() ? Optional.of(new DisplayPicture(displayPicture.get())) : Optional.empty();
+    }
+
+    /**
+     * Parses popularity counter for dummy purpose
+     * @param popularityCounter
+     * @return
+     * @throws IllegalValueException
+     */
+    public static Optional<PopularityCounter> parsePopularityCounter(Optional<String> popularityCounter)
+            throws IllegalValueException {
+        requireNonNull(popularityCounter);
+        return popularityCounter.isPresent()
+                ? Optional.of(new PopularityCounter(Integer.parseInt(popularityCounter.get()))) : Optional.empty();
     }
 
     /**

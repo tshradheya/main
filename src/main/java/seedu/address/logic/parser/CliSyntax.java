@@ -23,4 +23,5 @@ public class CliSyntax {
     public static final Prefix PREFIX_REMINDER = new Prefix("rd/");
     public static final Prefix PREFIX_DATE = new Prefix("d/");
     public static final Prefix PREFIX_TIME = new Prefix("ti/");
+    public static final Prefix PREFIX_DUMMY = new Prefix("dum/");
 }

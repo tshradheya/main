@@ -14,8 +14,10 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
 import seedu.address.commons.events.model.AddressBookChangedEvent;
+import seedu.address.commons.events.model.DisplayPictureChangedEvent;
 import seedu.address.commons.events.model.RemindersChangedEvent;
 import seedu.address.commons.events.storage.DataSavingExceptionEvent;
+import seedu.address.commons.util.FileUtil;
 import seedu.address.model.AddressBook;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.UserPrefs;
@@ -23,6 +25,8 @@ import seedu.address.model.reminders.UniqueReminderList;
 import seedu.address.ui.testutil.EventsCollectorRule;
 
 public class StorageManagerTest {
+
+    private static final String TEST_DATA_FOLDER = FileUtil.getPath("./src/test/data/ImageDisplayPicture/");
 
     @Rule
     public TemporaryFolder testFolder = new TemporaryFolder();
@@ -36,7 +40,9 @@ public class StorageManagerTest {
         XmlAddressBookStorage addressBookStorage = new XmlAddressBookStorage(getTempFilePath("ab"));
         JsonUserPrefsStorage userPrefsStorage = new JsonUserPrefsStorage(getTempFilePath("prefs"));
         RemindersStorage reminderStorage = new XmlRemindersStorage(getTempFilePath("reminder"));
-        storageManager = new StorageManager(addressBookStorage, reminderStorage, userPrefsStorage);
+        DisplayPictureStorage displayPictureStorage = new ImageDisplayPictureStorage();
+        storageManager = new StorageManager(addressBookStorage, reminderStorage,
+                userPrefsStorage, displayPictureStorage);
     }
 
     private String getTempFilePath(String fileName) {
@@ -103,7 +109,8 @@ public class StorageManagerTest {
         // Create a StorageManager while injecting a stub that  throws an exception when the save method is called
         Storage storage = new StorageManager(new XmlAddressBookStorageExceptionThrowingStub("dummy"),
                                              new XmlRemindersStorage("dummy"),
-                                             new JsonUserPrefsStorage("dummy"));
+                                             new JsonUserPrefsStorage("dummy"),
+                new ImageDisplayPictureStorage());
         storage.handleAddressBookChangedEvent(new AddressBookChangedEvent(new AddressBook()));
         assertTrue(eventsCollectorRule.eventsCollector.getMostRecent() instanceof DataSavingExceptionEvent);
     }
@@ -129,7 +136,7 @@ public class StorageManagerTest {
         // Create a StorageManager while injecting a stub that  throws an exception when the save method is called
         Storage storage = new StorageManager(new XmlAddressBookStorage("dummy"),
                 new XmlRemindersStorageExceptionThrowingStub("dummy"),
-                new JsonUserPrefsStorage("dummy"));
+                new JsonUserPrefsStorage("dummy"), new ImageDisplayPictureStorage());
         storage.handleRemindersChangedEvent(new RemindersChangedEvent(new UniqueReminderList()));
         assertTrue(eventsCollectorRule.eventsCollector.getMostRecent() instanceof DataSavingExceptionEvent);
     }
@@ -150,5 +157,14 @@ public class StorageManagerTest {
         }
     }
 
+    @Test
+    public void handleDisplayPictureChangedEvent_exceptionThrown_eventRaised() throws IOException {
+        // Create a StorageManager while injecting a stub that  throws an exception when the save method is called
+        Storage storage = new StorageManager(new XmlAddressBookStorage("dummy"),
+                new XmlRemindersStorageExceptionThrowingStub("dummy"),
+                new JsonUserPrefsStorage("dummy"), new ImageDisplayPictureStorage());
+        storage.handleDisplayPictureChangedEvent(new DisplayPictureChangedEvent("dummy", 123));
+        assertTrue(eventsCollectorRule.eventsCollector.getMostRecent() instanceof DataSavingExceptionEvent);
+    }
 
 }

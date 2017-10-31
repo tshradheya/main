@@ -35,6 +35,7 @@ public class EditPersonDescriptorBuilder {
         descriptor.setNickname(person.getNickname());
         descriptor.setBirthday(person.getBirthday());
         descriptor.setDisplayPicture(person.getDisplayPicture());
+        descriptor.setPopularityCounter(person.getPopularityCounter());
         descriptor.setTags(person.getTags());
     }
 

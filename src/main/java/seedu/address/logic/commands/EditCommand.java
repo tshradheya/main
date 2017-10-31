@@ -25,6 +25,7 @@ import seedu.address.model.person.Name;
 import seedu.address.model.person.Nickname;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.PopularityCounter;
 import seedu.address.model.person.ReadOnlyPerson;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
@@ -111,7 +112,8 @@ public class EditCommand extends UndoableCommand {
         Set<Tag> updatedTags = editPersonDescriptor.getTags().orElse(personToEdit.getTags());
 
         return new Person(updatedName, updatedPhone, updatedEmail, updatedAddress,
-                          updatedBirthday, updatedNickname, displayPicture, updatedTags);
+                          updatedBirthday, updatedNickname, displayPicture, personToEdit.getPopularityCounter(),
+                updatedTags);
 
     }
 
@@ -145,6 +147,7 @@ public class EditCommand extends UndoableCommand {
         private Nickname nickname;
         private Birthday birthday;
         private DisplayPicture displayPicture;
+        private PopularityCounter popularityCounter;
         private Set<Tag> tags;
 
         public EditPersonDescriptor() {}
@@ -157,6 +160,7 @@ public class EditCommand extends UndoableCommand {
             this.nickname = toCopy.nickname;
             this.birthday = toCopy.birthday;
             this.displayPicture = toCopy.displayPicture;
+            this.popularityCounter = toCopy.popularityCounter;
             this.tags = toCopy.tags;
         }
 
@@ -221,6 +225,14 @@ public class EditCommand extends UndoableCommand {
 
         public Optional<Birthday> getBirthday() {
             return Optional.ofNullable(birthday);
+        }
+
+        public void setPopularityCounter(PopularityCounter popularityCounter) {
+            this.popularityCounter = popularityCounter;
+        }
+
+        public Optional<PopularityCounter> getPopularityCounter() {
+            return Optional.ofNullable(popularityCounter);
         }
 
         public void setTags(Set<Tag> tags) {

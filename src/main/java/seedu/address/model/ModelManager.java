@@ -3,10 +3,10 @@ package seedu.address.model;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Set;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
 
@@ -17,6 +17,8 @@ import javafx.collections.transformation.SortedList;
 import seedu.address.commons.core.ComponentManager;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.model.AddressBookChangedEvent;
+import seedu.address.commons.events.model.DisplayPictureChangedEvent;
+import seedu.address.commons.events.model.PopularContactChangedEvent;
 import seedu.address.commons.events.model.RemindersChangedEvent;
 import seedu.address.commons.events.ui.SendingEmailEvent;
 import seedu.address.commons.events.ui.ShowLocationEvent;
@@ -47,6 +49,7 @@ public class ModelManager extends ComponentManager implements Model {
     private final FilteredList<ReadOnlyPerson> filteredPersonsForBirthdayListPanel;
     private final FilteredList<ReadOnlyPerson> filteredPersonsForEmail;
     private final UniqueReminderList reminderList;
+    private List<ReadOnlyPerson> listOfPersonsForPopularContacts;
 
     private SortedList<ReadOnlyPerson> sortedfilteredPersons;
     private SortedList<ReadOnlyPerson> sortedFilteredPersonsForBirthdayListPanel;
@@ -68,6 +71,8 @@ public class ModelManager extends ComponentManager implements Model {
         filteredPersonsForBirthdayListPanel = new FilteredList<>(this.addressBook.getPersonList());
         filteredPersonsForBirthdayListPanel.setPredicate(new BirthdayInCurrentMonthPredicate());
         filteredPersonsForEmail = new FilteredList<>(this.addressBook.getPersonList());
+        listOfPersonsForPopularContacts = new ArrayList<>(this.addressBook.getPersonList());
+        updatePopularContactList();
         sortedfilteredPersons = new SortedList<>(filteredPersons);
         sortedFilteredPersonsForBirthdayListPanel = new SortedList<>(filteredPersonsForBirthdayListPanel,
                 Comparator.comparingInt(birthday -> birthday.getBirthday().getDayOfBirthday()));
@@ -84,6 +89,8 @@ public class ModelManager extends ComponentManager implements Model {
     public void resetData(ReadOnlyAddressBook newData) {
         addressBook.resetData(newData);
         indicateAddressBookChanged();
+        indicatePopularContactsChangedPossibility();
+        updatePopularContactList();
     }
 
     @Override
@@ -102,6 +109,19 @@ public class ModelManager extends ComponentManager implements Model {
         raise(new AddressBookChangedEvent(addressBook));
     }
 
+    /** Raises an event to indicate model has changed and favourite contacts might be updated */
+    private void indicatePopularContactsChangedPossibility() {
+        raise(new PopularContactChangedEvent(this));
+
+    }
+
+    /** Raises an event to indicate the picture has changed */
+    private boolean indicateDisplayPictureChanged(String path, int newPath) throws IOException {
+        DisplayPictureChangedEvent displayPictureChangedEvent = new DisplayPictureChangedEvent(path, newPath);
+        raise(displayPictureChangedEvent);
+        return displayPictureChangedEvent.isRead();
+    }
+
     /** Raises an event to indicate the reminders have changed */
     private void indicateRemindersChanged() {
         raise(new RemindersChangedEvent(reminderList));
@@ -111,6 +131,8 @@ public class ModelManager extends ComponentManager implements Model {
     public synchronized void deletePerson(ReadOnlyPerson target) throws PersonNotFoundException {
         addressBook.removePerson(target);
         indicateAddressBookChanged();
+        indicatePopularContactsChangedPossibility();
+        updatePopularContactList();
     }
 
     @Override
@@ -118,6 +140,8 @@ public class ModelManager extends ComponentManager implements Model {
         addressBook.addPerson(person);
         updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
         indicateAddressBookChanged();
+        indicatePopularContactsChangedPossibility();
+        updatePopularContactList();
     }
 
     @Override
@@ -127,6 +151,8 @@ public class ModelManager extends ComponentManager implements Model {
 
         addressBook.updatePerson(target, editedPerson);
         indicateAddressBookChanged();
+        indicatePopularContactsChangedPossibility();
+        updatePopularContactList();
     }
 
     @Override
@@ -139,18 +165,8 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public void deleteTag(Tag tagToRemove) throws DuplicatePersonException, PersonNotFoundException {
-        for (int i = 0; i < addressBook.getPersonList().size(); i++) {
-            ReadOnlyPerson originalPerson = addressBook.getPersonList().get(i);
-
-            Person personWithTagRemoved = new Person(originalPerson);
-            Set<Tag> updatedTags = personWithTagRemoved.getTags();
-            updatedTags.remove(tagToRemove);
-
-            addressBook.updatePerson(originalPerson, personWithTagRemoved);
-        }
-
-
+    public boolean addDisplayPicture(String path, int newPath) throws IOException {
+        return indicateDisplayPictureChanged(path, newPath);
     }
 
     /**
@@ -177,6 +193,7 @@ public class ModelManager extends ComponentManager implements Model {
         requireNonNull(predicate);
 
         filteredPersonsForEmail.setPredicate(predicate);
+        increaseCounterByOneForATag(filteredPersonsForEmail);
 
         List<String> validEmails = new ArrayList<>();
         for (ReadOnlyPerson person : filteredPersonsForEmail) {
@@ -185,6 +202,76 @@ public class ModelManager extends ComponentManager implements Model {
             }
         }
         return String.join(",", validEmails);
+    }
+
+    @Override
+    public void increaseCounterByOneForATag(List<ReadOnlyPerson> filteredPersonsForEmail) {
+
+        for (ReadOnlyPerson person : filteredPersonsForEmail) {
+            try {
+                this.updatePersonsPopularityCounterByOne(person);
+            } catch (DuplicatePersonException dpe) {
+                assert false : "Duplicate";
+            } catch (PersonNotFoundException pnfe) {
+                throw new AssertionError("The target person cannot be missing");
+            }
+        }
+    }
+
+    //=========== Update Popularity counter for the required commands =======================================
+
+    /**
+     * Increases the counter by 1 increasing popularity
+     * @param person whose popularity counter increased
+     */
+    @Override
+    public void updatePersonsPopularityCounterByOne(ReadOnlyPerson person) throws DuplicatePersonException,
+            PersonNotFoundException {
+        ReadOnlyPerson editedPerson = increaseCounterByOne(person);
+
+        addressBook.updatePerson(person, editedPerson);
+        indicateAddressBookChanged();
+        indicatePopularContactsChangedPossibility();
+    }
+
+    @Override
+    public ReadOnlyPerson increaseCounterByOne(ReadOnlyPerson person) {
+        person.getPopularityCounter().increasePopularityCounter();
+        return new Person(person.getName(), person.getPhone(), person.getEmail(), person.getAddress(),
+                person.getBirthday(), person.getNickname(), person.getDisplayPicture(), person.getPopularityCounter(),
+                person.getTags());
+    }
+
+    //=========== Filtered Popular Contact List Accessors and Mutators =======================================
+
+    /**
+     * Updates the popular contact list whenever address book is changed
+     */
+    @Override
+    public void updatePopularContactList() {
+        refreshWithPopulatingAddressBook();
+        listOfPersonsForPopularContacts.sort((o1, o2) ->
+                o2.getPopularityCounter().getCounter() - o1.getPopularityCounter().getCounter());
+
+        getOnlyTopFiveMaximum();
+    }
+
+    @Override
+    public void getOnlyTopFiveMaximum() {
+        while (listOfPersonsForPopularContacts.size() > 5) {
+            listOfPersonsForPopularContacts.remove(listOfPersonsForPopularContacts.size() - 1);
+        }
+    }
+
+    @Override
+    public void refreshWithPopulatingAddressBook() {
+        listOfPersonsForPopularContacts = new ArrayList<>(this.addressBook.getPersonList());
+    }
+
+    @Override
+    public ObservableList<ReadOnlyPerson> getPopularContactList() {
+        updatePopularContactList();
+        return FXCollections.observableList(listOfPersonsForPopularContacts);
     }
 
     //=========== Filtered Person List Accessors =============================================================
@@ -210,6 +297,14 @@ public class ModelManager extends ComponentManager implements Model {
     public void updateFilteredPersonList(Predicate<ReadOnlyPerson> predicate) {
         requireNonNull(predicate);
         filteredPersons.setPredicate(predicate);
+    }
+
+    @Override
+    public void updateFilteredPersonListForViewTag(Predicate<ReadOnlyPerson> predicate) {
+        requireNonNull(predicate);
+        filteredPersons.setPredicate(predicate);
+
+        increaseCounterByOneForATag(filteredPersons);
     }
 
     @Override

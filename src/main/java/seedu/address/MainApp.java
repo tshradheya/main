@@ -14,6 +14,7 @@ import seedu.address.commons.core.Config;
 import seedu.address.commons.core.EventsCenter;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.core.Version;
+import seedu.address.commons.events.ui.ChangeThemeRequestEvent;
 import seedu.address.commons.events.ui.ExitAppRequestEvent;
 import seedu.address.commons.exceptions.DataConversionException;
 import seedu.address.commons.util.ConfigUtil;
@@ -29,6 +30,8 @@ import seedu.address.model.reminders.UniqueReminderList;
 import seedu.address.model.util.SampleDataUtil;
 import seedu.address.storage.AddressBookPictureStorage;
 import seedu.address.storage.AddressBookStorage;
+import seedu.address.storage.DisplayPictureStorage;
+import seedu.address.storage.ImageDisplayPictureStorage;
 import seedu.address.storage.JsonUserPrefsStorage;
 import seedu.address.storage.RemindersStorage;
 import seedu.address.storage.Storage;
@@ -68,7 +71,8 @@ public class MainApp extends Application {
         userPrefs = initPrefs(userPrefsStorage);
         AddressBookStorage addressBookStorage = new XmlAddressBookStorage(userPrefs.getAddressBookFilePath());
         RemindersStorage reminderStorage = new XmlRemindersStorage(userPrefs.getRemindersFilePath());
-        storage = new StorageManager(addressBookStorage, reminderStorage, userPrefsStorage);
+        DisplayPictureStorage displayPictureStorage = new ImageDisplayPictureStorage();
+        storage = new StorageManager(addressBookStorage, reminderStorage, userPrefsStorage, displayPictureStorage);
         AddressBookPictureStorage addressBookPictureStorage =
                 new AddressBookPictureStorage(userPrefs.getAddressBookPicturesPath());
         addressBookPictureStorage.createPictureStorageFolder();
@@ -230,6 +234,13 @@ public class MainApp extends Application {
     public void handleExitAppRequestEvent(ExitAppRequestEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
         this.stop();
+    }
+
+    @Subscribe
+    public void handleChangeThemeRequestEvent(ChangeThemeRequestEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event));
+        String filePath = "view/" + event.theme.getCss();
+        userPrefs.setThemeFilePath(filePath);
     }
 
     public static void main(String[] args) {

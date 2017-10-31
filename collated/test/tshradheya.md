@@ -469,6 +469,32 @@ public class EmailCommandTest {
 
 }
 ```
+###### \java\seedu\address\logic\commands\ExportCommandTest.java
+``` java
+
+    public static final String VALID_PATH = "/storage/classmates";
+    private Model model = new ModelManager(getTypicalAddressBook(), getUniqueTypicalReminders(), new UserPrefs());
+
+    @Test
+    public void execute_invalidPersonIndexUnfilteredList_failure() throws Exception {
+        Index outOfBoundIndex = Index.fromOneBased(model.getFilteredPersonList().size() + 1);
+        ExportCommand exportCommand = prepareCommand(Integer.toString(outOfBoundIndex.getOneBased()), VALID_PATH);
+
+        assertCommandFailure(exportCommand, model, Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+    }
+
+    @Test
+    public void execute_invalidPersonIndexFilteredList_failure() throws Exception {
+        showFirstPersonOnly(model);
+        Index outOfBoundIndex = INDEX_SECOND_PERSON;
+        // ensures that outOfBoundIndex is still within bounds of address book list
+        assertTrue(outOfBoundIndex.getZeroBased() < model.getAddressBook().getPersonList().size());
+
+        ExportCommand exportCommand = prepareCommand(Integer.toString(outOfBoundIndex.getOneBased()), VALID_PATH);
+
+        assertCommandFailure(exportCommand, model, Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+    }
+```
 ###### \java\seedu\address\logic\commands\LocationCommandTest.java
 ``` java
 package seedu.address.logic.commands;

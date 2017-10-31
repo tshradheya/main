@@ -860,7 +860,7 @@ image::RemindersUML.png[width="790"]
 _Figure 1: UML diagram showing the implementation of reminders_
 
 The `Reminder` object represents a reminder in iContacts. It contains a `String` variable, which represents
-the actual reminder from the user, and also a `DueDate` object which represents the date and time for the reminder. +
+the actual reminder from the user, and also a `Date` and `Time` object which represents the date and time of the reminder respectively. +
 
 In terms of how `Reminder` objects are kept in-memory during the execution of the program, `Reminder` objects are
 kept within `UniqueReminderList`, which assures that there are no duplicate `Reminder` objects. The `UniqueReminderList`
@@ -1428,7 +1428,7 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* *` |lazy user |have short-hand form for each command |perform commands quickly
 
-|`* *` |busy student |set reminders |remind myself any activities or events that will happen
+|`* *` |busy student |set reminders |remind myself of any activities or events that will happen
 
 |`* *` |careless student |save the address book as an external file |backup or transfer the address book easily
 

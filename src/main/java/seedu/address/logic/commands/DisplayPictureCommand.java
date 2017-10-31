@@ -71,7 +71,7 @@ public class DisplayPictureCommand extends Command {
 
             Person editedPerson = new Person(personToEdit.getName(), personToEdit.getPhone(), personToEdit.getEmail(),
                     personToEdit.getAddress(), personToEdit.getBirthday(), personToEdit.getNickname(),
-                    displayPicture, personToEdit.getTags());
+                    displayPicture, personToEdit.getPopularityCounter(), personToEdit.getTags());
 
             try {
                 model.updatePerson(personToEdit, editedPerson);
@@ -97,7 +97,7 @@ public class DisplayPictureCommand extends Command {
 
         Person editedPerson = new Person(personToEdit.getName(), personToEdit.getPhone(), personToEdit.getEmail(),
                 personToEdit.getAddress(), personToEdit.getBirthday(), personToEdit.getNickname(),
-                displayPicture, personToEdit.getTags());
+                displayPicture, personToEdit.getPopularityCounter(), personToEdit.getTags());
 
         try {
             model.updatePerson(personToEdit, editedPerson);

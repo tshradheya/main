@@ -11,6 +11,7 @@ import seedu.address.model.person.Name;
 import seedu.address.model.person.Nickname;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.PopularityCounter;
 import seedu.address.model.person.ReadOnlyPerson;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.util.SampleDataUtil;
@@ -28,6 +29,7 @@ public class PersonBuilder {
     public static final String DEFAULT_BIRTHDAY = "21/10/1995";
     public static final String DEFAULT_TAGS = "friends";
     public static final String DEFAULT_DISPLAYPICTURE = "";
+    public static final int DEFAULT_POPULARITY_COUNTER = 0;
 
     private Person person;
 
@@ -40,9 +42,10 @@ public class PersonBuilder {
             Nickname defaultNickname = new Nickname(DEFAULT_NICKNAME);
             Birthday defaultBirthday = new Birthday(DEFAULT_BIRTHDAY);
             DisplayPicture defaultDisplayPicture = new DisplayPicture(DEFAULT_DISPLAYPICTURE);
+            PopularityCounter defaultPopularityCounter = new PopularityCounter(DEFAULT_POPULARITY_COUNTER);
             Set<Tag> defaultTags = SampleDataUtil.getTagSet(DEFAULT_TAGS);
             this.person = new Person(defaultName, defaultPhone, defaultEmail, defaultAddress,
-                    defaultBirthday, defaultNickname, defaultDisplayPicture,  defaultTags);
+                    defaultBirthday, defaultNickname, defaultDisplayPicture, defaultPopularityCounter,  defaultTags);
         } catch (IllegalValueException ive) {
             throw new AssertionError("Default person's values are invalid.");
         }
@@ -135,6 +138,13 @@ public class PersonBuilder {
         return this;
     }
 
+    /**
+     * Sets the {@code PopularityCounter} of the {@code Person} that we are building.
+     */
+    public PersonBuilder withPopularityCounter(int popularityCounter) {
+        this.person.setPopularityCounter(new PopularityCounter(popularityCounter));
+        return this;
+    }
     /**
      * Sets the {@code DisplayPicture} of the {@code Person} that we are building.
      */

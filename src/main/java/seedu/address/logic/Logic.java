@@ -34,4 +34,7 @@ public interface Logic {
 
     /** Returns the list of input entered by the user, encapsulated in a {@code ListElementPointer} object */
     ListElementPointer getHistorySnapshot();
+
+    /** Returns top popular contacts for the GUI panel ( capped at size 5) */
+    ObservableList<ReadOnlyPerson> getListOfPersonsForPopularContacts();
 }

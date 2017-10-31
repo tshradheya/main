@@ -1,6 +1,7 @@
 package seedu.address.model;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.function.Predicate;
 
 import javafx.collections.ObservableList;
@@ -13,7 +14,6 @@ import seedu.address.model.person.exceptions.PersonNotFoundException;
 import seedu.address.model.reminders.Reminder;
 import seedu.address.model.reminders.UniqueReminderList;
 import seedu.address.model.reminders.exceptions.DuplicateReminderException;
-import seedu.address.model.tag.Tag;
 
 /**
  * The API of the Model component.
@@ -49,9 +49,6 @@ public interface Model {
     /** Reads and Stores the image */
     boolean addDisplayPicture(String path, int newPath) throws IOException;
 
-    /** Deletes the tag from all people in Address Book**/
-    void deleteTag(Tag target) throws DuplicatePersonException, PersonNotFoundException;
-
     /** Shows location of given person */
     void showLocation(ReadOnlyPerson person) throws PersonNotFoundException;
 
@@ -85,5 +82,22 @@ public interface Model {
 
     /** Returns an unmodifiable view of the birthday panel filtered person list */
     ObservableList<ReadOnlyPerson> getBirthdayPanelFilteredPersonList();
+
+    void updatePopularContactList();
+
+    ObservableList<ReadOnlyPerson> getPopularContactList();
+
+    void getOnlyTopFiveMaximum();
+
+    void refreshWithPopulatingAddressBook();
+
+    void updatePersonsPopularityCounterByOne(ReadOnlyPerson person) throws DuplicatePersonException,
+            PersonNotFoundException;
+
+    ReadOnlyPerson increaseCounterByOne(ReadOnlyPerson person);
+
+    void increaseCounterByOneForATag(List<ReadOnlyPerson> filteredPersonsForEmail);
+
+    void updateFilteredPersonListForViewTag(Predicate<ReadOnlyPerson> predicate);
 
 }

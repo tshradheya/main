@@ -25,6 +25,7 @@ public class Person implements ReadOnlyPerson {
     private ObjectProperty<Nickname> nickname;
     private ObjectProperty<Birthday> birthday;
     private ObjectProperty<DisplayPicture> displayPicture;
+    private ObjectProperty<PopularityCounter> popularityCounter;
 
 
     private ObjectProperty<UniqueTagList> tags;
@@ -33,7 +34,8 @@ public class Person implements ReadOnlyPerson {
      * Every field must be present and not null.
      */
     public Person(Name name, Phone phone, Email email, Address address, Birthday birthday,
-                  Nickname nickname, DisplayPicture displayPicture, Set<Tag> tags) {
+                  Nickname nickname, DisplayPicture displayPicture, PopularityCounter popularityCounter,
+                  Set<Tag> tags) {
         requireAllNonNull(name, phone, email, address, birthday, tags);
 
         this.name = new SimpleObjectProperty<>(name);
@@ -43,6 +45,7 @@ public class Person implements ReadOnlyPerson {
         this.nickname = new SimpleObjectProperty<>(nickname);
         this.birthday = new SimpleObjectProperty<>(birthday);
         this.displayPicture = new SimpleObjectProperty<>(displayPicture);
+        this.popularityCounter = new SimpleObjectProperty<>(popularityCounter);
         // protect internal tags from changes in the arg list
         this.tags = new SimpleObjectProperty<>(new UniqueTagList(tags));
     }
@@ -52,7 +55,8 @@ public class Person implements ReadOnlyPerson {
      */
     public Person(ReadOnlyPerson source) {
         this(source.getName(), source.getPhone(), source.getEmail(), source.getAddress(),
-             source.getBirthday(), source.getNickname(), source.getDisplayPicture(), source.getTags());
+             source.getBirthday(), source.getNickname(), source.getDisplayPicture(), source.getPopularityCounter(),
+                source.getTags());
     }
 
     public void setName(Name name) {
@@ -153,6 +157,20 @@ public class Person implements ReadOnlyPerson {
         return displayPicture.get();
     }
 
+    public void setPopularityCounter(PopularityCounter popularityCounter) {
+        this.popularityCounter.set(requireNonNull(popularityCounter));
+    }
+
+    @Override
+    public ObjectProperty<PopularityCounter> popularityCounterProperty() {
+        return popularityCounter;
+    }
+
+    @Override
+    public PopularityCounter getPopularityCounter() {
+        return popularityCounter.get();
+    }
+
     /**
      * Returns an immutable tag set, which throws {@code UnsupportedOperationException}
      * if modification is attempted.
@@ -183,7 +201,7 @@ public class Person implements ReadOnlyPerson {
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(name, phone, email, address, birthday, nickname, displayPicture, tags);
+        return Objects.hash(name, phone, email, address, birthday, nickname, displayPicture, popularityCounter, tags);
     }
 
     @Override

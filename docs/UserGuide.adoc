@@ -68,7 +68,7 @@ Examples:
 * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01`
 * `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 b/21/10/1995 t/criminal`
 
-=== Adding a reminder: `addReminder`
+=== Adding a reminder: `addReminder`[V1.3]
 
 Adds a reminder to iContacts. +
 Format: `addReminder rd/REMINDER d/DATE ti/TIME`
@@ -94,12 +94,12 @@ _Figure 1: Reminder for a dinner with family on 25/12/2017 at 18:00_
 Shows a list of all persons in the address book. +
 Format: `list`
 
-=== Sorting all persons : `sort`
+=== Sorting all persons : `sort`[V1.1]
 
 Sorts and shows a list of all persons in the address book alphabetically. +
 Format: `sort`
 
-=== Exporting selected contacts : `export`
+=== Exporting selected contacts : `export`[V1.2]
 
 Exports selected contacts in iContacts. +
 Format: `export [r/RANGE] [p/PATH]`
@@ -146,7 +146,7 @@ Edits the name of the 2nd person to be `Betsy Crower` and clears all existing ta
 * `edit 3 b/` +
 Clear the birthday of the 3rd person.
 
-=== Editing a reminder: `editReminder`
+=== Editing a reminder: `editReminder`[V1.4]
 
 Edits an existing reminder in iContacts. +
 Format: `editReminders INDEX [rd/REMINDER] [d/DATE] [ti/TIME]`
@@ -163,6 +163,25 @@ Examples:
 Edits the content of the 1st reminder to be `Drink coffee`.
 * `editReminder 3 d/25/12/2017 ti/19:00` +
 Edits the date and time of the 3rd reminder to be `25/12/2017` and `19:00` respectively.
+
+=== Frequently Viewed Contacts[V1.4]
+
+Shows the user a list of top 5 contacts which the user has viewed the most +
+
+****
+* The Top 5 users are decided based on these commands : `select`, `viewtag`, `email`, `location`.
+* The more the user is being searched or viewed, his Popularity Counter increases making him move on the top of the Favourites
+* The list keeps automatically updating after each of the four mentioned commands are executed.
+* Any new contact will have a Popularity Counter of 0 initially.
+* If two people have same popularity then the person who was added earlier is shown before in the Top 5 list
+****
+
+Examples:
+
+If the contact `Roy Balakrishnan` is `selected` once he will be on top of the list as his popularity counter is more than the rest of the contacts.
+This can be seen in the image below.
+
+image::frequentlyVisited.PNG[width="790"]
 
 // tag::nickname[]
 === Adding a nickname to a person : `nickname`[V1.1]
@@ -337,7 +356,7 @@ Deletes the 2nd person in the address book.
 `delete 1` +
 Deletes the 1st person in the results of the `find` command.
 
-=== Deleting a reminder: `deleteReminder`
+=== Deleting a reminder: `deleteReminder`[V1.4]
 
 Deletes the specified reminder from iContacts. +
 Format: `deleteReminder INDEX`
@@ -549,7 +568,7 @@ e.g.`select 2`
 e.g. `theme sky`
 
 
-== Since V1.2
+== Since V1.3
 
 === Search Command +
 Users will be able to search for persons fulfilling *all* keywords provided by the users. +
@@ -580,15 +599,6 @@ This allows users to better customise their address book.
 Format: `listTheme` +
 A window will pop up displaying the list of available themes. Users need only take note of the theme name of the theme they are interested in for the next step.
 
-=== Command Format Validation +
-The text field where users type commands into would be outlined with colors. +
-
-* if the outline is green, it means that the format of the command currently in the text field is valid. +
-* if the outline is orange, it means that the format of command currently in the text field is not wrong, but is incomplete. +
-* if the outline is red, it means the the format of the command currently in the text field is wrong, and needs to be changed. +
-
-This allows users to be able to check for the format of the command they are typing, and rectify as soon as there is an error.
-
 === Find by similar keywords +
 Users would be able to obtain a list of contacts by entering similar keywords that is not identical. +
 This is an enhancement to the existing `find` command, so format of command would remain the same. +
@@ -614,8 +624,4 @@ This way, users would have a backup copy of their contacts. Users would also be 
 
 
 === Color coded commands for easy viewing*
-=== Frequently viewed contacts*
 === Import data file*
-=== Reminders for birthdays*
-=== Search with wild cards*
-=== Sort by attribute* : e.g. name, email, tags

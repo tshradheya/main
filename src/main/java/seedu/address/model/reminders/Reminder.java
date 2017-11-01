@@ -18,6 +18,7 @@ public class Reminder {
     private ObjectProperty<String> reminder;
     private ObjectProperty<Date> date;
     private ObjectProperty<Time> time;
+    private ObjectProperty<Status> status;
 
     /**
      * Every field must be present and not null.
@@ -28,6 +29,7 @@ public class Reminder {
         this.reminder = new SimpleObjectProperty<>(reminder);
         this.date = new SimpleObjectProperty<>(date);
         this.time = new SimpleObjectProperty<>(time);
+        this.status = new SimpleObjectProperty<>(new Status(date, time));
     }
 
     /**
@@ -75,6 +77,10 @@ public class Reminder {
 
     public LocalDateTime getLocalDateTime() {
         return LocalDateTime.of(date.get().toLocalDate(), time.get().toLocalTime());
+    }
+
+    public ObjectProperty<Status> statusProperty() {
+        return status;
     }
 
     @Override

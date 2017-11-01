@@ -24,6 +24,8 @@ public class ReminderCard extends UiPart<Region> {
     private Label date;
     @FXML
     private Label time;
+    @FXML
+    private Label status;
 
     public ReminderCard(Reminder reminder, int displayedIndex) {
         super(FXML);
@@ -40,6 +42,7 @@ public class ReminderCard extends UiPart<Region> {
         reminder.textProperty().bind(Bindings.convert(source.reminderProperty()));
         date.textProperty().bind(Bindings.convert(source.dateProperty()));
         time.textProperty().bind(Bindings.convert(source.timeProperty()));
+        status.textProperty().bind(Bindings.convert(source.statusProperty()));
     }
 
     @Override

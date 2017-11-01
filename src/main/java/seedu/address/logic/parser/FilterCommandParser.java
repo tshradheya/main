@@ -40,43 +40,25 @@ public class FilterCommandParser implements Parser<FilterCommand> {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FilterCommand.MESSAGE_USAGE));
         }
 
-        String name;
-        List<String> tags;
+        List<String> nameKeywordsList = new ArrayList<>();
+        List<String> tagsKeywordsList = new ArrayList<>();
 
         String regex = "\\s+";
-        String[] nameKeywords;
-
-        List<String> nameKeywordsList;
-        List<String> tagsKeywordsList;
 
         // Extracting name
-        if (argMultimap.getValue(PREFIX_NAME).isPresent()) {
-            name = argMultimap.getValue(PREFIX_NAME).get();
-            // name cannot be empty
-            if (name.length() == 0) {
-                throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FilterCommand.MESSAGE_USAGE));
-            }
-            nameKeywords = name.split(regex);
-            nameKeywordsList = Arrays.asList(nameKeywords);
-        } else {
-            nameKeywordsList = new ArrayList<>(); // empty list
+        if (!argMultimap.getAllValues(PREFIX_NAME).isEmpty()) {
+            List<String> unprocessedNames = argMultimap.getAllValues(PREFIX_NAME);
+            nameKeywordsList = Arrays.asList(getKeywordsFromList(unprocessedNames, regex));
         }
 
-        if (argMultimap.getAllValues(PREFIX_TAG).isEmpty()) {
-            tags = new ArrayList<>();
-        } else {
-            tags = argMultimap.getAllValues(PREFIX_TAG);
+        if (!argMultimap.getAllValues(PREFIX_TAG).isEmpty()) {
+            List<String> unprocessedTags = argMultimap.getAllValues(PREFIX_TAG);
+            tagsKeywordsList = Arrays.asList(getKeywordsFromList(unprocessedTags, regex));
         }
 
         // Throws an error if both name and tags are empty.
-        if (tags.isEmpty() && nameKeywordsList.isEmpty()) {
+        if (tagsKeywordsList.isEmpty() && nameKeywordsList.isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FilterCommand.MESSAGE_USAGE));
-        }
-
-        if (!tags.isEmpty()) {
-            tagsKeywordsList = Arrays.asList(getKeywordsFromTags(tags, regex));
-        } else {
-            tagsKeywordsList = new ArrayList<>(); // empty list
         }
 
         return new FilterCommand(new NameAndTagsContainsKeywordsPredicate(nameKeywordsList, tagsKeywordsList));
@@ -101,15 +83,15 @@ public class FilterCommandParser implements Parser<FilterCommand> {
         return Optional.of(ParserUtil.parseTags(tagSet));
     }
 
-    private String[] getKeywordsFromTags(List<String> tagList, String regex) throws ParseException {
-        String tagKeywords = "";
-        for (String tag : tagList) {
-            // tags cannot be empty
-            if (tag.length() == 0) {
+    private String[] getKeywordsFromList(List<String> list, String regex) throws ParseException {
+        String keywords = "";
+        for (String string : list) {
+            // name cannot be empty
+            if (string.length() == 0) {
                 throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FilterCommand.MESSAGE_USAGE));
             }
-            tagKeywords = tagKeywords + " " + tag;
+            keywords = keywords + " " + string;
         }
-        return tagKeywords.trim().split(regex);
+        return keywords.trim().split(regex);
     }
 }

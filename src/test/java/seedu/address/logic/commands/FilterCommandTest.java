@@ -73,10 +73,17 @@ public class FilterCommandTest {
     }
 
     @Test
-    public void execute_multipleNameKeywords_multiplePersonsFound() {
-        String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 3);
+    public void execute_multipleNameKeywords_noPersonFound() {
+        String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 0);
         FilterCommand command = prepareCommand("Kurz Elle Kunz", null);
-        assertCommandSuccess(command, expectedMessage, Arrays.asList(CARL, ELLE, FIONA));
+        assertCommandSuccess(command, expectedMessage, Collections.emptyList());
+    }
+
+    @Test
+    public void execute_existingFullNameAsKeywords_success() {
+        String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 1);
+        FilterCommand command = prepareCommand(ALICE.getName().fullName, null);
+        assertCommandSuccess(command, expectedMessage, Arrays.asList(ALICE));
     }
 
     /**

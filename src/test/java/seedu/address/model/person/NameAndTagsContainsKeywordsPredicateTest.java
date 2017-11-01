@@ -77,9 +77,13 @@ public class NameAndTagsContainsKeywordsPredicateTest {
         predicate = new NameAndTagsContainsKeywordsPredicate(Arrays.asList("Alice"), Arrays.asList("family"));
         assertTrue(predicate.test(new PersonBuilder().withNameAndTags("Alice Bob", "family").build()));
 
-        // Only one matching name
-        predicate = new NameAndTagsContainsKeywordsPredicate(Arrays.asList("Bob", "Carol"), new ArrayList<>());
-        assertTrue(predicate.test(new PersonBuilder().withName("Alice Carol").build()));
+        // Multiple names in different order
+        predicate = new NameAndTagsContainsKeywordsPredicate(Arrays.asList("Alice", "Bob"), new ArrayList<>());
+        assertTrue(predicate.test(new PersonBuilder().withName("Bob Alice").build()));
+
+        // Multiple tags in different order
+        predicate = new NameAndTagsContainsKeywordsPredicate(new ArrayList<>(), Arrays.asList("family", "friends"));
+        assertTrue(predicate.test(new PersonBuilder().withTags("friends", "family").build()));
 
         // Mixed-case name
         predicate = new NameAndTagsContainsKeywordsPredicate(Arrays.asList("aLIce", "bOB"), new ArrayList<>());
@@ -87,6 +91,14 @@ public class NameAndTagsContainsKeywordsPredicateTest {
 
         // Mixed-case tag
         predicate = new NameAndTagsContainsKeywordsPredicate(new ArrayList<>(), Arrays.asList("fRiEnDs"));
+        assertTrue(predicate.test(new PersonBuilder().withTags("friends").build()));
+
+        // Repeated names
+        predicate = new NameAndTagsContainsKeywordsPredicate(Arrays.asList("Alice", "Alice"), new ArrayList<>());
+        assertTrue(predicate.test(new PersonBuilder().withName("Alice").build()));
+
+        // Repeated tags
+        predicate = new NameAndTagsContainsKeywordsPredicate(new ArrayList<>(), Arrays.asList("friends", "friends"));
         assertTrue(predicate.test(new PersonBuilder().withTags("friends").build()));
     }
 
@@ -100,6 +112,10 @@ public class NameAndTagsContainsKeywordsPredicateTest {
         // Non-matching tags
         predicate = new NameAndTagsContainsKeywordsPredicate(new ArrayList<>(), Arrays.asList("family"));
         assertFalse(predicate.test(new PersonBuilder().withTags("friends", "colleagues").build()));
+
+        // Only one matching name
+        predicate = new NameAndTagsContainsKeywordsPredicate(Arrays.asList("Bob", "Carol"), new ArrayList<>());
+        assertFalse(predicate.test(new PersonBuilder().withName("Alice Carol").build()));
 
         // Only one matching tag
         predicate = new NameAndTagsContainsKeywordsPredicate(

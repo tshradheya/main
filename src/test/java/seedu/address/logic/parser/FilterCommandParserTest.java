@@ -84,6 +84,17 @@ public class FilterCommandParserTest {
         FilterCommand expectedFilterCommandWithTwoTags =
                 new FilterCommand(new NameAndTagsContainsKeywordsPredicate(nameKeywords, tagKeywords));
         assertParseSuccess(parser, " t/friends t/colleagues", expectedFilterCommandWithTwoTags);
+        assertParseSuccess(parser, " t/friends colleagues", expectedFilterCommandWithTwoTags);
+
+        tagKeywords.clear();
+
+        // with more than one name -> success
+        nameKeywords.add("Alice");
+        nameKeywords.add("Pauline");
+        FilterCommand expectedFilterCommandWithTwoNames =
+                new FilterCommand(new NameAndTagsContainsKeywordsPredicate(nameKeywords, tagKeywords));
+        assertParseSuccess(parser, " n/Alice n/Pauline", expectedFilterCommandWithTwoNames);
+        assertParseSuccess(parser, " n/Alice Pauline", expectedFilterCommandWithTwoNames);
     }
 
 }

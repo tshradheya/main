@@ -14,7 +14,13 @@ ifdef::env-github,env-browser[:outfilesuffix: .adoc]
 
 By: `Team SE-EDU`      Since: `Jun 2016`      Licence: `MIT`
 
+== Introduction
+
+iContacts is an address book application with target audience as university students for managing contacts. This guide provides information for developers who wish to join our team as either developer or tester, and is intended to get you to understand the internal designs of the application, so that you will be able to work with the application quickly. The guide explains the design, implementation of noteworthy features, and the testing methods used in iContacts.
+
 == Setting up
+
+This section will guide you on setting up the development environment.
 
 === Prerequisites
 
@@ -34,41 +40,44 @@ Do not disable them. If you have disabled them, go to `File` > `Settings` > `Plu
 
 === Setting up the project in your computer
 
-. Fork this repo, and clone the fork to your computer
-. Open IntelliJ (if you are not in the welcome screen, click `File` > `Close Project` to close the existing project dialog first)
-. Set up the correct JDK version for Gradle
-.. Click `Configure` > `Project Defaults` > `Project Structure`
-.. Click `New...` and find the directory of the JDK
-. Click `Import Project`
-. Locate the `build.gradle` file and select it. Click `OK`
-. Click `Open as Project`
-. Click `OK` to accept the default settings
+. Fork this repo, and clone the fork to your computer.
+. Open IntelliJ (if you are not in the welcome screen, click `File` > `Close Project` to close the existing project dialog first).
+. Set up the correct JDK version for Gradle.
+.. Click `Configure` > `Project Defaults` > `Project Structure`.
+.. Click `New...` and find the directory of the JDK.
+. Click `Import Project`.
+. Locate the `build.gradle` file and select it. Click `OK`.
+. Click `Open as Project`.
+. Click `OK` to accept the default settings.
 . Open a console and run the command `gradlew processResources` (Mac/Linux: `./gradlew processResources`). It should finish with the `BUILD SUCCESSFUL` message. +
-This will generate all resources required by the application and tests.
+This will generate all the resources required by the application and tests.
 
 === Verifying the setup
 
-. Run the `seedu.address.MainApp` and try a few commands
+. Run the `seedu.address.MainApp` and try a few commands.
 . link:#testing[Run the tests] to ensure they all pass.
 
 === Configurations to do before writing code
 
+The following configurations need to be done before a developer starts writing the code. This is done to ensure that
+the java coding styles and practices are followed.
+
 ==== Configuring the coding style
 
-This project follows https://github.com/oss-generic/process/blob/master/docs/CodingStandards.md[oss-generic coding standards]. IntelliJ's default style is mostly compliant with ours but it uses a different import order from ours. To rectify,
+This project follows https://github.com/oss-generic/process/blob/master/docs/CodingStandards.md[oss-generic coding standards]. IntelliJ's default style is mostly compliant with ours but it uses a different import order from ours. Here are the steps to rectify the order:
 
 . Go to `File` > `Settings...` (Windows/Linux), or `IntelliJ IDEA` > `Preferences...` (macOS)
 . Select `Editor` > `Code Style` > `Java`
-. Click on the `Imports` tab to set the order
+. Click on the `Imports` tab to set the order:
 
-* For `Class count to use import with '\*'` and `Names count to use static import with '*'`: Set to `999` to prevent IntelliJ from contracting the import statements
-* For `Import Layout`: The order is `import static all other imports`, `import java.\*`, `import javax.*`, `import org.\*`, `import com.*`, `import all other imports`. Add a `<blank line>` between each `import`
+* For `Class count to use import with '\*'` and `Names count to use static import with '*'`: Set to `999` to prevent IntelliJ from contracting the import statements.
+* For `Import Layout`: The order is `import static all other imports`, `import java.\*`, `import javax.*`, `import org.\*`, `import com.*`, `import all other imports`. Add a `<blank line>` between each `import`.
 
 Optionally, you can follow the <<UsingCheckstyle#, UsingCheckstyle.adoc>> document to configure Intellij to check style-compliance as you write code.
 
 ==== Updating documentation to match your fork
 
-After forking the repo, links in the documentation will still point to the `se-edu/addressbook-level4` repo. If you plan to develop this as a separate product (i.e. instead of contributing to the `se-edu/addressbook-level4`) , you should replace the URL in the variable `repoURL` in `DeveloperGuide.adoc` and `UserGuide.adoc` with the URL of your fork.
+After forking the repo, the links in the documentation will still point to the `se-edu/addressbook-level4` repo. If you plan to develop this as a separate product (i.e. instead of contributing to the `se-edu/addressbook-level4`) , you should replace the URL in the variable `repoURL` in `DeveloperGuide.adoc` and `UserGuide.adoc` with the URL of your fork.
 
 ==== Setting up CI
 
@@ -81,57 +90,58 @@ Having both Travis and AppVeyor ensures your App works on both Unix-based platfo
 
 ==== Getting started with coding
 
-When you are ready to start coding,
-
-1. Get some sense of the overall design by reading the link:#architecture[Architecture] section.
-2. Take a look at the section link:#suggested-programming-tasks-to-get-started[Suggested Programming Tasks to Get Started].
+When you are ready to start coding, get some sense of the overall design by reading the link:#architecture[Architecture] section.
 
 == Design
+
+This section will explain the design aspects of iContacts.
 
 === Architecture
 
 image::Architecture.png[width="600"]
-_Figure 2.1.1 : Architecture Diagram_
+_Figure 1 : Architecture Diagram_
 
-The *_Architecture Diagram_* given above explains the high-level design of the App. Given below is a quick overview of each component.
+The *_Architecture Diagram_* given above explains the high-level design of the application.
 
 [TIP]
 The `.pptx` files used to create diagrams in this document can be found in the link:{repoURL}/docs/diagrams/[diagrams] folder. To update a diagram, modify the diagram in the pptx file, select the objects of the diagram, and choose `Save as picture`.
 
-`Main` has only one class called link:{repoURL}/src/main/java/seedu/address/MainApp.java[`MainApp`]. It is responsible for,
+Below is a quick overview of each component:
 
-* At app launch: Initializes the components in the correct sequence, and connects them up with each other.
-* At shut down: Shuts down the components and invokes cleanup method where necessary.
+* `Main` has only one class called link:{repoURL}/src/main/java/seedu/address/MainApp.java[`MainApp`], and it does the following:
 
-link:#common-classes[*`Commons`*] represents a collection of classes used by multiple other components. Two of those classes play important roles at the architecture level.
+** At app launch: Initializes the components in the correct sequence, and connects them up with each other.
+** At shut down: Shuts down the components and invokes cleanup method where necessary.
 
-* `EventsCenter` : This class (written using https://github.com/google/guava/wiki/EventBusExplained[Google's Event Bus library]) is used by components to communicate with other components using events (i.e. a form of _Event Driven_ design)
-* `LogsCenter` : Used by many classes to write log messages to the App's log file.
+* link:#common-classes[*`Commons`*] represents a collection of classes used by multiple other components. Two of those classes play important roles at the architecture level.
 
-The rest of the App consists of four components.
+** `EventsCenter` : This class (written using https://github.com/google/guava/wiki/EventBusExplained[Google's Event Bus library]) is used by components to communicate with other components using events (i.e. a form of _Event Driven_ design)
+** `LogsCenter` : Used by many classes to write log messages to the App's log file.
 
-* link:#ui-component[*`UI`*] : The UI of the App.
-* link:#logic-component[*`Logic`*] : The command executor.
-* link:#model-component[*`Model`*] : Holds the data of the App in-memory.
-* link:#storage-component[*`Storage`*] : Reads data from, and writes data to, the hard disk.
+* The rest of the App consists of four components:
 
-Each of the four components
+** link:#ui-component[*`UI`*] : The UI of the App.
+** link:#logic-component[*`Logic`*] : The command executor.
+** link:#model-component[*`Model`*] : Holds the data of the App in-memory.
+** link:#storage-component[*`Storage`*] : Reads data from, and writes data to, the hard disk.
 
-* Defines its _API_ in an `interface` with the same name as the Component.
-* Exposes its functionality using a `{Component Name}Manager` class.
+Each of the four components:
+
+*** defines its _API_ in an `interface` with the same name as the Component.
+*** exposes its functionality using a `{Component Name}Manager` class.
 
 For example, the `Logic` component (see the class diagram given below) defines it's API in the `Logic.java` interface and exposes its functionality using the `LogicManager.java` class.
 
 image::LogicClassDiagram.png[width="800"]
-_Figure 2.1.2 : Class Diagram of the Logic Component_
+_Figure 2 : Class Diagram of the Logic Component_
 
-[discrete]
-==== Events-Driven nature of the design
+
+=== Events-Driven nature of the design
 
 The _Sequence Diagram_ below shows how the components interact for the scenario where the user issues the command `delete 1`.
 
 image::SDforDeletePerson.png[width="800"]
-_Figure 2.1.3a : Component interactions for `delete 1` command (part 1)_
+_Figure 3 : Component interactions for `delete 1` command (part 1)_
 
 [NOTE]
 Note how the `Model` simply raises a `AddressBookChangedEvent` when the Address Book data are changed, instead of asking the `Storage` to save the updates to the hard disk.
@@ -139,73 +149,81 @@ Note how the `Model` simply raises a `AddressBookChangedEvent` when the Address 
 The diagram below shows how the `EventsCenter` reacts to that event, which eventually results in the updates being saved to the hard disk and the status bar of the UI being updated to reflect the 'Last Updated' time.
 
 image::SDforDeletePersonEventHandling.png[width="800"]
-_Figure 2.1.3b : Component interactions for `delete 1` command (part 2)_
+_Figure 4 : Component interactions for `delete 1` command (part 2)_
 
 [NOTE]
-Note how the event is propagated through the `EventsCenter` to the `Storage` and `UI` without `Model` having to be coupled to either of them. This is an example of how this Event Driven approach helps us reduce direct coupling between components.
+Note how the event is propagated through the `EventsCenter` to the `Storage` and `UI` without `Model` having to be coupled to either of them. This is an example of how this Event-Driven approach helps us reduce direct coupling between components.
 
-The sections below give more details of each component.
+=== Components
 
-=== UI component
+This section explains the four components used in the App.
+
+==== UI component
+
+UI component provides with the API of Graphical User Interface. The figure below shows the structure of the UI component.
 
 image::UiClassDiagram.png[width="800"]
-_Figure 2.2.1 : Structure of the UI Component_
+_Figure 5 : Structure of the UI component_
 
 *API* : link:{repoURL}/src/main/java/seedu/address/ui/Ui.java[`Ui.java`]
 
-The UI consists of a `MainWindow` that is made up of parts e.g.`CommandBox`, `ResultDisplay`, `PersonListPanel`, `StatusBarFooter`, `BrowserPanel` etc. All these, including the `MainWindow`, inherit from the abstract `UiPart` class.
+The UI consists of a `MainWindow` that is made up of parts e.g.`CommandBox`, `ResultDisplay`, `PersonListPanel`, `StatusBarFooter`, `BrowserPanel` etc. All of these, including the `MainWindow`, inherit from the abstract `UiPart` class.
 
-The `UI` component uses JavaFx UI framework. The layout of these UI parts are defined in matching `.fxml` files that are in the `src/main/resources/view` folder. For example, the layout of the link:{repoURL}/src/main/java/seedu/address/ui/MainWindow.java[`MainWindow`] is specified in link:{repoURL}/src/main/resources/view/MainWindow.fxml[`MainWindow.fxml`]
+The `UI` component uses JavaFx UI framework. The layout of these UI parts are defined in matching `.fxml` files that are in the `src/main/resources/view` folder. For example, the layout of the link:{repoURL}/src/main/java/seedu/address/ui/MainWindow.java[`MainWindow`] is specified in link:{repoURL}/src/main/resources/view/MainWindow.fxml[`MainWindow.fxml`].
 
-The `UI` component,
+The `UI` component
 
-* Executes user commands using the `Logic` component.
-* Binds itself to some data in the `Model` so that the UI can auto-update when data in the `Model` change.
-* Responds to events raised from various parts of the App and updates the UI accordingly.
+* executes user commands using the `Logic` component.
+* binds itself to some data in the `Model` so that the UI can auto-update when data in the `Model` change.
+* responds to events raised from various parts of the App and updates the UI accordingly.
 
-=== Logic component
+==== Logic component
+Logic component deals with how each command and its parser would be executed in an event-driven design. The figures below show the structure of the Logic component.
 
 image::LogicClassDiagram.png[width="800"]
-_Figure 2.3.1 : Structure of the Logic Component_
+_Figure 6 : Structure of the Logic component_
 
 image::LogicCommandClassDiagram.png[width="800"]
-_Figure 2.3.2 : Structure of Commands in the Logic Component. This diagram shows finer details concerning `XYZCommand` and `Command` in Figure 2.3.1_
+_Figure 7 : Structure of Commands in the Logic component. This diagram shows finer details concerning `XYZCommand` and `Command` in Figure 6_
 
 *API* :
 link:{repoURL}/src/main/java/seedu/address/logic/Logic.java[`Logic.java`]
 
-.  `Logic` uses the `AddressBookParser` class to parse the user command.
-.  This results in a `Command` object which is executed by the `LogicManager`.
-.  The command execution can affect the `Model` (e.g. adding a person) and/or raise events.
-.  The result of the command execution is encapsulated as a `CommandResult` object which is passed back to the `Ui`.
+*  `Logic` uses the `AddressBookParser` class to parse the user command.
+*  This results in a `Command` object which is executed by the `LogicManager`.
+*  The command execution can affect the `Model` (e.g. adding a person) and/or raise events.
+*  The result of the command execution is encapsulated as a `CommandResult` object which is passed back to the `Ui`.
 
 Given below is the Sequence Diagram for interactions within the `Logic` component for the `execute("delete 1")` API call.
 
 image::DeletePersonSdForLogic.png[width="800"]
-_Figure 2.3.1 : Interactions Inside the Logic Component for the `delete 1` Command_
+_Figure 8 : Interactions inside the Logic component for the `delete 1` command_
 
-=== Model component
+==== Model component
+Model Component handles the contacts in address book and all it's stored details in data structures which provides API to create, read, update and delete the contacts in address book. The figure below shows the structure of Model component.
+
 
 image::ModelClassDiagram.png[width="800"]
-_Figure 2.4.1 : Structure of the Model Component_
+_Figure 9 : Structure of the Model component_
 
 *API* : link:{repoURL}/src/main/java/seedu/address/model/Model.java[`Model.java`]
 
-The `Model`,
+The `Model`
 
 * stores a `UserPref` object that represents the user's preferences.
 * stores the Address Book data.
 * exposes an unmodifiable `ObservableList<ReadOnlyPerson>` that can be 'observed' e.g. the UI can be bound to this list so that the UI automatically updates when the data in the list change.
 * does not depend on any of the other three components.
 
-=== Storage component
+==== Storage component
+The storage component handles the storage of all data of address book in the local device. The figure below shows the structure of Storage component.
 
 image::StorageClassDiagram.png[width="800"]
-_Figure 2.5.1 : Structure of the Storage Component_
+_Figure 10 : Structure of the Storage component_
 
 *API* : link:{repoURL}/src/main/java/seedu/address/storage/Storage.java[`Storage.java`]
 
-The `Storage` component,
+The `Storage` component
 
 * can save `UserPref` objects in json format and read it back.
 * can save the Address Book data in xml format and read it back.
@@ -265,9 +283,9 @@ public class NameAndTagsContainsKeywordsPredicate {
     @Override
     public boolean test(ReadOnlyPerson person) {
         boolean nameFound = false;
-        if (!nameKeywords.isEmpty()) {
-            nameFound = nameKeywords.stream().allMatch(nameKeywords -> StringUtil
-                    .containsWordIgnoreCase(person.getName().fullName, nameKeywords));
+            if (!nameKeywords.isEmpty()) {
+                nameFound = nameKeywords.stream().anyMatch(nameKeywords -> StringUtil
+                .containsWordIgnoreCase(person.getName().fullName, nameKeywords));
         }
     }
 }
@@ -280,7 +298,7 @@ For the `FilterCommand` to work properly, either `nameKeywords` or `tagKeywords`
 // tag::export[]
 === Export mechanism
 
-The `ExportCommand` uses `XmlAddressBookStorage` class to generate a xml file based on a given range and saves it to the path provided. It takes in two String values range and path. Below is the constructor for the class:
+The `ExportCommand` uses `XmlAddressBookStorage` class to generate a xml file based on a given range and saves it to the path provided. It takes in two `String` values `range` and `path`. Below is the constructor for the class:
 
 [source,java]
 ----
@@ -313,16 +331,16 @@ public class ExportCommand extends Command {
 }
 ----
 
-To determine which contacts should be added to the exportBook we have to check the the user input. There are 3 cases:
+To determine which contacts should be added to the exportBook we have to check the the user input. There are three cases:
 
-* all (Priority)
-** if the case *all* is present in the user input we will just export all the contacts in the last shown list
-* specific index (1, 2, 3)
-** if the user input contains a specific index we will add that index(One-based) to the exportBook.
-* range of index (1-5,8-10)
-** if the user input contains a range which is identified by *-* character we will add that range of index(One-based) to the exportBook.
+* All (Priority)
+** if the word `all` is present in the user input, we will just export all the contacts in the last shown list.
+* Specific index (e.g. 1, 2, 3)
+** if the user input contains a specific index we will add that index (one-based) to the `exportBook`.
+* Range of indexes (e.g. 1-5,8-10)
+** if the user input contains a range which is identified by `-` character, we will add that range of index (one-based) to the `exportBook`.
 
-Below is the code snippet to identify the 3 cases in the user input:
+Below is the code snippet to identify the three cases in the user input:
 
 [source,java]
 ----
@@ -349,9 +367,9 @@ public class ExportCommand extends Command {
 }
 ----
 
-Lastly is to create the xml file from the exportBook.
+The final step is to create the xml file from the `exportBook`.
 
-Below is the code snippet to export the data into an xml file using AddressBookStorage Class
+Below is the code snippet to export the data into an xml file using `AddressBookStorage`.
 [source,java]
 ----
 public class ExportCommand extends Command {
@@ -372,51 +390,6 @@ public class ExportCommand extends Command {
 ----
 // end::export[]
 
-// tag::find[]
-=== Find mechanism
-
-The `FindCommand` uses `NameContainsKeywordsPredicate` to find contacts with matching names or nicknames. It accepts `List<String> nameKeywords` as the parameter that is parsed by `FindCommandParser`. Below is the constructor for the class:
-
-[source,java]
-----
-public FindCommand(NameContainsKeywordsPredicate predicate) {
-        this.predicate = predicate;
-    }
-----
-
-The method `test(ReadOnlyPerson person)` iterates through `nameKeywords` to find a match with the name or nickname of every `person` from the address book.
-
-Below is an extract of the method `test(ReadOnlyPerson person`.
-
-[source,java]
-----
-   @Override
-    public boolean test(ReadOnlyPerson person) {
-        return keywords.stream()
-                .anyMatch(keyword -> StringUtil.containsWordIgnoreCase(person.getName().fullName, keyword))
-                || keywords.stream()
-                .anyMatch(keyword -> StringUtil.containsWordIgnoreCase(person.getNickname().value, keyword));
-    }
-----
-
-For the `FindCommand` to work properly `nameKeywords` must be non-empty. The code extract below checks for empty inputs:
-
-[source,java]
-----
-    public FindCommand parse(String args) throws ParseException {
-        String trimmedArgs = args.trim();
-        if (trimmedArgs.isEmpty()) {
-            throw new ParseException(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
-        }
-
-        String[] nameKeywords = trimmedArgs.split("\\s+");
-
-        return new FindCommand(new NameContainsKeywordsPredicate(Arrays.asList(nameKeywords)));
-    }
-----
-// end::find[]
-
 // tag::undoredo[]
 === Undo/Redo mechanism
 
@@ -425,6 +398,7 @@ The undo/redo mechanism is facilitated by an `UndoRedoStack`, which resides insi
 `UndoRedoStack` only deals with `UndoableCommands`. Commands that cannot be undone will inherit from `Command` instead. The following diagram shows the inheritance diagram for commands:
 
 image::LogicCommandClassDiagram.png[width="800"]
+_Figure 11 : Inheritance diagram for commands_
 
 As you can see from the diagram, `UndoableCommand` adds an extra layer between the abstract `Command` class and concrete commands that can be undone, such as the `DeleteCommand`. Note that extra tasks need to be done when executing a command in an _undoable_ way, such as saving the state of the address book before execution. `UndoableCommand` contains the high-level algorithm for those extra tasks while the child classes implements the details of how to execute the specific command. Note that this technique of putting the high-level algorithm in the parent class and lower-level steps of the algorithm in child classes is also known as the https://www.tutorialspoint.com/design_pattern/template_pattern.htm[template pattern].
 
@@ -464,10 +438,12 @@ Suppose that the user has just launched the application. The `UndoRedoStack` wil
 The user executes a new `UndoableCommand`, `delete 5`, to delete the 5th person in the address book. The current state of the address book is saved before the `delete 5` command executes. The `delete 5` command will then be pushed onto the `undoStack` (the current state is saved together with the command).
 
 image::UndoRedoStartingStackDiagram.png[width="800"]
+_Figure 12 : Stack diagram after executing Delete command_
 
 As the user continues to use the program, more commands are added into the `undoStack`. For example, the user may execute `add n/David ...` to add a new person.
 
 image::UndoRedoNewCommand1StackDiagram.png[width="800"]
+_Figure 13 : Stack diagram after executing Add command_
 
 [NOTE]
 If a command fails its execution, it will not be pushed to the `UndoRedoStack` at all.
@@ -477,6 +453,7 @@ The user now decides that adding the person was a mistake, and decides to undo t
 We will pop the most recent command out of the `undoStack` and push it back to the `redoStack`. We will restore the address book to the state before the `add` command executed.
 
 image::UndoRedoExecuteUndoStackDiagram.png[width="800"]
+_Figure 14 : Stack diagram after executing Undo command_
 
 [NOTE]
 If the `undoStack` is empty, then there are no other commands left to be undone, and an `Exception` will be thrown when popping the `undoStack`.
@@ -484,6 +461,7 @@ If the `undoStack` is empty, then there are no other commands left to be undone,
 The following sequence diagram shows how the undo operation works:
 
 image::UndoRedoSequenceDiagram.png[width="800"]
+_Figure 15 : Sequence diagram of the undo operation_
 
 The redo does the exact opposite (pops from `redoStack`, push to `undoStack`, and restores the address book to the state after the command is executed).
 
@@ -493,22 +471,26 @@ If the `redoStack` is empty, then there are no other commands left to be redone,
 The user now decides to execute a new command, `clear`. As before, `clear` will be pushed into the `undoStack`. This time the `redoStack` is no longer empty. It will be purged as it no longer make sense to redo the `add n/David` command (this is the behavior that most modern desktop applications follow).
 
 image::UndoRedoNewCommand2StackDiagram.png[width="800"]
+_Figure 16 : Stack diagram after executing Clear command_
 
 Commands that are not undoable are not added into the `undoStack`. For example, `list`, which inherits from `Command` rather than `UndoableCommand`, will not be added after execution:
 
 image::UndoRedoNewCommand3StackDiagram.png[width="800"]
+_Figure 17 : Stack diagram remains unchanged after executing List command_
 
 The following activity diagram summarize what happens inside the `UndoRedoStack` when a user executes a new command:
 
 image::UndoRedoActivityDiagram.png[width="200"]
+_Figure 18 : Activity diagram for UndoRedoStack_
 
+[discrete]
 ==== Design Considerations
 
 **Aspect:** Implementation of `UndoableCommand` +
-**Alternative 1 (current choice):** Add a new abstract method `executeUndoableCommand()` +
+**Alternative 1 (current choice):** Add a new abstract method `executeUndoableCommand()`. +
 **Pros:** We will not lose any undone/redone functionality as it is now part of the default behaviour. Classes that deal with `Command` do not have to know that `executeUndoableCommand()` exist. +
 **Cons:** Hard for new developers to understand the template pattern. +
-**Alternative 2:** Just override `execute()` +
+**Alternative 2:** Just override `execute()`. +
 **Pros:** Does not involve the template pattern, easier for new developers to understand. +
 **Cons:** Classes that inherit from `UndoableCommand` must remember to call `super.execute()`, or lose the ability to undo/redo.
 
@@ -558,12 +540,12 @@ The reading and writing of images is done using the `ImageIO` class.
 The sequence diagram for adding a display picture is shown below: +
 
 image::SDforDisplayPicture.PNG[width="800"]
-_Figure 1: Sequence Diagram for Display Picture Command._
+_Figure 19 : Sequence Diagram for Display Picture Command._
 
 The wireframe used to display the image for each person is shown below:
 
 image::WireFramePersonCard.PNG[width="500"]
-_Figure 2: Wireframe for the UI._
+_Figure 20 : Wireframe for the UI._
 
 
 The binder for refreshing the image every time the picture is updated is implemented by the following function:
@@ -578,7 +560,7 @@ public class PersonCard extends UiPart<Region> {
 }
 ----
 
-The new image stored in directory is given a unique name which is formed using hashcode of the unique email address of each contact.
+The new image stored in directory is given a unique name which is formed using hashcode of the unique email address of each contact:
 
 [source,java]
 ----
@@ -586,7 +568,7 @@ public class DisplayPictureCommand extends UndoableCommand {
 
     @Override
     public CommandResult executeUndoableCommand() throws CommandException, IOException, URISyntaxException {
-        /...
+        /... executes function of ReadAndStoreImage ...
         ReadAndStoreImage readAndStoreImage = new ReadAndStoreImage();
 
         displayPicture.setPath(readAndStoreImage.execute(displayPicture.getPath(),
@@ -595,45 +577,45 @@ public class DisplayPictureCommand extends UndoableCommand {
 }
 ----
 
-==== Reason for this type of implementation
+The command is implemented in this manner because of the following reasons:
 
-The command is implemented in this manner because of the following reasons
-
-* By specifying the index, there is no ambiguity as to who should be assigned the display picture
-* The `PATHOFIMAGE` must be absolute path on the local device to make sure the image is referenced.
-* The image is stored in directory with a unique name to avoid conflict. Hashcode of user's email address is used to maintain uniqueness
-* The task is done using CLI and follows as NFR
+* By specifying the index, there is no ambiguity as to who should be assigned the display picture.
+* The `PATHOFIMAGE` must be an absolute path on the local device to make sure the image is referenced.
+* The image is stored in directory with a unique name to avoid conflict. Hashcode of user's email address is used to maintain uniqueness.
+* The task is done using CLI to follow project requirements.
 * The image is stored in jpg format to ensure maximum compatibility.
 
+[discrete]
 ==== Design Considerations
 
 **Aspect:** At what stage should the image be read and stored +
-**Alternative 1 (current choice):** Invoke 'ReadAndStoreImage' from Logic Component  +
-**Pros:** We will be able to get the contact's address for unique hash code  +
-**Cons:** Hard for new developers to understand the sequence diagram and flow. +
-**Alternative 2:** Invoke 'ReadAndStoreImage' from Model Component +
+**Alternative 1 (current choice):** Invoke 'ReadAndStoreImage' from Logic component.  +
+**Pros:** We will be able to get the contact's address for unique hash code.  +
+**Cons:** Difficult for new developers to understand the sequence diagram and flow. +
+**Alternative 2:** Invoke 'ReadAndStoreImage' from Model component. +
 **Pros:** Easier for new developers to understand the sequence diagram and maintains event-driven nature. +
-**Cons:** There might be clash in naming of two different images for large database of contacts
+**Cons:** There might be clashes in naming of two different images for large database of contacts.
 
 ---
 
 **Aspect:** How should the image be taken from user +
-**Alternative 1 (current choice):** User has to enter absolute path of image by checking his local device   +
+**Alternative 1 (current choice):** User has to enter the absolute path of image by checking his local device.   +
 **Pros:** Complete CLI process  +
-**Cons:** Might be problematic for user to copy and paste and might result in error of path giving fail command +
-**Alternative 2:** Pop up a `FileChooser` after command is entered +
-**Pros:** Easier for users to mention the correct image at a quick pace +
-**Cons:** Will no longer be a CLI process completely
+**Cons:** Might be problematic for user to copy and paste and might result in error of path giving fail command. +
+**Alternative 2:** Pop up a `FileChooser` after command is entered. +
+**Pros:** Easier for users to mention the correct image quickly. +
+**Cons:** Will no longer be a CLI process completely.
 
-=== Location Mechanism
-The location command through an event driven mechanism. The below diagram shows sequence diagram for it.
+=== Location mechanism
+The location command through an event-driven mechanism. The below diagram shows sequence diagram for it.
 
 image::locationSD.PNG[width="790"]
+_Figure 21 : Sequence diagram for the Location Command._
 
-The execution of command raises an event `ShowLocationEvent`. This causes the `BrowserAndReminderPanel` to switch to Node `Browser` irrespective of current state of the application. The mechanism is shown through an Activity Diagram.
+The execution of command raises an event `ShowLocationEvent`. This causes the `BrowserAndReminderPanel` to switch to Node `Browser` irrespective of current state of the application. The activity diagram for such a case is shown below:
 
 image::locationAD.PNG[width="790"]
-
+_Figure 22 : Sequence diagram for the Location Command._
 
 Following is the code written to ensure the GUI set up for the command.
 
@@ -668,7 +650,7 @@ public String loadPersonLocation(String address) {
 ----
 
 
-
+[discrete]
 ==== Design Considerations
 
 **Aspect:** What to use to show the location +
@@ -680,7 +662,7 @@ public String loadPersonLocation(String address) {
 **Cons:** Uses more resources for the exact same feature and doesn't utilise pre existing browser properly
 
 
-=== Email Mechanism
+=== Email mechanism
 
 The email command lets the user compose an email in default browser with filled in data like recipients, subject and body.
 
@@ -692,12 +674,14 @@ The only two services offered are `gmail` and `outlook` as our target users are 
 The email command through an event driven mechanism. The below diagram shows sequence diagram for it.
 
 image::emailSD.PNG[width="790"]
+_Figure 23 : Sequence diagram for the Email Command._
 
 The given command is parsed to know the `Service` , `tag` to which email has to be sent, `Subject` and `Body`.
 
 The parsing takes place in the following manner:
 
 image::ParserSDEmail.PNG[width="790"]
+_Figure 24 : Sequence diagram for parsing the Email Command._
 
 
 The execution of command raises an event `SendingEmailEvent`.
@@ -715,6 +699,7 @@ public static final String OUTLOOK_EMAIL_URL =
 Desktop.getDesktop().browse(new URI(String.format(GMAIL_EMAIL_URL, recipients, subject, body)));
 ----
 
+[discrete]
 ==== Design Considerations
 
 **Aspect:** Where to compose the mail +
@@ -727,17 +712,18 @@ Desktop.getDesktop().browse(new URI(String.format(GMAIL_EMAIL_URL, recipients, s
 
 
 === Toggling mechanism
+The toggling mechanism is an event-driven mechanism.
 
 image::togglingMechanism1.png[width="790]
-_Figure 1: Component interactions for the toggling mechanism._
+_Figure 25 : Component interactions for the toggling mechanism._
 
-The toggling mechanism is an event-driven mechanism. The above diagram shows the high-level overview of the component interactions for the toggling mechanism. +
+The above diagram shows the high-level overview of the component interactions for the toggling mechanism. +
 
 image::togglingMechanism2.png[width="790"]
-_Figure 2: Sequence diagram for the first part of the toggling mechanism._
+_Figure 26 : Sequence diagram for the first part of the toggling mechanism._
 
-As seen from the sequence diagram above, when the user type the command for toggle, an instance of `ToggleCommand` would be formed first. +
-Upon execution by `LogicManager`, the event `BrowserAndRemindersPanelToggleEvent` would be posted by the `EventCenter`, to the `EventBus`.
+As seen from the sequence diagram above, when the user type the command for toggle, an instance of `ToggleCommand` would be instantiated. Upon execution by `LogicManager`, the event `BrowserAndRemindersPanelToggleEvent` would be posted by the `EventCenter`, to the `EventBus`:
+
 
 [source, java]
 ----
@@ -750,14 +736,15 @@ public class ToggleCommand extends Command {
 }
 ----
 
-The method `handleBrowserToggleEvent()` in the `BrowserAndRemindersPanel` class in the `UI` component will then listen for the event,
+
+As seen from the diagram below, the method `handleBrowserToggleEvent()` in the `BrowserAndRemindersPanel` class in the `UI` component will then listen for the event,
 and upon receiving the event, it will invoke the method `toggleBrowserPanel` to trigger the actual toggling.
 
 image::togglingMechanism3.png[width="790"]
-_Figure 3: Sequence diagram for the second part of the toggling mechanism._
+_Figure 27 : Sequence diagram for the second part of the toggling mechanism._
 
-The `BrowserAndRemindersPanel` class has a variable `currentlyInFront` keeping track of which panel (browser or reminders) is currently being shown (in front).
-`toggleBrowserPanel` would then use the `currentlyInFront` variable to toggle to the correct panel, and then update `currentlyInFront` appropriately. +
+The `BrowserAndRemindersPanel` class has a variable `currentlyInFront` keeping track of which panel (browser or reminders) is currently being shown.
+`toggleBrowserPanel` would then use the `currentlyInFront` variable to toggle to the correct panel, and then update `currentlyInFront` appropriately:
 
 [source, java]
 ----
@@ -787,11 +774,11 @@ public class BrowserAndRemindersPanel extends UIPart<Region> {
 }
 ----
 
-As seen from the code snippet above, 2 other events can still be raised; the `TurnLabelsOnEvent` and `TurnLabelsOffEvent`.
+As seen from the code snippet above, two other events `TurnLabelsOnEvent` and `TurnLabelsOffEvent` can still be raised.
 When the browser is being brought to the front, the *birthdays* and *reminders* heading just above the list of birthday reminders and
-reminders should be turned off, and when the reminders panel is brought to the front, these heading should be turned on. The handling of these 2 events
+reminders should be turned off. When the reminders panel is brought to the front, these heading should be turned on. The handling of these two events
 are in the `HeaderPane` class, where the variables `birthdays` and `reminders`, representing the `Label` header object for birthday reminders and reminders
-respectively, are turned on and off by simply setting their visibility appropriately.
+respectively, are turned on and off by simply setting their visibility appropriately:
 
 [source, java]
 ----
@@ -812,7 +799,7 @@ public class HeaderPane extends UIPart<Region> {
 }
 ----
 
-One important thing to note is that when the `select` command is executed, the browser panel would be brought forward no matter what.
+One important thing to note that when the `select` command is executed, the browser panel would be brought forward no matter what:
 
 [source, java]
 ----
@@ -832,35 +819,15 @@ public class BrowserAndRemindersPanel extends UIPart<Region> {
 }
 ----
 
-The `PersonPanelSelectionChangedEvent` is posted whenever the `select` command is executed. Within the `handlePersonPanelSelectionChangedEvent`
+As seen from the code snippet above, the `PersonPanelSelectionChangedEvent` is posted whenever the `select` command is executed. Within the `handlePersonPanelSelectionChangedEvent`
 method, there is the method `bringBrowserToFront`, which would then bring the browser panel to the front no matter what.
-
-==== Design Considerations
-
-**Aspect:** Usage of browser area +
-**Alternative 1 (current choice):** Allow users to toggle between browser and reminders +
-Pros: Can use the entire space for either browser or reminders +
-Cons: Users need to manually switch between browser and reminders +
-**Alternative 2:** Put reminders and browser side-by-side +
-Pros: Users do not need to manually switch between browser and reminders +
-Cons: Too little space for browser and reminders. Difficult to read.
-
-**Aspect:** Implementation of toggling mechanism +
-**Alternative 1 (current choice):** Bring browser and reminders panel to the front as required +
-Pros: Users can interact with both browser and reminders (can scroll through reminders etc) +
-Cons: More difficult to implement +
-**Alternative 2:** Set visibility of browser as required (set browser visibility to false to display reminders and vice versa) +
-Pros: Easier to implement +
-Cons: Users cannot interact with the reminders panel (since the browser is technically still at the front)
-
-
 
 === Reminder Implementation
 image::RemindersUML.png[width="790"]
-_Figure 1: UML diagram showing the implementation of reminders_
+_Figure 28: UML diagram showing the implementation of reminders_
 
 The `Reminder` object represents a reminder in iContacts. It contains a `String` variable, which represents
-the actual reminder from the user, and also a `Date` and `Time` object which represents the date and time of the reminder respectively. +
+the actual reminder from the user, and also a `DueDate` object which represents the date and time for the reminder. +
 
 In terms of how `Reminder` objects are kept in-memory during the execution of the program, `Reminder` objects are
 kept within `UniqueReminderList`, which assures that there are no duplicate `Reminder` objects. The `UniqueReminderList`
@@ -935,6 +902,7 @@ To save, the `saveReminders` method in `StorageManager` is invoked:
 This will then invoke the `saveReminders` method in `XmlRemindersStorage`, and go on to invoke the `saveRemindersToFile` method in `XmlFileStorage`,
 and the `saveDataToFile` method in `XmlUtil`.
 
+[discrete]
 ==== Design Consideration
 **Aspect:** How to store Reminders in-memory +
 **Alternative 1 (current choice):** Store Reminder objects in UniqueReminderList, independent of AddressBook +
@@ -948,12 +916,12 @@ Cons: Easier to implement
 === Theme-changing mechanism
 
 image::themeChangingMechanism1.png[width="790"]
-_Figure 1 : Component interactions for the theme-changing mechanism_
+_Figure 29 : Component interactions for the theme-changing mechanism_
 
 The theme-changing mechanism is an event-driven mechanism. The above diagram shows the high-level overview of the component interactions for the theme-changing mechanism.
 
 image::themeChangingMechanism2.png[width="790"]
-_Figure 2 : Sequence diagram for the first part of the theme-changing mechanism_
+_Figure 30 : Sequence diagram for the first part of the theme-changing mechanism_
 
 As shown from the sequence diagram above, after the user entered the command `theme sky`, a new object `ThemeCommand` will be created. The `LogicManager` will then execute `ThemeCommand`, and the event `ChangeThemeRequestEvent` will be posted by `EventsCenter`. The code snippet below shows the `execute()` method of `ThemeCommand`:
 
@@ -968,25 +936,70 @@ public class ThemeCommand extends Command {
 ----
 
 image::themeChangingMechanism3.png[width="790"]
-_Figure 3 : Sequence diagram for the second part of the theme-changing mechanism_
+_Figure 31 : Sequence diagram for the second part of the theme-changing mechanism_
 
 As shown from the sequence diagram above, the method `handleChangeThemeEvent()` in `MainWindow` will handle the event and change the theme of the address book through the method `changeTheme()` accordingly.
 // end::theme[]
+
+// tag::find[]
+=== Find mechanism
+
+The `FindCommand` uses `NameContainsKeywordsPredicate` to find contacts with matching names or nicknames. It accepts `List<String> nameKeywords` as the parameter that is parsed by `FindCommandParser`. Below is the constructor for the class:
+
+[source,java]
+----
+public FindCommand(NameContainsKeywordsPredicate predicate) {
+        this.predicate = predicate;
+    }
+----
+
+The method `test(ReadOnlyPerson person)` iterates through `nameKeywords` to find a match with the name or nickname of every `person` from the address book.
+
+Below is an extract of the method `test(ReadOnlyPerson person`.
+
+[source,java]
+----
+   @Override
+    public boolean test(ReadOnlyPerson person) {
+        return keywords.stream()
+                .anyMatch(keyword -> StringUtil.containsWordIgnoreCase(person.getName().fullName, keyword))
+                || keywords.stream()
+                .anyMatch(keyword -> StringUtil.containsWordIgnoreCase(person.getNickname().value, keyword));
+    }
+----
+
+For the `FindCommand` to work properly `nameKeywords` must be non-empty. The code extract below checks for empty inputs:
+
+[source,java]
+----
+    public FindCommand parse(String args) throws ParseException {
+        String trimmedArgs = args.trim();
+        if (trimmedArgs.isEmpty()) {
+            throw new ParseException(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+        }
+
+        String[] nameKeywords = trimmedArgs.split("\\s+");
+
+        return new FindCommand(new NameContainsKeywordsPredicate(Arrays.asList(nameKeywords)));
+    }
+----
+// end::find[]
 
 === Logging
 
 We are using `java.util.logging` package for logging. The `LogsCenter` class is used to manage the logging levels and logging destinations.
 
-* The logging level can be controlled using the `logLevel` setting in the configuration file (See link:#configuration[Configuration])
-* The `Logger` for a class can be obtained using `LogsCenter.getLogger(Class)` which will log messages according to the specified logging level
+* The logging level can be controlled using the `logLevel` setting in the configuration file (See link:#configuration[Configuration]).
+* The `Logger` for a class can be obtained using `LogsCenter.getLogger(Class)` which will log messages according to the specified logging level.
 * Currently log messages are output through: `Console` and to a `.log` file.
 
 *Logging Levels*
 
-* `SEVERE` : Critical problem detected which may possibly cause the termination of the application
-* `WARNING` : Can continue, but with caution
-* `INFO` : Information showing the noteworthy actions by the App
-* `FINE` : Details that is not usually noteworthy but may be useful in debugging e.g. print the actual list instead of just its size
+* `SEVERE` : Critical problem detected which may possibly cause the termination of the application.
+* `WARNING` : Can continue, but with caution.
+* `INFO` : Information showing the noteworthy actions by the App.
+* `FINE` : Details that is not usually noteworthy but may be useful in debugging e.g. print the actual list instead of just its size.
 
 === Configuration
 

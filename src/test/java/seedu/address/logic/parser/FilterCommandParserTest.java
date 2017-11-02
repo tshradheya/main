@@ -23,7 +23,7 @@ public class FilterCommandParserTest {
     }
 
     @Test
-    public void parse_invalidArgs_returnsFilterCommand() throws Exception {
+    public void parse_invalidArgs_throwsParseException() throws Exception {
         // No name specified after name prefix -> fail
         assertParseFailure(parser, " n/", String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                 FilterCommand.MESSAGE_USAGE));
@@ -84,6 +84,17 @@ public class FilterCommandParserTest {
         FilterCommand expectedFilterCommandWithTwoTags =
                 new FilterCommand(new NameAndTagsContainsKeywordsPredicate(nameKeywords, tagKeywords));
         assertParseSuccess(parser, " t/friends t/colleagues", expectedFilterCommandWithTwoTags);
+        assertParseSuccess(parser, " t/friends colleagues", expectedFilterCommandWithTwoTags);
+
+        tagKeywords.clear();
+
+        // with more than one name -> success
+        nameKeywords.add("Alice");
+        nameKeywords.add("Pauline");
+        FilterCommand expectedFilterCommandWithTwoNames =
+                new FilterCommand(new NameAndTagsContainsKeywordsPredicate(nameKeywords, tagKeywords));
+        assertParseSuccess(parser, " n/Alice n/Pauline", expectedFilterCommandWithTwoNames);
+        assertParseSuccess(parser, " n/Alice Pauline", expectedFilterCommandWithTwoNames);
     }
 
 }

@@ -35,7 +35,7 @@ public class NameAndTagsContainsKeywordsPredicate implements Predicate<ReadOnlyP
 
         boolean nameFound = false;
         if (!nameKeywords.isEmpty()) {
-            nameFound = nameKeywords.stream().anyMatch(nameKeywords -> StringUtil
+            nameFound = nameKeywords.stream().allMatch(nameKeywords -> StringUtil
                     .containsWordIgnoreCase(person.getName().fullName, nameKeywords));
         }
 
@@ -51,14 +51,13 @@ public class NameAndTagsContainsKeywordsPredicate implements Predicate<ReadOnlyP
     }
 
     /**
-     * Counts the number of matching tags of a person person and returns the count
+     * Counts the number of matching tags of a person and returns the count
      */
     public int countTagMatches(ReadOnlyPerson person) {
         int tagsMatchedCount = 0;
 
-        Set<Tag> tagsOfPerson = person.getTags();
-        for (Tag personTag : tagsOfPerson) {
-            if (hasTag(personTag)) {
+        for (String keywords : tagKeywords) {
+            if (hasTag(keywords, person)) {
                 tagsMatchedCount++;
             }
         }
@@ -66,11 +65,12 @@ public class NameAndTagsContainsKeywordsPredicate implements Predicate<ReadOnlyP
     }
 
     /**
-     * Returns true if the tag can be found in the tag keywords. Otherwise returns false.
+     * Returns true if the person's tag can be found in the keywords. Otherwise returns false.
      */
-    public boolean hasTag(Tag tag) {
-        for (String findTag : tagKeywords) {
-            if (tag.tagName.equalsIgnoreCase(findTag)) {
+    public boolean hasTag(String keywords, ReadOnlyPerson person) {
+        Set<Tag> tagsOfPerson = person.getTags();
+        for (Tag tag : tagsOfPerson) {
+            if (tag.tagName.equalsIgnoreCase(keywords)) {
                 return true;
             }
         }

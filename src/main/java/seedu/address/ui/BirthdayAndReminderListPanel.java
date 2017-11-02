@@ -84,15 +84,13 @@ public class BirthdayAndReminderListPanel extends UiPart<Region> {
             } else {
                 this.getStylesheets().clear();
                 if (reminder.isEventToday()) {
-                    //this.getStyleClass().add(REMINDER_TODAY_STYLE);
                     this.getStylesheets().add(REMINDER_TODAY_STYLE_SHEET);
                 } else if (reminder.isEventWithinThreeDays()) {
                     this.getStylesheets().add(REMINDER_THREE_DAYS_STYLE_SHEET);
-                } else if (reminder.hasEventPast()) {
-                    this.getStylesheets().add(REMINDER_PAST_STYLE_SHEET);
-                } else {
+                } else if (!reminder.hasEventPast()) {
                     this.getStylesheets().add(REMINDER_NORMAL_STYLE_SHEET);
                 }
+
                 setGraphic(reminder.getRoot());
             }
         }

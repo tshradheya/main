@@ -13,7 +13,7 @@
 }
 
 .list-cell:filled:selected {
-    -fx-background-color: derive(#dc143c, +40%);
+    -fx-background-color: derive(#dc143c, +30%);
 }
 
 .list-cell:filled:selected #cardPane {

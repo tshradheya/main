@@ -292,11 +292,13 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
     @Subscribe
     private void handlePopularContactPanelSelectionChangedEvent(PopularContactPanelSelectionChangedEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
-        loadPersonPage(event.getNewSelection().person);
-        setUpToShowWebBrowser();
-        currentlyInFront = Node.BROWSER;
-        browser.toFront();
-        raise(new TurnLabelsOffEvent());
+        setUpToShowDetailsPanel();
+        detailsPanel.toFront();
+        currentlyInFront = Node.DETAILS;
+        personDetails = new DetailsPanel(event.getPerson());
+        detailsPanel.getChildren().clear();
+        detailsPanel.getChildren().add(personDetails.getRoot());
+        raise(new TurnLabelsOffEvent());;
     }
 
 

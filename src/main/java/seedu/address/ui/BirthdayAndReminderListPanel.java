@@ -18,9 +18,11 @@ import seedu.address.model.reminders.Reminder;
  */
 public class BirthdayAndReminderListPanel extends UiPart<Region> {
     private static final String FXML = "BirthdayAndReminderListPanel.fxml";
-    private static final String REMINDER_TODAY_STYLE = "nightThemeReminderToday";
-    private static final String REMINDER_THREE_DAYS_STYLE = "nightThemeReminderThreeDays";
-    private static final String REMINDER_REST_STYLE = "nightThemeReminderRest";
+    private static final String DIRECTORY_PATH = "view/";
+    private static final String REMINDER_TODAY_STYLE_SHEET = DIRECTORY_PATH + "reminderToday.css";
+    private static final String REMINDER_THREE_DAYS_STYLE_SHEET = DIRECTORY_PATH + "reminderWithinThreeDays.css";
+    private static final String REMINDER_NORMAL_STYLE_SHEET = DIRECTORY_PATH + "reminderNormal.css";
+    private static final String REMINDER_PAST_STYLE_SHEET = DIRECTORY_PATH + "reminderPast.css";
     private final Logger logger = LogsCenter.getLogger(PersonListPanel.class);
 
     @FXML
@@ -80,12 +82,16 @@ public class BirthdayAndReminderListPanel extends UiPart<Region> {
                 setGraphic(null);
                 setText(null);
             } else {
+                this.getStylesheets().clear();
                 if (reminder.isEventToday()) {
-                    this.getStyleClass().add(REMINDER_TODAY_STYLE);
+                    //this.getStyleClass().add(REMINDER_TODAY_STYLE);
+                    this.getStylesheets().add(REMINDER_TODAY_STYLE_SHEET);
                 } else if (reminder.isEventWithinThreeDays()) {
-                    this.getStyleClass().add(REMINDER_THREE_DAYS_STYLE);
-                } else if (!reminder.hasEventPast()) {
-                    this.getStyleClass().add(REMINDER_REST_STYLE);
+                    this.getStylesheets().add(REMINDER_THREE_DAYS_STYLE_SHEET);
+                } else if (reminder.hasEventPast()) {
+                    this.getStylesheets().add(REMINDER_PAST_STYLE_SHEET);
+                } else {
+                    this.getStylesheets().add(REMINDER_NORMAL_STYLE_SHEET);
                 }
                 setGraphic(reminder.getRoot());
             }

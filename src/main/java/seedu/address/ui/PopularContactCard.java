@@ -4,9 +4,10 @@ import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Circle;
 import seedu.address.model.person.ReadOnlyPerson;
 
 /**
@@ -33,7 +34,7 @@ public class PopularContactCard extends UiPart<Region> {
     @FXML
     private Label popularContactName;
     @FXML
-    private ImageView popularContactDisplayPicture;
+    private Circle popularContactDisplayPicture;
     @FXML
     private Label rank;
 
@@ -63,39 +64,16 @@ public class PopularContactCard extends UiPart<Region> {
             Image image = new Image("file:" + "pictures/" + person.getDisplayPicture().getPath() + ".png",
                     IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
 
-            centerImage();
-            popularContactDisplayPicture.setImage(image);
+            popularContactDisplayPicture.setFill(new ImagePattern(image));
 
+        } else {
+            Image image = new Image("./images/defaulddp.png",
+                    IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
+
+            popularContactDisplayPicture.setFill(new ImagePattern(image));
         }
     }
 
-    /**
-     * Centre the image in ImageView
-     */
-    public void centerImage() {
-        Image image = popularContactDisplayPicture.getImage();
-        if (image != null) {
-            double width;
-            double height;
-
-            double ratioX = popularContactDisplayPicture.getFitWidth() / image.getWidth();
-            double ratioY = popularContactDisplayPicture.getFitHeight() / image.getHeight();
-
-            double reducCoeff;
-            if (ratioX >= ratioY) {
-                reducCoeff = ratioY;
-            } else {
-                reducCoeff = ratioX;
-            }
-
-            width = image.getWidth() * reducCoeff;
-            height = image.getHeight() * reducCoeff;
-
-            popularContactDisplayPicture.setX((popularContactDisplayPicture.getFitWidth() - width) / 2);
-            popularContactDisplayPicture.setY((popularContactDisplayPicture.getFitHeight() - height) / 2);
-
-        }
-    }
 
     @Override
     public boolean equals(Object other) {

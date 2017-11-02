@@ -25,6 +25,7 @@ import javafx.scene.web.WebView;
 import seedu.address.MainApp;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.ui.BrowserAndRemindersPanelToggleEvent;
+import seedu.address.commons.events.ui.LoadPersonWebpageEvent;
 import seedu.address.commons.events.ui.PersonPanelSelectionChangedEvent;
 import seedu.address.commons.events.ui.PopularContactPanelSelectionChangedEvent;
 import seedu.address.commons.events.ui.SendingEmailEvent;
@@ -157,40 +158,57 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
     private void toggleBrowserPanel() {
         switch(currentlyInFront) {
         case BROWSER:
+            setUpToShowRemindersPanel();
             remindersPanel.toFront();
             currentlyInFront = Node.REMINDERS;
             raise(new TurnLabelsOnEvent());
             break;
         case REMINDERS:
+            setUpToShowWebBrowser();
             browser.toFront();
             currentlyInFront = Node.BROWSER;
             raise(new TurnLabelsOffEvent());
+            break;
+        case DETAILS:
+            setUpToShowRemindersPanel();
+            remindersPanel.toFront();
+            currentlyInFront = Node.REMINDERS;
+            raise(new TurnLabelsOnEvent());
             break;
         default:
             throw new AssertionError("It should not be possible to land here");
         }
     }
 
-    private void bringBrowserToFront() {
-        browser.toFront();
-        currentlyInFront = Node.BROWSER;
+    private void setUpToShowRemindersPanel() {
+        detailsPanel.setVisible(false);
+        remindersPanel.setVisible(true);
+        browser.setVisible(false);
     }
 
-    private void bringDetailPanelToFront() {
-        detailsPanel.toFront();
+    private void setUpToShowDetailsPanel() {
+        detailsPanel.setVisible(true);
         remindersPanel.setVisible(false);
-        currentlyInFront = Node.DETAILS;
+        browser.setVisible(false);
     }
 
     /**
      * Set's up the UI to bring browser to front and show location
      */
     private void setUpToShowLocation() {
-        if (currentlyInFront == Node.REMINDERS) {
-            browser.toFront();
-            currentlyInFront = Node.BROWSER;
-            raise(new TurnLabelsOffEvent());
-        }
+        setUpToShowWebBrowser();
+        remindersPanel.toFront();
+        currentlyInFront = Node.REMINDERS;
+        raise(new TurnLabelsOffEvent());
+    }
+
+    /**
+     * Set's up the UI to bring browser to front
+     */
+    private void setUpToShowWebBrowser() {
+        browser.setVisible(true);
+        detailsPanel.setVisible(false);
+        remindersPanel.setVisible(false);
     }
 
     /**
@@ -262,8 +280,9 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
     @Subscribe
     private void handlePersonPanelSelectionChangedEvent(PersonPanelSelectionChangedEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
-        //loadPersonPage(event.getNewSelection().person);
-        bringDetailPanelToFront();
+        setUpToShowDetailsPanel();
+        detailsPanel.toFront();
+        currentlyInFront = Node.DETAILS;
         personDetails = new DetailsPanel(event.getPerson());
         detailsPanel.getChildren().clear();
         detailsPanel.getChildren().add(personDetails.getRoot());
@@ -274,7 +293,9 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
     private void handlePopularContactPanelSelectionChangedEvent(PopularContactPanelSelectionChangedEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
         loadPersonPage(event.getNewSelection().person);
-        bringBrowserToFront();
+        setUpToShowWebBrowser();
+        currentlyInFront = Node.BROWSER;
+        browser.toFront();
         raise(new TurnLabelsOffEvent());
     }
 
@@ -298,6 +319,15 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
         logger.info(LogsCenter.getEventHandlingLogMessage(event,
                 "Processing email through service of " + event.service.service));
         setUpEmailUrl(event.service.service, event.recipients, event.subject.subject, event.body.body);
+    }
+
+    @Subscribe
+    private void handleLoadPersonPageEvent(LoadPersonWebpageEvent event) {
+        setUpToShowWebBrowser();
+        currentlyInFront = Node.BROWSER;
+        browser.toFront();
+        raise(new TurnLabelsOffEvent());
+        loadPersonPage(event.getPerson());
     }
 
 }

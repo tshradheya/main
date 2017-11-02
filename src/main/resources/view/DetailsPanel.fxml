@@ -19,7 +19,7 @@
                   <Insets />
                </HBox.margin>
                <image>
-                  <Image url="" />
+                  <Image url="@../images/defaulddp.png" />
                </image>
             </ImageView>
             <VBox prefHeight="200.0" prefWidth="549.0">

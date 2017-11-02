@@ -45,6 +45,7 @@ public class SelectCommand extends Command {
 
         try {
             model.updatePersonsPopularityCounterByOne(lastShownList.get(targetIndex.getZeroBased()));
+            model.showPersonWebpage(lastShownList.get(targetIndex.getZeroBased()));
         } catch (DuplicatePersonException dpe) {
             throw new CommandException(MESSAGE_DUPLICATE_PERSON);
         } catch (PersonNotFoundException pnfe) {

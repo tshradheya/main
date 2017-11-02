@@ -56,6 +56,9 @@ public interface Model {
     /** Shows location of given person */
     void showLocation(ReadOnlyPerson person) throws PersonNotFoundException;
 
+    /** Shows webpage of given person */
+    void showPersonWebpage(ReadOnlyPerson person) throws PersonNotFoundException;
+
     /** Creates String of valid recipients */
     String createEmailRecipients(Predicate<ReadOnlyPerson> predicate);
 

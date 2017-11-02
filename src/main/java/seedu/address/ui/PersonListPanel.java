@@ -61,10 +61,19 @@ public class PersonListPanel extends UiPart<Region> {
         });
     }
 
+    /**
+     * Scrolls to the {@code PersonCard} at the {@code index} and don't select it
+     */
+    private void scrollToWithoutSelecting(int index) {
+        Platform.runLater(() -> {
+            personListView.scrollTo(index);
+        });
+    }
+
     @Subscribe
     private void handleJumpToListRequestEvent(JumpToListRequestEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
-        scrollTo(event.targetIndex);
+        scrollToWithoutSelecting(event.targetIndex);
     }
 
     /**

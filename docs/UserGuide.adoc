@@ -319,18 +319,20 @@ Format: `filter [n/NAME] [t/TAG]`
 * To search by tag, type the keywords after the `t/`.
 * The search is case insensitive. e.g `hans` will match `Hans`
 * Only full words will be matched e.g. `Han` will not match `Hans`
-* Persons matching at least one keyword will be returned (i.e. `OR` search). e.g. `Hans Bo` will return `Hans Gruber`, `Bo Yang`
+* Persons matching all keywords will be returned (i.e. `AND` search). e.g. `Hans Bo` will return `Hans Bo` but not `Hans Yang`
 ****
 
 Examples:
 
 * `filter n/John` +
 Returns `john` and `John Doe`
-* `filter n/Betsy Tim John` +
-Returns any person having names `Betsy`, `Tim`, or `John`
+* `filter n/John n/Doe` +
+`filter n/John Doe` +
+Returns any person with both `John` and `Doe` in his name.
 * `filter t/friends` +
-Returns any person with the tag `friends`.
-* `filter t/friends colleagues` +
+Returns any persons with the tag `friends`.
+* `filter t/friends t/colleagues` +
+`filter t/friends colleagues` +
 Returns any person with the tag `friends` and `colleagues`.
 * `filter n/John t/friends` +
 Returns any person having the name `John` and with the tag `friends`.

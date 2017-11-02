@@ -265,9 +265,9 @@ public class NameAndTagsContainsKeywordsPredicate {
     @Override
     public boolean test(ReadOnlyPerson person) {
         boolean nameFound = false;
-            if (!nameKeywords.isEmpty()) {
-                nameFound = nameKeywords.stream().anyMatch(nameKeywords -> StringUtil
-                .containsWordIgnoreCase(person.getName().fullName, nameKeywords));
+        if (!nameKeywords.isEmpty()) {
+            nameFound = nameKeywords.stream().allMatch(nameKeywords -> StringUtil
+                    .containsWordIgnoreCase(person.getName().fullName, nameKeywords));
         }
     }
 }

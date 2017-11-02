@@ -1,3 +1,4 @@
+//@@author chuaweiwen
 package seedu.address.model.person;
 
 import java.util.List;
@@ -88,3 +89,4 @@ public class NameAndTagsContainsKeywordsPredicate implements Predicate<ReadOnlyP
     }
 
 }
+//@@author

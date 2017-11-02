@@ -7,7 +7,7 @@ import java.util.List;
 import seedu.address.commons.core.EventsCenter;
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.index.Index;
-import seedu.address.commons.events.ui.JumpToListRequestEvent;
+import seedu.address.commons.events.ui.ShowDetailsEvent;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.person.ReadOnlyPerson;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
@@ -50,7 +50,7 @@ public class DetailsCommand extends Command {
             throw new AssertionError("The target person cannot be missing");
         }
 
-        EventsCenter.getInstance().post(new JumpToListRequestEvent(targetIndex));
+        EventsCenter.getInstance().post(new ShowDetailsEvent(targetIndex));
         return new CommandResult(String.format(MESSAGE_DETAILS_PERSON_SUCCESS, targetIndex.getOneBased()));
 
     }

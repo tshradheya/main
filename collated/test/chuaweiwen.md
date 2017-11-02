@@ -1,4 +1,343 @@
 # chuaweiwen
+###### \java\seedu\address\logic\commands\FilterCommandTest.java
+``` java
+package seedu.address.logic.commands;
+
+import static junit.framework.TestCase.assertEquals;
+import static seedu.address.commons.core.Messages.MESSAGE_PERSONS_LISTED_OVERVIEW;
+import static seedu.address.testutil.TypicalPersons.ALICE;
+import static seedu.address.testutil.TypicalPersons.BENSON;
+import static seedu.address.testutil.TypicalPersons.DANIEL;
+import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
+import static seedu.address.testutil.TypicalReminders.getUniqueTypicalReminders;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import org.junit.Test;
+
+import seedu.address.logic.CommandHistory;
+import seedu.address.logic.UndoRedoStack;
+import seedu.address.model.AddressBook;
+import seedu.address.model.Model;
+import seedu.address.model.ModelManager;
+import seedu.address.model.UserPrefs;
+import seedu.address.model.person.NameAndTagsContainsKeywordsPredicate;
+import seedu.address.model.person.ReadOnlyPerson;
+
+public class FilterCommandTest {
+
+    private Model model = new ModelManager(getTypicalAddressBook(), getUniqueTypicalReminders(), new UserPrefs());
+
+    @Test
+    public void execute_nonExistentNameKeyword_noPersonFound() throws Exception {
+        String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 0);
+        FilterCommand command = prepareCommand("A", null);
+        assertCommandSuccess(command, expectedMessage, Collections.emptyList());
+    }
+
+    @Test
+    public void execute_nonExistentTagKeyword_noPersonFound() throws Exception {
+        String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 0);
+        FilterCommand command = prepareCommand(null, "A");
+        assertCommandSuccess(command, expectedMessage, Collections.emptyList());
+    }
+
+    @Test
+    public void execute_oneNameKeyword_success() throws Exception {
+        String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 1);
+        FilterCommand command = prepareCommand("Alice", null);
+        assertCommandSuccess(command, expectedMessage, Arrays.asList(ALICE));
+    }
+
+    @Test
+    public void execute_oneTagKeyword_success() throws Exception {
+        String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 2);
+        FilterCommand command = prepareCommand(null, "friend");
+        assertCommandSuccess(command, expectedMessage, Arrays.asList(ALICE, BENSON));
+    }
+
+    @Test
+    public void execute_oneNameAndOneTagKeywords_success() throws Exception {
+        String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 1);
+        FilterCommand command = prepareCommand("Alice", "friend");
+        assertCommandSuccess(command, expectedMessage, Arrays.asList(ALICE));
+    }
+
+    @Test
+    public void execute_multipleTagKeywords_success() {
+        String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 1);
+        FilterCommand command = prepareCommand(null, "relative colleague");
+        assertCommandSuccess(command, expectedMessage, Arrays.asList(DANIEL));
+    }
+
+    @Test
+    public void execute_multipleNameKeywords_noPersonFound() {
+        String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 0);
+        FilterCommand command = prepareCommand("Kurz Elle Kunz", null);
+        assertCommandSuccess(command, expectedMessage, Collections.emptyList());
+    }
+
+    @Test
+    public void execute_existingFullNameAsKeywords_success() {
+        String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 1);
+        FilterCommand command = prepareCommand(ALICE.getName().fullName, null);
+        assertCommandSuccess(command, expectedMessage, Arrays.asList(ALICE));
+    }
+
+    /**
+     * Parses {@code userInput} into a {@code FilterCommand}.
+     */
+    private FilterCommand prepareCommand(String nameInputs, String tagInputs) {
+        List<String> nameKeywords = (nameInputs == null) ? Collections.emptyList()
+                : Arrays.asList(nameInputs.split("\\s+"));
+        List<String> tagKeywords = (tagInputs == null) ? Collections.emptyList()
+                : Arrays.asList(tagInputs.split("\\s+"));
+
+        FilterCommand command =
+                new FilterCommand(new NameAndTagsContainsKeywordsPredicate(nameKeywords, tagKeywords));
+        command.setData(model, new CommandHistory(), new UndoRedoStack());
+        return command;
+    }
+
+    /**
+     * Asserts that {@code command} is successfully executed, and<br>
+     *     - the command feedback is equal to {@code expectedMessage}<br>
+     *     - the {@code FilteredList<ReadOnlyPerson>} is equal to {@code expectedList}<br>
+     *     - the {@code AddressBook} in model remains the same after executing the {@code command}
+     */
+    private void assertCommandSuccess(FilterCommand command, String expectedMessage, List<ReadOnlyPerson> expectedList) {
+        AddressBook expectedAddressBook = new AddressBook(model.getAddressBook());
+        CommandResult commandResult = command.execute();
+
+        assertEquals(expectedMessage, commandResult.feedbackToUser);
+        assertEquals(expectedList, model.getFilteredPersonList());
+        assertEquals(expectedAddressBook, model.getAddressBook());
+    }
+}
+```
+###### \java\seedu\address\logic\commands\NicknameCommandTest.java
+``` java
+package seedu.address.logic.commands;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static seedu.address.logic.commands.CommandTestUtil.NICKNAME_AMY;
+import static seedu.address.logic.commands.CommandTestUtil.NICKNAME_BOB;
+import static seedu.address.logic.commands.CommandTestUtil.VALID_NICKNAME_AMY;
+import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
+import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
+import static seedu.address.logic.commands.CommandTestUtil.showFirstPersonOnly;
+import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
+import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
+import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
+import static seedu.address.testutil.TypicalReminders.getUniqueTypicalReminders;
+
+import org.junit.Test;
+
+import seedu.address.commons.core.Messages;
+import seedu.address.commons.core.index.Index;
+import seedu.address.logic.CommandHistory;
+import seedu.address.logic.UndoRedoStack;
+import seedu.address.model.AddressBook;
+import seedu.address.model.Model;
+import seedu.address.model.ModelManager;
+import seedu.address.model.UserPrefs;
+import seedu.address.model.person.Nickname;
+import seedu.address.model.person.Person;
+import seedu.address.model.person.ReadOnlyPerson;
+import seedu.address.testutil.PersonBuilder;
+
+public class NicknameCommandTest {
+
+    private Model model = new ModelManager(getTypicalAddressBook(), getUniqueTypicalReminders(), new UserPrefs());
+
+    @Test
+    public void execute_setNickname_success() throws Exception {
+        Person editedPerson = new PersonBuilder(model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased()))
+                .withNickname("Some nickname").build();
+
+        NicknameCommand nicknameCommand = prepareCommand(INDEX_FIRST_PERSON, editedPerson.getNickname().value);
+
+        String expectedMessage = String.format(NicknameCommand.MESSAGE_SET_NICKNAME_SUCCESS, editedPerson);
+
+        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()),
+                model.getUniqueReminderList(), new UserPrefs());
+        expectedModel.updatePerson(model.getFilteredPersonList().get(0), editedPerson);
+
+        assertCommandSuccess(nicknameCommand, model, expectedMessage, expectedModel);
+    }
+
+    @Test
+    public void execute_removeNickname_success() throws Exception {
+        // intialize model with a person with a nickname
+        Person intializedPerson = new PersonBuilder(model.getFilteredPersonList()
+                .get(INDEX_FIRST_PERSON.getZeroBased())).withNickname(VALID_NICKNAME_AMY).build();
+        model.updatePerson(model.getFilteredPersonList().get(0), intializedPerson);
+
+        // building a person without a nickname
+        Person editedPerson = new PersonBuilder(model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased()))
+                .withNickname("").build();
+
+        NicknameCommand nicknameCommand = prepareCommand(INDEX_FIRST_PERSON, editedPerson.getNickname().value);
+
+        String expectedMessage = String.format(NicknameCommand.MESSAGE_REMOVE_NICKNAME_SUCCESS, editedPerson);
+
+        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()),
+                model.getUniqueReminderList(), new UserPrefs());
+        expectedModel.updatePerson(model.getFilteredPersonList().get(0), editedPerson);
+
+        assertCommandSuccess(nicknameCommand, model, expectedMessage, expectedModel);
+    }
+
+    @Test
+    public void execute_displayMessageUnchangedNickname_success() throws Exception {
+        Person editedPerson = new PersonBuilder(model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased()))
+                .withNickname("").build();
+
+        NicknameCommand nicknameCommand = prepareCommand(INDEX_FIRST_PERSON, editedPerson.getNickname().value);
+
+        String expectedMessage = String.format(NicknameCommand.MESSAGE_UNCHANGED_NICKNAME, editedPerson);
+
+        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()),
+                model.getUniqueReminderList(), new UserPrefs());
+        expectedModel.updatePerson(model.getFilteredPersonList().get(0), editedPerson);
+
+        assertCommandSuccess(nicknameCommand, model, expectedMessage, expectedModel);
+    }
+
+    @Test
+    public void execute_filteredList_success() throws Exception {
+        showFirstPersonOnly(model);
+
+        ReadOnlyPerson personInFilteredList = model.getFilteredPersonList().get(INDEX_FIRST_PERSON.getZeroBased());
+        Person editedPerson = new PersonBuilder(personInFilteredList).withNickname("Some nickname").build();
+        NicknameCommand nicknameCommand = prepareCommand(INDEX_FIRST_PERSON, editedPerson.getNickname().value);
+
+        String expectedMessage = String.format(NicknameCommand.MESSAGE_SET_NICKNAME_SUCCESS, editedPerson);
+
+        Model expectedModel = new ModelManager(new AddressBook(model.getAddressBook()),
+                model.getUniqueReminderList(), new UserPrefs());
+        expectedModel.updatePerson(model.getFilteredPersonList().get(0), editedPerson);
+
+        assertCommandSuccess(nicknameCommand, model, expectedMessage, expectedModel);
+    }
+
+    @Test
+    public void execute_invalidPersonIndexUnfilteredList_failure() throws Exception {
+        Index outOfBoundIndex = Index.fromOneBased(model.getFilteredPersonList().size() + 1);
+        NicknameCommand nicknameCommand = prepareCommand(outOfBoundIndex, VALID_NICKNAME_AMY);
+
+        assertCommandFailure(nicknameCommand, model, Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+    }
+
+    @Test
+    public void execute_invalidPersonIndexFilteredList_failure() throws Exception {
+        showFirstPersonOnly(model);
+        Index outOfBoundIndex = INDEX_SECOND_PERSON;
+        // ensures that outOfBoundIndex is still within bounds of address book list
+        assertTrue(outOfBoundIndex.getZeroBased() < model.getAddressBook().getPersonList().size());
+
+        NicknameCommand nicknameCommand = prepareCommand(outOfBoundIndex, VALID_NICKNAME_AMY);
+
+        assertCommandFailure(nicknameCommand, model, Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+    }
+
+    @Test
+    public void equals() {
+        final NicknameCommand standardCommand = new NicknameCommand(INDEX_FIRST_PERSON, NICKNAME_AMY);
+        final NicknameCommand commandWithSameValues = new NicknameCommand(INDEX_FIRST_PERSON, NICKNAME_AMY);
+        final NicknameCommand commandWithDifferentIndex = new NicknameCommand(INDEX_SECOND_PERSON, NICKNAME_AMY);
+        final NicknameCommand commandWithDifferentNickname = new NicknameCommand(INDEX_FIRST_PERSON, NICKNAME_BOB);
+        final NicknameCommand commandWithDifferentValues = new NicknameCommand(INDEX_SECOND_PERSON, NICKNAME_BOB);
+
+        // same object -> Returns true
+        assertTrue(standardCommand.equals(standardCommand));
+
+        // null -> returns false
+        assertFalse(standardCommand.equals(null));
+
+        // different types -> returns false
+        assertFalse(standardCommand.equals(new ClearCommand()));
+
+        // different object, same type with same values -> return true
+        assertTrue(standardCommand.equals(commandWithSameValues));
+
+        // same type but different index -> returns false
+        assertFalse(standardCommand.equals(commandWithDifferentIndex));
+
+        // same type but different nickname -> returns false
+        assertFalse(standardCommand.equals(commandWithDifferentNickname));
+
+        // same type but different index and nickname -> returns false
+        assertFalse(standardCommand.equals(commandWithDifferentValues));
+    }
+
+    /**
+     * Returns an {@code NicknameCommand} with parameters {@code index} and {@code remark}
+     */
+    private NicknameCommand prepareCommand(Index index, String nickname) {
+        NicknameCommand nicknameCommand = new NicknameCommand(index, new Nickname(nickname));
+        nicknameCommand.setData(model, new CommandHistory(), new UndoRedoStack());
+        return nicknameCommand;
+    }
+}
+```
+###### \java\seedu\address\logic\commands\ThemeCommandTest.java
+``` java
+package seedu.address.logic.commands;
+
+import static junit.framework.TestCase.assertFalse;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import org.junit.Test;
+
+import guitests.AddressBookGuiTest;
+import seedu.address.logic.parser.Theme;
+import seedu.address.logic.parser.ThemeNames;
+
+public class ThemeCommandTest extends AddressBookGuiTest {
+
+    @Test
+    public void execute_setTheme_success() throws Exception {
+        Theme standardTheme = new Theme(ThemeNames.THEME_SKY, ThemeNames.THEME_SKY_CSS);
+        ThemeCommand themeCommand = new ThemeCommand(standardTheme);
+
+        String expectedList = "[view/" + ThemeNames.THEME_SKY_CSS + ", view/Extensions.css]";
+        String expectedMessage = String.format(ThemeCommand.MESSAGE_SET_THEME_SUCCESS, ThemeNames.THEME_SKY);
+        CommandResult result = themeCommand.execute();
+
+        assertEquals(result.feedbackToUser, expectedMessage);
+        assertEquals(expectedList, stage.getScene().getStylesheets().toString());
+    }
+
+    @Test
+    public void equals() {
+        Theme standardTheme = new Theme(ThemeNames.THEME_DARK, ThemeNames.THEME_DARK_CSS);
+        Theme differentTheme = new Theme(ThemeNames.THEME_SKY, ThemeNames.THEME_SKY_CSS);
+        ThemeCommand standardCommand = new ThemeCommand(standardTheme);
+        ThemeCommand commandWithSameTheme = new ThemeCommand(standardTheme);
+        ThemeCommand commandWithDifferentTheme = new ThemeCommand(differentTheme);
+
+        // Same object -> returns true
+        assertTrue(standardCommand.equals(standardCommand));
+
+        // Null -> returns false
+        assertFalse(standardCommand.equals(null));
+
+        // Different types -> returns false
+        assertFalse(standardCommand.equals(new ClearCommand()));
+
+        // Different object, but same values -> returns true
+        assertTrue(standardCommand.equals(commandWithSameTheme));
+
+        // Different object and different values -> returns false
+        assertFalse(standardCommand.equals(commandWithDifferentTheme));
+    }
+}
+```
 ###### \java\seedu\address\logic\parser\AddressBookParserTest.java
 ``` java
     @Test

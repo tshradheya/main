@@ -131,11 +131,13 @@ public class AddressBookParser {
         case ToggleCommand.COMMAND_WORD:
             return new ToggleCommand();
 
+        //@@author chuaweiwen
         case NicknameCommand.COMMAND_WORD:
             return new NicknameCommandParser().parse(arguments);
 
         case ThemeCommand.COMMAND_WORD:
             return new ThemeCommandParser().parse(arguments);
+        //@@author
 
         case ExportCommand.COMMAND_WORD:
             return new ExportCommandParser().parse(arguments);
@@ -143,8 +145,10 @@ public class AddressBookParser {
         case DisplayPictureCommand.COMMAND_WORD:
             return new DisplayPictureCommandParser().parse(arguments);
 
+        //@@author chuaweiwen
         case FilterCommand.COMMAND_WORD:
             return new FilterCommandParser().parse(arguments);
+        //@@author
 
         default:
             throw new ParseException(MESSAGE_UNKNOWN_COMMAND);

@@ -1,3 +1,4 @@
+//@@author chuaweiwen
 package seedu.address.logic.commands;
 
 import seedu.address.model.person.NameAndTagsContainsKeywordsPredicate;
@@ -35,3 +36,4 @@ public class FilterCommand extends Command {
                 && this.predicate.equals(((FilterCommand) other).predicate)); // state check
     }
 }
+//@@author

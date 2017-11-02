@@ -270,6 +270,7 @@ public class AddressBookParserTest {
         assertTrue(parser.parseCommand(ListCommand.COMMAND_WORD + " 3") instanceof ListCommand);
     }
 
+    //@@author chuaweiwen
     @Test
     public void parseCommand_nickname() throws Exception {
         NicknameCommand command = (NicknameCommand) parser.parseCommand(
@@ -285,6 +286,7 @@ public class AddressBookParserTest {
         Theme theme = new Theme(ThemeNames.THEME_DARK, ThemeNames.THEME_DARK_CSS);
         assertEquals(new ThemeCommand(theme), command);
     }
+    //@@author
 
     @Test
     public void parseCommand_displayPicture() throws  Exception {
@@ -324,6 +326,7 @@ public class AddressBookParserTest {
         assertEquals(new LocationCommand(INDEX_FIRST_PERSON), command);
     }
 
+    //@@author chuaweiwen
     @Test
     public void parseCommand_filter() throws Exception {
         List<String> nameKeywords = Arrays.asList("foo", "bar", "baz");
@@ -332,6 +335,7 @@ public class AddressBookParserTest {
                 FilterCommand.COMMAND_WORD + " n/foo bar baz t/friends");
         assertEquals(new FilterCommand(new NameAndTagsContainsKeywordsPredicate(nameKeywords, tagKeywords)), command);
     }
+    //@@author
 
     @Test
     public void parseCommand_redoCommandWord_returnsRedoCommand() throws Exception {

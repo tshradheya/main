@@ -7,10 +7,7 @@ import static junit.framework.TestCase.assertEquals;
 import static seedu.address.commons.core.Messages.MESSAGE_PERSONS_LISTED_OVERVIEW;
 import static seedu.address.testutil.TypicalPersons.ALICE;
 import static seedu.address.testutil.TypicalPersons.BENSON;
-import static seedu.address.testutil.TypicalPersons.CARL;
 import static seedu.address.testutil.TypicalPersons.DANIEL;
-import static seedu.address.testutil.TypicalPersons.ELLE;
-import static seedu.address.testutil.TypicalPersons.FIONA;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 import static seedu.address.testutil.TypicalReminders.getUniqueTypicalReminders;
 
@@ -76,10 +73,17 @@ public class FilterCommandTest {
     }
 
     @Test
-    public void execute_multipleNameKeywords_multiplePersonsFound() {
-        String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 3);
+    public void execute_multipleNameKeywords_noPersonFound() {
+        String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 0);
         FilterCommand command = prepareCommand("Kurz Elle Kunz", null);
-        assertCommandSuccess(command, expectedMessage, Arrays.asList(CARL, ELLE, FIONA));
+        assertCommandSuccess(command, expectedMessage, Collections.emptyList());
+    }
+
+    @Test
+    public void execute_existingFullNameAsKeywords_success() {
+        String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 1);
+        FilterCommand command = prepareCommand(ALICE.getName().fullName, null);
+        assertCommandSuccess(command, expectedMessage, Arrays.asList(ALICE));
     }
 
     /**
@@ -390,7 +394,7 @@ public class FilterCommandParserTest {
     }
 
     @Test
-    public void parse_invalidArgs_returnsFilterCommand() throws Exception {
+    public void parse_invalidArgs_throwsParseException() throws Exception {
         // No name specified after name prefix -> fail
         assertParseFailure(parser, " n/", String.format(MESSAGE_INVALID_COMMAND_FORMAT,
                 FilterCommand.MESSAGE_USAGE));
@@ -451,6 +455,17 @@ public class FilterCommandParserTest {
         FilterCommand expectedFilterCommandWithTwoTags =
                 new FilterCommand(new NameAndTagsContainsKeywordsPredicate(nameKeywords, tagKeywords));
         assertParseSuccess(parser, " t/friends t/colleagues", expectedFilterCommandWithTwoTags);
+        assertParseSuccess(parser, " t/friends colleagues", expectedFilterCommandWithTwoTags);
+
+        tagKeywords.clear();
+
+        // with more than one name -> success
+        nameKeywords.add("Alice");
+        nameKeywords.add("Pauline");
+        FilterCommand expectedFilterCommandWithTwoNames =
+                new FilterCommand(new NameAndTagsContainsKeywordsPredicate(nameKeywords, tagKeywords));
+        assertParseSuccess(parser, " n/Alice n/Pauline", expectedFilterCommandWithTwoNames);
+        assertParseSuccess(parser, " n/Alice Pauline", expectedFilterCommandWithTwoNames);
     }
 
 }
@@ -549,6 +564,48 @@ public class ThemeCommandParserTest {
     }
 }
 ```
+###### \java\seedu\address\logic\parser\ThemeTest.java
+``` java
+package seedu.address.logic.parser;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import org.junit.Test;
+
+public class ThemeTest {
+
+    @Test
+    public void equals() {
+        Theme standardTheme = new Theme(ThemeNames.THEME_DARK, ThemeNames.THEME_DARK_CSS);
+        Theme sameTheme = new Theme(ThemeNames.THEME_DARK, ThemeNames.THEME_DARK_CSS);
+        Theme differentTheme = new Theme(ThemeNames.THEME_SKY, ThemeNames.THEME_SKY_CSS);
+        Theme themeWithDifferentName = new Theme(ThemeNames.THEME_SKY, ThemeNames.THEME_DARK_CSS);
+        Theme themeWithDifferentCss = new Theme(ThemeNames.THEME_DARK, ThemeNames.THEME_SKY_CSS);
+
+        // same object -> returns true
+        assertTrue(standardTheme.equals(standardTheme));
+
+        // null -> returns false
+        assertFalse(standardTheme == null);
+
+        // different type -> returns false
+        assertFalse(standardTheme.equals("String"));
+
+        // different theme -> returns false
+        assertFalse(standardTheme.equals(differentTheme));
+
+        // same themes -> returns true
+        assertTrue(standardTheme.equals(sameTheme));
+
+        // same css but different names -> returns false
+        assertFalse(standardTheme.equals(themeWithDifferentName));
+
+        // same theme name but different css -> returns false
+        assertFalse(standardTheme.equals(themeWithDifferentCss));
+    }
+}
+```
 ###### \java\seedu\address\model\person\NameAndTagsContainsKeywordsPredicateTest.java
 ``` java
 package seedu.address.model.person;
@@ -630,9 +687,13 @@ public class NameAndTagsContainsKeywordsPredicateTest {
         predicate = new NameAndTagsContainsKeywordsPredicate(Arrays.asList("Alice"), Arrays.asList("family"));
         assertTrue(predicate.test(new PersonBuilder().withNameAndTags("Alice Bob", "family").build()));
 
-        // Only one matching name
-        predicate = new NameAndTagsContainsKeywordsPredicate(Arrays.asList("Bob", "Carol"), new ArrayList<>());
-        assertTrue(predicate.test(new PersonBuilder().withName("Alice Carol").build()));
+        // Multiple names in different order
+        predicate = new NameAndTagsContainsKeywordsPredicate(Arrays.asList("Alice", "Bob"), new ArrayList<>());
+        assertTrue(predicate.test(new PersonBuilder().withName("Bob Alice").build()));
+
+        // Multiple tags in different order
+        predicate = new NameAndTagsContainsKeywordsPredicate(new ArrayList<>(), Arrays.asList("family", "friends"));
+        assertTrue(predicate.test(new PersonBuilder().withTags("friends", "family").build()));
 
         // Mixed-case name
         predicate = new NameAndTagsContainsKeywordsPredicate(Arrays.asList("aLIce", "bOB"), new ArrayList<>());
@@ -640,6 +701,14 @@ public class NameAndTagsContainsKeywordsPredicateTest {
 
         // Mixed-case tag
         predicate = new NameAndTagsContainsKeywordsPredicate(new ArrayList<>(), Arrays.asList("fRiEnDs"));
+        assertTrue(predicate.test(new PersonBuilder().withTags("friends").build()));
+
+        // Repeated names
+        predicate = new NameAndTagsContainsKeywordsPredicate(Arrays.asList("Alice", "Alice"), new ArrayList<>());
+        assertTrue(predicate.test(new PersonBuilder().withName("Alice").build()));
+
+        // Repeated tags
+        predicate = new NameAndTagsContainsKeywordsPredicate(new ArrayList<>(), Arrays.asList("friends", "friends"));
         assertTrue(predicate.test(new PersonBuilder().withTags("friends").build()));
     }
 
@@ -653,6 +722,10 @@ public class NameAndTagsContainsKeywordsPredicateTest {
         // Non-matching tags
         predicate = new NameAndTagsContainsKeywordsPredicate(new ArrayList<>(), Arrays.asList("family"));
         assertFalse(predicate.test(new PersonBuilder().withTags("friends", "colleagues").build()));
+
+        // Only one matching name
+        predicate = new NameAndTagsContainsKeywordsPredicate(Arrays.asList("Bob", "Carol"), new ArrayList<>());
+        assertFalse(predicate.test(new PersonBuilder().withName("Alice Carol").build()));
 
         // Only one matching tag
         predicate = new NameAndTagsContainsKeywordsPredicate(

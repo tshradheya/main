@@ -56,11 +56,6 @@ public class FilterCommandParser implements Parser<FilterCommand> {
             tagsKeywordsList = Arrays.asList(getKeywordsFromList(unprocessedTags, regex));
         }
 
-        // Throws an error if both name and tags are empty.
-        if (tagsKeywordsList.isEmpty() && nameKeywordsList.isEmpty()) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FilterCommand.MESSAGE_USAGE));
-        }
-
         return new FilterCommand(new NameAndTagsContainsKeywordsPredicate(nameKeywordsList, tagsKeywordsList));
     }
 
@@ -68,25 +63,10 @@ public class FilterCommandParser implements Parser<FilterCommand> {
         return Stream.of(prefixes).anyMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
     }
 
-    /**
-     * Parses {@code Collection<String> tags} into a {@code Set<Tag>} if {@code tags} is non-empty.
-     * If {@code tags} contain only one element which is an empty string, it will be parsed into a
-     * {@code Set<Tag>} containing zero tags.
-     */
-    private Optional<Set<Tag>> parseTagsForEdit(Collection<String> tags) throws IllegalValueException {
-        assert tags != null;
-
-        if (tags.isEmpty()) {
-            return Optional.empty();
-        }
-        Collection<String> tagSet = tags.size() == 1 && tags.contains("") ? Collections.emptySet() : tags;
-        return Optional.of(ParserUtil.parseTags(tagSet));
-    }
-
     private String[] getKeywordsFromList(List<String> list, String regex) throws ParseException {
         String keywords = "";
         for (String string : list) {
-            // name cannot be empty
+            // string cannot be empty
             if (string.length() == 0) {
                 throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FilterCommand.MESSAGE_USAGE));
             }

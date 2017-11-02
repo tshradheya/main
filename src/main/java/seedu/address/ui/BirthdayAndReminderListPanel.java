@@ -18,6 +18,9 @@ import seedu.address.model.reminders.Reminder;
  */
 public class BirthdayAndReminderListPanel extends UiPart<Region> {
     private static final String FXML = "BirthdayAndReminderListPanel.fxml";
+    private static final String REMINDER_TODAY_STYLE = "nightThemeReminderToday";
+    private static final String REMINDER_THREE_DAYS_STYLE = "nightThemeReminderThreeDays";
+    private static final String REMINDER_REST_STYLE = "nightThemeReminderRest";
     private final Logger logger = LogsCenter.getLogger(PersonListPanel.class);
 
     @FXML
@@ -77,6 +80,13 @@ public class BirthdayAndReminderListPanel extends UiPart<Region> {
                 setGraphic(null);
                 setText(null);
             } else {
+                if (reminder.isEventToday()) {
+                    this.getStyleClass().add(REMINDER_TODAY_STYLE);
+                } else if (reminder.isEventWithinThreeDays()) {
+                    this.getStyleClass().add(REMINDER_THREE_DAYS_STYLE);
+                } else if (!reminder.hasEventPast()) {
+                    this.getStyleClass().add(REMINDER_REST_STYLE);
+                }
                 setGraphic(reminder.getRoot());
             }
         }

@@ -34,6 +34,19 @@ public class ReminderCard extends UiPart<Region> {
         bindListeners(reminder);
     }
 
+
+    public boolean isEventToday() {
+        return source.isEventToday();
+    }
+
+    public boolean isEventWithinThreeDays() {
+        return source.isEventWithinThreeDays();
+    }
+
+    public boolean hasEventPast() {
+        return source.hasEventPast();
+    }
+
     /**
      * Binds the individual UI elements to observe their respective {@code Reminder} properties
      * so that they will be notified of any changes.
@@ -44,6 +57,7 @@ public class ReminderCard extends UiPart<Region> {
         time.textProperty().bind(Bindings.convert(source.timeProperty()));
         status.textProperty().bind(Bindings.convert(source.statusProperty()));
     }
+
 
     @Override
     public boolean equals(Object other) {

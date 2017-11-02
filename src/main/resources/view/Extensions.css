@@ -3,9 +3,21 @@
     -fx-text-fill: #d06651 !important; /* The error class should always override the default text-fill style */
 }
 
+.nightThemeReminderToday {
+    -fx-background-color: derive(#dc143c, -30%) !important;
+}
+
+.nightThemeReminderThreeDays {
+    -fx-background-color: derive(#ff8c00, 0%) !important;
+}
+
+.nightThemeReminderRest {
+    -fx-background-color: derive(#006400, 0%) !important;
+}
+
 .list-cell:empty {
     /* Empty cells will not have alternating colours */
-    -fx-background: #383838;
+    -fx-background: derive(#383838, -40%);
 }
 
 .tag-selector {

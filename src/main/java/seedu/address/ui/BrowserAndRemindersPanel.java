@@ -137,6 +137,7 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
             break;
         case REMINDERS:
             browser.toFront();
+            System.out.println("blah");
             currentlyInFront = Node.BROWSER;
             raise(new TurnLabelsOffEvent());
             break;

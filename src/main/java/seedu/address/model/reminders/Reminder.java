@@ -79,6 +79,18 @@ public class Reminder {
         return LocalDateTime.of(date.get().toLocalDate(), time.get().toLocalTime());
     }
 
+    public boolean hasEventPast() {
+        return status.get().hasEventPast();
+    }
+
+    public boolean isEventToday() {
+        return status.get().isEventToday();
+    }
+
+    public boolean isEventWithinThreeDays() {
+        return status.get().isEventWithinThreeDays();
+    }
+
     public ObjectProperty<Status> statusProperty() {
         return status;
     }

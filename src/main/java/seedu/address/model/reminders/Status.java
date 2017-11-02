@@ -18,8 +18,8 @@ public class Status {
     private final String STATUS_TODAY_MESSAGE = "Event happening today!";
     private final String STATUS_OVERDUE = "Event has past.";
 
-    private final Date dateOfReminder;
-    private final Time timeOfReminder;
+    private final LocalDate dateOfReminder;
+    private final LocalTime timeOfReminder;
 
     private String status;
 
@@ -27,8 +27,8 @@ public class Status {
      * Initialize the status for this reminder.
      */
     public Status (Date dateOfReminder, Time timeOfReminder) {
-        this.dateOfReminder = dateOfReminder;
-        this.timeOfReminder = timeOfReminder;
+        this.dateOfReminder = dateOfReminder.toLocalDate();
+        this.timeOfReminder = timeOfReminder.toLocalTime();
         initStatus();
     }
 
@@ -36,23 +36,21 @@ public class Status {
      * Carries out the actual initializing of the status.
      */
     private void initStatus() {
-        final LocalDate reminderDate = this.dateOfReminder.toLocalDate();
-        final LocalTime reminderTime = this.timeOfReminder.toLocalTime();
-        if (hasEventPast(reminderDate, reminderTime)) {
+        if (hasEventPast()) {
             status = STATUS_OVERDUE;
-        } else if (isEventToday(reminderDate, reminderTime)) {
+        } else if (isEventToday()) {
             status = STATUS_TODAY_MESSAGE;
         } else {
-            status = String.format(STATUS_FORMAT_MESSAGE, getDaysUntilEvent(reminderDate));
+            status = String.format(STATUS_FORMAT_MESSAGE, getDaysUntilEvent());
         }
     }
 
     /**
      * Returns true of the event has already past.
      */
-    private boolean hasEventPast(LocalDate reminderDate, LocalTime reminderTime) {
-        final long daysUntilEvent = getDaysUntilEvent(reminderDate);
-        final long minutesUntilEvent = getMinutesUntilEvent(reminderTime);
+    public boolean hasEventPast() {
+        final long daysUntilEvent = getDaysUntilEvent();
+        final long minutesUntilEvent = getMinutesUntilEvent();
         if (daysUntilEvent > 0) {
             return false;
         } else if (daysUntilEvent == 0) {
@@ -66,26 +64,38 @@ public class Status {
     /**
      * Returns true if the event is happening today (with respect to the date and time this object is created).
      */
-    private boolean isEventToday(LocalDate reminderDate, LocalTime reminderTime) {
-        final long daysUntilEvent = getDaysUntilEvent(reminderDate);
-        final long minutesUntilEvent = getMinutesUntilEvent(reminderTime);
+    public boolean isEventToday() {
+        final long daysUntilEvent = getDaysUntilEvent();
+        final long minutesUntilEvent = getMinutesUntilEvent();
 
         return daysUntilEvent == 0 && minutesUntilEvent >= 0;
+    }
+
+    public boolean isEventWithinThreeDays() {
+        final long daysUntilEvent = getDaysUntilEvent();
+        final long minutesUntilEvent = getMinutesUntilEvent();
+        if (daysUntilEvent < 0 || daysUntilEvent > 3) {
+            return false;
+        }
+        if (daysUntilEvent == 0 && minutesUntilEvent < 0) {
+            return false;
+        }
+        return true;
     }
 
     /**
      * Return the number of days left until {@code reminderDate} (with respect to the date this object is created).
      */
-    private long getDaysUntilEvent(LocalDate reminderDate) {
-        return currentDate.until(reminderDate, ChronoUnit.DAYS);
+    private long getDaysUntilEvent() {
+        return currentDate.until(dateOfReminder, ChronoUnit.DAYS);
     }
 
     /**
      * Return the difference in time between the current time and {@code reminderTime} in minutes
      * (with respect to the time this object is created).
      */
-    private long getMinutesUntilEvent(LocalTime reminderTime) {
-        return currentTime.until(reminderTime, ChronoUnit.MINUTES);
+    private long getMinutesUntilEvent() {
+        return currentTime.until(timeOfReminder, ChronoUnit.MINUTES);
     }
 
     @Override

@@ -7,10 +7,11 @@ import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Circle;
 import seedu.address.model.person.ReadOnlyPerson;
 
 
@@ -49,7 +50,7 @@ public class PersonCard extends UiPart<Region> {
     @FXML
     private FlowPane tags;
     @FXML
-    private ImageView displayPicture;
+    private Circle displayPicture;
 
 
     public PersonCard(ReadOnlyPerson person, int displayedIndex) {
@@ -97,39 +98,13 @@ public class PersonCard extends UiPart<Region> {
             Image image = new Image("file:" + "pictures/" + person.getDisplayPicture().getPath() + ".png",
                     IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
 
-            centerImage();
-            displayPicture.setImage(image);
+            displayPicture.setFill(new ImagePattern(image));
 
-        }
-    }
+        } else {
+            Image image = new Image("./images/defaulddp.png",
+                    IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
 
-
-
-    /**
-     * Centre the image in ImageView
-     */
-    public void centerImage() {
-        Image img = displayPicture.getImage();
-        if (img != null) {
-            double w;
-            double h;
-
-            double ratioX = displayPicture.getFitWidth() / img.getWidth();
-            double ratioY = displayPicture.getFitHeight() / img.getHeight();
-
-            double reducCoeff;
-            if (ratioX >= ratioY) {
-                reducCoeff = ratioY;
-            } else {
-                reducCoeff = ratioX;
-            }
-
-            w = img.getWidth() * reducCoeff;
-            h = img.getHeight() * reducCoeff;
-
-            displayPicture.setX((displayPicture.getFitWidth() - w) / 2);
-            displayPicture.setY((displayPicture.getFitHeight() - h) / 2);
-
+            displayPicture.setFill(new ImagePattern(image));
         }
     }
 

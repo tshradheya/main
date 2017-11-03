@@ -21,6 +21,7 @@ import guitests.guihandles.BrowserAndRemindersPanelHandle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import seedu.address.MainApp;
+import seedu.address.commons.events.ui.LoadPersonWebpageEvent;
 import seedu.address.commons.events.ui.PersonPanelSelectionChangedEvent;
 import seedu.address.commons.events.ui.ShowLocationEvent;
 import seedu.address.model.person.ReadOnlyPerson;
@@ -55,7 +56,7 @@ public class BrowserAndRemindersPanelTest extends GuiUnitTest {
         assertEquals(expectedDefaultPageUrl, browserAndRemindersPanelHandle.getLoadedUrl());
 
         // associated web page of a person
-        postNow(selectionChangedEventStub);
+        postNow(new LoadPersonWebpageEvent(ALICE));
         URL expectedPersonUrl = new URL(GOOGLE_SEARCH_URL_PREFIX
                 + ALICE.getName().fullName.replaceAll(" ", "+") + GOOGLE_SEARCH_URL_SUFFIX);
 

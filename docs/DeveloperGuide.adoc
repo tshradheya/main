@@ -101,7 +101,7 @@ This section will explain the design aspects of iContacts.
 image::Architecture.png[width="600"]
 _Figure 1 : Architecture Diagram_
 
-The *_Architecture Diagram_* given above explains the high-level design of the application.
+The *_Architecture Diagram_* given above explains the high-level design of iContacts.
 
 [TIP]
 The `.pptx` files used to create diagrams in this document can be found in the link:{repoURL}/docs/diagrams/[diagrams] folder. To update a diagram, modify the diagram in the pptx file, select the objects of the diagram, and choose `Save as picture`.
@@ -116,24 +116,24 @@ Below is a quick overview of each component:
 * link:#common-classes[*`Commons`*] represents a collection of classes used by multiple other components. Two of those classes play important roles at the architecture level.
 
 ** `EventsCenter` : This class (written using https://github.com/google/guava/wiki/EventBusExplained[Google's Event Bus library]) is used by components to communicate with other components using events (i.e. a form of _Event Driven_ design)
-** `LogsCenter` : Used by many classes to write log messages to the App's log file.
+** `LogsCenter` : This class is used by many classes to write log messages to iContacts' log file.
 
-* The rest of the App consists of four components:
+* The rest of iContacts consists of four components:
 
-** link:#ui-component[*`UI`*] : The UI of the App.
-** link:#logic-component[*`Logic`*] : The command executor.
-** link:#model-component[*`Model`*] : Holds the data of the App in-memory.
-** link:#storage-component[*`Storage`*] : Reads data from, and writes data to, the hard disk.
+** link:#ui-component[*`UI`*] : This is the UI of iContacts.
+** link:#logic-component[*`Logic`*] : This is the command executor.
+** link:#model-component[*`Model`*] : This holds the data of the App in-memory.
+** link:#storage-component[*`Storage`*] : This reads data from, and writes data to, the hard disk.
 
-Each of the four components:
+Each of the four components
 
 *** defines its _API_ in an `interface` with the same name as the Component.
 *** exposes its functionality using a `{Component Name}Manager` class.
 
-For example, the `Logic` component (see the class diagram given below) defines it's API in the `Logic.java` interface and exposes its functionality using the `LogicManager.java` class.
+For example, the `Logic` component (see the class diagram given below) defines its API in the `Logic.java` interface and exposes its functionality using the `LogicManager.java` class.
 
 image::LogicClassDiagram.png[width="800"]
-_Figure 2 : Class Diagram of the Logic Component_
+_Figure 2 : Class Diagram of the Logic component_
 
 
 === Events-Driven nature of the design
@@ -152,33 +152,33 @@ image::SDforDeletePersonEventHandling.png[width="800"]
 _Figure 4 : Component interactions for `delete 1` command (part 2)_
 
 [NOTE]
-Note how the event is propagated through the `EventsCenter` to the `Storage` and `UI` without `Model` having to be coupled to either of them. This is an example of how this Event-Driven approach helps us reduce direct coupling between components.
+Note how the event is propagated through the `EventsCenter` to the `Storage` and `UI` without the `Model` having to be coupled to either of them. This is an example of how this Event-Driven approach helps us reduce direct coupling between components.
 
 === Components
 
-This section explains the four components used in the App.
+This section explains the `Ui`, `Logic`, `Model` and `Storage` component used in iContacts.
 
 ==== UI component
 
-UI component provides with the API of Graphical User Interface. The figure below shows the structure of the UI component.
+The `Ui` component provides with the API of Graphical User Interface. The figure below shows the structure of the `Ui` component.
 
 image::UiClassDiagram.png[width="800"]
 _Figure 5 : Structure of the UI component_
 
 *API* : link:{repoURL}/src/main/java/seedu/address/ui/Ui.java[`Ui.java`]
 
-The UI consists of a `MainWindow` that is made up of parts e.g.`CommandBox`, `ResultDisplay`, `PersonListPanel`, `StatusBarFooter`, `BrowserPanel` etc. All of these, including the `MainWindow`, inherit from the abstract `UiPart` class.
+The `Ui` consists of a `MainWindow` that is made up of parts e.g.`CommandBox`, `ResultDisplay`, `PersonListPanel`, `StatusBarFooter`, `BrowserPanel` etc. All of these, including the `MainWindow`, inherit from the abstract `UiPart` class.
 
-The `UI` component uses JavaFx UI framework. The layout of these UI parts are defined in matching `.fxml` files that are in the `src/main/resources/view` folder. For example, the layout of the link:{repoURL}/src/main/java/seedu/address/ui/MainWindow.java[`MainWindow`] is specified in link:{repoURL}/src/main/resources/view/MainWindow.fxml[`MainWindow.fxml`].
+The `Ui` component uses JavaFx UI framework. The layout of these `Ui` parts is defined in matching `.fxml` files that are in the `src/main/resources/view` folder. For example, the layout of the link:{repoURL}/src/main/java/seedu/address/ui/MainWindow.java[`MainWindow`] is specified in link:{repoURL}/src/main/resources/view/MainWindow.fxml[`MainWindow.fxml`].
 
-The `UI` component
+The `Ui` component
 
 * executes user commands using the `Logic` component.
-* binds itself to some data in the `Model` so that the UI can auto-update when data in the `Model` change.
-* responds to events raised from various parts of the App and updates the UI accordingly.
+* binds itself to some data in the `Model` so that the `Ui` can auto-update when data in the `Model` change.
+* responds to events raised from various parts of iContacts and updates the `Ui` accordingly.
 
 ==== Logic component
-Logic component deals with how each command and its parser would be executed in an event-driven design. The figures below show the structure of the Logic component.
+The `Logic` component deals with how each command and its parser would be executed in an event-driven design. The figures below shows the structure of the `Logic` component.
 
 image::LogicClassDiagram.png[width="800"]
 _Figure 6 : Structure of the Logic component_
@@ -189,18 +189,15 @@ _Figure 7 : Structure of Commands in the Logic component. This diagram shows fin
 *API* :
 link:{repoURL}/src/main/java/seedu/address/logic/Logic.java[`Logic.java`]
 
-*  `Logic` uses the `AddressBookParser` class to parse the user command.
-*  This results in a `Command` object which is executed by the `LogicManager`.
-*  The command execution can affect the `Model` (e.g. adding a person) and/or raise events.
-*  The result of the command execution is encapsulated as a `CommandResult` object which is passed back to the `Ui`.
+The `Logic` uses the `AddressBookParser` class to parse the user command. This results in a `Command` object which is executed by the `LogicManager`. The command execution can affect the `Model` (e.g. adding a person) and/or raise events. The result of the command execution is encapsulated as a `CommandResult` object which is passed back to the `Ui`.
 
-Given below is the Sequence Diagram for interactions within the `Logic` component for the `execute("delete 1")` API call.
+The figure below shows the sequence diagram of interactions within the `Logic` component for the `execute("delete 1")` API call.
 
 image::DeletePersonSdForLogic.png[width="800"]
 _Figure 8 : Interactions inside the Logic component for the `delete 1` command_
 
 ==== Model component
-Model Component handles the contacts in address book and all it's stored details in data structures which provides API to create, read, update and delete the contacts in address book. The figure below shows the structure of Model component.
+The `Model` Component handles the contacts in address book and all its stored details in data structures which provides API to create, read, update and delete the contacts in the address book. The figure below shows the structure of the `Model` component.
 
 
 image::ModelClassDiagram.png[width="800"]
@@ -208,15 +205,15 @@ _Figure 9 : Structure of the Model component_
 
 *API* : link:{repoURL}/src/main/java/seedu/address/model/Model.java[`Model.java`]
 
-The `Model`
+The `Model` component
 
 * stores a `UserPref` object that represents the user's preferences.
-* stores the Address Book data.
+* stores the address book data.
 * exposes an unmodifiable `ObservableList<ReadOnlyPerson>` that can be 'observed' e.g. the UI can be bound to this list so that the UI automatically updates when the data in the list change.
 * does not depend on any of the other three components.
 
 ==== Storage component
-The storage component handles the storage of all data of address book in the local device. The figure below shows the structure of Storage component.
+The `Storage` component handles the storage of all data of address book in the local device. The figure below shows the structure of Storage component.
 
 image::StorageClassDiagram.png[width="800"]
 _Figure 10 : Structure of the Storage component_
@@ -239,7 +236,7 @@ This section describes some noteworthy details on how certain features are imple
 // tag::filter[]
 === Filter mechanism
 
-The `FilterCommand` uses `NameAndTagsContainsKeywordsPredicate` to filter the persons with matching name and/or tags. It accepts `List<String> nameKeywords` and `List<String> tagKeywords` as parameters that are parsed by `FilterCommandParser`. Below is the constructor for the class:
+The `FilterCommand` uses the `NameAndTagsContainsKeywordsPredicate` to filter the persons with matching name and/or tags. It accepts the `List<String> nameKeywords` and `List<String> tagKeywords` as parameters that are parsed by the `FilterCommandParser`. The code snippet below is the constructor for the class:
 
 [source,java]
 ----
@@ -251,9 +248,9 @@ public class NameAndTagsContainsKeywordsPredicate {
 }
 ----
 
-The method `test(ReadOnlyPerson person)` iterates through `nameKeywords` and `tagKeywords` to find a match of every `person` from the address book.
+The method `test(ReadOnlyPerson person)` iterates through the `nameKeywords` and the `tagKeywords` to find a match of every `person` from the address book.
 
-Below is an extract of the method `test(ReadOnlyPerson person)`. The tags of each person are retrieved by the `getTags()` method. This method iterates through `tagKeywords` and counts the number of matches against `tagsOfPerson`. If the count is equal to the size of `tagKeywords`, this means all the keywords in `tagKeywords` matches. The `tagFound` will then be set to `true`.
+Below is an extract of the method `test(ReadOnlyPerson person)`. The tags of each person are retrieved by the `getTags()` method. This method iterates through the `tagKeywords` and counts the number of matches against the `tagsOfPerson`. If the count is equal to the size of the `tagKeywords`, this means all the keywords in the `tagKeywords` matches. The `tagFound` will then be set to `true`.
 
 [source,java]
 ----
@@ -275,7 +272,7 @@ public class NameAndTagsContainsKeywordsPredicate {
 }
 ----
 
-Below is an extract of the same method for name. Each keywords in `nameKeywords` will be compared against the name list retrieved from the person `getName()` method. If all matches, the `nameFound` will be set to `true`.
+Below is an extract of the same method for name. Each keywords in the `nameKeywords` will be compared against the name list retrieved from the `getName()` method of the `Person` class. If all matches, the `nameFound` will be set to `true`.
 
 [source,java]
 ----
@@ -284,14 +281,14 @@ public class NameAndTagsContainsKeywordsPredicate {
     public boolean test(ReadOnlyPerson person) {
         boolean nameFound = false;
             if (!nameKeywords.isEmpty()) {
-                nameFound = nameKeywords.stream().anyMatch(nameKeywords -> StringUtil
+                nameFound = nameKeywords.stream().allMatch(nameKeywords -> StringUtil
                 .containsWordIgnoreCase(person.getName().fullName, nameKeywords));
         }
     }
 }
 ----
 
-For the `FilterCommand` to work properly, either `nameKeywords` or `tagKeywords` must be non-empty.
+For the `FilterCommand` to work properly, either the `nameKeywords` or the `tagKeywords` must be non-empty.
 
 // end::filter[]
 
@@ -526,7 +523,7 @@ _Figure 18 : Activity diagram for UndoRedoStack_
 **Cons:** Requires dealing with commands that have already been undone: We must remember to skip these commands. Violates Single Responsibility Principle and Separation of Concerns as `HistoryManager` now needs to do two different things. +
 // end::undoredo[]
 
-=== Display Picture Mechanism
+=== Display Picture mechanism
 
 The Display Picture mechanism is done by using ImageView in JavaFX which is a part of the UI Component. It is an undoable command that modifies the display picture for the specified contact. The command will inherit from `UndoableCommand`.
 

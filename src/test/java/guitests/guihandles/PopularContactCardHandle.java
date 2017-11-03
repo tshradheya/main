@@ -2,8 +2,8 @@ package guitests.guihandles;
 
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Circle;
 
 /**
  * Provides a handle to a person card in the Popular Contact list panel.
@@ -16,7 +16,7 @@ public class PopularContactCardHandle extends NodeHandle<Node> {
 
     private final Label idLabel;
     private final Label nameLabel;
-    private final ImageView displayPictureImageView;
+    private final Circle displayPictureImageView;
 
     public PopularContactCardHandle(Node cardNode) {
         super(cardNode);
@@ -35,7 +35,7 @@ public class PopularContactCardHandle extends NodeHandle<Node> {
         return nameLabel.getText();
     }
 
-    public Image getDisplayPictureImageView() {
-        return displayPictureImageView.getImage();
+    public Paint getDisplayPictureImageView() {
+        return displayPictureImageView.getFill();
     }
 }

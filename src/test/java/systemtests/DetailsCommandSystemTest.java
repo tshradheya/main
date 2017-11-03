@@ -17,7 +17,7 @@ import seedu.address.logic.commands.SelectCommand;
 import seedu.address.logic.commands.UndoCommand;
 import seedu.address.model.Model;
 
-public class SelectCommandSystemTest extends AddressBookSystemTest {
+public class DetailsCommandSystemTest extends AddressBookSystemTest {
     @Test
     public void select() {
         /* Case: select the first card in the person list, command with leading spaces and trailing spaces
@@ -108,9 +108,16 @@ public class SelectCommandSystemTest extends AddressBookSystemTest {
         Model expectedModel = getModel();
         String expectedResultMessage = String.format(
                 MESSAGE_SELECT_PERSON_SUCCESS, expectedSelectedCardIndex.getOneBased());
+        int preExecutionSelectedCardIndex = getPersonListPanel().getSelectedCardIndex();
 
         executeCommand(command);
         assertApplicationDisplaysExpected("", expectedResultMessage, expectedModel);
+
+        if (preExecutionSelectedCardIndex == expectedSelectedCardIndex.getZeroBased()) {
+            assertSelectedCardUnchanged();
+        } else {
+            assertSelectedCardChanged(expectedSelectedCardIndex);
+        }
 
         assertCommandBoxShowsDefaultStyle();
         assertStatusBarUnchangedExceptSyncStatus();

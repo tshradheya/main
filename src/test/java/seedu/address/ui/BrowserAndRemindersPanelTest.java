@@ -38,7 +38,7 @@ public class BrowserAndRemindersPanelTest extends GuiUnitTest {
 
     @Before
     public void setUp() {
-        selectionChangedEventStub = new PersonPanelSelectionChangedEvent(new PersonCard(ALICE, 0));
+        selectionChangedEventStub = new PersonPanelSelectionChangedEvent(new PersonCard(ALICE, 0), ALICE);
         showLocationEventStub = new ShowLocationEvent(ALICE);
 
         guiRobot.interact(() -> browserAndRemindersPanel = new BrowserAndRemindersPanel(TYPICAL_PERSONS,

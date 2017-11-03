@@ -111,6 +111,7 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
             System.out.println("check");
         }
         detailsPanel.getChildren().add(personDetails.getRoot());
+
         remindersPanel.toFront();
     }
 

@@ -2,6 +2,9 @@ package seedu.address.model.person;
 
 import static java.util.Objects.requireNonNull;
 
+import java.time.DateTimeException;
+import java.time.LocalDate;
+
 import seedu.address.commons.exceptions.IllegalValueException;
 
 /**
@@ -19,22 +22,10 @@ public class Birthday {
             + "Example: 21/10/1995, 21-05-1996. 8.10.1987";
     public static final int EMPTY_BIRTHDAY_FIELD_MONTH = 0;
     public static final int EMPTY_BIRTHDAY_FIELD_DAY = 0;
-    private static final int[] MONTH_TO_DAY_MAPPING = {31, 28, 31, 30, 31, 30, 31, 31,
-        30, 31, 30, 31};
 
     private static final String EMPTY_STRING = "";
 
     private static final String BIRTHDAY_DASH_SEPARATOR = "-";
-
-    private static final int ZERO_BASED_ADJUSTMENT = 1;
-
-    private static final int SMALLEST_POSSIBLE_DAY = 1;
-
-    private static final int LEAP_YEAR_MONTH_FEBRUARY = 2;
-    private static final int LEAP_YEAR_DAY = 29;
-    private static final int LEAP_YEAR_REQUIREMENT_FIRST = 4;
-    private static final int LEAP_YEAR_REQUIREMENT_SECOND = 100;
-    private static final int LEAP_YEAR_REQUIREMENT_THIRD = 400;
 
     private static final int DATE_DAY_INDEX = 0;
     private static final int DATE_MONTH_INDEX = 1;
@@ -74,7 +65,7 @@ public class Birthday {
         if (value.isEmpty()) {
             return EMPTY_BIRTHDAY_FIELD_MONTH;
         }
-        String[] splitDate = value.split(BIRTHDAY_DASH_SEPARATOR);
+        String[] splitDate = getSplitDate(value);
         try {
             final int month = Integer.parseInt(splitDate[DATE_MONTH_INDEX]);
             return month;
@@ -91,9 +82,28 @@ public class Birthday {
         if (value.isEmpty()) {
             return EMPTY_BIRTHDAY_FIELD_DAY;
         }
-        String[] splitDate = value.split(BIRTHDAY_DASH_SEPARATOR);
+        String[] splitDate = getSplitDate(value);
         final int day = Integer.parseInt(splitDate[DATE_DAY_INDEX]);
         return day;
+    }
+
+    /**
+     * Returns true if the date for this Birthday object is the same
+     * as the date today (relative to the date the program was started up).
+     */
+    public boolean isBirthdayToday() {
+        if (value.isEmpty()) {
+            return false;
+        }
+        final String[] splitDate = getSplitDate(value);
+        final int year = Integer.parseInt(splitDate[DATE_YEAR_INDEX]);
+        final int month = Integer.parseInt(splitDate[DATE_MONTH_INDEX]);
+        final int day = Integer.parseInt(splitDate[DATE_DAY_INDEX]);
+
+        final LocalDate birthday = LocalDate.of(year, month, day);
+        final LocalDate currentDate = LocalDate.now();
+
+        return birthday.equals(currentDate);
     }
 
     /**
@@ -121,53 +131,16 @@ public class Birthday {
      * A date is valid if it exists.
      */
     private static boolean isValidDate(String[] splitDate) {
-        if (isValidLeapDay(splitDate)) {
-            return true;
-        }
+        final int year = Integer.parseInt(splitDate[DATE_YEAR_INDEX]);
+        final int month = Integer.parseInt(splitDate[DATE_MONTH_INDEX]);
+        final int day = Integer.parseInt(splitDate[DATE_DAY_INDEX]);
 
         try {
-            final int day = Integer.parseInt(splitDate[DATE_DAY_INDEX]);
-            final int month = Integer.parseInt(splitDate[DATE_MONTH_INDEX]);
-            final int dayUpperLimitForMonth = MONTH_TO_DAY_MAPPING[month - ZERO_BASED_ADJUSTMENT];
-            if (day < SMALLEST_POSSIBLE_DAY || day > dayUpperLimitForMonth) {
-                return false;
-            }
-        } catch (NumberFormatException nfe) {
-            throw new AssertionError("Not possible as birthday has passed through the regex");
+            LocalDate.of(year, month, day);
+        } catch (DateTimeException dte) {
+            return false;
         }
         return true;
-    }
-
-    /**
-     * Returns true if a given date is a valid leap day.
-     */
-    private static boolean isValidLeapDay(String[] splitDate) {
-        try {
-            final int day = Integer.parseInt(splitDate[DATE_DAY_INDEX]);
-            final int month = Integer.parseInt(splitDate[DATE_MONTH_INDEX]);
-            final int year = Integer.parseInt(splitDate[DATE_YEAR_INDEX]);
-            if (!isLeapYear(year) || day != LEAP_YEAR_DAY || month != LEAP_YEAR_MONTH_FEBRUARY) {
-                return false;
-            }
-        } catch (NumberFormatException nfe) {
-            throw new AssertionError("Not possible as birthday has passed through the regex");
-        }
-        return true;
-    }
-
-    /**
-     * Returns true if the year is a valid leap year.
-     * Algorithm to determine is a year is a valid leap year:
-     * https://support.microsoft.com/en-us/help/214019/method-to-determine-whether-a-year-is-a-leap-year
-     */
-    private static boolean isLeapYear(int year) {
-        if (year % LEAP_YEAR_REQUIREMENT_FIRST == 0 && year % LEAP_YEAR_REQUIREMENT_SECOND != 0) {
-            return true;
-        } else if (year % LEAP_YEAR_REQUIREMENT_FIRST == 0 && year % LEAP_YEAR_REQUIREMENT_SECOND == 0
-                && year % LEAP_YEAR_REQUIREMENT_THIRD == 0) {
-            return true;
-        }
-        return false;
     }
 
     /**

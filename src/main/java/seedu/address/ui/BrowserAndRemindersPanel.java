@@ -108,7 +108,7 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
                     new Email("tshradheya@gmail.com"), new Address("something"), new Birthday("15-10-1998"),
                     new Nickname(""), new DisplayPicture(""), new PopularityCounter(), new TreeSet<Tag>()));
         } catch (IllegalValueException ive) {
-            System.out.println("check");
+            throw new IllegalArgumentException("Wrong argument");
         }
         detailsPanel.getChildren().add(personDetails.getRoot());
 

@@ -165,12 +165,12 @@ public class DetailsPanel extends UiPart<Region> {
         }
 
         // instanceof handles nulls
-        if (!(other instanceof PersonCard)) {
+        if (!(other instanceof DetailsPanel)) {
             return false;
         }
 
         // state check
-        PersonCard card = (PersonCard) other;
-        return person.equals(card.person);
+        DetailsPanel panel = (DetailsPanel) other;
+        return person.equals(panel.person);
     }
 }

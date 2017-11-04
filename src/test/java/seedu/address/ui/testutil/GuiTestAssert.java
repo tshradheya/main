@@ -66,6 +66,21 @@ public class GuiTestAssert {
     /**
      * Asserts that {@code actualCard} displays the details of {@code expectedPerson}.
      */
+    public static void assertCardDisplaysPersonDetailsPanel(ReadOnlyPerson expectedPerson,
+                                                            DetailsPanelHandle actualCard) {
+        assertEquals(expectedPerson.getName().fullName, actualCard.getName());
+        assertEquals(expectedPerson.getPhone().value, actualCard.getPhone());
+        assertEquals(expectedPerson.getEmail().value, actualCard.getEmail());
+        assertEquals(expectedPerson.getNickname().value, actualCard.getNickname());
+        assertEquals(expectedPerson.getBirthday().value, actualCard.getBirthday());
+        assertEquals(expectedPerson.getTags().size(), actualCard.getTags().size());
+        assertEquals(expectedPerson.getTags().stream().map(tag -> tag.tagName).collect(Collectors.toList()),
+                actualCard.getTags());
+    }
+
+    /**
+     * Asserts that {@code actualCard} displays the details of {@code expectedPerson}.
+     */
     public static void assertCardDisplaysPopularPerson(ReadOnlyPerson expectedPerson,
                                                        PopularContactCardHandle actualCard) {
         assertEquals(expectedPerson.getName().fullName, actualCard.getName());

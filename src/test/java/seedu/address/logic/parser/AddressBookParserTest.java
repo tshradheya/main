@@ -19,6 +19,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_PATH;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_RANGE;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.address.testutil.TypicalPath.PATH_EXPORT;
+import static seedu.address.testutil.TypicalPath.PATH_IMPORT;
 import static seedu.address.testutil.TypicalRange.RANGE_ALL;
 
 import java.util.Arrays;
@@ -46,6 +47,7 @@ import seedu.address.logic.commands.FilterCommand;
 import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.HistoryCommand;
+import seedu.address.logic.commands.ImportCommand;
 import seedu.address.logic.commands.ListCommand;
 import seedu.address.logic.commands.LocationCommand;
 import seedu.address.logic.commands.NicknameCommand;
@@ -380,5 +382,12 @@ public class AddressBookParserTest {
         ExportCommand command = (ExportCommand) parser.parseCommand(ExportCommand.COMMAND_WORD + " "
             + PREFIX_RANGE + RANGE_ALL + " " + PREFIX_PATH + PATH_EXPORT);
         assertEquals(new ExportCommand(RANGE_ALL, PATH_EXPORT), command);
+    }
+
+    @Test
+    public void parseCommand_import() throws Exception {
+        ImportCommand command = (ImportCommand) parser.parseCommand(ImportCommand.COMMAND_WORD + " "
+                + PREFIX_PATH + PATH_IMPORT);
+        assertEquals(new ImportCommand(PATH_IMPORT), command);
     }
 }

@@ -5,5 +5,7 @@ package seedu.address.testutil;
  */
 public class TypicalPath {
     public static final String PATH_EXPORT = "C:\\Exports\\test";
+    public static final String PATH_IMPORT = "C:\\Exports\\test.xml";
+    public static final String PATH_IMPORT_2 = "C:\\Exports\\test2.xml";
     public static final String PATH_CONTACT = "C:\\Contacts\\test";
 }

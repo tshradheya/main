@@ -121,7 +121,7 @@
 }
 
 .list-cell:empty {
-    /* Empty cells will not have alternating colours */
+    /* Empty cells will not have alternating colors */
     -fx-background: #383838;
 }
 

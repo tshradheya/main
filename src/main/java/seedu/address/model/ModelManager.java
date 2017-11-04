@@ -25,7 +25,7 @@ import seedu.address.commons.events.ui.ShowLocationEvent;
 import seedu.address.model.email.Body;
 import seedu.address.model.email.Service;
 import seedu.address.model.email.Subject;
-import seedu.address.model.person.BirthdayInCurrentMonthPredicate;
+import seedu.address.model.person.UpcomingBirthdayInCurrentMonthPredicate;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.ReadOnlyPerson;
@@ -68,7 +68,7 @@ public class ModelManager extends ComponentManager implements Model {
         this.reminderList = new UniqueReminderList(reminders);
         filteredPersons = new FilteredList<>(this.addressBook.getPersonList());
         filteredPersonsForBirthdayListPanel = new FilteredList<>(this.addressBook.getPersonList());
-        filteredPersonsForBirthdayListPanel.setPredicate(new BirthdayInCurrentMonthPredicate());
+        filteredPersonsForBirthdayListPanel.setPredicate(new UpcomingBirthdayInCurrentMonthPredicate());
         filteredPersonsForEmail = new FilteredList<>(this.addressBook.getPersonList());
         listOfPersonsForPopularContacts = new ArrayList<>(this.addressBook.getPersonList());
         updatePopularContactList();

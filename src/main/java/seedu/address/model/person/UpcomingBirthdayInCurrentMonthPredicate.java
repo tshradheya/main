@@ -30,8 +30,8 @@ public class UpcomingBirthdayInCurrentMonthPredicate implements Predicate<ReadOn
      * initialized with {@code monthToFilter} and {@code dayToFilter}.
      */
     public static UpcomingBirthdayInCurrentMonthPredicate getTestInstance(int monthToFilter, int dayToFilter) {
-        UpcomingBirthdayInCurrentMonthPredicate testPredicate
-                = new UpcomingBirthdayInCurrentMonthPredicate(monthToFilter, dayToFilter);
+        UpcomingBirthdayInCurrentMonthPredicate testPredicate =
+                new UpcomingBirthdayInCurrentMonthPredicate(monthToFilter, dayToFilter);
         return testPredicate;
     }
 

@@ -38,9 +38,10 @@ public class Birthday {
 
     private static final int BIRTHDAY_TOMORROW_VALIDATOR = 1;
 
+    public final String value;
+
     private final LocalDate currentDate;
 
-    public final String value;
 
     /**
      * Validates the given birthday and instantiate a LocalDate object with the date as of the date

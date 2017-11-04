@@ -16,7 +16,7 @@ public class Status {
     private static final String STATUS_TODAY_MESSAGE = "Event happening today!";
     private static final String STATUS_OVERDUE = "Event has past.";
 
-    private final int ONE_DAY = 1;
+    private static final int ONE_DAY = 1;
 
     private final LocalDate currentDate;
     private final LocalTime currentTime;

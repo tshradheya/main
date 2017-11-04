@@ -29,7 +29,7 @@ public class Reminder {
         this.reminder = new SimpleObjectProperty<>(reminder);
         this.date = new SimpleObjectProperty<>(date);
         this.time = new SimpleObjectProperty<>(time);
-        this.status = new SimpleObjectProperty<>(new Status(date, time));
+        this.status = new SimpleObjectProperty<>(new Status(this));
     }
 
     /**

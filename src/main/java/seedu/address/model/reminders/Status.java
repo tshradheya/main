@@ -11,12 +11,15 @@ import java.util.Objects;
  */
 public class Status {
 
-    private static final LocalDate currentDate = LocalDate.now();
-    private static final LocalTime currentTime = LocalTime.now();
+    private static final String STATUS_FORMAT_SINGLE_MESSAGE = "Status: %1$s day left.";
+    private static final String STATUS_FORMAT_MESSAGE = "Status: %1$s days left.";
+    private static final String STATUS_TODAY_MESSAGE = "Event happening today!";
+    private static final String STATUS_OVERDUE = "Event has past.";
 
-    private final String STATUS_FORMAT_MESSAGE = "Status: %1$s days left.";
-    private final String STATUS_TODAY_MESSAGE = "Event happening today!";
-    private final String STATUS_OVERDUE = "Event has past.";
+    private final int ONE_DAY = 1;
+
+    private final LocalDate currentDate;
+    private final LocalTime currentTime;
 
     private final LocalDate dateOfReminder;
     private final LocalTime timeOfReminder;
@@ -26,27 +29,36 @@ public class Status {
     /**
      * Initialize the status for this reminder.
      */
-    public Status (Date dateOfReminder, Time timeOfReminder) {
-        this.dateOfReminder = dateOfReminder.toLocalDate();
-        this.timeOfReminder = timeOfReminder.toLocalTime();
+    public Status(Reminder reminder) {
+        currentDate = LocalDate.now();
+        currentTime = LocalTime.now();
+        this.dateOfReminder = reminder.getDate().toLocalDate();
+        this.timeOfReminder = reminder.getTime().toLocalTime();
         initStatus();
     }
 
     /**
-     * Carries out the actual initializing of the status.
+     * This constructor is used for testing purposes only.
      */
-    private void initStatus() {
-        if (hasEventPast()) {
-            status = STATUS_OVERDUE;
-        } else if (isEventToday()) {
-            status = STATUS_TODAY_MESSAGE;
-        } else {
-            status = String.format(STATUS_FORMAT_MESSAGE, getDaysUntilEvent());
-        }
+    private Status(Reminder reminder, LocalDate defaultDate, LocalTime defaultTime) {
+        this.currentDate = defaultDate;
+        this.currentTime = defaultTime;
+        this.dateOfReminder = reminder.getDate().toLocalDate();
+        this.timeOfReminder = reminder.getTime().toLocalTime();
+        initStatus();
     }
 
     /**
-     * Returns true of the event has already past.
+     * Return a Status instance that is used for testing, initialized with {@code reminder}, {@code defaultDate}
+     * and {@code defaultTime}.
+     */
+    public static Status getStatusTestInstance(Reminder reminder, LocalDate defaultDate, LocalTime defaultTime) {
+        Status testInstance = new Status(reminder, defaultDate, defaultTime);
+        return testInstance;
+    }
+
+    /**
+     * Returns true if the event has already past.
      */
     public boolean hasEventPast() {
         final long daysUntilEvent = getDaysUntilEvent();
@@ -71,6 +83,10 @@ public class Status {
         return daysUntilEvent == 0 && minutesUntilEvent >= 0;
     }
 
+    /**
+     * Returns true if the event is happening within three days
+     * (with respect to the date and time this object is created.)
+     */
     public boolean isEventWithinThreeDays() {
         final long daysUntilEvent = getDaysUntilEvent();
         final long minutesUntilEvent = getMinutesUntilEvent();
@@ -81,6 +97,24 @@ public class Status {
             return false;
         }
         return true;
+    }
+
+    /**
+     * Carries out the actual initializing of the status.
+     */
+    private void initStatus() {
+        if (hasEventPast()) {
+            status = STATUS_OVERDUE;
+        } else if (isEventToday()) {
+            status = STATUS_TODAY_MESSAGE;
+        } else {
+            final long daysUntilEvent = getDaysUntilEvent();
+            if (daysUntilEvent == ONE_DAY) {
+                status = String.format(STATUS_FORMAT_SINGLE_MESSAGE, ONE_DAY);
+            } else {
+                status = String.format(STATUS_FORMAT_MESSAGE, getDaysUntilEvent());
+            }
+        }
     }
 
     /**
@@ -106,5 +140,12 @@ public class Status {
     @Override
     public String toString() {
         return status;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return this == other
+                || (other instanceof Status
+                && this.status.equals(((Status) other).status));
     }
 }

@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 
 import java.time.DateTimeException;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 import seedu.address.commons.exceptions.IllegalValueException;
 
@@ -34,6 +35,8 @@ public class Birthday {
     private static final String BIRTHDAY_VALIDATION_REGEX = "(0[1-9]|[1-9]|1[0-9]|2[0-9]|3[01])[///./-]"
             + "(0[1-9]|1[0-2]|[1-9])[///./-](19|20)[0-9][0-9]";
     private static final String BIRTHDAY_SPLIT_REGEX = "[///./-]";
+
+    private static final int BIRTHDAY_TOMORROW_VALIDATOR = 1;
 
     public final String value;
 
@@ -104,6 +107,25 @@ public class Birthday {
         final LocalDate currentDate = LocalDate.now();
 
         return birthday.equals(currentDate);
+    }
+
+    /**
+     * Returns true of the date for this Birthday object is tomorrow (relative to the date the program was started up)
+     */
+    public boolean isBirthdayTomorrow() {
+        if (value.isEmpty()) {
+            return false;
+        }
+        final String[] splitDate = getSplitDate(value);
+        final int year = Integer.parseInt(splitDate[DATE_YEAR_INDEX]);
+        final int month = Integer.parseInt(splitDate[DATE_MONTH_INDEX]);
+        final int day = Integer.parseInt(splitDate[DATE_DAY_INDEX]);
+
+        final LocalDate birthday = LocalDate.of(year, month, day);
+        final LocalDate currentDate = LocalDate.now();
+        final long daysUntilBirthday = currentDate.until(birthday, ChronoUnit.DAYS);
+
+        return daysUntilBirthday == BIRTHDAY_TOMORROW_VALIDATOR;
     }
 
     /**

@@ -209,6 +209,10 @@ public class StatusTest {
         assertTrue(status1.equals(status2));
     }
 
+    /**
+     * Converts a string in the form dd/mm/yyyy, dd.mm.yyyy or dd-mm-yyyy
+     * into a LocalDate object.
+     */
     private LocalDate convertStringToLocalDate(String date) {
         String[] splitDate = date.split(DATE_SPLIT_REGEX);
 
@@ -216,9 +220,12 @@ public class StatusTest {
         final int month = Integer.parseInt(splitDate[DATE_MONTH_INDEX]);
         final int year = Integer.parseInt(splitDate[DATE_YEAR_INDEX]);
 
-        return LocalDate.of(year,month, day);
+        return LocalDate.of(year, month, day);
     }
 
+    /**
+     * Converts a string in the form hh:mm into a LocalTime object.
+     */
     private LocalTime convertStringToLocalTime(String time) {
         String[] splitTime = time.split(HOUR_MIN_SEPARATOR);
         final int hour = Integer.parseInt(splitTime[TIME_HOUR_INDEX]);

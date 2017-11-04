@@ -3,6 +3,8 @@ package seedu.address.ui;
 import java.util.HashMap;
 import java.util.Random;
 
+import com.sun.tools.internal.xjc.reader.xmlschema.BindGreen;
+
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -22,7 +24,7 @@ public class PersonCard extends UiPart<Region> {
     private static final String FXML = "PersonListCard.fxml";
     private static final Integer IMAGE_WIDTH = 100;
     private static final Integer IMAGE_HEIGHT = 100;
-    private static String[] colors = {"red", "blue", "green", "yellow", "pink"};
+    private static String[] colors = {"#ff0000", "#0000ff", "#008000", "#ff00ff", "#00ffff"};
     private static HashMap<String, String> tagColors = new HashMap<String, String>();
     private static Random random = new Random();
 
@@ -45,7 +47,13 @@ public class PersonCard extends UiPart<Region> {
     @FXML
     private Label phone;
     @FXML
+    private Label address;
+    @FXML
+    private Label email;
+    @FXML
     private Label nickname;
+    @FXML
+    private Label birthday;
     @FXML
     private FlowPane tags;
     @FXML
@@ -79,7 +87,10 @@ public class PersonCard extends UiPart<Region> {
     private void bindListeners(ReadOnlyPerson person) {
         name.textProperty().bind(Bindings.convert(person.nameProperty()));
         phone.textProperty().bind(Bindings.convert(person.phoneProperty()));
+        address.textProperty().bind(Bindings.convert(person.addressProperty()));
+        email.textProperty().bind(Bindings.convert(person.emailProperty()));
         nickname.textProperty().bind(Bindings.convert(person.nicknameProperty()));
+        birthday.textProperty().bind(Bindings.convert(person.birthdayProperty()));
         person.tagProperty().addListener((observable, oldValue, newValue) -> {
             tags.getChildren().clear();
             initTags(person);
@@ -141,7 +152,7 @@ public class PersonCard extends UiPart<Region> {
     private void initTags(ReadOnlyPerson person) {
         person.getTags().forEach(tag -> {
             Label tagLabel = new Label(tag.tagName);
-            tagLabel.setStyle("-fx-background-color: " + getTagColor(tag.tagName));
+            tagLabel.setStyle("-fx-background-color: derive(" + getTagColor(tag.tagName) + ", -20%)");
             tags.getChildren().add(tagLabel);
         });
     }

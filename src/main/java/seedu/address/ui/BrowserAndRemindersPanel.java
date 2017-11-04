@@ -27,8 +27,6 @@ import seedu.address.commons.events.ui.PersonPanelSelectionChangedEvent;
 import seedu.address.commons.events.ui.PopularContactPanelSelectionChangedEvent;
 import seedu.address.commons.events.ui.SendingEmailEvent;
 import seedu.address.commons.events.ui.ShowLocationEvent;
-import seedu.address.commons.events.ui.TurnLabelsOffEvent;
-import seedu.address.commons.events.ui.TurnLabelsOnEvent;
 import seedu.address.model.person.ReadOnlyPerson;
 import seedu.address.model.reminders.Reminder;
 
@@ -133,13 +131,10 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
         case BROWSER:
             remindersPanel.toFront();
             currentlyInFront = Node.REMINDERS;
-            raise(new TurnLabelsOnEvent());
             break;
         case REMINDERS:
             browser.toFront();
-            System.out.println("blah");
             currentlyInFront = Node.BROWSER;
-            raise(new TurnLabelsOffEvent());
             break;
         default:
             throw new AssertionError("It should not be possible to land here");
@@ -158,7 +153,6 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
         if (currentlyInFront == Node.REMINDERS) {
             browser.toFront();
             currentlyInFront = Node.BROWSER;
-            raise(new TurnLabelsOffEvent());
         }
     }
 
@@ -233,7 +227,6 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
         loadPersonPage(event.getNewSelection().person);
         bringBrowserToFront();
-        raise(new TurnLabelsOffEvent());
     }
 
     @Subscribe
@@ -241,7 +234,6 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
         loadPersonPage(event.getNewSelection().person);
         bringBrowserToFront();
-        raise(new TurnLabelsOffEvent());
     }
 
 

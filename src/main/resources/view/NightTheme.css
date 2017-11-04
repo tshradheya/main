@@ -115,7 +115,7 @@
 
 .list-cell:filled:selected #cardPane {
     -fx-border-color: derive(#383838, +100%);
-    -fx-border-width: 2;
+    -fx-border-width: 3;
     -fx-border-radius: 18 18 18 18;
 }
 

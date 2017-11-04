@@ -46,68 +46,68 @@ public class StatusTest {
 
         // day past -> returns true
         Reminder reminder1 = new ReminderBuilder().withDate(DATE_DAY_PAST).withTime(DEFAULT_TIME).build();
-        Status status1 = getStatusTestInstance(reminder1, convertStringToLocalDate(DEFAULT_DATE)
-                , convertStringToLocalTime(DEFAULT_TIME));
+        Status status1 = getStatusTestInstance(reminder1, convertStringToLocalDate(DEFAULT_DATE),
+                convertStringToLocalTime(DEFAULT_TIME));
         assertTrue(status1.hasEventPast());
 
         // month past -> returns true
         Reminder reminder2 = new ReminderBuilder().withDate(DATE_MONTH_PAST).withTime(DEFAULT_TIME).build();
-        Status status2 = getStatusTestInstance(reminder2, convertStringToLocalDate(DEFAULT_DATE)
-                , convertStringToLocalTime(DEFAULT_TIME));
+        Status status2 = getStatusTestInstance(reminder2, convertStringToLocalDate(DEFAULT_DATE),
+                convertStringToLocalTime(DEFAULT_TIME));
         assertTrue(status2.hasEventPast());
 
         // year past -> returns true
         Reminder reminder3 = new ReminderBuilder().withDate(DATE_YEAR_PAST).withTime(DEFAULT_TIME).build();
-        Status status3 = getStatusTestInstance(reminder3, convertStringToLocalDate(DEFAULT_DATE)
-                , convertStringToLocalTime(DEFAULT_TIME));
+        Status status3 = getStatusTestInstance(reminder3, convertStringToLocalDate(DEFAULT_DATE),
+                convertStringToLocalTime(DEFAULT_TIME));
         assertTrue(status3.hasEventPast());
 
         // hour past -> returns true
         Reminder reminder4 = new ReminderBuilder().withDate(DEFAULT_DATE).withTime(TIME_HOUR_PAST).build();
-        Status status4 = getStatusTestInstance(reminder4, convertStringToLocalDate(DEFAULT_DATE)
-                , convertStringToLocalTime(DEFAULT_TIME));
+        Status status4 = getStatusTestInstance(reminder4, convertStringToLocalDate(DEFAULT_DATE),
+                convertStringToLocalTime(DEFAULT_TIME));
         assertTrue(status4.hasEventPast());
 
         // minute past -> returns true
         Reminder reminder5 = new ReminderBuilder().withDate(DEFAULT_DATE).withTime(TIME_MINUTE_PAST).build();
-        Status status5 = getStatusTestInstance(reminder5, convertStringToLocalDate(DEFAULT_DATE)
-                , convertStringToLocalTime(DEFAULT_TIME));
+        Status status5 = getStatusTestInstance(reminder5, convertStringToLocalDate(DEFAULT_DATE),
+                convertStringToLocalTime(DEFAULT_TIME));
         assertTrue(status5.hasEventPast());
 
         // upcoming day -> returns false
         Reminder reminder6 = new ReminderBuilder().withDate(DATE_DAY_UPCOMING).withTime(DEFAULT_TIME).build();
-        Status status6 = getStatusTestInstance(reminder6, convertStringToLocalDate(DEFAULT_DATE)
-                , convertStringToLocalTime(DEFAULT_TIME));
+        Status status6 = getStatusTestInstance(reminder6, convertStringToLocalDate(DEFAULT_DATE),
+                convertStringToLocalTime(DEFAULT_TIME));
         assertFalse(status6.hasEventPast());
 
         // upcoming month -> returns false
         Reminder reminder7 = new ReminderBuilder().withDate(DATE_MONTH_UPCOMING).withTime(DEFAULT_TIME).build();
-        Status status7 = getStatusTestInstance(reminder7, convertStringToLocalDate(DEFAULT_DATE)
-                , convertStringToLocalTime(DEFAULT_TIME));
+        Status status7 = getStatusTestInstance(reminder7, convertStringToLocalDate(DEFAULT_DATE),
+                convertStringToLocalTime(DEFAULT_TIME));
         assertFalse(status7.hasEventPast());
 
         // upcoming year -> returns false
         Reminder reminder8 = new ReminderBuilder().withDate(DATE_YEAR_UPCOMING).withTime(DEFAULT_TIME).build();
-        Status status8 = getStatusTestInstance(reminder8, convertStringToLocalDate(DEFAULT_DATE)
-                , convertStringToLocalTime(DEFAULT_TIME));
+        Status status8 = getStatusTestInstance(reminder8, convertStringToLocalDate(DEFAULT_DATE),
+                convertStringToLocalTime(DEFAULT_TIME));
         assertFalse(status8.hasEventPast());
 
         // upcoming hour -> returns false
         Reminder reminder9 = new ReminderBuilder().withDate(DEFAULT_DATE).withTime(TIME_HOUR_UPCOMING).build();
-        Status status9 = getStatusTestInstance(reminder9, convertStringToLocalDate(DEFAULT_DATE)
-                , convertStringToLocalTime(DEFAULT_TIME));
+        Status status9 = getStatusTestInstance(reminder9, convertStringToLocalDate(DEFAULT_DATE),
+                convertStringToLocalTime(DEFAULT_TIME));
         assertFalse(status9.hasEventPast());
 
         // upcoming minute -> returns false
         Reminder reminder10 = new ReminderBuilder().withDate(DEFAULT_DATE).withTime(TIME_MINUTE_UPCOMING).build();
-        Status status10 = getStatusTestInstance(reminder10, convertStringToLocalDate(DEFAULT_DATE)
-                , convertStringToLocalTime(DEFAULT_TIME));
+        Status status10 = getStatusTestInstance(reminder10, convertStringToLocalDate(DEFAULT_DATE),
+                convertStringToLocalTime(DEFAULT_TIME));
         assertFalse(status10.hasEventPast());
 
         // same date and time -> returns false
         Reminder reminder11 = new ReminderBuilder().withDate(DEFAULT_DATE).withTime(DEFAULT_TIME).build();
-        Status status11 = getStatusTestInstance(reminder11, convertStringToLocalDate(DEFAULT_DATE)
-                , convertStringToLocalTime(DEFAULT_TIME));
+        Status status11 = getStatusTestInstance(reminder11, convertStringToLocalDate(DEFAULT_DATE),
+                convertStringToLocalTime(DEFAULT_TIME));
         assertFalse(status11.hasEventPast());
     }
 
@@ -115,26 +115,26 @@ public class StatusTest {
     public void isEventToday() {
         // different date -> returns false
         Reminder reminder1 = new ReminderBuilder().withDate(DATE_DAY_PAST).withTime(DEFAULT_TIME).build();
-        Status status1 = getStatusTestInstance(reminder1, convertStringToLocalDate(DEFAULT_DATE)
-                , convertStringToLocalTime(DEFAULT_TIME));
+        Status status1 = getStatusTestInstance(reminder1, convertStringToLocalDate(DEFAULT_DATE),
+                convertStringToLocalTime(DEFAULT_TIME));
         assertFalse(status1.isEventToday());
 
         // time past -> returns false
         Reminder reminder2 = new ReminderBuilder().withDate(DEFAULT_DATE).withTime(TIME_HOUR_PAST).build();
-        Status status2 = getStatusTestInstance(reminder2, convertStringToLocalDate(DEFAULT_DATE)
-                , convertStringToLocalTime(DEFAULT_TIME));
+        Status status2 = getStatusTestInstance(reminder2, convertStringToLocalDate(DEFAULT_DATE),
+                convertStringToLocalTime(DEFAULT_TIME));
         assertFalse(status2.isEventToday());
 
         // same date, same time -> returns true
         Reminder reminder3 = new ReminderBuilder().withDate(DEFAULT_DATE).withTime(DEFAULT_TIME).build();
-        Status status3 = getStatusTestInstance(reminder3, convertStringToLocalDate(DEFAULT_DATE)
-                , convertStringToLocalTime(DEFAULT_TIME));
+        Status status3 = getStatusTestInstance(reminder3, convertStringToLocalDate(DEFAULT_DATE),
+                convertStringToLocalTime(DEFAULT_TIME));
         assertTrue(status3.isEventToday());
 
         // same date, upcoming time -> returns true
         Reminder reminder4 = new ReminderBuilder().withDate(DEFAULT_DATE).withTime(TIME_HOUR_UPCOMING).build();
-        Status status4 = getStatusTestInstance(reminder4, convertStringToLocalDate(DEFAULT_DATE)
-                , convertStringToLocalTime(DEFAULT_TIME));
+        Status status4 = getStatusTestInstance(reminder4, convertStringToLocalDate(DEFAULT_DATE),
+                convertStringToLocalTime(DEFAULT_TIME));
         assertTrue(status4.isEventToday());
     }
 
@@ -142,44 +142,44 @@ public class StatusTest {
     public void isEventWithinThreeDays() {
         // one day before -> returns false
         Reminder reminder1 = new ReminderBuilder().withDate(ONE_DAY_BEFORE).withTime(DEFAULT_TIME).build();
-        Status status1 = getStatusTestInstance(reminder1, convertStringToLocalDate(DEFAULT_DATE)
-                , convertStringToLocalTime(DEFAULT_TIME));
+        Status status1 = getStatusTestInstance(reminder1, convertStringToLocalDate(DEFAULT_DATE),
+                convertStringToLocalTime(DEFAULT_TIME));
         assertFalse(status1.isEventWithinThreeDays());
 
         // same day -> returns true
         Reminder reminder2 = new ReminderBuilder().withDate(DEFAULT_DATE).withTime(DEFAULT_TIME).build();
-        Status status2 = getStatusTestInstance(reminder2, convertStringToLocalDate(DEFAULT_DATE)
-                , convertStringToLocalTime(DEFAULT_TIME));
+        Status status2 = getStatusTestInstance(reminder2, convertStringToLocalDate(DEFAULT_DATE),
+                convertStringToLocalTime(DEFAULT_TIME));
         assertTrue(status2.isEventWithinThreeDays());
 
         // one day later -> returns true
         Reminder reminder3 = new ReminderBuilder().withDate(ONE_DAY_AWAY).withTime(DEFAULT_TIME).build();
-        Status status3 = getStatusTestInstance(reminder3, convertStringToLocalDate(DEFAULT_DATE)
-                , convertStringToLocalTime(DEFAULT_TIME));
+        Status status3 = getStatusTestInstance(reminder3, convertStringToLocalDate(DEFAULT_DATE),
+                convertStringToLocalTime(DEFAULT_TIME));
         assertTrue(status3.isEventWithinThreeDays());
 
         // two days later -> returns true
         Reminder reminder4 = new ReminderBuilder().withDate(TWO_DAYS_AWAY).withTime(DEFAULT_TIME).build();
-        Status status4 = getStatusTestInstance(reminder4, convertStringToLocalDate(DEFAULT_DATE)
-                , convertStringToLocalTime(DEFAULT_TIME));
+        Status status4 = getStatusTestInstance(reminder4, convertStringToLocalDate(DEFAULT_DATE),
+                convertStringToLocalTime(DEFAULT_TIME));
         assertTrue(status4.isEventWithinThreeDays());
 
         // three days later -> returns true
         Reminder reminder5 = new ReminderBuilder().withDate(THREE_DAYS_AWAY).withTime(DEFAULT_TIME).build();
-        Status status5 = getStatusTestInstance(reminder5, convertStringToLocalDate(DEFAULT_DATE)
-                , convertStringToLocalTime(DEFAULT_TIME));
+        Status status5 = getStatusTestInstance(reminder5, convertStringToLocalDate(DEFAULT_DATE),
+                convertStringToLocalTime(DEFAULT_TIME));
         assertTrue(status5.isEventWithinThreeDays());
 
         // four days later -> returns false
         Reminder reminder6 = new ReminderBuilder().withDate(FOUR_DAYS_AWAY).withTime(DEFAULT_TIME).build();
-        Status status6 = getStatusTestInstance(reminder6, convertStringToLocalDate(DEFAULT_DATE)
-                , convertStringToLocalTime(DEFAULT_TIME));
+        Status status6 = getStatusTestInstance(reminder6, convertStringToLocalDate(DEFAULT_DATE),
+                convertStringToLocalTime(DEFAULT_TIME));
         assertFalse(status6.isEventWithinThreeDays());
 
         // same day, time past -> returns false
         Reminder reminder7 = new ReminderBuilder().withDate(DEFAULT_DATE).withTime(TIME_HOUR_PAST).build();
-        Status status7 = getStatusTestInstance(reminder7, convertStringToLocalDate(DEFAULT_DATE)
-                , convertStringToLocalTime(DEFAULT_TIME));
+        Status status7 = getStatusTestInstance(reminder7, convertStringToLocalDate(DEFAULT_DATE),
+                convertStringToLocalTime(DEFAULT_TIME));
         assertFalse(status7.isEventWithinThreeDays());
     }
 

@@ -4,7 +4,7 @@
 }
 
 .label {
-    -fx-font-size: 11pt;
+    -fx-font-size: 15pt;
     -fx-font-family: "Segoe UI Semibold";
     -fx-text-fill: #555555;
     -fx-opacity: 0.9;
@@ -88,6 +88,7 @@
 }
 
 .list-view {
+    -fx-background-color: derive(#9bd8ff, 20%);
     -fx-background-insets: 0;
     -fx-padding: 0;
 }
@@ -117,6 +118,11 @@
 
 .list-cell .label {
     -fx-text-fill: black;
+}
+
+.list-cell:empty {
+    /* Empty cells will not have alternating colours */
+    -fx-background: derive(#9bd8ff, 20%);
 }
 
 .cell_big_label {
@@ -347,4 +353,20 @@
     -fx-border-radius: 2;
     -fx-background-radius: 2;
     -fx-font-size: 11;
+}
+
+#birthdayListHolder {
+    -fx-background-color: derive(#9bd8ff, 20%);
+}
+
+#birthdayListHolder > .label {
+    -fx-background-color: derive(#9bd8ff, 20%);
+}
+
+#reminderListHolder {
+    -fx-background-color: derive(#9bd8ff, 20%);
+}
+
+#reminderListHolder > .label {
+    -fx-background-color: derive(#9bd8ff, 20%);
 }

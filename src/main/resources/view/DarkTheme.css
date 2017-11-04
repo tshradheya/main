@@ -88,6 +88,7 @@
 }
 
 .list-view {
+    -fx-background-color: #383838;
     -fx-background-insets: 0;
     -fx-padding: 0;
 }
@@ -117,6 +118,11 @@
 
 .list-cell .label {
     -fx-text-fill: white;
+}
+
+.list-cell:empty {
+    /* Empty cells will not have alternating colours */
+    -fx-background: #383838;
 }
 
 .cell_big_label {

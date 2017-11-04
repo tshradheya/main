@@ -1,3 +1,4 @@
+//@@author chuaweiwen
 package seedu.address.logic.parser;
 
 /**
@@ -14,3 +15,4 @@ public class ThemeNames {
     public static final String THEME_DAY_CSS = "DayTheme.css";
     public static final String THEME_NIGHT_CSS = "NightTheme.css";
 }
+//@@author

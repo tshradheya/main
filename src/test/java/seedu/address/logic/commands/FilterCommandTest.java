@@ -1,13 +1,11 @@
+//@@author chuaweiwen
 package seedu.address.logic.commands;
 
 import static junit.framework.TestCase.assertEquals;
 import static seedu.address.commons.core.Messages.MESSAGE_PERSONS_LISTED_OVERVIEW;
 import static seedu.address.testutil.TypicalPersons.ALICE;
 import static seedu.address.testutil.TypicalPersons.BENSON;
-import static seedu.address.testutil.TypicalPersons.CARL;
 import static seedu.address.testutil.TypicalPersons.DANIEL;
-import static seedu.address.testutil.TypicalPersons.ELLE;
-import static seedu.address.testutil.TypicalPersons.FIONA;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 import static seedu.address.testutil.TypicalReminders.getUniqueTypicalReminders;
 
@@ -73,10 +71,17 @@ public class FilterCommandTest {
     }
 
     @Test
-    public void execute_multipleNameKeywords_multiplePersonsFound() {
-        String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 3);
+    public void execute_multipleNameKeywords_noPersonFound() {
+        String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 0);
         FilterCommand command = prepareCommand("Kurz Elle Kunz", null);
-        assertCommandSuccess(command, expectedMessage, Arrays.asList(CARL, ELLE, FIONA));
+        assertCommandSuccess(command, expectedMessage, Collections.emptyList());
+    }
+
+    @Test
+    public void execute_existingFullNameAsKeywords_success() {
+        String expectedMessage = String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 1);
+        FilterCommand command = prepareCommand(ALICE.getName().fullName, null);
+        assertCommandSuccess(command, expectedMessage, Arrays.asList(ALICE));
     }
 
     /**
@@ -109,3 +114,4 @@ public class FilterCommandTest {
         assertEquals(expectedAddressBook, model.getAddressBook());
     }
 }
+//@@author

@@ -22,6 +22,7 @@ import seedu.address.logic.commands.FilterCommand;
 import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.HistoryCommand;
+import seedu.address.logic.commands.ImportCommand;
 import seedu.address.logic.commands.ListCommand;
 import seedu.address.logic.commands.LocationCommand;
 import seedu.address.logic.commands.NicknameCommand;
@@ -131,20 +132,27 @@ public class AddressBookParser {
         case ToggleCommand.COMMAND_WORD:
             return new ToggleCommand();
 
+        //@@author chuaweiwen
         case NicknameCommand.COMMAND_WORD:
             return new NicknameCommandParser().parse(arguments);
 
         case ThemeCommand.COMMAND_WORD:
             return new ThemeCommandParser().parse(arguments);
+        //@@author
 
         case ExportCommand.COMMAND_WORD:
             return new ExportCommandParser().parse(arguments);
 
+        case ImportCommand.COMMAND_WORD:
+            return new ImportCommandParser().parse(arguments);
+
         case DisplayPictureCommand.COMMAND_WORD:
             return new DisplayPictureCommandParser().parse(arguments);
 
+        //@@author chuaweiwen
         case FilterCommand.COMMAND_WORD:
             return new FilterCommandParser().parse(arguments);
+        //@@author
 
         default:
             throw new ParseException(MESSAGE_UNKNOWN_COMMAND);

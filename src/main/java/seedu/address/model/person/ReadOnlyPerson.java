@@ -43,7 +43,6 @@ public interface ReadOnlyPerson {
                 && other.getAddress().equals(this.getAddress())
                 && other.getNickname().equals(this.getNickname())
                 && other.getBirthday().equals(this.getBirthday())
-                && other.getPopularityCounter().equals(this.getPopularityCounter())
                 && other.getDisplayPicture().equals(this.getDisplayPicture()));
     }
 

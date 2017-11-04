@@ -7,6 +7,8 @@ import java.io.IOException;
 import seedu.address.commons.exceptions.DataConversionException;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.AddressBook;
+import seedu.address.model.person.Person;
+import seedu.address.model.person.PopularityCounter;
 import seedu.address.model.person.ReadOnlyPerson;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.storage.AddressBookStorage;
@@ -47,15 +49,16 @@ public class ImportCommand extends UndoableCommand {
             if (addressBookStorage.readAddressBook().isPresent()) {
                 this.addressBook = new AddressBook(addressBookStorage.readAddressBook().get());
                 for (ReadOnlyPerson person : this.addressBook.getPersonList()) {
+                    Person personToAdd = new Person(person);
+                    personToAdd.setPopularityCounter(new PopularityCounter());
                     try {
-                        model.addPerson(person);
+                        model.addPerson(personToAdd);
                         numSuccess++;
                     } catch (DuplicatePersonException e) {
                         numDuplicates++;
                     }
                 }
-            }
-            else {
+            } else {
                 throw new CommandException(String.format(MESSAGE_INVALID_FILE, path));
             }
         } catch (DataConversionException | IOException e) {

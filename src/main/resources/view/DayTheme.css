@@ -1,6 +1,6 @@
 .background {
-    -fx-background-color: white;
-    background-color: white; /* Used in the default.html file */
+    -fx-background-color: #f2f8ff;
+    background-color: #f2f8ff; /* Used in the default.html file */
 }
 
 .label {
@@ -77,20 +77,20 @@
 }
 
 .split-pane:horizontal .split-pane-divider {
-    -fx-background-color: white;
-    -fx-border-color: -fx-background-color: white;
+    -fx-background-color: #f2f8ff;
+    -fx-border-color: -fx-background-color: #f2f8ff;
 }
 
 .split-pane {
     -fx-border-radius: 0;
     -fx-border-width: 0;
-    -fx-background-color: white;
+    -fx-background-color: #f2f8ff;
 }
 
 .list-view {
     -fx-background-insets: 0;
     -fx-padding: 0;
-    -fx-background-color: white;
+    -fx-background-color: #f2f8ff;
     -fx-border-width: 5;
     -fx-border-radius: 18 18 18 18;
 }
@@ -135,7 +135,7 @@
 
 .list-cell:empty {
     /* Empty cells will not have alternating colours */
-    -fx-background: white;
+    -fx-background: #f2f8ff;
 }
 
 .cell_big_label {
@@ -151,22 +151,22 @@
 }
 
 .anchor-pane {
-     -fx-background-color: white;
+     -fx-background-color: #f2f8ff;
 }
 
 .pane-with-border {
-     -fx-background-color: white;
-     -fx-border-color: white;
+     -fx-background-color: #f2f8ff;
+     -fx-border-color: #f2f8ff;
      -fx-border-top-width: 1px;
 }
 
 .status-bar {
-    -fx-background-color: white;
+    -fx-background-color: #f2f8ff;
     -fx-text-fill: black;
 }
 
 .result-display {
-    -fx-background-color: white;
+    -fx-background-color: #f2f8ff;
     -fx-font-family: "Segoe UI Light";
     -fx-font-size: 13pt;
     -fx-text-fill: white;
@@ -184,7 +184,7 @@
 
 .scroll-bar:vertical .track-background,
 .scroll-bar:horizontal .track-background {
-    -fx-background-color: white;
+    -fx-background-color: #f2f8ff;
 }
 
 .scroll-bar:vertical > .increment-button,
@@ -238,13 +238,13 @@
 }
 
 .grid-pane {
-    -fx-background-color: white;
-    -fx-border-color: white;
+    -fx-background-color: #f2f8ff;
+    -fx-border-color: #f2f8ff;
     -fx-border-width: 0px;
 }
 
 .grid-pane .anchor-pane {
-    -fx-background-color: white;
+    -fx-background-color: #f2f8ff;
 }
 
 .context-menu {
@@ -256,7 +256,7 @@
 }
 
 .menu-bar {
-    -fx-background-color: white;
+    -fx-background-color: #f2f8ff;
 }
 
 .menu-bar .label {
@@ -292,12 +292,12 @@
 }
 
 .button:pressed, .button:default:hover:pressed {
-  -fx-background-color: white;
+  -fx-background-color: #f2f8ff;
   -fx-text-fill: #1d1d1d;
 }
 
 .button:focused {
-    -fx-border-color: white, white;
+    -fx-border-color: #f2f8ff, #f2f8ff;
     -fx-border-width: 1, 1;
     -fx-border-style: solid, segments(1, 1);
     -fx-border-radius: 0, 0;
@@ -374,7 +374,7 @@
 }
 
 #resultDisplay .content {
-    -fx-background-color: white;
+    -fx-background-color: #f2f8ff;
     -fx-background-radius: 0;
 }
 
@@ -393,19 +393,19 @@
 }
 
 #birthdayListHolder {
-    -fx-background-color: white;
+    -fx-background-color: #f2f8ff;
 }
 
 #birthdayListHolder > .label {
-    -fx-background-color: white;
+    -fx-background-color: #f2f8ff;
 }
 
 #reminderListHolder {
-    -fx-background-color: white;
+    -fx-background-color: #f2f8ff;
 }
 
 #reminderListHolder > .label {
-    -fx-background-color: white;
+    -fx-background-color: #f2f8ff;
 }
 
 #placeHolder {

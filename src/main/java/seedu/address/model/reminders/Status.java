@@ -39,6 +39,8 @@ public class Status {
 
     /**
      * This constructor is used for testing purposes only.
+     * This is because the use of {@code LocalDate.now()} and {@code LocalTime.now()} is not static and might lead to
+     * tests failing depending on the time the tests are conducted.
      */
     private Status(Reminder reminder, LocalDate defaultDate, LocalTime defaultTime) {
         this.currentDate = defaultDate;

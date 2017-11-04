@@ -38,10 +38,13 @@ public class Birthday {
 
     private static final int BIRTHDAY_TOMORROW_VALIDATOR = 1;
 
+    private final LocalDate currentDate;
+
     public final String value;
 
     /**
-     * Validates the given birthday.
+     * Validates the given birthday and instantiate a LocalDate object with the date as of the date
+     * this Birthday object was instantiated.
      *
      * @throws IllegalValueException if given birthday string is invalid.
      */
@@ -58,6 +61,46 @@ public class Birthday {
         } else {
             this.value = convertToDefaultDateFormat(birthday);
         }
+
+        currentDate = LocalDate.now();
+    }
+
+    /**
+     * This constructor is used for testing purposes.
+     * This is because the use of {@code LocalDate.now()} is not static and might lead to
+     * tests failing depending on the time the tests are conducted.
+     */
+    private Birthday(String birthday, LocalDate currentDateForTesting) {
+        this.value = convertToDefaultDateFormat(birthday);
+        this.currentDate = currentDateForTesting;
+    }
+
+    /**
+     * Returns true if a given string is a valid person birthday.
+     */
+    public static boolean isValidBirthday(String birthday) {
+        String trimmedBirthday = birthday.trim();
+        if (trimmedBirthday.isEmpty()) {
+            return true;
+        }
+        if (!trimmedBirthday.matches(BIRTHDAY_VALIDATION_REGEX)) {
+            return false;
+        }
+
+        String[] splitDate = getSplitDate(trimmedBirthday);
+
+        if (!isValidDate(splitDate)) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Return a Birthday instance that is used for testing.
+     */
+    public static Birthday getBirthdayTestInstance(String birthday, LocalDate currentDateForTesting) {
+        Birthday testInstance = new Birthday(birthday, currentDateForTesting);
+        return testInstance;
     }
 
     /**
@@ -92,7 +135,7 @@ public class Birthday {
 
     /**
      * Returns true if the date for this Birthday object is the same
-     * as the date today (relative to the date the program was started up).
+     * as the date today (relative to the date this Birthday object was instantiated).
      */
     public boolean isBirthdayToday() {
         if (value.isEmpty()) {
@@ -104,13 +147,13 @@ public class Birthday {
         final int day = Integer.parseInt(splitDate[DATE_DAY_INDEX]);
 
         final LocalDate birthday = LocalDate.of(year, month, day);
-        final LocalDate currentDate = LocalDate.now();
 
         return birthday.equals(currentDate);
     }
 
     /**
-     * Returns true of the date for this Birthday object is tomorrow (relative to the date the program was started up)
+     * Returns true of the date for this Birthday object is tomorrow
+     * (relative to the date this Birthday object was instantiated)
      */
     public boolean isBirthdayTomorrow() {
         if (value.isEmpty()) {
@@ -122,30 +165,9 @@ public class Birthday {
         final int day = Integer.parseInt(splitDate[DATE_DAY_INDEX]);
 
         final LocalDate birthday = LocalDate.of(year, month, day);
-        final LocalDate currentDate = LocalDate.now();
         final long daysUntilBirthday = currentDate.until(birthday, ChronoUnit.DAYS);
 
         return daysUntilBirthday == BIRTHDAY_TOMORROW_VALIDATOR;
-    }
-
-    /**
-     * Returns true if a given string is a valid person birthday.
-     */
-    public static boolean isValidBirthday(String birthday) {
-        String trimmedBirthday = birthday.trim();
-        if (trimmedBirthday.isEmpty()) {
-            return true;
-        }
-        if (!trimmedBirthday.matches(BIRTHDAY_VALIDATION_REGEX)) {
-            return false;
-        }
-
-        String[] splitDate = getSplitDate(trimmedBirthday);
-
-        if (!isValidDate(splitDate)) {
-            return false;
-        }
-        return true;
     }
 
     /**

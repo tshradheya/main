@@ -156,9 +156,6 @@ public class MainWindow extends UiPart<Region> {
 
         CommandBox commandBox = new CommandBox(logic);
         commandBoxPlaceholder.getChildren().add(commandBox.getRoot());
-
-        HeaderPane headerPane = new HeaderPane();
-        headerPanePlaceholder.getChildren().add(headerPane.getRoot());
     }
 
     void hide() {

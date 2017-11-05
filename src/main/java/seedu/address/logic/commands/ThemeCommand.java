@@ -18,6 +18,8 @@ public class ThemeCommand extends Command {
             + "List of available themes: "
             + ThemeNames.THEME_DARK + ", "
             + ThemeNames.THEME_SKY + "\n"
+            + ThemeNames.THEME_DAY + "\n"
+            + ThemeNames.THEME_NIGHT + "\n"
             + "Example: " + COMMAND_WORD + " dark";
 
     public static final String MESSAGE_SET_THEME_SUCCESS = "Successfully set theme: %1$s";

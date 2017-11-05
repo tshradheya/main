@@ -36,9 +36,6 @@
     </padding>
    </StackPane>
 
-  <StackPane fx:id="headerPanePlaceholder" maxHeight="50" minHeight="50" prefHeight="50" styleClass="pane-with-border" VBox.vgrow="NEVER">
-  </StackPane>
-
   <SplitPane id="splitPane" fx:id="splitPane" dividerPositions="0.4" VBox.vgrow="ALWAYS">
     <VBox fx:id="personList" minWidth="340" prefWidth="340" SplitPane.resizableWithParent="false">
       <padding>

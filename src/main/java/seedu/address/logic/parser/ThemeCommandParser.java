@@ -31,6 +31,12 @@ public class ThemeCommandParser implements Parser<ThemeCommand> {
         case ThemeNames.THEME_SKY:
             return new ThemeCommand(new Theme(trimmedArgs, ThemeNames.THEME_SKY_CSS));
 
+        case ThemeNames.THEME_DAY:
+            return new ThemeCommand(new Theme(trimmedArgs, ThemeNames.THEME_DAY_CSS));
+
+        case ThemeNames.THEME_NIGHT:
+            return new ThemeCommand(new Theme(trimmedArgs, ThemeNames.THEME_NIGHT_CSS));
+
         default:
             throw new ParseException(
                 String.format(MESSAGE_UNKNOWN_THEME, ThemeCommand.MESSAGE_USAGE));

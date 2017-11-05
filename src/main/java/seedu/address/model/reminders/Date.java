@@ -15,14 +15,16 @@ public class Date {
     public static final String MESSAGE_DATE_CONSTRAINTS = "Date must be in the format dd-mm-yyyy,"
             + " dd/mm/yyyy or dd.mm.yyyy, and must be a valid date.\n"
             + "Example: 22-10-2019, 23.12.1997, 24/12/1989.\n";
+
+    public static final String DATE_SPLIT_REGEX = "[///./-]";
+
+    public static final int DATE_DAY_INDEX = 0;
+    public static final int DATE_MONTH_INDEX = 1;
+    public static final int DATE_YEAR_INDEX = 2;
+
     private static final String DATE_VALIDATION_REGEX = "(0[1-9]|[1-9]|1[0-9]|2[0-9]|3[01])[///./-]"
             + "(0[1-9]|1[0-2]|[1-9])[///./-](19|20)[0-9][0-9]";
-    private static final String DATE_SPLIT_REGEX = "[///./-]";
     private static final String DATE_SEPARATOR = "-";
-
-    private static final int DATE_DAY_INDEX = 0;
-    private static final int DATE_MONTH_INDEX = 1;
-    private static final int DATE_YEAR_INDEX = 2;
 
     public final String value;
 

@@ -9,6 +9,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
+<?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
 <HBox id="cardPane" fx:id="cardPane" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
     <GridPane HBox.hgrow="ALWAYS">
         <columnConstraints>
@@ -31,7 +32,11 @@
             </HBox>
             <Label fx:id="birthday" styleClass="cell_small_label" text="\$birthday" />
         </VBox>
-        <Label text="icon" GridPane.columnIndex="1"/>
+        <Label fx:id="icon" text="Birthday Soon" GridPane.columnIndex="1">
+            <graphic>
+                <MaterialDesignIconView glyphName="CAKE_VARIANT" size="20" />
+            </graphic>
+        </Label>
         <rowConstraints>
             <RowConstraints />
         </rowConstraints>

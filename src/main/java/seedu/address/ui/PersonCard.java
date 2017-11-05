@@ -12,6 +12,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
+import seedu.address.MainApp;
 import seedu.address.model.person.ReadOnlyPerson;
 
 
@@ -101,7 +102,7 @@ public class PersonCard extends UiPart<Region> {
             displayPicture.setFill(new ImagePattern(image));
 
         } else {
-            Image image = new Image("./images/defaulddp.png",
+            Image image = new Image(MainApp.class.getResourceAsStream("/images/defaulddp.png"),
                     IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
 
             displayPicture.setFill(new ImagePattern(image));

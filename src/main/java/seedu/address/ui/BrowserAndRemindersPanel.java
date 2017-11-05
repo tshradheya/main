@@ -109,7 +109,8 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
             throw new IllegalArgumentException("Wrong argument");
         }
         detailsPanel.getChildren().add(personDetails.getRoot());
-
+        setUpToShowRemindersPanel();
+        currentlyInFront = Node.REMINDERS;
         remindersPanel.toFront();
     }
 

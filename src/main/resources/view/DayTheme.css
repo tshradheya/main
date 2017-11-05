@@ -78,7 +78,7 @@
 
 .split-pane:horizontal .split-pane-divider {
     -fx-background-color: #f2f8ff;
-    -fx-border-color: -fx-background-color: #f2f8ff;
+    -fx-border-color: #f2f8ff;
 }
 
 .split-pane {
@@ -366,7 +366,7 @@
 }
 
 #resultDisplay {
-    -fx-border-color = derive(#383838, +30%);
+    -fx-border-color : derive(#383838, +30%);
 }
 
 #resultDisplay .content {

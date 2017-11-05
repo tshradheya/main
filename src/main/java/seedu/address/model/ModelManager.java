@@ -20,6 +20,7 @@ import seedu.address.commons.events.model.AddressBookChangedEvent;
 import seedu.address.commons.events.model.DisplayPictureChangedEvent;
 import seedu.address.commons.events.model.PopularContactChangedEvent;
 import seedu.address.commons.events.model.RemindersChangedEvent;
+import seedu.address.commons.events.ui.LoadPersonWebpageEvent;
 import seedu.address.commons.events.ui.SendingEmailEvent;
 import seedu.address.commons.events.ui.ShowLocationEvent;
 import seedu.address.model.email.Body;
@@ -174,6 +175,14 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public void showLocation(ReadOnlyPerson person) throws PersonNotFoundException {
         raise(new ShowLocationEvent(person));
+    }
+
+    /**
+     * Shows webpage of the given person
+     */
+    @Override
+    public void showPersonWebpage(ReadOnlyPerson person) throws PersonNotFoundException {
+        raise(new LoadPersonWebpageEvent(person));
     }
 
     /**

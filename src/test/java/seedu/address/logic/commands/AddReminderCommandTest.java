@@ -244,6 +244,11 @@ public class AddReminderCommandTest {
         }
 
         @Override
+        public void showPersonWebpage(ReadOnlyPerson person) throws PersonNotFoundException {
+            fail("This method should not be called");
+        }
+
+        @Override
         public String createEmailRecipients(Predicate<ReadOnlyPerson> predicate) {
             fail("This method should not be called");
             return null;

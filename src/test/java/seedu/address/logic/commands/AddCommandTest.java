@@ -205,6 +205,11 @@ public class AddCommandTest {
         }
 
         @Override
+        public void showPersonWebpage(ReadOnlyPerson person) throws PersonNotFoundException {
+            fail("This method should not be called");
+        }
+
+        @Override
         public void updateFilteredListToShowAll() {
             fail("This method should not be called");
         }

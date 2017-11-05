@@ -7,23 +7,23 @@ import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
-import javafx.scene.paint.ImagePattern;
-import javafx.scene.shape.Circle;
+import javafx.scene.layout.VBox;
 import seedu.address.model.person.ReadOnlyPerson;
-
 
 /**
  * An UI component that displays information of a {@code Person}.
  */
-public class PersonCard extends UiPart<Region> {
+public class DetailsPanel extends UiPart<Region> {
 
-    private static final String FXML = "PersonListCard.fxml";
+    private static final String FXML = "DetailsPanel.fxml";
     private static final Integer IMAGE_WIDTH = 100;
     private static final Integer IMAGE_HEIGHT = 100;
-    private static String[] colors = {"#ff0000", "#0000ff", "#008000", "#ff00ff", "#00ffff"};
+    private static String[] colors = {"red", "blue", "green", "yellow", "pink"};
     private static HashMap<String, String> tagColors = new HashMap<String, String>();
     private static Random random = new Random();
 
@@ -38,25 +38,32 @@ public class PersonCard extends UiPart<Region> {
     public final ReadOnlyPerson person;
 
     @FXML
-    private HBox cardPane;
+    private AnchorPane anchorPane;
     @FXML
-    private Label name;
+    private HBox mainCardPane;
     @FXML
-    private Label id;
+    private VBox secondaryCardPane;
     @FXML
-    private Label phone;
+    private Label detailsName;
     @FXML
-    private Label nickname;
+    private Label detailsPhone;
     @FXML
-    private FlowPane tags;
+    private Label detailsAddress;
     @FXML
-    private Circle displayPicture;
+    private Label detailsEmail;
+    @FXML
+    private Label detailsNickname;
+    @FXML
+    private Label detailsBirthday;
+    @FXML
+    private FlowPane detailsTag;
+    @FXML
+    private ImageView detailsDisplayPicture;
 
 
-    public PersonCard(ReadOnlyPerson person, int displayedIndex) {
+    public DetailsPanel(ReadOnlyPerson person) {
         super(FXML);
         this.person = person;
-        id.setText(displayedIndex + ". ");
         initTags(person);
         bindListeners(person);
     }
@@ -78,11 +85,14 @@ public class PersonCard extends UiPart<Region> {
      * so that they will be notified of any changes.
      */
     private void bindListeners(ReadOnlyPerson person) {
-        name.textProperty().bind(Bindings.convert(person.nameProperty()));
-        phone.textProperty().bind(Bindings.convert(person.phoneProperty()));
-        nickname.textProperty().bind(Bindings.convert(person.nicknameProperty()));
+        detailsName.textProperty().bind(Bindings.convert(person.nameProperty()));
+        detailsPhone.textProperty().bind(Bindings.convert(person.phoneProperty()));
+        detailsAddress.textProperty().bind(Bindings.convert(person.addressProperty()));
+        detailsEmail.textProperty().bind(Bindings.convert(person.emailProperty()));
+        detailsNickname.textProperty().bind(Bindings.convert(person.nicknameProperty()));
+        detailsBirthday.textProperty().bind(Bindings.convert(person.birthdayProperty()));
         person.tagProperty().addListener((observable, oldValue, newValue) -> {
-            tags.getChildren().clear();
+            detailsTag.getChildren().clear();
             initTags(person);
         });
         assignImage(person);
@@ -98,13 +108,39 @@ public class PersonCard extends UiPart<Region> {
             Image image = new Image("file:" + "pictures/" + person.getDisplayPicture().getPath() + ".png",
                     IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
 
-            displayPicture.setFill(new ImagePattern(image));
+            centerImage();
+            detailsDisplayPicture.setImage(image);
 
-        } else {
-            Image image = new Image("./images/defaulddp.png",
-                    IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
+        }
+    }
 
-            displayPicture.setFill(new ImagePattern(image));
+
+
+    /**
+     * Centre the image in ImageView
+     */
+    public void centerImage() {
+        Image img = detailsDisplayPicture.getImage();
+        if (img != null) {
+            double w;
+            double h;
+
+            double ratioX = detailsDisplayPicture.getFitWidth() / img.getWidth();
+            double ratioY = detailsDisplayPicture.getFitHeight() / img.getHeight();
+
+            double reducCoeff;
+            if (ratioX >= ratioY) {
+                reducCoeff = ratioY;
+            } else {
+                reducCoeff = ratioX;
+            }
+
+            w = img.getWidth() * reducCoeff;
+            h = img.getHeight() * reducCoeff;
+
+            detailsDisplayPicture.setX((detailsDisplayPicture.getFitWidth() - w) / 2);
+            detailsDisplayPicture.setY((detailsDisplayPicture.getFitHeight() - h) / 2);
+
         }
     }
 
@@ -116,8 +152,8 @@ public class PersonCard extends UiPart<Region> {
     private void initTags(ReadOnlyPerson person) {
         person.getTags().forEach(tag -> {
             Label tagLabel = new Label(tag.tagName);
-            tagLabel.setStyle("-fx-background-color: derive(" + getTagColor(tag.tagName) + ", -20%)");
-            tags.getChildren().add(tagLabel);
+            tagLabel.setStyle("-fx-background-color: " + getTagColor(tag.tagName));
+            detailsTag.getChildren().add(tagLabel);
         });
     }
 
@@ -129,13 +165,12 @@ public class PersonCard extends UiPart<Region> {
         }
 
         // instanceof handles nulls
-        if (!(other instanceof PersonCard)) {
+        if (!(other instanceof DetailsPanel)) {
             return false;
         }
 
         // state check
-        PersonCard card = (PersonCard) other;
-        return id.getText().equals(card.id.getText())
-                && person.equals(card.person);
+        DetailsPanel panel = (DetailsPanel) other;
+        return person.equals(panel.person);
     }
 }

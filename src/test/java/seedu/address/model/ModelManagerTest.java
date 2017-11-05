@@ -16,9 +16,11 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import seedu.address.commons.events.model.DisplayPictureChangedEvent;
+import seedu.address.commons.events.ui.LoadPersonWebpageEvent;
 import seedu.address.commons.util.FileUtil;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
 import seedu.address.model.person.PersonContainsTagPredicate;
+import seedu.address.model.person.exceptions.PersonNotFoundException;
 import seedu.address.model.reminders.UniqueReminderList;
 import seedu.address.model.tag.Tag;
 import seedu.address.storage.XmlSerializableReminders;
@@ -60,6 +62,13 @@ public class ModelManagerTest {
         ModelManager modelManager = new ModelManager();
         modelManager.addDisplayPicture(TEST_DATA_FOLDER + "1137944384.png", 1137944384);
         assertTrue(eventsCollectorRule.eventsCollector.getMostRecent() instanceof DisplayPictureChangedEvent);
+    }
+
+    @Test
+    public void selectCommandExecuted_eventRaised() throws PersonNotFoundException {
+        ModelManager modelManager = new ModelManager();
+        modelManager.showPersonWebpage(ALICE);
+        assertTrue(eventsCollectorRule.eventsCollector.getMostRecent() instanceof LoadPersonWebpageEvent);
     }
 
     @Test

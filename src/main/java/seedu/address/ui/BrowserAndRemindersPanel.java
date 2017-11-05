@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeSet;
 import java.util.logging.Logger;
 
 import com.google.common.eventbus.Subscribe;
@@ -17,18 +18,31 @@ import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.web.WebView;
 import seedu.address.MainApp;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.ui.BrowserAndRemindersPanelToggleEvent;
+import seedu.address.commons.events.ui.LoadPersonWebpageEvent;
 import seedu.address.commons.events.ui.PersonPanelSelectionChangedEvent;
 import seedu.address.commons.events.ui.PopularContactPanelSelectionChangedEvent;
 import seedu.address.commons.events.ui.SendingEmailEvent;
 import seedu.address.commons.events.ui.ShowLocationEvent;
+import seedu.address.commons.exceptions.IllegalValueException;
+import seedu.address.model.person.Address;
+import seedu.address.model.person.Birthday;
+import seedu.address.model.person.DisplayPicture;
+import seedu.address.model.person.Email;
+import seedu.address.model.person.Name;
+import seedu.address.model.person.Nickname;
+import seedu.address.model.person.Person;
+import seedu.address.model.person.Phone;
+import seedu.address.model.person.PopularityCounter;
 import seedu.address.model.person.ReadOnlyPerson;
 import seedu.address.model.reminders.Reminder;
+import seedu.address.model.tag.Tag;
 
 /**
  * The Browser Panel of the App.
@@ -40,7 +54,7 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
      * in front.
      */
     private enum Node {
-        BROWSER, REMINDERS
+        BROWSER, REMINDERS, DETAILS
     }
 
     public static final String DEFAULT_PAGE = "default.html";
@@ -61,6 +75,7 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
 
     private final Logger logger = LogsCenter.getLogger(this.getClass());
     private BirthdayAndReminderListPanel birthdayAndReminderListPanel;
+    private DetailsPanel personDetails;
     private Node currentlyInFront = Node.REMINDERS;
 
     @FXML
@@ -68,6 +83,10 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
 
     @FXML
     private StackPane remindersPanel;
+
+    @FXML
+    private AnchorPane detailsPanel;
+
 
     public BrowserAndRemindersPanel(ObservableList<ReadOnlyPerson> birthdayPanelFilteredPersonList,
                                     ObservableList<Reminder> reminderList) {
@@ -79,10 +98,19 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
         loadDefaultPage();
 
         birthdayAndReminderListPanel = new BirthdayAndReminderListPanel(birthdayPanelFilteredPersonList, reminderList);
-
         //remindersPanel should be displayed first so no need to shift it to the back.
         remindersPanel.getChildren().add(birthdayAndReminderListPanel.getRoot());
         registerAsAnEventHandler(this);
+        try {
+            personDetails = new DetailsPanel(new Person(new Name("shradheya"), new Phone("00000"),
+                    new Email("tshradheya@gmail.com"), new Address("something"), new Birthday("15-10-1998"),
+                    new Nickname(""), new DisplayPicture(""), new PopularityCounter(), new TreeSet<Tag>()));
+        } catch (IllegalValueException ive) {
+            throw new IllegalArgumentException("Wrong argument");
+        }
+        detailsPanel.getChildren().add(personDetails.getRoot());
+
+        remindersPanel.toFront();
     }
 
     private void loadPersonPage(ReadOnlyPerson person) {
@@ -129,31 +157,53 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
     private void toggleBrowserPanel() {
         switch(currentlyInFront) {
         case BROWSER:
+            setUpToShowRemindersPanel();
             remindersPanel.toFront();
             currentlyInFront = Node.REMINDERS;
             break;
         case REMINDERS:
+            setUpToShowWebBrowser();
             browser.toFront();
             currentlyInFront = Node.BROWSER;
+            break;
+        case DETAILS:
+            setUpToShowRemindersPanel();
+            remindersPanel.toFront();
+            currentlyInFront = Node.REMINDERS;
             break;
         default:
             throw new AssertionError("It should not be possible to land here");
         }
     }
 
-    private void bringBrowserToFront() {
-        browser.toFront();
-        currentlyInFront = Node.BROWSER;
+    private void setUpToShowRemindersPanel() {
+        detailsPanel.setVisible(false);
+        remindersPanel.setVisible(true);
+        browser.setVisible(false);
+    }
+
+    private void setUpToShowDetailsPanel() {
+        detailsPanel.setVisible(true);
+        remindersPanel.setVisible(false);
+        browser.setVisible(false);
     }
 
     /**
      * Set's up the UI to bring browser to front and show location
      */
     private void setUpToShowLocation() {
-        if (currentlyInFront == Node.REMINDERS) {
-            browser.toFront();
-            currentlyInFront = Node.BROWSER;
-        }
+        setUpToShowWebBrowser();
+        remindersPanel.toFront();
+        currentlyInFront = Node.REMINDERS;
+    }
+
+    /**
+     * Set's up the UI to bring browser to front
+     */
+    private void setUpToShowWebBrowser() {
+        browser.setVisible(true);
+        detailsPanel.setVisible(false);
+        remindersPanel.setVisible(false);
     }
 
     /**
@@ -225,15 +275,23 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
     @Subscribe
     private void handlePersonPanelSelectionChangedEvent(PersonPanelSelectionChangedEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
-        loadPersonPage(event.getNewSelection().person);
-        bringBrowserToFront();
+        setUpToShowDetailsPanel();
+        detailsPanel.toFront();
+        currentlyInFront = Node.DETAILS;
+        personDetails = new DetailsPanel(event.getPerson());
+        detailsPanel.getChildren().clear();
+        detailsPanel.getChildren().add(personDetails.getRoot());
     }
 
     @Subscribe
     private void handlePopularContactPanelSelectionChangedEvent(PopularContactPanelSelectionChangedEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
-        loadPersonPage(event.getNewSelection().person);
-        bringBrowserToFront();
+        setUpToShowDetailsPanel();
+        detailsPanel.toFront();
+        currentlyInFront = Node.DETAILS;
+        personDetails = new DetailsPanel(event.getPerson());
+        detailsPanel.getChildren().clear();
+        detailsPanel.getChildren().add(personDetails.getRoot());
     }
 
 
@@ -256,6 +314,14 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
         logger.info(LogsCenter.getEventHandlingLogMessage(event,
                 "Processing email through service of " + event.service.service));
         setUpEmailUrl(event.service.service, event.recipients, event.subject.subject, event.body.body);
+    }
+
+    @Subscribe
+    private void handleLoadPersonPageEvent(LoadPersonWebpageEvent event) {
+        setUpToShowWebBrowser();
+        currentlyInFront = Node.BROWSER;
+        browser.toFront();
+        loadPersonPage(event.getPerson());
     }
 
 }

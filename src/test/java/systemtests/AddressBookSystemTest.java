@@ -33,6 +33,7 @@ import seedu.address.MainApp;
 import seedu.address.TestApp;
 import seedu.address.commons.core.EventsCenter;
 import seedu.address.commons.core.index.Index;
+import seedu.address.logic.commands.DetailsCommand;
 import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.commands.ListCommand;
 import seedu.address.logic.commands.SelectCommand;
@@ -140,6 +141,14 @@ public abstract class AddressBookSystemTest {
     }
 
     /**
+     * Selects the person at {@code index} of the displayed list by details command
+     */
+    protected void selectPersonThroughDetails(Index index) {
+        executeCommand(DetailsCommand.COMMAND_WORD + " " + index.getOneBased());
+        assert getPersonListPanel().getSelectedCardIndex() == index.getZeroBased();
+    }
+
+    /**
      * Asserts that the {@code CommandBox} displays {@code expectedCommandInput}, the {@code ResultDisplay} displays
      * {@code expectedResultMessage}, the model and storage contains the same person objects as {@code expectedModel}
      * and the person list panel displays the persons in the model correctly.
@@ -196,12 +205,29 @@ public abstract class AddressBookSystemTest {
     }
 
     /**
+     * Asserts that details panel children is changed to display the details of the person in the person list panel at
+     * {@code expectedSelectedCardIndex}, and only the card at {@code expectedSelectedCardIndex} is selected.
+     * @see PersonListPanelHandle#isSelectedPersonCardChanged()
+     */
+    protected void assertSelectedCardChangedForDetails(Index expectedSelectedCardIndex) {
+        assertEquals(expectedSelectedCardIndex.getZeroBased(), getPersonListPanel().getSelectedCardIndex());
+    }
+
+    /**
      * Asserts that the browser's url and the selected card in the person list panel remain unchanged.
      * @see BrowserAndRemindersPanelHandle#isUrlChanged()
      * @see PersonListPanelHandle#isSelectedPersonCardChanged()
      */
     protected void assertSelectedCardUnchanged() {
         assertFalse(getBrowserPanel().isUrlChanged());
+        assertFalse(getPersonListPanel().isSelectedPersonCardChanged());
+    }
+
+    /**
+     * Asserts that the selected card in the person list panel remain unchanged.
+     * @see PersonListPanelHandle#isSelectedPersonCardChanged()
+     */
+    protected void assertSelectedCardUnchangedForDetails() {
         assertFalse(getPersonListPanel().isSelectedPersonCardChanged());
     }
 

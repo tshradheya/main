@@ -1,8 +1,8 @@
 package systemtests;
 
 import static seedu.address.commons.core.Messages.MESSAGE_PERSONS_LISTED_OVERVIEW;
+import static seedu.address.logic.commands.DetailsCommand.MESSAGE_DETAILS_PERSON_SUCCESS;
 import static seedu.address.logic.commands.LocationCommand.MESSAGE_FIND_LOCATION_SUCCESS;
-import static seedu.address.logic.commands.SelectCommand.MESSAGE_SELECT_PERSON_SUCCESS;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.address.testutil.TypicalPersons.ALICE;
 import static seedu.address.testutil.TypicalPersons.BENSON;
@@ -14,9 +14,9 @@ import static seedu.address.testutil.TypicalPersons.KEYWORD_TAG_ENEMY;
 import org.junit.Test;
 
 import seedu.address.commons.core.index.Index;
+import seedu.address.logic.commands.DetailsCommand;
 import seedu.address.logic.commands.ListCommand;
 import seedu.address.logic.commands.LocationCommand;
-import seedu.address.logic.commands.SelectCommand;
 import seedu.address.logic.commands.ViewTagCommand;
 import seedu.address.model.Model;
 
@@ -26,11 +26,11 @@ public class PopularContactsSystemTest extends AddressBookSystemTest {
     public void favouriteContactsTest() {
 
         /* Selecting first one to increase popularity counter by one */
-        String command = "   " + SelectCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased() + "   ";
+        String command = "   " + DetailsCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased() + "   ";
         Model expectedModel = getModel();
         ModelHelper.setFilteredListPopularContacts(expectedModel, ALICE, BENSON, CARL, DANIEL, ELLE);
-        assertCommandSuccessForSelect(command, INDEX_FIRST_PERSON);
-        assertSelectedCardChanged(INDEX_FIRST_PERSON);
+        assertCommandSuccessForDetails(command, INDEX_FIRST_PERSON);
+        assertSelectedCardChangedForDetails(INDEX_FIRST_PERSON);
 
 
         /* Executing viewtag to increase popularity counter by one for everyone in the tag */
@@ -64,20 +64,13 @@ public class PopularContactsSystemTest extends AddressBookSystemTest {
      * @param command
      * @param expectedSelectedCardIndex
      */
-    private void assertCommandSuccessForSelect(String command, Index expectedSelectedCardIndex) {
+    private void assertCommandSuccessForDetails(String command, Index expectedSelectedCardIndex) {
         Model expectedModel = getModel();
         String expectedResultMessage = String.format(
-                MESSAGE_SELECT_PERSON_SUCCESS, expectedSelectedCardIndex.getOneBased());
-        int preExecutionSelectedCardIndex = getPersonListPanel().getSelectedCardIndex();
+                MESSAGE_DETAILS_PERSON_SUCCESS, expectedSelectedCardIndex.getOneBased());
 
         executeCommand(command);
         assertApplicationDisplaysExpected("", expectedResultMessage, expectedModel);
-
-        if (preExecutionSelectedCardIndex == expectedSelectedCardIndex.getZeroBased()) {
-            assertSelectedCardUnchanged();
-        } else {
-            assertSelectedCardChanged(expectedSelectedCardIndex);
-        }
 
         assertCommandBoxShowsDefaultStyle();
         assertStatusBarUnchangedExceptSyncStatus();

@@ -771,43 +771,19 @@ public class BrowserAndRemindersPanel extends UIPart<Region> {
     private void toggleBrowserPanel() {
         switch(currentlyInFront) {
         case BROWSER:
-            birthdayList.toFront();
+            setUpToShowRemindersPanel();
+            remindersPanel.toFront();
             currentlyInFront = Node.REMINDERS;
-            raise(new TurnLabelsOnEvent());
             break;
         case REMINDERS:
+            setUpToShowWebBrowser();
             browser.toFront();
             currentlyInFront = Node.BROWSER;
-            raise(new TurnLabelsOffEvent());
             break;
-        default:
-            //... Should not come to the default case ...
+
+        //... Other cases ...
+
         }
-    }
-}
-----
-
-As seen from the code snippet above, 2 other events can still be raised; the `TurnLabelsOnEvent` and `TurnLabelsOffEvent`.
-When the browser is being brought to the front, the *birthdays* and *reminders* heading just above the list of birthday reminders and
-reminders should be turned off, and when the reminders panel is brought to the front, these heading should be turned on. The handling of these 2 events
-are in the `HeaderPane` class, where the variables `birthdays` and `reminders`, representing the `Label` header object for birthday reminders and reminders
-respectively, are turned on and off by simply setting their visibility appropriately.
-
-[source, java]
-----
-public class HeaderPane extends UIPart<Region> {
-    @Subscribe
-    private void handleTurnLabelsOffEvent(TurnLabelsOffEvent event) {
-        logger.info(LogsCenter.getEventHandlingLogMessage(event));
-        birthdays.setVisible(false);
-        reminders.setVisible(false);
-    }
-
-    @Subscribe
-    private void handleTurnLabelsOnEvent(TurnLabelsOnEvent event) {
-         logger.info(LogsCenter.getEventHandlingLogMessage(event));
-         birthdays.setVisible(true);
-         reminders.setVisible(true);
     }
 }
 ----
@@ -818,22 +794,23 @@ One important thing to note is that when the `select` command is executed, the b
 ----
 public class BrowserAndRemindersPanel extends UIPart<Region> {
     @Subscribe
-    private void handlePersonPanelSelectionChangedEvent(PersonPanelSelectionChangedEvent event) {
-        logger.info(LogsCenter.getEventHandlingLogMessage(event));
-        loadPersonPage(event.getNewSelection().person);
-        bringBrowserToFront();
-        raise(new TurnLabelsOffEvent());
+    private void handleLoadPersonPageEvent(LoadPersonWebpageEvent event) {
+        setUpToShowWebBrowser();
+        currentlyInFront = Node.BROWSER;
+        browser.toFront();
+        loadPersonPage(event.getPerson());
     }
 
-    private void bringBrowserToFront() {
-        browser.toFront();
-        currentlyInFront = Node.BROWSER;
-    }
+    private void setUpToShowWebBrowser() {
+        browser.setVisible(true);
+        detailsPanel.setVisible(false);
+        remindersPanel.setVisible(false);
+     }
 }
 ----
 
-The `PersonPanelSelectionChangedEvent` is posted whenever the `select` command is executed. Within the `handlePersonPanelSelectionChangedEvent`
-method, there is the method `bringBrowserToFront`, which would then bring the browser panel to the front no matter what.
+The `LoadPersonWebpageEvent` is posted whenever the `select` command is executed. Within the `handleLoadPersonPageEvent`
+method, the statement `browser.toFront()` and the method `setUpToShowWebBrowser` would then bring the browser panel to the front no matter what, and also make it visible.
 
 ==== Design Considerations
 
@@ -846,10 +823,10 @@ Pros: Users do not need to manually switch between browser and reminders +
 Cons: Too little space for browser and reminders. Difficult to read.
 
 **Aspect:** Implementation of toggling mechanism +
-**Alternative 1 (current choice):** Bring browser and reminders panel to the front as required +
+**Alternative 1 (current choice):** Bring browser and reminders panel to the front as required, on top of setting their visibility suitably +
 Pros: Users can interact with both browser and reminders (can scroll through reminders etc) +
 Cons: More difficult to implement +
-**Alternative 2:** Set visibility of browser as required (set browser visibility to false to display reminders and vice versa) +
+**Alternative 2:** Only set visibility of browser and reminders panel as required (set browser visibility to false to display reminders and vice versa) +
 Pros: Easier to implement +
 Cons: Users cannot interact with the reminders panel (since the browser is technically still at the front)
 
@@ -860,13 +837,14 @@ image::RemindersUML.png[width="790"]
 _Figure 1: UML diagram showing the implementation of reminders_
 
 The `Reminder` object represents a reminder in iContacts. It contains a `String` variable, which represents
-the actual reminder from the user, and also a `Date` and `Time` object which represents the date and time of the reminder respectively. +
+the actual reminder from the user, and also a `Date`, `Time` and `Status` object which represents the date, time and link:#status[status] of the reminder respectively. +
 
 In terms of how `Reminder` objects are kept in-memory during the execution of the program, `Reminder` objects are
 kept within `UniqueReminderList`, which assures that there are no duplicate `Reminder` objects. The `UniqueReminderList`
 object is then kept and used by `ModelManager` to carry out commands related to reminders while the program is running. +
 
-`Reminder` objects are stored in a XML storage file in a JAXB-friendly version `XmlAdaptedReminder`.
+`Reminder` objects are stored in a XML storage file in a JAXB-friendly version `XmlAdaptedReminder`. Notably, the `Status` object is not stored along with
+the `Reminder` object; it is instantiated during runtime when the `Reminder` object is instantiated.
 When the program starts, `XmlAdaptedReminder` objects are read in as `XmlSerializableReminders` via `XmlFileStorage` and `XmlUtil`.
 This can be seen below:
 
@@ -1779,4 +1757,12 @@ AppVeyor
 
 ....
 A hosted, distributed integration service used to build and test software projects hosted at GitHub on a Microsoft Windows virtual machine.
+....
+
+
+[[status]]
+Status
+
+....
+A description of the current state of the event, whether it has past, is happening now, is within three days or later.
 ....

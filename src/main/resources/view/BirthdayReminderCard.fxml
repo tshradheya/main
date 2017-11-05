@@ -13,6 +13,7 @@
     <GridPane HBox.hgrow="ALWAYS">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10" prefWidth="150" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
         </columnConstraints>
         <VBox alignment="CENTER_LEFT" minHeight="105" GridPane.columnIndex="0">
             <padding>
@@ -30,6 +31,7 @@
             </HBox>
             <Label fx:id="birthday" styleClass="cell_small_label" text="\$birthday" />
         </VBox>
+        <Label text="icon" GridPane.columnIndex="1"/>
         <rowConstraints>
             <RowConstraints />
         </rowConstraints>

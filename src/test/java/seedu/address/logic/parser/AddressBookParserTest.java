@@ -19,6 +19,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_PATH;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_RANGE;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.address.testutil.TypicalPath.PATH_EXPORT;
+import static seedu.address.testutil.TypicalPath.PATH_IMPORT;
 import static seedu.address.testutil.TypicalRange.RANGE_ALL;
 
 import java.util.Arrays;
@@ -47,6 +48,7 @@ import seedu.address.logic.commands.FilterCommand;
 import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.HistoryCommand;
+import seedu.address.logic.commands.ImportCommand;
 import seedu.address.logic.commands.ListCommand;
 import seedu.address.logic.commands.LocationCommand;
 import seedu.address.logic.commands.NicknameCommand;
@@ -271,6 +273,7 @@ public class AddressBookParserTest {
         assertTrue(parser.parseCommand(ListCommand.COMMAND_WORD + " 3") instanceof ListCommand);
     }
 
+    //@@author chuaweiwen
     @Test
     public void parseCommand_nickname() throws Exception {
         NicknameCommand command = (NicknameCommand) parser.parseCommand(
@@ -286,6 +289,7 @@ public class AddressBookParserTest {
         Theme theme = new Theme(ThemeNames.THEME_DARK, ThemeNames.THEME_DARK_CSS);
         assertEquals(new ThemeCommand(theme), command);
     }
+    //@@author
 
     @Test
     public void parseCommand_displayPicture() throws  Exception {
@@ -332,6 +336,7 @@ public class AddressBookParserTest {
         assertEquals(new LocationCommand(INDEX_FIRST_PERSON), command);
     }
 
+    //@@author chuaweiwen
     @Test
     public void parseCommand_filter() throws Exception {
         List<String> nameKeywords = Arrays.asList("foo", "bar", "baz");
@@ -340,6 +345,7 @@ public class AddressBookParserTest {
                 FilterCommand.COMMAND_WORD + " n/foo bar baz t/friends");
         assertEquals(new FilterCommand(new NameAndTagsContainsKeywordsPredicate(nameKeywords, tagKeywords)), command);
     }
+    //@@author
 
     @Test
     public void parseCommand_redoCommandWord_returnsRedoCommand() throws Exception {
@@ -384,5 +390,12 @@ public class AddressBookParserTest {
         ExportCommand command = (ExportCommand) parser.parseCommand(ExportCommand.COMMAND_WORD + " "
             + PREFIX_RANGE + RANGE_ALL + " " + PREFIX_PATH + PATH_EXPORT);
         assertEquals(new ExportCommand(RANGE_ALL, PATH_EXPORT), command);
+    }
+
+    @Test
+    public void parseCommand_import() throws Exception {
+        ImportCommand command = (ImportCommand) parser.parseCommand(ImportCommand.COMMAND_WORD + " "
+                + PREFIX_PATH + PATH_IMPORT);
+        assertEquals(new ImportCommand(PATH_IMPORT), command);
     }
 }

@@ -18,6 +18,7 @@ public class Reminder {
     private ObjectProperty<String> reminder;
     private ObjectProperty<Date> date;
     private ObjectProperty<Time> time;
+    private ObjectProperty<Status> status;
 
     /**
      * Every field must be present and not null.
@@ -28,6 +29,7 @@ public class Reminder {
         this.reminder = new SimpleObjectProperty<>(reminder);
         this.date = new SimpleObjectProperty<>(date);
         this.time = new SimpleObjectProperty<>(time);
+        this.status = new SimpleObjectProperty<>(new Status(this));
     }
 
     /**
@@ -75,6 +77,22 @@ public class Reminder {
 
     public LocalDateTime getLocalDateTime() {
         return LocalDateTime.of(date.get().toLocalDate(), time.get().toLocalTime());
+    }
+
+    public boolean hasEventPast() {
+        return status.get().hasEventPast();
+    }
+
+    public boolean isEventToday() {
+        return status.get().isEventToday();
+    }
+
+    public boolean isEventWithinThreeDays() {
+        return status.get().isEventWithinThreeDays();
+    }
+
+    public ObjectProperty<Status> statusProperty() {
+        return status;
     }
 
     @Override

@@ -2,6 +2,10 @@ package seedu.address.model.person;
 
 import static java.util.Objects.requireNonNull;
 
+import java.time.DateTimeException;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+
 import seedu.address.commons.exceptions.IllegalValueException;
 
 /**
@@ -19,22 +23,10 @@ public class Birthday {
             + "Example: 21/10/1995, 21-05-1996. 8.10.1987";
     public static final int EMPTY_BIRTHDAY_FIELD_MONTH = 0;
     public static final int EMPTY_BIRTHDAY_FIELD_DAY = 0;
-    private static final int[] MONTH_TO_DAY_MAPPING = {31, 28, 31, 30, 31, 30, 31, 31,
-        30, 31, 30, 31};
 
     private static final String EMPTY_STRING = "";
 
     private static final String BIRTHDAY_DASH_SEPARATOR = "-";
-
-    private static final int ZERO_BASED_ADJUSTMENT = 1;
-
-    private static final int SMALLEST_POSSIBLE_DAY = 1;
-
-    private static final int LEAP_YEAR_MONTH_FEBRUARY = 2;
-    private static final int LEAP_YEAR_DAY = 29;
-    private static final int LEAP_YEAR_REQUIREMENT_FIRST = 4;
-    private static final int LEAP_YEAR_REQUIREMENT_SECOND = 100;
-    private static final int LEAP_YEAR_REQUIREMENT_THIRD = 400;
 
     private static final int DATE_DAY_INDEX = 0;
     private static final int DATE_MONTH_INDEX = 1;
@@ -44,10 +36,16 @@ public class Birthday {
             + "(0[1-9]|1[0-2]|[1-9])[///./-](19|20)[0-9][0-9]";
     private static final String BIRTHDAY_SPLIT_REGEX = "[///./-]";
 
+    private static final int BIRTHDAY_TOMORROW_VALIDATOR = 1;
+
     public final String value;
 
+    private final LocalDate currentDate;
+
+
     /**
-     * Validates the given birthday.
+     * Validates the given birthday and instantiate a LocalDate object with the date as of the date
+     * this Birthday object was instantiated.
      *
      * @throws IllegalValueException if given birthday string is invalid.
      */
@@ -64,36 +62,18 @@ public class Birthday {
         } else {
             this.value = convertToDefaultDateFormat(birthday);
         }
+
+        currentDate = LocalDate.now();
     }
 
     /**
-     * Get the month of the birthday in this Birthday object.
-     * If the birthday field is empty, return EMPTY_BIRTHDAY_FIELD_MONTH
+     * This constructor is used for testing purposes.
+     * This is because the use of {@code LocalDate.now()} is not static and might lead to
+     * tests failing depending on the time the tests are conducted.
      */
-    public int getMonthOfBirthday() {
-        if (value.isEmpty()) {
-            return EMPTY_BIRTHDAY_FIELD_MONTH;
-        }
-        String[] splitDate = value.split(BIRTHDAY_DASH_SEPARATOR);
-        try {
-            final int month = Integer.parseInt(splitDate[DATE_MONTH_INDEX]);
-            return month;
-        } catch (NumberFormatException nfe) {
-            throw new AssertionError("Should not happen");
-        }
-    }
-
-    /**
-     * Get the day of the birthday in this Birthday object.
-     * If the birthday field is empty, return EMPTY_BIRTHDAY_FIELD_DAY
-     */
-    public int getDayOfBirthday() {
-        if (value.isEmpty()) {
-            return EMPTY_BIRTHDAY_FIELD_DAY;
-        }
-        String[] splitDate = value.split(BIRTHDAY_DASH_SEPARATOR);
-        final int day = Integer.parseInt(splitDate[DATE_DAY_INDEX]);
-        return day;
+    private Birthday(String birthday, LocalDate currentDateForTesting) {
+        this.value = convertToDefaultDateFormat(birthday);
+        this.currentDate = currentDateForTesting;
     }
 
     /**
@@ -117,57 +97,95 @@ public class Birthday {
     }
 
     /**
+     * Return a Birthday instance that is used for testing.
+     */
+    public static Birthday getBirthdayTestInstance(String birthday, LocalDate currentDateForTesting) {
+        Birthday testInstance = new Birthday(birthday, currentDateForTesting);
+        return testInstance;
+    }
+
+    /**
+     * Get the month of the birthday in this Birthday object.
+     * If the birthday field is empty, return EMPTY_BIRTHDAY_FIELD_MONTH
+     */
+    public int getMonthOfBirthday() {
+        if (value.isEmpty()) {
+            return EMPTY_BIRTHDAY_FIELD_MONTH;
+        }
+        String[] splitDate = getSplitDate(value);
+        try {
+            final int month = Integer.parseInt(splitDate[DATE_MONTH_INDEX]);
+            return month;
+        } catch (NumberFormatException nfe) {
+            throw new AssertionError("Should not happen");
+        }
+    }
+
+    /**
+     * Get the day of the birthday in this Birthday object.
+     * If the birthday field is empty, return EMPTY_BIRTHDAY_FIELD_DAY
+     */
+    public int getDayOfBirthday() {
+        if (value.isEmpty()) {
+            return EMPTY_BIRTHDAY_FIELD_DAY;
+        }
+        String[] splitDate = getSplitDate(value);
+        final int day = Integer.parseInt(splitDate[DATE_DAY_INDEX]);
+        return day;
+    }
+
+    /**
+     * Returns true if the date for this Birthday object is the same
+     * as the date today (relative to the date this Birthday object was instantiated).
+     */
+    public boolean isBirthdayToday() {
+        if (value.isEmpty()) {
+            return false;
+        }
+        final String[] splitDate = getSplitDate(value);
+        final int year = Integer.parseInt(splitDate[DATE_YEAR_INDEX]);
+        final int month = Integer.parseInt(splitDate[DATE_MONTH_INDEX]);
+        final int day = Integer.parseInt(splitDate[DATE_DAY_INDEX]);
+
+        final LocalDate birthday = LocalDate.of(year, month, day);
+
+        return birthday.equals(currentDate);
+    }
+
+    /**
+     * Returns true of the date for this Birthday object is tomorrow
+     * (relative to the date this Birthday object was instantiated)
+     */
+    public boolean isBirthdayTomorrow() {
+        if (value.isEmpty()) {
+            return false;
+        }
+        final String[] splitDate = getSplitDate(value);
+        final int year = Integer.parseInt(splitDate[DATE_YEAR_INDEX]);
+        final int month = Integer.parseInt(splitDate[DATE_MONTH_INDEX]);
+        final int day = Integer.parseInt(splitDate[DATE_DAY_INDEX]);
+
+        final LocalDate birthday = LocalDate.of(year, month, day);
+        final long daysUntilBirthday = currentDate.until(birthday, ChronoUnit.DAYS);
+
+        return daysUntilBirthday == BIRTHDAY_TOMORROW_VALIDATOR;
+    }
+
+    /**
      * Returns true if a given date is a valid date.
      * A date is valid if it exists.
      */
     private static boolean isValidDate(String[] splitDate) {
-        if (isValidLeapDay(splitDate)) {
-            return true;
-        }
+        final int year = Integer.parseInt(splitDate[DATE_YEAR_INDEX]);
+        final int month = Integer.parseInt(splitDate[DATE_MONTH_INDEX]);
+        final int day = Integer.parseInt(splitDate[DATE_DAY_INDEX]);
 
         try {
-            final int day = Integer.parseInt(splitDate[DATE_DAY_INDEX]);
-            final int month = Integer.parseInt(splitDate[DATE_MONTH_INDEX]);
-            final int dayUpperLimitForMonth = MONTH_TO_DAY_MAPPING[month - ZERO_BASED_ADJUSTMENT];
-            if (day < SMALLEST_POSSIBLE_DAY || day > dayUpperLimitForMonth) {
-                return false;
-            }
-        } catch (NumberFormatException nfe) {
-            throw new AssertionError("Not possible as birthday has passed through the regex");
+            LocalDate.of(year, month, day);
+        } catch (DateTimeException dte) {
+            return false;
         }
         return true;
-    }
-
-    /**
-     * Returns true if a given date is a valid leap day.
-     */
-    private static boolean isValidLeapDay(String[] splitDate) {
-        try {
-            final int day = Integer.parseInt(splitDate[DATE_DAY_INDEX]);
-            final int month = Integer.parseInt(splitDate[DATE_MONTH_INDEX]);
-            final int year = Integer.parseInt(splitDate[DATE_YEAR_INDEX]);
-            if (!isLeapYear(year) || day != LEAP_YEAR_DAY || month != LEAP_YEAR_MONTH_FEBRUARY) {
-                return false;
-            }
-        } catch (NumberFormatException nfe) {
-            throw new AssertionError("Not possible as birthday has passed through the regex");
-        }
-        return true;
-    }
-
-    /**
-     * Returns true if the year is a valid leap year.
-     * Algorithm to determine is a year is a valid leap year:
-     * https://support.microsoft.com/en-us/help/214019/method-to-determine-whether-a-year-is-a-leap-year
-     */
-    private static boolean isLeapYear(int year) {
-        if (year % LEAP_YEAR_REQUIREMENT_FIRST == 0 && year % LEAP_YEAR_REQUIREMENT_SECOND != 0) {
-            return true;
-        } else if (year % LEAP_YEAR_REQUIREMENT_FIRST == 0 && year % LEAP_YEAR_REQUIREMENT_SECOND == 0
-                && year % LEAP_YEAR_REQUIREMENT_THIRD == 0) {
-            return true;
-        }
-        return false;
     }
 
     /**

@@ -35,12 +35,15 @@ public class BirthdayReminderCard extends UiPart<Region> {
     private Label nickname;
     @FXML
     private Label birthday;
+    @FXML
+    private Label icon;
 
     public BirthdayReminderCard(ReadOnlyPerson person, int displayedIndex) {
         super(FXML);
         this.person = person;
         id.setText(displayedIndex + ". ");
         bindListeners(person);
+        initIcon();
     }
 
 
@@ -52,6 +55,18 @@ public class BirthdayReminderCard extends UiPart<Region> {
         name.textProperty().bind(Bindings.convert(person.nameProperty()));
         nickname.textProperty().bind(Bindings.convert(person.nicknameProperty()));
         birthday.textProperty().bind(Bindings.convert(person.birthdayProperty()));
+    }
+
+    /**
+     * Initiates the appropriate icon depending on {@ode person}'s birthday.
+     */
+    private void initIcon() {
+        if (person.getBirthday().isBirthdayToday()) {
+            //TODO: set visibility to true and birthday today icon
+        } else if (person.getBirthday().isBirthdayTomorrow()) {
+            //TODO: set visibility to true and birthday tomorrow icon
+        }
+
     }
 
     @Override

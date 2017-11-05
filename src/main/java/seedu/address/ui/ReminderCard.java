@@ -24,12 +24,27 @@ public class ReminderCard extends UiPart<Region> {
     private Label date;
     @FXML
     private Label time;
+    @FXML
+    private Label status;
 
     public ReminderCard(Reminder reminder, int displayedIndex) {
         super(FXML);
         source = reminder;
         id.setText(displayedIndex + ". ");
         bindListeners(reminder);
+    }
+
+
+    public boolean isEventToday() {
+        return source.isEventToday();
+    }
+
+    public boolean isEventWithinThreeDays() {
+        return source.isEventWithinThreeDays();
+    }
+
+    public boolean hasEventPast() {
+        return source.hasEventPast();
     }
 
     /**
@@ -40,7 +55,9 @@ public class ReminderCard extends UiPart<Region> {
         reminder.textProperty().bind(Bindings.convert(source.reminderProperty()));
         date.textProperty().bind(Bindings.convert(source.dateProperty()));
         time.textProperty().bind(Bindings.convert(source.timeProperty()));
+        status.textProperty().bind(Bindings.convert(source.statusProperty()));
     }
+
 
     @Override
     public boolean equals(Object other) {

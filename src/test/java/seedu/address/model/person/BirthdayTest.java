@@ -1,7 +1,13 @@
 package seedu.address.model.person;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static seedu.address.model.person.Birthday.EMPTY_BIRTHDAY_FIELD_DAY;
+import static seedu.address.model.person.Birthday.EMPTY_BIRTHDAY_FIELD_MONTH;
+import static seedu.address.model.person.Birthday.getBirthdayTestInstance;
+
+import java.time.LocalDate;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -11,6 +17,62 @@ public class BirthdayTest {
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
+
+    @Test
+    public void getMonthOfBirthday() throws Exception {
+        // non-empty birthday string
+        Birthday birthday1 = new Birthday("21/11/2017");
+        assertEquals(11, birthday1.getMonthOfBirthday());
+
+        // empty birthday string
+        Birthday emptyBirthday = new Birthday("");
+        assertEquals(EMPTY_BIRTHDAY_FIELD_MONTH, emptyBirthday.getMonthOfBirthday());
+    }
+
+    @Test
+    public void getDayOfBirthday() throws Exception {
+        // non-empty birthday string
+        Birthday birthday1 = new Birthday("21/11/2017");
+        assertEquals(21, birthday1.getDayOfBirthday());
+
+        // empty birthday string
+        Birthday emptyBirthday = new Birthday("");
+        assertEquals(EMPTY_BIRTHDAY_FIELD_DAY, emptyBirthday.getDayOfBirthday());
+    }
+
+    @Test
+    public void isBirthdayToday() {
+        LocalDate testCurrentDate = LocalDate.of(2017, 12, 10);
+
+        // is birthday today -> returns true
+        Birthday birthdayToday = getBirthdayTestInstance("10/12/2017", testCurrentDate);
+        assertTrue(birthdayToday.isBirthdayToday());
+
+        // is not birthday today -> returns true
+        Birthday notBirthdayTodayPast = getBirthdayTestInstance("11/12/2017", testCurrentDate);
+        assertFalse(notBirthdayTodayPast.isBirthdayToday());
+
+        Birthday notBirthdayTodayUpcoming = getBirthdayTestInstance("13/12/2017", testCurrentDate);
+        assertFalse(notBirthdayTodayUpcoming.isBirthdayToday());
+
+    }
+
+    @Test
+    public void isBirthdayTomorrow() {
+        LocalDate testCurrentDate = LocalDate.of(2017, 12, 10);
+
+        // is birthday tomorrow -> returns true
+        Birthday birthdayTomorrow = getBirthdayTestInstance("11/12/2017", testCurrentDate);
+        assertTrue(birthdayTomorrow.isBirthdayTomorrow());
+
+        // is not birthday tomorrow -> returns false
+        Birthday birthdayToday = getBirthdayTestInstance("10/12/2017", testCurrentDate);
+        assertFalse(birthdayToday.isBirthdayTomorrow());
+
+        Birthday birthdayAfterTomorrow = getBirthdayTestInstance("12/12/2017", testCurrentDate);
+        assertFalse(birthdayAfterTomorrow.isBirthdayTomorrow());
+
+    }
 
     @Test
     public void isValidBirthday() {

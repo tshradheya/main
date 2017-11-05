@@ -18,6 +18,10 @@ import seedu.address.model.reminders.Reminder;
  */
 public class BirthdayAndReminderListPanel extends UiPart<Region> {
     private static final String FXML = "BirthdayAndReminderListPanel.fxml";
+    private static final String DIRECTORY_PATH = "view/";
+    private static final String REMINDER_TODAY_STYLE_SHEET = DIRECTORY_PATH + "reminderToday.css";
+    private static final String REMINDER_THREE_DAYS_STYLE_SHEET = DIRECTORY_PATH + "reminderWithinThreeDays.css";
+    private static final String REMINDER_NORMAL_STYLE_SHEET = DIRECTORY_PATH + "reminderNormal.css";
     private final Logger logger = LogsCenter.getLogger(PersonListPanel.class);
 
     @FXML
@@ -58,9 +62,11 @@ public class BirthdayAndReminderListPanel extends UiPart<Region> {
             if (empty || person == null) {
                 setGraphic(null);
                 setText(null);
+                return;
             } else {
                 setGraphic(person.getRoot());
             }
+
         }
     }
 
@@ -76,9 +82,18 @@ public class BirthdayAndReminderListPanel extends UiPart<Region> {
             if (empty || reminder == null) {
                 setGraphic(null);
                 setText(null);
-            } else {
-                setGraphic(reminder.getRoot());
+                return;
             }
+            this.getStylesheets().clear();
+            if (reminder.isEventToday()) {
+                this.getStylesheets().add(REMINDER_TODAY_STYLE_SHEET);
+            } else if (reminder.isEventWithinThreeDays()) {
+                this.getStylesheets().add(REMINDER_THREE_DAYS_STYLE_SHEET);
+            } else if (!reminder.hasEventPast()) {
+                this.getStylesheets().add(REMINDER_NORMAL_STYLE_SHEET);
+            }
+
+            setGraphic(reminder.getRoot());
         }
     }
 

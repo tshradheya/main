@@ -1,13 +1,4 @@
 # chuaweiwen
-###### \java\seedu\address\MainApp.java
-``` java
-    @Subscribe
-    public void handleChangeThemeRequestEvent(ChangeThemeRequestEvent event) {
-        logger.info(LogsCenter.getEventHandlingLogMessage(event));
-        String filePath = "view/" + event.theme.getCss();
-        userPrefs.setThemeFilePath(filePath);
-    }
-```
 ###### \java\seedu\address\commons\events\ui\ChangeThemeRequestEvent.java
 ``` java
 package seedu.address.commons.events.ui;
@@ -258,18 +249,12 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Stream;
 
-import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.logic.commands.FilterCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.NameAndTagsContainsKeywordsPredicate;
-import seedu.address.model.tag.Tag;
 
 /**
  * Parses input arguments and creates a new FilterCommand object
@@ -291,43 +276,20 @@ public class FilterCommandParser implements Parser<FilterCommand> {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FilterCommand.MESSAGE_USAGE));
         }
 
-        String name;
-        List<String> tags;
+        List<String> nameKeywordsList = new ArrayList<>();
+        List<String> tagsKeywordsList = new ArrayList<>();
 
         String regex = "\\s+";
-        String[] nameKeywords;
-
-        List<String> nameKeywordsList;
-        List<String> tagsKeywordsList;
 
         // Extracting name
-        if (argMultimap.getValue(PREFIX_NAME).isPresent()) {
-            name = argMultimap.getValue(PREFIX_NAME).get();
-            // name cannot be empty
-            if (name.length() == 0) {
-                throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FilterCommand.MESSAGE_USAGE));
-            }
-            nameKeywords = name.split(regex);
-            nameKeywordsList = Arrays.asList(nameKeywords);
-        } else {
-            nameKeywordsList = new ArrayList<>(); // empty list
+        if (!argMultimap.getAllValues(PREFIX_NAME).isEmpty()) {
+            List<String> unprocessedNames = argMultimap.getAllValues(PREFIX_NAME);
+            nameKeywordsList = Arrays.asList(getKeywordsFromList(unprocessedNames, regex));
         }
 
-        if (argMultimap.getAllValues(PREFIX_TAG).isEmpty()) {
-            tags = new ArrayList<>();
-        } else {
-            tags = argMultimap.getAllValues(PREFIX_TAG);
-        }
-
-        // Throws an error if both name and tags are empty.
-        if (tags.isEmpty() && nameKeywordsList.isEmpty()) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FilterCommand.MESSAGE_USAGE));
-        }
-
-        if (!tags.isEmpty()) {
-            tagsKeywordsList = Arrays.asList(getKeywordsFromTags(tags, regex));
-        } else {
-            tagsKeywordsList = new ArrayList<>(); // empty list
+        if (!argMultimap.getAllValues(PREFIX_TAG).isEmpty()) {
+            List<String> unprocessedTags = argMultimap.getAllValues(PREFIX_TAG);
+            tagsKeywordsList = Arrays.asList(getKeywordsFromList(unprocessedTags, regex));
         }
 
         return new FilterCommand(new NameAndTagsContainsKeywordsPredicate(nameKeywordsList, tagsKeywordsList));
@@ -337,31 +299,16 @@ public class FilterCommandParser implements Parser<FilterCommand> {
         return Stream.of(prefixes).anyMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
     }
 
-    /**
-     * Parses {@code Collection<String> tags} into a {@code Set<Tag>} if {@code tags} is non-empty.
-     * If {@code tags} contain only one element which is an empty string, it will be parsed into a
-     * {@code Set<Tag>} containing zero tags.
-     */
-    private Optional<Set<Tag>> parseTagsForEdit(Collection<String> tags) throws IllegalValueException {
-        assert tags != null;
-
-        if (tags.isEmpty()) {
-            return Optional.empty();
-        }
-        Collection<String> tagSet = tags.size() == 1 && tags.contains("") ? Collections.emptySet() : tags;
-        return Optional.of(ParserUtil.parseTags(tagSet));
-    }
-
-    private String[] getKeywordsFromTags(List<String> tagList, String regex) throws ParseException {
-        String tagKeywords = "";
-        for (String tag : tagList) {
-            // tags cannot be empty
-            if (tag.length() == 0) {
+    private String[] getKeywordsFromList(List<String> list, String regex) throws ParseException {
+        String keywords = "";
+        for (String string : list) {
+            // string cannot be empty
+            if (string.length() == 0) {
                 throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FilterCommand.MESSAGE_USAGE));
             }
-            tagKeywords = tagKeywords + " " + tag;
+            keywords = keywords + " " + string;
         }
-        return tagKeywords.trim().split(regex);
+        return keywords.trim().split(regex);
     }
 }
 ```
@@ -514,6 +461,15 @@ public class ThemeNames {
     public static final String THEME_SKY_CSS = "SkyTheme.css";
 }
 ```
+###### \java\seedu\address\MainApp.java
+``` java
+    @Subscribe
+    public void handleChangeThemeRequestEvent(ChangeThemeRequestEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event));
+        String filePath = "view/" + event.theme.getCss();
+        userPrefs.setThemeFilePath(filePath);
+    }
+```
 ###### \java\seedu\address\model\person\NameAndTagsContainsKeywordsPredicate.java
 ``` java
 package seedu.address.model.person;
@@ -553,7 +509,7 @@ public class NameAndTagsContainsKeywordsPredicate implements Predicate<ReadOnlyP
 
         boolean nameFound = false;
         if (!nameKeywords.isEmpty()) {
-            nameFound = nameKeywords.stream().anyMatch(nameKeywords -> StringUtil
+            nameFound = nameKeywords.stream().allMatch(nameKeywords -> StringUtil
                     .containsWordIgnoreCase(person.getName().fullName, nameKeywords));
         }
 
@@ -569,14 +525,13 @@ public class NameAndTagsContainsKeywordsPredicate implements Predicate<ReadOnlyP
     }
 
     /**
-     * Counts the number of matching tags of a person person and returns the count
+     * Counts the number of matching tags of a person and returns the count
      */
     public int countTagMatches(ReadOnlyPerson person) {
         int tagsMatchedCount = 0;
 
-        Set<Tag> tagsOfPerson = person.getTags();
-        for (Tag personTag : tagsOfPerson) {
-            if (hasTag(personTag)) {
+        for (String keywords : tagKeywords) {
+            if (hasTag(keywords, person)) {
                 tagsMatchedCount++;
             }
         }
@@ -584,11 +539,12 @@ public class NameAndTagsContainsKeywordsPredicate implements Predicate<ReadOnlyP
     }
 
     /**
-     * Returns true if the tag can be found in the tag keywords. Otherwise returns false.
+     * Returns true if the person's tag can be found in the keywords. Otherwise returns false.
      */
-    public boolean hasTag(Tag tag) {
-        for (String findTag : tagKeywords) {
-            if (tag.tagName.equalsIgnoreCase(findTag)) {
+    public boolean hasTag(String keywords, ReadOnlyPerson person) {
+        Set<Tag> tagsOfPerson = person.getTags();
+        for (Tag tag : tagsOfPerson) {
+            if (tag.tagName.equalsIgnoreCase(keywords)) {
                 return true;
             }
         }
@@ -650,12 +606,12 @@ public class Nickname {
 ```
 ###### \java\seedu\address\model\UserPrefs.java
 ``` java
-    public String getThemePath() {
-        return themePath;
+    public String getThemeFilePath() {
+        return themeFilePath;
     }
 
-    public void setThemePath(String themePath) {
-        this.themePath = themePath;
+    public void setThemeFilePath(String themeFilePath) {
+        this.themeFilePath = themeFilePath;
     }
 ```
 ###### \java\seedu\address\ui\MainWindow.java

@@ -30,8 +30,6 @@ import seedu.address.commons.events.ui.PersonPanelSelectionChangedEvent;
 import seedu.address.commons.events.ui.PopularContactPanelSelectionChangedEvent;
 import seedu.address.commons.events.ui.SendingEmailEvent;
 import seedu.address.commons.events.ui.ShowLocationEvent;
-import seedu.address.commons.events.ui.TurnLabelsOffEvent;
-import seedu.address.commons.events.ui.TurnLabelsOnEvent;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Birthday;
@@ -162,19 +160,16 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
             setUpToShowRemindersPanel();
             remindersPanel.toFront();
             currentlyInFront = Node.REMINDERS;
-            raise(new TurnLabelsOnEvent());
             break;
         case REMINDERS:
             setUpToShowWebBrowser();
             browser.toFront();
             currentlyInFront = Node.BROWSER;
-            raise(new TurnLabelsOffEvent());
             break;
         case DETAILS:
             setUpToShowRemindersPanel();
             remindersPanel.toFront();
             currentlyInFront = Node.REMINDERS;
-            raise(new TurnLabelsOnEvent());
             break;
         default:
             throw new AssertionError("It should not be possible to land here");
@@ -200,7 +195,6 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
         setUpToShowWebBrowser();
         remindersPanel.toFront();
         currentlyInFront = Node.REMINDERS;
-        raise(new TurnLabelsOffEvent());
     }
 
     /**
@@ -287,7 +281,6 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
         personDetails = new DetailsPanel(event.getPerson());
         detailsPanel.getChildren().clear();
         detailsPanel.getChildren().add(personDetails.getRoot());
-        raise(new TurnLabelsOffEvent());
     }
 
     @Subscribe
@@ -299,7 +292,6 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
         personDetails = new DetailsPanel(event.getPerson());
         detailsPanel.getChildren().clear();
         detailsPanel.getChildren().add(personDetails.getRoot());
-        raise(new TurnLabelsOffEvent());;
     }
 
 
@@ -329,7 +321,6 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
         setUpToShowWebBrowser();
         currentlyInFront = Node.BROWSER;
         browser.toFront();
-        raise(new TurnLabelsOffEvent());
         loadPersonPage(event.getPerson());
     }
 

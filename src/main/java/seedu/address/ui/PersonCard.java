@@ -23,7 +23,7 @@ public class PersonCard extends UiPart<Region> {
     private static final String FXML = "PersonListCard.fxml";
     private static final Integer IMAGE_WIDTH = 100;
     private static final Integer IMAGE_HEIGHT = 100;
-    private static String[] colors = {"red", "blue", "green", "yellow", "pink"};
+    private static String[] colors = {"#ff0000", "#0000ff", "#008000", "#ff00ff", "#00ffff"};
     private static HashMap<String, String> tagColors = new HashMap<String, String>();
     private static Random random = new Random();
 
@@ -116,7 +116,7 @@ public class PersonCard extends UiPart<Region> {
     private void initTags(ReadOnlyPerson person) {
         person.getTags().forEach(tag -> {
             Label tagLabel = new Label(tag.tagName);
-            tagLabel.setStyle("-fx-background-color: " + getTagColor(tag.tagName));
+            tagLabel.setStyle("-fx-background-color: derive(" + getTagColor(tag.tagName) + ", -20%)");
             tags.getChildren().add(tagLabel);
         });
     }

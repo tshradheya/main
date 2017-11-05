@@ -156,9 +156,6 @@ public class MainWindow extends UiPart<Region> {
 
         CommandBox commandBox = new CommandBox(logic);
         commandBoxPlaceholder.getChildren().add(commandBox.getRoot());
-
-        HeaderPane headerPane = new HeaderPane();
-        headerPanePlaceholder.getChildren().add(headerPane.getRoot());
     }
 
     void hide() {
@@ -246,6 +243,7 @@ public class MainWindow extends UiPart<Region> {
         handleHelp();
     }
 
+    //@@author chuaweiwen
     @Subscribe
     private void handleChangeThemeEvent(ChangeThemeRequestEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
@@ -261,4 +259,5 @@ public class MainWindow extends UiPart<Region> {
         scene.getStylesheets().add("view/" + theme.getCss());
         scene.getStylesheets().add(STYLE);
     }
+    //@@author
 }

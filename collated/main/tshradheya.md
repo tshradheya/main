@@ -1456,6 +1456,8 @@ public class PopularityCounter {
 ``` java
 package seedu.address.storage;
 
+import static java.util.Objects.requireNonNull;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Logger;
@@ -1487,10 +1489,7 @@ public class AddressBookPictureStorage {
      * Creates a new folder for pictures storage
      */
     public void createPictureStorageFolder() throws IOException {
-
-        if (filePath == null) {
-            assert false : "Wrong execution as path is given by program and is fixed";
-        }
+        requireNonNull(filePath);
 
         logger.info("Picture folder "  + filePath + " created if missing");
         File file  = new File(filePath);
@@ -1592,7 +1591,9 @@ public class ImageDisplayPictureStorage implements DisplayPictureStorage {
      * @param filepath of image to be deleted
      */
     public void deleteImageFromDirectory(String  filepath) {
-
+        if (filepath.equalsIgnoreCase("")) {
+            assert false : "cannot be deleted as it is not assigned";
+        }
         File file = new File("pictures/" + filepath + ".png");
 
         logger.info(filepath + "deleted during exit");
@@ -2174,7 +2175,6 @@ public class PopularContactPanel extends UiPart<Region> {
 ```
 ###### \resources\view\DetailsPanel.fxml
 ``` fxml
-<?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
@@ -2266,7 +2266,6 @@ public class PopularContactPanel extends UiPart<Region> {
 ```
 ###### \resources\view\PopularContactCard.fxml
 ``` fxml
-<?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
@@ -2301,7 +2300,6 @@ public class PopularContactPanel extends UiPart<Region> {
 ```
 ###### \resources\view\PopularContactPanel.fxml
 ``` fxml
-<?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.ListView?>

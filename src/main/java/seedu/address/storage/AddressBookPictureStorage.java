@@ -1,6 +1,8 @@
 //@@author tshradheya
 package seedu.address.storage;
 
+import static java.util.Objects.requireNonNull;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Logger;
@@ -32,10 +34,7 @@ public class AddressBookPictureStorage {
      * Creates a new folder for pictures storage
      */
     public void createPictureStorageFolder() throws IOException {
-
-        if (filePath == null) {
-            assert false : "Wrong execution as path is given by program and is fixed";
-        }
+        requireNonNull(filePath);
 
         logger.info("Picture folder "  + filePath + " created if missing");
         File file  = new File(filePath);

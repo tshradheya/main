@@ -12,4 +12,6 @@ public interface DisplayPictureStorage {
 
     void saveImageInDirectory(BufferedImage image, String uniquePath) throws IOException;
 
+    void deleteImageFromDirectory(String  filepath);
+
 }

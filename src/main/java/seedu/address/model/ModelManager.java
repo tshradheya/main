@@ -18,6 +18,7 @@ import seedu.address.commons.core.ComponentManager;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.model.AddressBookChangedEvent;
 import seedu.address.commons.events.model.DisplayPictureChangedEvent;
+import seedu.address.commons.events.model.DisplayPictureDeleteEvent;
 import seedu.address.commons.events.model.PopularContactChangedEvent;
 import seedu.address.commons.events.model.RemindersChangedEvent;
 import seedu.address.commons.events.ui.LoadPersonWebpageEvent;
@@ -37,6 +38,7 @@ import seedu.address.model.reminders.ReadOnlyUniqueReminderList;
 import seedu.address.model.reminders.UniqueReminderList;
 import seedu.address.model.reminders.exceptions.DuplicateReminderException;
 import seedu.address.model.reminders.exceptions.ReminderNotFoundException;
+
 
 /**
  * Represents the in-memory model of the address book data.
@@ -131,6 +133,7 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public synchronized void deletePerson(ReadOnlyPerson target) throws PersonNotFoundException {
         addressBook.removePerson(target);
+        raise(new DisplayPictureDeleteEvent(target.getDisplayPicture().getPath()));
         indicateAddressBookChanged();
         indicatePopularContactsChangedPossibility();
         updatePopularContactList();

@@ -1,12 +1,12 @@
-= John Doe - Project Portfolio
+= Chua Wei Wen - Project Portfolio
 ifdef::env-github,env-browser[:outfilesuffix: .adoc]
 :imagesDir: ../images
 :stylesDir: ../stylesheets
 
 == Project: iContacts
-iContacts is a desktop address book application used for teaching Software Engineering principles. The user interacts with it using a CLI, and it has a GUI created with JavaFX. It is written in Java, and has about 6 kLoC.
+iContacts is an address book application with target audience as university students for managing contacts. The user interacts with it using a CLI, and it has a GUI created with JavaFX. It is written in Java, and has about 8 kLoC.
 
-*Code contributed*: [link:../../collated/main/chuaweiwen.md[Functional code]] [link:../../collated/test/chuaweiwen.md[Test code]] {give links to collated code files}
+*Code contributed*: [link:../../collated/main/chuaweiwen.md[Functional code]] [link:../../collated/test/chuaweiwen.md[Test code]]
 
 === Enhancement Added: Nickname
 
@@ -15,7 +15,23 @@ iContacts is a desktop address book application used for teaching Software Engin
 ---
 #Start of Extract [from: User Guide]#
 
-include::../UserGuide.adoc[tag=nickname]
+=== Adding a nickname to a person : `nickname`[V1.1]
+
+Adds a nickname to an existing person in the address book. +
+Format: `nickname INDEX [NICKNAME]`
+
+****
+* Adds a nickname to the person at the specified `INDEX`. The index refers to the index number shown in the last person listing. The index *must be a positive integer* 1, 2, 3, ...
+* Existing values will be updated to the input values.
+* You can remove the person's nickname without specifying anything after the `INDEX`.
+****
+
+Examples:
+
+* `nickname 1 Eddie` +
+Adds a nickname `Eddie` to the 1st person.
+* `nickname 1` +
+Removes the nickname from the the 1st person.
 
 #End of Extract#
 
@@ -23,16 +39,8 @@ include::../UserGuide.adoc[tag=nickname]
 
 ==== Justification
 
-{Justify the need for, and the current design (i.e. external behavior) of, the feature}
-
-==== Implementation
-
----
-#Start of Extract [from: Developer Guide]#
-
-include::../DeveloperGuide.adoc[tag=nickname]
-
-#End of Extract#
+* Users may want to add an additional name field without changing the actual name field so as to keep the list neater.
+* The nickname serves as an additional field that can be searched using the `find` command.
 
 ---
 
@@ -43,7 +51,33 @@ include::../DeveloperGuide.adoc[tag=nickname]
 ---
 #Start of Extract [from: User Guide]#
 
-include::../UserGuide.adoc[tag=filter]
+=== Finding all people by name and associated with one or more tags: `filter`[V1.2]
+
+Finds persons whose names and/or tag(s) contain any of the given keywords. +
+Format: `filter [n/NAME] [t/TAG]`
+
+****
+* To search by name, type the keywords after the `n/`.
+* To search by tag, type the keywords after the `t/`.
+* The search is case insensitive. e.g `hans` will match `Hans`
+* Only full words will be matched e.g. `Han` will not match `Hans`
+* Persons matching all keywords will be returned (i.e. `AND` search). e.g. `Hans Bo` will return `Hans Bo` but not `Hans Yang`
+****
+
+Examples:
+
+* `filter n/John` +
+Returns `john` and `John Doe`
+* `filter n/John n/Doe` +
+`filter n/John Doe` +
+Returns any person with both `John` and `Doe` in his name.
+* `filter t/friends` +
+Returns any persons with the tag `friends`.
+* `filter t/friends t/colleagues` +
+`filter t/friends colleagues` +
+Returns any person with the tag `friends` and `colleagues`.
+* `filter n/John t/friends` +
+Returns any person having the name `John` and with the tag `friends`.
 
 #End of Extract#
 
@@ -51,14 +85,69 @@ include::../UserGuide.adoc[tag=filter]
 
 ==== Justification
 
-{Justify the need for, and the current design (i.e. external behavior) of, the feature}
+* Users may want to define a more precise search.
+* The `filter` command filters name and tags as they are most likely to be used as constraints in the search.
 
 ==== Implementation
 
 ---
 #Start of Extract [from: Developer Guide]#
 
-include::../DeveloperGuide.adoc[tag=filter]
+=== Filter mechanism
+
+The `FilterCommand` uses the `NameAndTagsContainsKeywordsPredicate` to filter the persons with matching name and/or tags. It accepts the `List<String> nameKeywords` and `List<String> tagKeywords` as parameters that are parsed by the `FilterCommandParser`. The code snippet below is the constructor for the class:
+
+[source,java]
+----
+public class NameAndTagsContainsKeywordsPredicate {
+    public NameAndTagsContainsKeywordsPredicate(List<String> nameKeywords, List<String> tagKeywords) {
+        this.nameKeywords = nameKeywords;
+        this.tagKeywords = tagKeywords;
+    }
+}
+----
+
+The method `test(ReadOnlyPerson person)` iterates through the `nameKeywords` and the `tagKeywords` to find a match of every `person` from the address book.
+
+Below is an extract of the method `test(ReadOnlyPerson person)`. The tags of each person are retrieved by the `getTags()` method. This method iterates through the `tagKeywords` and counts the number of matches against the `tagsOfPerson`. If the count is equal to the size of the `tagKeywords`, this means all the keywords in the `tagKeywords` matches. The `tagFound` will then be set to `true`.
+
+[source,java]
+----
+public class NameAndTagsContainsKeywordsPredicate {
+    @Override
+    public boolean test(ReadOnlyPerson person) {
+        boolean tagFound = false;
+
+        int numTagKeywords = tagKeywords.size();
+        int tagsMatchedCount = 0;
+        if (!tagKeywords.isEmpty()) {
+            tagsMatchedCount = countTagMatches(person);
+        }
+
+        if (tagsMatchedCount == numTagKeywords) {
+            tagFound = true;
+        }
+    }
+}
+----
+
+Below is an extract of the same method for name. Each keywords in the `nameKeywords` will be compared against the name list retrieved from the `getName()` method of the `Person` class. If all matches, the `nameFound` will be set to `true`.
+
+[source,java]
+----
+public class NameAndTagsContainsKeywordsPredicate {
+    @Override
+    public boolean test(ReadOnlyPerson person) {
+        boolean nameFound = false;
+            if (!nameKeywords.isEmpty()) {
+                nameFound = nameKeywords.stream().allMatch(nameKeywords -> StringUtil
+                .containsWordIgnoreCase(person.getName().fullName, nameKeywords));
+        }
+    }
+}
+----
+
+For the `FilterCommand` to work properly, either the `nameKeywords` or the `tagKeywords` must be non-empty.
 
 #End of Extract#
 
@@ -71,7 +160,22 @@ include::../DeveloperGuide.adoc[tag=filter]
 ---
 #Start of Extract [from: User Guide]#
 
-include::../UserGuide.adoc[tag=theme]
+=== Changing the theme : `theme` [Since V1.3]
+
+Changes the theme of the address book to a specific theme. +
+Format: `theme THEME`
+
+****
+* The search is case insensitive. e.g `dark` will match `Dark`.
+* Only full theme names will be matched e.g. `dark` will not match `dar`.
+****
+
+Examples:
+
+* `theme sky` +
+Changes the theme to `sky`.
+
+image::themeDisplay.png[width="790"]
 
 #End of Extract#
 
@@ -79,27 +183,46 @@ include::../UserGuide.adoc[tag=theme]
 
 ==== Justification
 
-{Justify the need for, and the current design (i.e. external behavior) of, the feature}
+* Users will have more choice in setting the theme of iContacts.
+* Users may find it easier to use iContacts if they are working on their preferred theme.
 
 ==== Implementation
 
 ---
 #Start of Extract [from: Developer Guide]#
 
-include::../DeveloperGuide.adoc[tag=theme]
+=== Theme-changing mechanism
+
+image::themeChangingMechanism1.png[width="790"]
+_Figure 29 : Component interactions for the theme-changing mechanism_
+
+The theme-changing mechanism is an event-driven mechanism. The above diagram shows the high-level overview of the component interactions for the theme-changing mechanism.
+
+image::themeChangingMechanism2.png[width="790"]
+_Figure 30 : Sequence diagram for the first part of the theme-changing mechanism_
+
+As shown from the sequence diagram above, after the user entered the command `theme sky`, a new object `ThemeCommand` will be created. The `LogicManager` will then execute `ThemeCommand`, and the event `ChangeThemeRequestEvent` will be posted by `EventsCenter`. The code snippet below shows the `execute()` method of `ThemeCommand`:
+
+----
+public class ThemeCommand extends Command {
+    @Override
+    public CommandResult execute() {
+        EventsCenter.getInstance().post(new ChangeThemeRequestEvent(theme));
+        return new CommandResult(String.format(MESSAGE_SET_THEME_SUCCESS, theme.getTheme()));
+    }
+}
+----
+
+image::themeChangingMechanism3.png[width="790"]
+_Figure 31 : Sequence diagram for the second part of the theme-changing mechanism_
+
+As shown from the sequence diagram above, the method `handleChangeThemeEvent()` in `MainWindow` will handle the event and change the theme of the address book through the method `changeTheme()` accordingly.
 
 #End of Extract#
 
 ---
 
-=== Enhancement Proposed: Add command `remark`
-
-{Explain similar to the Undo/Redo feature above.}
-
 === Other contributions
 
 * Conducted acceptance testing for another project by my peers and uncovered bugs (see issue https://github.com/CS2103AUG2017-F11-B4/main/issues/48[#48], https://github.com/CS2103AUG2017-F11-B4/main/issues/49[#49], https://github.com/CS2103AUG2017-F11-B4/main/issues/51[#51], https://github.com/CS2103AUG2017-F11-B4/main/issues/52[#52])
-
-== Project: PowerPointLabs
-
-{Optionally (not graded), you may include other projects in your portfolio.}
+* Fixed the grammatical errors in the User Guide and Developer Guide (see https://github.com/CS2103AUG2017-W14-B1/main/pull/202[#202]).

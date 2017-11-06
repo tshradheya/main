@@ -5,7 +5,7 @@ import java.util.List;
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.exceptions.CommandException;
-import seedu.address.model.reminders.Reminder;
+import seedu.address.model.reminders.ReadOnlyReminder;
 import seedu.address.model.reminders.exceptions.ReminderNotFoundException;
 
 /**
@@ -30,13 +30,13 @@ public class DeleteReminderCommand extends Command {
 
     @Override
     public CommandResult execute() throws CommandException {
-        List<Reminder> reminderListing = model.getSortedReminderList();
+        List<ReadOnlyReminder> reminderListing = model.getSortedReminderList();
 
         if (targetIndex.getZeroBased() >= reminderListing.size()) {
             throw new CommandException(Messages.MESSAGE_INVALID_REMINDER_DISPLAYED_INDEX);
         }
 
-        Reminder reminderToDelete = reminderListing.get(targetIndex.getZeroBased());
+        ReadOnlyReminder reminderToDelete = reminderListing.get(targetIndex.getZeroBased());
 
         try {
             model.deleteReminder(reminderToDelete);

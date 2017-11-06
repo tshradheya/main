@@ -13,6 +13,7 @@ import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.logic.commands.AddReminderCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.reminders.Date;
+import seedu.address.model.reminders.ReadOnlyReminder;
 import seedu.address.model.reminders.Reminder;
 import seedu.address.model.reminders.Time;
 
@@ -45,7 +46,7 @@ public class AddReminderCommandParser implements Parser<AddReminderCommand> {
         try {
             Date date = ParserUtil.parseDate(argMultimap.getValue(PREFIX_DATE)).get();
             Time time = ParserUtil.parseTime(argMultimap.getValue(PREFIX_TIME)).get();
-            Reminder toAdd = new Reminder(reminder, date, time);
+            ReadOnlyReminder toAdd = new Reminder(reminder, date, time);
             return new AddReminderCommand(toAdd);
         } catch (IllegalValueException ive) {
             throw new ParseException(ive.getMessage());

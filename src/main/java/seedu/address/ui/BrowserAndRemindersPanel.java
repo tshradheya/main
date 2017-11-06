@@ -41,7 +41,7 @@ import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.PopularityCounter;
 import seedu.address.model.person.ReadOnlyPerson;
-import seedu.address.model.reminders.Reminder;
+import seedu.address.model.reminders.ReadOnlyReminder;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -89,7 +89,7 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
 
 
     public BrowserAndRemindersPanel(ObservableList<ReadOnlyPerson> birthdayPanelFilteredPersonList,
-                                    ObservableList<Reminder> reminderList) {
+                                    ObservableList<ReadOnlyReminder> reminderList) {
         super(FXML);
 
         // To prevent triggering events for typing inside the loaded Web page.

@@ -10,10 +10,10 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
 /**
- *  Represents a reminder.
+ *  Represents a reminder in iContacts.
  */
 
-public class Reminder {
+public class Reminder implements ReadOnlyReminder {
 
     private ObjectProperty<String> reminder;
     private ObjectProperty<Date> date;
@@ -33,9 +33,9 @@ public class Reminder {
     }
 
     /**
-     * Creates a copy of the given Reminder.
+     * Creates a copy of the given ReadOnlyReminder.
      */
-    public Reminder(Reminder source) {
+    public Reminder(ReadOnlyReminder source) {
         this(source.getReminder(), source.getDate(), source.getTime());
     }
 
@@ -79,14 +79,17 @@ public class Reminder {
         return LocalDateTime.of(date.get().toLocalDate(), time.get().toLocalTime());
     }
 
+    @Override
     public boolean hasEventPast() {
         return status.get().hasEventPast();
     }
 
+    @Override
     public boolean isEventToday() {
         return status.get().isEventToday();
     }
 
+    @Override
     public boolean isEventWithinThreeDays() {
         return status.get().isEventWithinThreeDays();
     }
@@ -98,10 +101,8 @@ public class Reminder {
     @Override
     public boolean equals(Object other) {
         return this == other
-                || (other instanceof Reminder
-                && this.getReminder().equals(((Reminder) other).getReminder())
-                && this.getDate().equals(((Reminder) other).getDate())
-                && this.getTime().equals(((Reminder) other).getTime()));
+                || (other instanceof ReadOnlyReminder
+                && this.isSameStateAs((ReadOnlyReminder) other));
     }
 
     @Override

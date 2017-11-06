@@ -6,6 +6,7 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_REMINDER;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TIME;
 
 import seedu.address.logic.commands.exceptions.CommandException;
+import seedu.address.model.reminders.ReadOnlyReminder;
 import seedu.address.model.reminders.Reminder;
 import seedu.address.model.reminders.exceptions.DuplicateReminderException;
 
@@ -37,10 +38,10 @@ public class AddReminderCommand extends Command {
     /**
      * Creates an AddReminderCommand to add the specified {@code Reminder}
      */
-    public AddReminderCommand(Reminder toAdd) {
+    public AddReminderCommand(ReadOnlyReminder toAdd) {
         requireNonNull(toAdd);
 
-        this.toAdd = toAdd;
+        this.toAdd = new Reminder(toAdd);
     }
 
     @Override

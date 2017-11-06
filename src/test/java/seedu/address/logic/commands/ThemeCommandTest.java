@@ -18,7 +18,7 @@ public class ThemeCommandTest extends AddressBookGuiTest {
         Theme standardTheme = new Theme(ThemeList.THEME_SKY, ThemeList.THEME_SKY_PATH);
         ThemeCommand themeCommand = new ThemeCommand(standardTheme);
 
-        String expectedList = "[view/" + ThemeList.THEME_SKY_PATH + ", view/Extensions.css]";
+        String expectedList = "[" + ThemeList.THEME_SKY_PATH + ", view/Extensions.css]";
         String expectedMessage = String.format(ThemeCommand.MESSAGE_SET_THEME_SUCCESS, ThemeList.THEME_SKY);
         CommandResult result = themeCommand.execute();
 

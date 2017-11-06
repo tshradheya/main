@@ -736,7 +736,7 @@ The toggling mechanism is an event-driven mechanism. The above diagram shows the
 image::togglingMechanism2.png[width="790"]
 _Figure 2: Sequence diagram for the first part of the toggling mechanism._
 
-As seen from the sequence diagram above, when the user type the command for toggle, an instance of `ToggleCommand` would be formed first. +
+As seen from the sequence diagram above, when the user type the command for `toggle`, an instance of `ToggleCommand` would be created. +
 Upon execution by `LogicManager`, the event `BrowserAndRemindersPanelToggleEvent` would be posted by the `EventCenter`, to the `EventBus`.
 
 [source, java]
@@ -815,20 +815,20 @@ method, the statement `browser.toFront()` and the method `setUpToShowWebBrowser`
 ==== Design Considerations
 
 **Aspect:** Usage of browser area +
-**Alternative 1 (current choice):** Allow users to toggle between browser and reminders +
-Pros: Can use the entire space for either browser or reminders +
-Cons: Users need to manually switch between browser and reminders +
-**Alternative 2:** Put reminders and browser side-by-side +
-Pros: Users do not need to manually switch between browser and reminders +
+**Alternative 1 (current choice):** Allow users to toggle between the browser and reminders panel. +
+Pros: Can use the entire space for either the browser or reminders panel. +
+Cons: Users need to manually switch between the browser and reminders panel. +
+**Alternative 2:** Put reminders and browser side-by-side. +
+Pros: Users do not need to manually switch between the browser and reminders panel. +
 Cons: Too little space for browser and reminders. Difficult to read.
 
-**Aspect:** Implementation of toggling mechanism +
-**Alternative 1 (current choice):** Bring browser and reminders panel to the front as required, on top of setting their visibility suitably +
-Pros: Users can interact with both browser and reminders (can scroll through reminders etc) +
-Cons: More difficult to implement +
-**Alternative 2:** Only set visibility of browser and reminders panel as required (set browser visibility to false to display reminders and vice versa) +
-Pros: Easier to implement +
-Cons: Users cannot interact with the reminders panel (since the browser is technically still at the front)
+**Aspect:** Implementation of toggling mechanism. +
+**Alternative 1 (current choice):** Bring browser and reminders panel to the front as required, on top of setting their visibility suitably. +
+Pros: Users can interact with both browser and reminders (can scroll through reminders etc). +
+Cons: More difficult to implement. +
+**Alternative 2:** Only set visibility of browser and reminders panel as required (set browser visibility to false to display reminders and vice versa). +
+Pros: Easier to implement. +
+Cons: Users cannot interact with the reminders panel (since the browser is technically still at the front).
 
 
 
@@ -844,7 +844,7 @@ kept within `UniqueReminderList`, which assures that there are no duplicate `Rem
 object is then kept and used by `ModelManager` to carry out commands related to reminders while the program is running. +
 
 `Reminder` objects are stored in a XML storage file in a JAXB-friendly version `XmlAdaptedReminder`. Notably, the `Status` object is not stored along with
-the `Reminder` object; it is instantiated during runtime when the `Reminder` object is instantiated.
+the `Reminder` object; it is instantiated and initialized with an appropriate value during runtime when the `Reminder` object is instantiated.
 When the program starts, `XmlAdaptedReminder` objects are read in as `XmlSerializableReminders` via `XmlFileStorage` and `XmlUtil`.
 This can be seen below:
 
@@ -915,12 +915,12 @@ and the `saveDataToFile` method in `XmlUtil`.
 
 ==== Design Consideration
 **Aspect:** How to store Reminders in-memory +
-**Alternative 1 (current choice):** Store Reminder objects in UniqueReminderList, independent of AddressBook +
-Pros: Makes more sense, because a Reminder should not be part of AddressBook +
-Cons: More changes have to be made to the existing program, making it tougher to implement +
-**Alternative 2:** Store Reminder objects within AddressBook +
-Pros: Does not make sense +
-Cons: Easier to implement
+**Alternative 1 (current choice):** Store Reminder objects in UniqueReminderList, independent of AddressBook. +
+Pros: Follows the _Single-Responsibility Principle_, because a reminder should not be an address book's responsibility. +
+Cons: More changes have to be made to the existing code base, making it tougher to implement. +
+**Alternative 2:** Store Reminder objects within AddressBook. +
+Pros: Easier to implement as lesser changes have to be made to the existing program. +
+Cons: Violates the _Single-Responsibility Principle_.
 
 // tag::theme[]
 === Theme-changing mechanism

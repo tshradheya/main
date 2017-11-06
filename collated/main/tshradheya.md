@@ -34,6 +34,30 @@ public class DisplayPictureChangedEvent extends BaseEvent {
     }
 }
 ```
+###### \java\seedu\address\commons\events\model\DisplayPictureDeleteEvent.java
+``` java
+package seedu.address.commons.events.model;
+
+import seedu.address.commons.events.BaseEvent;
+
+/**
+ * Event to handle deleting of image
+ */
+public class DisplayPictureDeleteEvent extends BaseEvent {
+
+    public final String path;
+
+    public DisplayPictureDeleteEvent(String path) {
+        this.path = path;
+    }
+
+    @Override
+    public String toString() {
+        return path + " to be deleted";
+    }
+
+}
+```
 ###### \java\seedu\address\commons\events\model\PopularContactChangedEvent.java
 ``` java
 package seedu.address.commons.events.model;
@@ -62,11 +86,77 @@ public class PopularContactChangedEvent extends BaseEvent {
     }
 }
 ```
+###### \java\seedu\address\commons\events\ui\LoadPersonWebpageEvent.java
+``` java
+package seedu.address.commons.events.ui;
+
+import seedu.address.commons.events.BaseEvent;
+import seedu.address.model.person.ReadOnlyPerson;
+
+/**
+ * Event raised on 'select' command's successful execution
+ */
+public class LoadPersonWebpageEvent extends BaseEvent {
+
+    private ReadOnlyPerson person;
+
+    public LoadPersonWebpageEvent(ReadOnlyPerson person) {
+        this.person = person;
+    }
+
+    public ReadOnlyPerson getPerson() {
+        return person;
+    }
+
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName();
+    }
+
+}
+```
+###### \java\seedu\address\commons\events\ui\PersonPanelSelectionChangedEvent.java
+``` java
+package seedu.address.commons.events.ui;
+
+import seedu.address.commons.events.BaseEvent;
+import seedu.address.model.person.ReadOnlyPerson;
+import seedu.address.ui.PersonCard;
+
+/**
+ * Represents a selection change in the Person List Panel
+ */
+public class PersonPanelSelectionChangedEvent extends BaseEvent {
+
+
+    private final PersonCard newSelection;
+    private final ReadOnlyPerson person;
+
+    public PersonPanelSelectionChangedEvent(PersonCard newSelection, ReadOnlyPerson person) {
+        this.newSelection = newSelection;
+        this.person = person;
+    }
+
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName();
+    }
+
+    public PersonCard getNewSelection() {
+        return newSelection;
+    }
+
+    public ReadOnlyPerson getPerson() {
+        return person;
+    }
+}
+```
 ###### \java\seedu\address\commons\events\ui\PopularContactPanelSelectionChangedEvent.java
 ``` java
 package seedu.address.commons.events.ui;
 
 import seedu.address.commons.events.BaseEvent;
+import seedu.address.model.person.ReadOnlyPerson;
 import seedu.address.ui.PopularContactCard;
 
 /**
@@ -75,9 +165,12 @@ import seedu.address.ui.PopularContactCard;
 public class PopularContactPanelSelectionChangedEvent extends BaseEvent {
 
     private final PopularContactCard newSelection;
+    private final ReadOnlyPerson person;
 
-    public PopularContactPanelSelectionChangedEvent(PopularContactCard newSelection) {
+
+    public PopularContactPanelSelectionChangedEvent(PopularContactCard newSelection, ReadOnlyPerson person) {
         this.newSelection = newSelection;
+        this.person = person;
     }
 
     @Override
@@ -87,6 +180,10 @@ public class PopularContactPanelSelectionChangedEvent extends BaseEvent {
 
     public PopularContactCard getNewSelection() {
         return newSelection;
+    }
+
+    public ReadOnlyPerson getPerson() {
+        return person;
     }
 }
 ```
@@ -122,6 +219,31 @@ public class SendingEmailEvent extends BaseEvent {
     }
 }
 ```
+###### \java\seedu\address\commons\events\ui\ShowDetailsEvent.java
+``` java
+package seedu.address.commons.events.ui;
+
+import seedu.address.commons.core.index.Index;
+import seedu.address.commons.events.BaseEvent;
+
+/**
+ * Indicates a request to jump to the details of a person
+ */
+public class ShowDetailsEvent extends BaseEvent {
+
+    public final int targetIndex;
+
+    public ShowDetailsEvent(Index targetIndex) {
+        this.targetIndex = targetIndex.getZeroBased();
+    }
+
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName();
+    }
+
+}
+```
 ###### \java\seedu\address\commons\events\ui\ShowLocationEvent.java
 ``` java
 package seedu.address.commons.events.ui;
@@ -145,6 +267,74 @@ public class ShowLocationEvent extends BaseEvent {
         return this.getClass().getSimpleName();
     }
 }
+```
+###### \java\seedu\address\logic\commands\DetailsCommand.java
+``` java
+package seedu.address.logic.commands;
+
+import static seedu.address.logic.commands.EditCommand.MESSAGE_DUPLICATE_PERSON;
+
+import java.util.List;
+
+import seedu.address.commons.core.EventsCenter;
+import seedu.address.commons.core.Messages;
+import seedu.address.commons.core.index.Index;
+import seedu.address.commons.events.ui.ShowDetailsEvent;
+import seedu.address.logic.commands.exceptions.CommandException;
+import seedu.address.model.person.ReadOnlyPerson;
+import seedu.address.model.person.exceptions.DuplicatePersonException;
+import seedu.address.model.person.exceptions.PersonNotFoundException;
+
+/**
+ * Selects a person identified using it's last displayed index from the address book.
+ */
+public class DetailsCommand extends Command {
+
+    public static final String COMMAND_WORD = "details";
+
+    public static final String MESSAGE_USAGE = COMMAND_WORD
+            + ": Shows details the person identified by the index number used in the last person listing.\n"
+            + "Parameters: INDEX (must be a positive integer)\n"
+            + "Example: " + COMMAND_WORD + " 1";
+
+    public static final String MESSAGE_DETAILS_PERSON_SUCCESS = "Showing Details: %1$s";
+
+    private final Index targetIndex;
+
+    public DetailsCommand(Index targetIndex) {
+        this.targetIndex = targetIndex;
+    }
+
+    @Override
+    public CommandResult execute() throws CommandException {
+
+        List<ReadOnlyPerson> lastShownList = model.getFilteredPersonList();
+
+        if (targetIndex.getZeroBased() >= lastShownList.size()) {
+            throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+        }
+
+        try {
+            model.updatePersonsPopularityCounterByOne(lastShownList.get(targetIndex.getZeroBased()));
+        } catch (DuplicatePersonException dpe) {
+            throw new CommandException(MESSAGE_DUPLICATE_PERSON);
+        } catch (PersonNotFoundException pnfe) {
+            throw new AssertionError("The target person cannot be missing");
+        }
+
+        EventsCenter.getInstance().post(new ShowDetailsEvent(targetIndex));
+        return new CommandResult(String.format(MESSAGE_DETAILS_PERSON_SUCCESS, targetIndex.getOneBased()));
+
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return other == this // short circuit if same object
+                || (other instanceof DetailsCommand // instanceof handles nulls
+                && this.targetIndex.equals(((DetailsCommand) other).targetIndex)); // state check
+    }
+}
+
 ```
 ###### \java\seedu\address\logic\commands\DisplayPictureCommand.java
 ``` java
@@ -491,6 +681,18 @@ public class LocationCommand extends Command {
 
 }
 ```
+###### \java\seedu\address\logic\commands\SelectCommand.java
+``` java
+
+        try {
+            model.updatePersonsPopularityCounterByOne(lastShownList.get(targetIndex.getZeroBased()));
+            model.showPersonWebpage(lastShownList.get(targetIndex.getZeroBased()));
+        } catch (DuplicatePersonException dpe) {
+            throw new CommandException(MESSAGE_DUPLICATE_PERSON);
+        } catch (PersonNotFoundException pnfe) {
+            throw new AssertionError("The target person cannot be missing");
+        }
+```
 ###### \java\seedu\address\logic\commands\ViewTagCommand.java
 ``` java
 package seedu.address.logic.commands;
@@ -544,11 +746,44 @@ public class ViewTagCommand extends Command {
 ```
 ###### \java\seedu\address\logic\LogicManager.java
 ``` java
+
     @Override
     public ObservableList<ReadOnlyPerson> getListOfPersonsForPopularContacts() {
         return model.getPopularContactList();
     }
+```
+###### \java\seedu\address\logic\parser\DetailsCommandParser.java
+``` java
+package seedu.address.logic.parser;
 
+import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+
+import seedu.address.commons.core.index.Index;
+import seedu.address.commons.exceptions.IllegalValueException;
+import seedu.address.logic.commands.DetailsCommand;
+
+import seedu.address.logic.parser.exceptions.ParseException;
+
+/**
+ * Parses input arguments and creates a new DetailCommand object
+ */
+public class DetailsCommandParser implements Parser<DetailsCommand> {
+
+    /**
+     * Parses the given {@code String} of arguments in the context of the DetailsCommand
+     * and returns an DetailsCommand object for execution.
+     * @throws ParseException if the user input does not conform the expected format
+     */
+    public DetailsCommand parse(String args) throws ParseException {
+        try {
+            Index index = ParserUtil.parseIndex(args);
+            return new DetailsCommand(index);
+        } catch (IllegalValueException ive) {
+            throw new ParseException(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, DetailsCommand.MESSAGE_USAGE));
+        }
+    }
+}
 ```
 ###### \java\seedu\address\logic\parser\DisplayPictureCommandParser.java
 ``` java
@@ -713,48 +948,6 @@ public class LocationCommandParser implements Parser<LocationCommand> {
         return new LocationCommand(index);
     }
 }
-```
-###### \java\seedu\address\logic\parser\ParserUtil.java
-``` java
-    /**
-     * Parses a {@code Optional<String> displayPicture} into an {@code Optional<DisplayPicture>}
-     * if {@code path} is present.
-     * See header comment of this class regarding the use of {@code Optional} parameters.
-     */
-    public static Optional<DisplayPicture> parseDisplayPicture(Optional<String> displayPicture)
-            throws IllegalValueException {
-        requireNonNull(displayPicture);
-        return displayPicture.isPresent() ? Optional.of(new DisplayPicture(displayPicture.get())) : Optional.empty();
-    }
-
-    /**
-     * Parses popularity counter for dummy purpose
-     * @param popularityCounter
-     * @return
-     * @throws IllegalValueException
-     */
-    public static Optional<PopularityCounter> parsePopularityCounter(Optional<String> popularityCounter)
-            throws IllegalValueException {
-        requireNonNull(popularityCounter);
-        return popularityCounter.isPresent()
-                ? Optional.of(new PopularityCounter(Integer.parseInt(popularityCounter.get()))) : Optional.empty();
-    }
-```
-###### \java\seedu\address\logic\parser\ParserUtil.java
-``` java
-
-    /**
-     * Parses the given keyword tag into trimmed string
-     * @param tag keyword given by user
-     * @return trimmedTag which is trimmed for comparison purposes
-     * @throws IllegalValueException
-     */
-    public static String parseRecipientTag(String tag) throws IllegalValueException {
-        requireNonNull(tag);
-        String trimmedTag = tag.trim();
-
-        return trimmedTag;
-    }
 ```
 ###### \java\seedu\address\logic\parser\ViewTagCommandParser.java
 ``` java
@@ -923,15 +1116,6 @@ public class Subject {
 ``` java
 
     @Override
-    public synchronized void addPerson(ReadOnlyPerson person) throws DuplicatePersonException {
-        addressBook.addPerson(person);
-        updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
-        indicateAddressBookChanged();
-        indicatePopularContactsChangedPossibility();
-        updatePopularContactList();
-    }
-
-    @Override
     public void updatePerson(ReadOnlyPerson target, ReadOnlyPerson editedPerson)
             throws DuplicatePersonException, PersonNotFoundException {
         requireAllNonNull(target, editedPerson);
@@ -956,6 +1140,14 @@ public class Subject {
     @Override
     public void showLocation(ReadOnlyPerson person) throws PersonNotFoundException {
         raise(new ShowLocationEvent(person));
+    }
+
+    /**
+     * Shows webpage of the given person
+     */
+    @Override
+    public void showPersonWebpage(ReadOnlyPerson person) throws PersonNotFoundException {
+        raise(new LoadPersonWebpageEvent(person));
     }
 
     /**
@@ -1055,17 +1247,6 @@ public class Subject {
         return FXCollections.observableList(listOfPersonsForPopularContacts);
     }
 ```
-###### \java\seedu\address\model\ModelManager.java
-``` java
-
-    @Override
-    public void updateFilteredPersonListForViewTag(Predicate<ReadOnlyPerson> predicate) {
-        requireNonNull(predicate);
-        filteredPersons.setPredicate(predicate);
-
-        increaseCounterByOneForATag(filteredPersons);
-    }
-```
 ###### \java\seedu\address\model\person\DisplayPicture.java
 ``` java
 package seedu.address.model.person;
@@ -1110,6 +1291,66 @@ public class DisplayPicture {
     public void setPath(String path) {
         this.path = path;
     }
+}
+```
+###### \java\seedu\address\model\person\Email.java
+``` java
+package seedu.address.model.person;
+
+import static java.util.Objects.requireNonNull;
+
+import seedu.address.commons.exceptions.IllegalValueException;
+
+/**
+ * Represents a Person's phone number in the address book.
+ * Guarantees: immutable; is valid as declared in {@link #isValidEmail(String)}
+ */
+public class Email {
+
+    public static final String MESSAGE_EMAIL_CONSTRAINTS =
+            "Person emails should be 2 alphanumeric/period strings separated by '@'";
+    public static final String EMAIL_VALIDATION_REGEX = "[\\w\\.]+@[\\w\\.]+";
+
+    public final String value;
+
+    /**
+     * Validates given email.
+     *
+     * @throws IllegalValueException if given email address string is invalid.
+     */
+    public Email(String email) throws IllegalValueException {
+        requireNonNull(email);
+        String trimmedEmail = email.trim();
+        if (!isValidEmail(trimmedEmail)) {
+            throw new IllegalValueException(MESSAGE_EMAIL_CONSTRAINTS);
+        }
+        this.value = trimmedEmail;
+    }
+
+    /**
+     * Returns if a given string is a valid person email.
+     */
+    public static boolean isValidEmail(String test) {
+        return test.matches(EMAIL_VALIDATION_REGEX);
+    }
+
+    @Override
+    public String toString() {
+        return value;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return other == this // short circuit if same object
+                || (other instanceof Email // instanceof handles nulls
+                && this.value.equals(((Email) other).value)); // state check
+    }
+
+    @Override
+    public int hashCode() {
+        return value.hashCode();
+    }
+
 }
 ```
 ###### \java\seedu\address\model\person\PersonContainsTagPredicate.java
@@ -1198,21 +1439,36 @@ public class PopularityCounter {
     }
 }
 ```
+###### \java\seedu\address\model\UserPrefs.java
+``` java
+
+    public String getAddressBookPicturesPath() {
+        return addressBookPicturesPath;
+    }
+```
+###### \java\seedu\address\model\UserPrefs.java
+``` java
+    public void setAddressBookPicturesPath(String addressBookPicturesPath) {
+        this.addressBookPicturesPath = addressBookPicturesPath;
+    }
+```
 ###### \java\seedu\address\storage\AddressBookPictureStorage.java
 ``` java
 package seedu.address.storage;
 
-import static java.util.Objects.requireNonNull;
-
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Logger;
 
+import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.util.FileUtil;
 
 /**
  * To create a display picture resource folder
  */
 public class AddressBookPictureStorage {
+
+    private static final Logger logger = LogsCenter.getLogger(AddressBookPictureStorage.class);
 
     private String filePath;
 
@@ -1231,8 +1487,12 @@ public class AddressBookPictureStorage {
      * Creates a new folder for pictures storage
      */
     public void createPictureStorageFolder() throws IOException {
-        requireNonNull(filePath);
 
+        if (filePath == null) {
+            assert false : "Wrong execution as path is given by program and is fixed";
+        }
+
+        logger.info("Picture folder "  + filePath + " created if missing");
         File file  = new File(filePath);
         FileUtil.createIfMissing(file);
 
@@ -1255,6 +1515,8 @@ public interface DisplayPictureStorage {
 
     void saveImageInDirectory(BufferedImage image, String uniquePath) throws IOException;
 
+    void deleteImageFromDirectory(String  filepath);
+
 }
 ```
 ###### \java\seedu\address\storage\ImageDisplayPictureStorage.java
@@ -1266,9 +1528,11 @@ import static seedu.address.commons.core.Messages.MESSAGE_INVALID_IMAGE;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 
+import seedu.address.commons.core.LogsCenter;
 import seedu.address.logic.commands.DisplayPictureCommand;
 import seedu.address.logic.parser.exceptions.ImageException;
 
@@ -1277,7 +1541,11 @@ import seedu.address.logic.parser.exceptions.ImageException;
  */
 public class ImageDisplayPictureStorage implements DisplayPictureStorage {
 
+    private static final Logger logger = LogsCenter.getLogger(ImageDisplayPictureStorage.class);
+
+
     public ImageDisplayPictureStorage() {
+        logger.info("Constructor used to create instance of DisplayPictureStorage.class");
     }
 
     /**
@@ -1319,6 +1587,18 @@ public class ImageDisplayPictureStorage implements DisplayPictureStorage {
         }
     }
 
+    /**
+     * Deletes image from /pictures/ directory
+     * @param filepath of image to be deleted
+     */
+    public void deleteImageFromDirectory(String  filepath) {
+
+        File file = new File("pictures/" + filepath + ".png");
+
+        logger.info(filepath + "deleted during exit");
+        file.deleteOnExit();
+    }
+
 }
 ```
 ###### \java\seedu\address\storage\StorageManager.java
@@ -1337,6 +1617,12 @@ public class ImageDisplayPictureStorage implements DisplayPictureStorage {
     }
 
     @Override
+    public void deleteImageFromDirectory(String pathName) {
+        logger.fine("Attempting to delete to file: " + pathName);
+        displayPictureStorage.deleteImageFromDirectory(pathName);
+    }
+
+    @Override
     @Subscribe
     public void handleDisplayPictureChangedEvent(DisplayPictureChangedEvent event) throws IOException {
         logger.info(LogsCenter.getEventHandlingLogMessage(event, " Image changed, saving to file"));
@@ -1349,25 +1635,42 @@ public class ImageDisplayPictureStorage implements DisplayPictureStorage {
         }
     }
 
-}
+    @Override
+    @Subscribe
+    public void handleDisplayPictureDeleteEvent(DisplayPictureDeleteEvent event) {
+        deleteImageFromDirectory(event.path);
+    }
 ```
 ###### \java\seedu\address\ui\BrowserAndRemindersPanel.java
 ``` java
+    private void setUpToShowRemindersPanel() {
+        detailsPanel.setVisible(false);
+        remindersPanel.setVisible(true);
+        browser.setVisible(false);
+    }
 
-    private void bringBrowserToFront() {
-        browser.toFront();
-        currentlyInFront = Node.BROWSER;
+    private void setUpToShowDetailsPanel() {
+        detailsPanel.setVisible(true);
+        remindersPanel.setVisible(false);
+        browser.setVisible(false);
     }
 
     /**
      * Set's up the UI to bring browser to front and show location
      */
     private void setUpToShowLocation() {
-        if (currentlyInFront == Node.REMINDERS) {
-            browser.toFront();
-            currentlyInFront = Node.BROWSER;
-            raise(new TurnLabelsOffEvent());
-        }
+        setUpToShowWebBrowser();
+        browser.toFront();
+        currentlyInFront = Node.BROWSER;
+    }
+
+    /**
+     * Set's up the UI to bring browser to front
+     */
+    private void setUpToShowWebBrowser() {
+        browser.setVisible(true);
+        detailsPanel.setVisible(false);
+        remindersPanel.setVisible(false);
     }
 
     /**
@@ -1439,17 +1742,23 @@ public class ImageDisplayPictureStorage implements DisplayPictureStorage {
     @Subscribe
     private void handlePersonPanelSelectionChangedEvent(PersonPanelSelectionChangedEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
-        loadPersonPage(event.getNewSelection().person);
-        bringBrowserToFront();
-        raise(new TurnLabelsOffEvent());
+        setUpToShowDetailsPanel();
+        detailsPanel.toFront();
+        currentlyInFront = Node.DETAILS;
+        personDetails = new DetailsPanel(event.getPerson());
+        detailsPanel.getChildren().clear();
+        detailsPanel.getChildren().add(personDetails.getRoot());
     }
 
     @Subscribe
     private void handlePopularContactPanelSelectionChangedEvent(PopularContactPanelSelectionChangedEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
-        loadPersonPage(event.getNewSelection().person);
-        bringBrowserToFront();
-        raise(new TurnLabelsOffEvent());
+        setUpToShowDetailsPanel();
+        detailsPanel.toFront();
+        currentlyInFront = Node.DETAILS;
+        personDetails = new DetailsPanel(event.getPerson());
+        detailsPanel.getChildren().clear();
+        detailsPanel.getChildren().add(personDetails.getRoot());
     }
 
 
@@ -1474,6 +1783,192 @@ public class ImageDisplayPictureStorage implements DisplayPictureStorage {
         setUpEmailUrl(event.service.service, event.recipients, event.subject.subject, event.body.body);
     }
 
+    @Subscribe
+    private void handleLoadPersonPageEvent(LoadPersonWebpageEvent event) {
+        setUpToShowWebBrowser();
+        currentlyInFront = Node.BROWSER;
+        browser.toFront();
+        loadPersonPage(event.getPerson());
+    }
+```
+###### \java\seedu\address\ui\DetailsPanel.java
+``` java
+package seedu.address.ui;
+
+import java.util.HashMap;
+import java.util.Random;
+
+import javafx.beans.binding.Bindings;
+import javafx.fxml.FXML;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
+import seedu.address.model.person.ReadOnlyPerson;
+
+/**
+ * An UI component that displays information of a {@code Person}.
+ */
+public class DetailsPanel extends UiPart<Region> {
+
+    private static final String FXML = "DetailsPanel.fxml";
+    private static final Integer IMAGE_WIDTH = 100;
+    private static final Integer IMAGE_HEIGHT = 100;
+    private static String[] colors = {"red", "blue", "green", "yellow", "pink"};
+    private static HashMap<String, String> tagColors = new HashMap<String, String>();
+    private static Random random = new Random();
+
+    /**
+     * Note: Certain keywords such as "location" and "resources" are reserved keywords in JavaFX.
+     * As a consequence, UI elements' variable names cannot be set to such keywords
+     * or an exception will be thrown by JavaFX during runtime.
+     *
+     * @see <a href="https://github.com/se-edu/addressbook-level4/issues/336">The issue on AddressBook level 4</a>
+     */
+
+    public final ReadOnlyPerson person;
+
+    @FXML
+    private AnchorPane anchorPane;
+    @FXML
+    private HBox mainCardPane;
+    @FXML
+    private VBox secondaryCardPane;
+    @FXML
+    private Label detailsName;
+    @FXML
+    private Label detailsPhone;
+    @FXML
+    private Label detailsAddress;
+    @FXML
+    private Label detailsEmail;
+    @FXML
+    private Label detailsNickname;
+    @FXML
+    private Label detailsBirthday;
+    @FXML
+    private FlowPane detailsTag;
+    @FXML
+    private ImageView detailsDisplayPicture;
+
+
+    public DetailsPanel(ReadOnlyPerson person) {
+        super(FXML);
+        this.person = person;
+        initTags(person);
+        bindListeners(person);
+    }
+
+    /**
+     * Assigns a random color to a tag if it does not exist in the HashMap
+     * returns a String containing the color
+     */
+
+    private String getTagColor(String tag) {
+        if (!tagColors.containsKey(tag)) {
+            tagColors.put(tag, colors[random.nextInt(colors.length)]);
+        }
+        return tagColors.get(tag);
+    }
+
+    /**
+     * Binds the individual UI elements to observe their respective {@code Person} properties
+     * so that they will be notified of any changes.
+     */
+    private void bindListeners(ReadOnlyPerson person) {
+        detailsName.textProperty().bind(Bindings.convert(person.nameProperty()));
+        detailsPhone.textProperty().bind(Bindings.convert(person.phoneProperty()));
+        detailsAddress.textProperty().bind(Bindings.convert(person.addressProperty()));
+        detailsEmail.textProperty().bind(Bindings.convert(person.emailProperty()));
+        detailsNickname.textProperty().bind(Bindings.convert(person.nicknameProperty()));
+        detailsBirthday.textProperty().bind(Bindings.convert(person.birthdayProperty()));
+        person.tagProperty().addListener((observable, oldValue, newValue) -> {
+            detailsTag.getChildren().clear();
+            initTags(person);
+        });
+        assignImage(person);
+    }
+
+    /**
+     * Assigns URL to the image depending on the path
+     */
+    private void assignImage(ReadOnlyPerson person) {
+
+        if (!person.getDisplayPicture().getPath().equals("")) {
+
+            Image image = new Image("file:" + "pictures/" + person.getDisplayPicture().getPath() + ".png",
+                    IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
+
+            centerImage();
+            detailsDisplayPicture.setImage(image);
+
+        }
+    }
+
+
+
+    /**
+     * Centre the image in ImageView
+     */
+    public void centerImage() {
+        Image img = detailsDisplayPicture.getImage();
+        if (img != null) {
+            double w;
+            double h;
+
+            double ratioX = detailsDisplayPicture.getFitWidth() / img.getWidth();
+            double ratioY = detailsDisplayPicture.getFitHeight() / img.getHeight();
+
+            double reducCoeff;
+            if (ratioX >= ratioY) {
+                reducCoeff = ratioY;
+            } else {
+                reducCoeff = ratioX;
+            }
+
+            w = img.getWidth() * reducCoeff;
+            h = img.getHeight() * reducCoeff;
+
+            detailsDisplayPicture.setX((detailsDisplayPicture.getFitWidth() - w) / 2);
+            detailsDisplayPicture.setY((detailsDisplayPicture.getFitHeight() - h) / 2);
+
+        }
+    }
+
+    /**
+     * Initialize tags for the respective person
+     *
+     * @param person
+     */
+    private void initTags(ReadOnlyPerson person) {
+        person.getTags().forEach(tag -> {
+            Label tagLabel = new Label(tag.tagName);
+            tagLabel.setStyle("-fx-background-color: " + getTagColor(tag.tagName));
+            detailsTag.getChildren().add(tagLabel);
+        });
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        // short circuit if same object
+        if (other == this) {
+            return true;
+        }
+
+        // instanceof handles nulls
+        if (!(other instanceof DetailsPanel)) {
+            return false;
+        }
+
+        // state check
+        DetailsPanel panel = (DetailsPanel) other;
+        return person.equals(panel.person);
+    }
+}
 ```
 ###### \java\seedu\address\ui\PersonCard.java
 ``` java
@@ -1488,12 +1983,15 @@ public class ImageDisplayPictureStorage implements DisplayPictureStorage {
             Image image = new Image("file:" + "pictures/" + person.getDisplayPicture().getPath() + ".png",
                     IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
 
-            centerImage();
-            displayPicture.setImage(image);
+            displayPicture.setFill(new ImagePattern(image));
 
+        } else {
+            Image image = new Image(MainApp.class.getResourceAsStream("/images/defaulddp.png"),
+                    IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
+
+            displayPicture.setFill(new ImagePattern(image));
         }
     }
-
 ```
 ###### \java\seedu\address\ui\PopularContactCard.java
 ``` java
@@ -1503,9 +2001,11 @@ import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Circle;
+import seedu.address.MainApp;
 import seedu.address.model.person.ReadOnlyPerson;
 
 /**
@@ -1532,7 +2032,7 @@ public class PopularContactCard extends UiPart<Region> {
     @FXML
     private Label popularContactName;
     @FXML
-    private ImageView popularContactDisplayPicture;
+    private Circle popularContactDisplayPicture;
     @FXML
     private Label rank;
 
@@ -1562,39 +2062,16 @@ public class PopularContactCard extends UiPart<Region> {
             Image image = new Image("file:" + "pictures/" + person.getDisplayPicture().getPath() + ".png",
                     IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
 
-            centerImage();
-            popularContactDisplayPicture.setImage(image);
+            popularContactDisplayPicture.setFill(new ImagePattern(image));
 
+        } else {
+            Image image = new Image(MainApp.class.getResourceAsStream("/images/defaulddp.png"),
+                    IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
+
+            popularContactDisplayPicture.setFill(new ImagePattern(image));
         }
     }
 
-    /**
-     * Centre the image in ImageView
-     */
-    public void centerImage() {
-        Image image = popularContactDisplayPicture.getImage();
-        if (image != null) {
-            double width;
-            double height;
-
-            double ratioX = popularContactDisplayPicture.getFitWidth() / image.getWidth();
-            double ratioY = popularContactDisplayPicture.getFitHeight() / image.getHeight();
-
-            double reducCoeff;
-            if (ratioX >= ratioY) {
-                reducCoeff = ratioY;
-            } else {
-                reducCoeff = ratioX;
-            }
-
-            width = image.getWidth() * reducCoeff;
-            height = image.getHeight() * reducCoeff;
-
-            popularContactDisplayPicture.setX((popularContactDisplayPicture.getFitWidth() - width) / 2);
-            popularContactDisplayPicture.setY((popularContactDisplayPicture.getFitHeight() - height) / 2);
-
-        }
-    }
 
     @Override
     public boolean equals(Object other) {
@@ -1665,7 +2142,7 @@ public class PopularContactPanel extends UiPart<Region> {
                 .addListener((observable, oldValue, newValue) -> {
                     if (newValue != null) {
                         logger.fine("Selection in person list panel changed to : '" + newValue + "'");
-                        raise(new PopularContactPanelSelectionChangedEvent(newValue));
+                        raise(new PopularContactPanelSelectionChangedEvent(newValue, newValue.person));
                     }
                 });
     }
@@ -1695,16 +2172,7 @@ public class PopularContactPanel extends UiPart<Region> {
 }
 
 ```
-###### \resources\view\MainWindow.fxml
-``` fxml
-
-  <StackPane fx:id="popularContactsPanelPlaceHolder" maxHeight="120.0" minHeight="120" prefHeight="120.0" styleClass="pane-with-border" VBox.vgrow="NEVER">
-    <padding>
-      <Insets bottom="5" left="10" right="10" top="5" />
-    </padding>
-   </StackPane>
-```
-###### \resources\view\PopularContactCard.fxml
+###### \resources\view\DetailsPanel.fxml
 ``` fxml
 <?xml version="1.0" encoding="UTF-8"?>
 
@@ -1712,22 +2180,109 @@ public class PopularContactPanel extends UiPart<Region> {
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
+<AnchorPane fx:id="anchorPane" prefHeight="200.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <HBox fx:id="mainCardPane" prefHeight="125.0" prefWidth="700.0">
+         <children>
+            <ImageView fx:id="detailsDisplayPicture" fitHeight="123.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+               <image>
+                  <Image url="@../images/defaulddp.png" />
+               </image>
+            </ImageView>
+            <VBox prefHeight="200.0" prefWidth="549.0">
+               <children>
+                  <Label fx:id="detailsName" prefHeight="50.0" prefWidth="371.0" text="Shradheya Thakre">
+                     <font>
+                        <Font name="Helvetica Bold" size="30.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="detailsNickname" text="\$nickname">
+                     <font>
+                        <Font name="Helvetica" size="15.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="20.0" />
+                     </VBox.margin>
+                  </Label>
+               </children>
+               <HBox.margin>
+                  <Insets left="50.0" />
+               </HBox.margin>
+            </VBox>
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </HBox>
+      <VBox fx:id="secondaryCardPane" layoutY="125.0" prefHeight="242.0" prefWidth="700.0">
+         <children>
+            <FlowPane fx:id="detailsTag" hgap="10.0" prefHeight="54.0" prefWidth="685.0" />
+            <Label fx:id="detailsPhone" prefHeight="39.0" prefWidth="700.0" text="\$phone">
+               <graphic>
+                  <MaterialDesignIconView glyphName="PHONE" size="20" />
+               </graphic>
+               <VBox.margin>
+                  <Insets bottom="20.0" />
+               </VBox.margin>
+            </Label>
+            <Label fx:id="detailsAddress" prefHeight="50.0" prefWidth="700.0" text="\$address">
+               <graphic>
+                  <MaterialDesignIconView glyphName="MAP" size="20" />
+               </graphic>
+               <VBox.margin>
+                  <Insets bottom="20.0" />
+               </VBox.margin>
+            </Label>
+            <Label fx:id="detailsEmail" prefHeight="50.0" prefWidth="700.0" text="\$email">
+               <graphic>
+                  <MaterialDesignIconView glyphName="GMAIL" size="20" />
+               </graphic>
+               <VBox.margin>
+                  <Insets bottom="20.0" />
+               </VBox.margin>
+            </Label>
+            <Label fx:id="detailsBirthday" prefHeight="50.0" prefWidth="700.0" text="\$birthday">
+               <graphic>
+                  <MaterialDesignIconView glyphName="CAKE_VARIANT" size="20" />
+               </graphic>
+            </Label>
+         </children>
+         <padding>
+            <Insets top="10.0" />
+         </padding>
+      </VBox>
+   </children>
+</AnchorPane>
+```
+###### \resources\view\PopularContactCard.fxml
+``` fxml
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
 
 <VBox id="popularContactPane" fx:id="popularContactPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="94.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <ImageView fx:id="popularContactDisplayPicture" fitHeight="76.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true">
+      <Circle fx:id="popularContactDisplayPicture" fill="WHITE" layoutX="150.0" layoutY="186.0" radius="35.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0">
          <VBox.margin>
-            <Insets left="70.0" />
-         </VBox.margin>
-         <image>
-            <Image url="@../images/defaulddp.png" />
-         </image>
-      </ImageView>
+            <Insets left="67.0" />
+         </VBox.margin></Circle>
       <HBox prefHeight="100.0" prefWidth="200.0">
          <children>
-            <Label fx:id="rank" prefHeight="15.0" prefWidth="25.0"  styleClass="cell_small_label" />
+            <Label fx:id="rank" prefHeight="15.0" prefWidth="25.0" styleClass="cell_small_label" />
             <Label fx:id="popularContactName" styleClass="cell_small_label" text="\$name" textAlignment="CENTER">
                <padding>
                   <Insets left="10.0" />

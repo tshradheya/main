@@ -76,7 +76,7 @@ public class ImageDisplayPictureStorage implements DisplayPictureStorage {
         File file = new File("pictures/" + filepath + ".png");
 
         logger.info(filepath + "deleted during exit");
-        file.delete();
+        file.deleteOnExit();
     }
 
 }

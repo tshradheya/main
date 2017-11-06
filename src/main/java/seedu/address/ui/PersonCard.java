@@ -88,6 +88,7 @@ public class PersonCard extends UiPart<Region> {
         });
         assignImage(person);
     }
+    //@@author tshradheya
 
     /**
      * Assigns URL to the image depending on the path
@@ -108,6 +109,7 @@ public class PersonCard extends UiPart<Region> {
             displayPicture.setFill(new ImagePattern(image));
         }
     }
+    //@@author
 
     /**
      * Initialize tags for the respective person

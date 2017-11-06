@@ -176,7 +176,7 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
             throw new AssertionError("It should not be possible to land here");
         }
     }
-
+    //@@author tshradheya
     private void setUpToShowRemindersPanel() {
         detailsPanel.setVisible(false);
         remindersPanel.setVisible(true);
@@ -324,5 +324,6 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
         browser.toFront();
         loadPersonPage(event.getPerson());
     }
+    //@@author
 
 }

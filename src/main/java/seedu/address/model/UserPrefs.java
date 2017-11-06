@@ -44,18 +44,21 @@ public class UserPrefs {
     public String getAddressBookFilePath() {
         return addressBookFilePath;
     }
+    //@@author tshradheya
 
     public String getAddressBookPicturesPath() {
         return addressBookPicturesPath;
     }
+    //@@author
 
     public void setAddressBookFilePath(String addressBookFilePath) {
         this.addressBookFilePath = addressBookFilePath;
     }
-
+    //@@author tshradheya
     public void setAddressBookPicturesPath(String addressBookPicturesPath) {
         this.addressBookPicturesPath = addressBookPicturesPath;
     }
+    //@@author
 
     public String getAddressBookName() {
         return addressBookName;

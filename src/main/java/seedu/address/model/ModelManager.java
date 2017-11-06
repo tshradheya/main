@@ -111,6 +111,7 @@ public class ModelManager extends ComponentManager implements Model {
     private void indicateAddressBookChanged() {
         raise(new AddressBookChangedEvent(addressBook));
     }
+    //@@author tshradheya
 
     /** Raises an event to indicate model has changed and favourite contacts might be updated */
     private void indicatePopularContactsChangedPossibility() {
@@ -124,6 +125,7 @@ public class ModelManager extends ComponentManager implements Model {
         raise(displayPictureChangedEvent);
         return displayPictureChangedEvent.isRead();
     }
+    //@@author
 
     /** Raises an event to indicate the reminders have changed */
     private void indicateRemindersChanged() {
@@ -147,6 +149,7 @@ public class ModelManager extends ComponentManager implements Model {
         indicatePopularContactsChangedPossibility();
         updatePopularContactList();
     }
+    //@@author tshradheya
 
     @Override
     public void updatePerson(ReadOnlyPerson target, ReadOnlyPerson editedPerson)
@@ -158,6 +161,7 @@ public class ModelManager extends ComponentManager implements Model {
         indicatePopularContactsChangedPossibility();
         updatePopularContactList();
     }
+    //@@author
 
     @Override
     public void updateReminder(ReadOnlyReminder target, ReadOnlyReminder editedReminder)
@@ -167,6 +171,7 @@ public class ModelManager extends ComponentManager implements Model {
         reminderList.setReminder(target, editedReminder);
         indicateRemindersChanged();
     }
+    //@@author tshradheya
 
     @Override
     public boolean addDisplayPicture(String path, int newPath) throws IOException {
@@ -285,6 +290,7 @@ public class ModelManager extends ComponentManager implements Model {
         updatePopularContactList();
         return FXCollections.observableList(listOfPersonsForPopularContacts);
     }
+    //@@author
 
     //=========== Filtered Person List Accessors =============================================================
 

@@ -24,6 +24,7 @@ import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
+import seedu.address.model.reminders.ReadOnlyReminder;
 import seedu.address.model.reminders.Reminder;
 import seedu.address.testutil.EditReminderDescriptorBuilder;
 import seedu.address.testutil.ReminderBuilder;
@@ -52,7 +53,7 @@ public class EditReminderCommandTest {
     public void execute_someFieldsSpecified_success() throws Exception {
         // time field not changed
         Index indexLastReminder = Index.fromOneBased(model.getSortedReminderList().size());
-        Reminder lastReminder = model.getSortedReminderList().get(indexLastReminder.getZeroBased());
+        ReadOnlyReminder lastReminder = model.getSortedReminderList().get(indexLastReminder.getZeroBased());
 
         ReminderBuilder reminderInList = new ReminderBuilder(lastReminder);
         Reminder editedReminder = reminderInList.withReminder(VALID_REMINDER_ASSIGNMENT)
@@ -75,7 +76,7 @@ public class EditReminderCommandTest {
     @Test
     public void execute_noFieldSpecified_success() throws Exception {
         EditReminderCommand editReminderCommand = prepareCommand(INDEX_FIRST_PERSON, new EditReminderDescriptor());
-        Reminder editedReminder = model.getSortedReminderList().get(INDEX_FIRST_PERSON.getZeroBased());
+        ReadOnlyReminder editedReminder = model.getSortedReminderList().get(INDEX_FIRST_PERSON.getZeroBased());
 
         String expectedMessage = String.format(EditReminderCommand.MESSAGE_EDIT_REMINDER_SUCCESS, editedReminder);
 

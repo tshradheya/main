@@ -1592,7 +1592,7 @@ public class ImageDisplayPictureStorage implements DisplayPictureStorage {
      */
     public void deleteImageFromDirectory(String  filepath) {
         if (filepath.equalsIgnoreCase("")) {
-            assert false : "cannot be deleted as it is not assigned";
+            logger.info("image not present so cannot be deleted");
         }
         File file = new File("pictures/" + filepath + ".png");
 

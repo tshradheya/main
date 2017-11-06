@@ -56,6 +56,7 @@ public class ModelManagerTest {
         thrown.expect(UnsupportedOperationException.class);
         modelManager.getSortedReminderList().remove(0);
     }
+    //@@author tshradheya
 
     @Test
     public void addDisplayPicture_eventRaised() throws IOException {
@@ -70,6 +71,7 @@ public class ModelManagerTest {
         modelManager.showPersonWebpage(ALICE);
         assertTrue(eventsCollectorRule.eventsCollector.getMostRecent() instanceof LoadPersonWebpageEvent);
     }
+    //@@author
 
     @Test
     public void equals() {

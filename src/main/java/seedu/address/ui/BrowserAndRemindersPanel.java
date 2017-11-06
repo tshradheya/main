@@ -194,7 +194,7 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
      */
     private void setUpToShowLocation() {
         setUpToShowWebBrowser();
-        remindersPanel.toFront();
+        browser.toFront();
         currentlyInFront = Node.BROWSER;
     }
 

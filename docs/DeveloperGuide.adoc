@@ -387,6 +387,51 @@ public class ExportCommand extends Command {
 ----
 // end::export[]
 
+// tag::find[]
+=== Find mechanism
+
+The `FindCommand` uses `NameContainsKeywordsPredicate` to find contacts with matching names or nicknames. It accepts `List<String> nameKeywords` as the parameter that is parsed by `FindCommandParser`. Below is the constructor for the class:
+
+[source,java]
+----
+public FindCommand(NameContainsKeywordsPredicate predicate) {
+        this.predicate = predicate;
+    }
+----
+
+The method `test(ReadOnlyPerson person)` iterates through `nameKeywords` to find a match with the name or nickname of every `person` from the address book.
+
+Below is an extract of the method `test(ReadOnlyPerson person`.
+
+[source,java]
+----
+   @Override
+    public boolean test(ReadOnlyPerson person) {
+        return keywords.stream()
+                .anyMatch(keyword -> StringUtil.containsWordIgnoreCase(person.getName().fullName, keyword))
+                || keywords.stream()
+                .anyMatch(keyword -> StringUtil.containsWordIgnoreCase(person.getNickname().value, keyword));
+    }
+----
+
+For the `FindCommand` to work properly `nameKeywords` must be non-empty. The code extract below checks for empty inputs:
+
+[source,java]
+----
+    public FindCommand parse(String args) throws ParseException {
+        String trimmedArgs = args.trim();
+        if (trimmedArgs.isEmpty()) {
+            throw new ParseException(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+        }
+
+        String[] nameKeywords = trimmedArgs.split("\\s+");
+
+        return new FindCommand(new NameContainsKeywordsPredicate(Arrays.asList(nameKeywords)));
+    }
+----
+// end::find[]
+
 // tag::undoredo[]
 === Undo/Redo mechanism
 
@@ -574,6 +619,7 @@ public class DisplayPictureCommand extends UndoableCommand {
 }
 ----
 
+==== Reasons for this type of implementation
 The command is implemented in this manner because of the following reasons:
 
 * By specifying the index, there is no ambiguity as to who should be assigned the display picture.
@@ -582,7 +628,6 @@ The command is implemented in this manner because of the following reasons:
 * The task is done using CLI to follow project requirements.
 * The image is stored in jpg format to ensure maximum compatibility.
 
-[discrete]
 ==== Design Considerations
 
 **Aspect:** At what stage should the image be read and stored +
@@ -937,51 +982,6 @@ _Figure 31 : Sequence diagram for the second part of the theme-changing mechanis
 
 As shown from the sequence diagram above, the method `handleChangeThemeEvent()` in `MainWindow` will handle the event and change the theme of the address book through the method `changeTheme()` accordingly.
 // end::theme[]
-
-// tag::find[]
-=== Find mechanism
-
-The `FindCommand` uses `NameContainsKeywordsPredicate` to find contacts with matching names or nicknames. It accepts `List<String> nameKeywords` as the parameter that is parsed by `FindCommandParser`. Below is the constructor for the class:
-
-[source,java]
-----
-public FindCommand(NameContainsKeywordsPredicate predicate) {
-        this.predicate = predicate;
-    }
-----
-
-The method `test(ReadOnlyPerson person)` iterates through `nameKeywords` to find a match with the name or nickname of every `person` from the address book.
-
-Below is an extract of the method `test(ReadOnlyPerson person`.
-
-[source,java]
-----
-   @Override
-    public boolean test(ReadOnlyPerson person) {
-        return keywords.stream()
-                .anyMatch(keyword -> StringUtil.containsWordIgnoreCase(person.getName().fullName, keyword))
-                || keywords.stream()
-                .anyMatch(keyword -> StringUtil.containsWordIgnoreCase(person.getNickname().value, keyword));
-    }
-----
-
-For the `FindCommand` to work properly `nameKeywords` must be non-empty. The code extract below checks for empty inputs:
-
-[source,java]
-----
-    public FindCommand parse(String args) throws ParseException {
-        String trimmedArgs = args.trim();
-        if (trimmedArgs.isEmpty()) {
-            throw new ParseException(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
-        }
-
-        String[] nameKeywords = trimmedArgs.split("\\s+");
-
-        return new FindCommand(new NameContainsKeywordsPredicate(Arrays.asList(nameKeywords)));
-    }
-----
-// end::find[]
 
 === Logging
 

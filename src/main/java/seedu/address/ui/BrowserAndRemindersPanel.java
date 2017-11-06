@@ -42,7 +42,6 @@ import seedu.address.model.person.Phone;
 import seedu.address.model.person.PopularityCounter;
 import seedu.address.model.person.ReadOnlyPerson;
 import seedu.address.model.reminders.ReadOnlyReminder;
-import seedu.address.model.reminders.Reminder;
 import seedu.address.model.tag.Tag;
 
 /**

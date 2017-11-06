@@ -12,7 +12,6 @@ import javafx.collections.ObservableList;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.reminders.ReadOnlyReminder;
 import seedu.address.model.reminders.ReadOnlyUniqueReminderList;
-import seedu.address.model.reminders.Reminder;
 
 /**
  * A List of reminders that is serializable to XML format.

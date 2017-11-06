@@ -34,7 +34,6 @@ import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
 import seedu.address.model.reminders.ReadOnlyReminder;
 import seedu.address.model.reminders.ReadOnlyUniqueReminderList;
-import seedu.address.model.reminders.Reminder;
 import seedu.address.model.reminders.UniqueReminderList;
 import seedu.address.model.reminders.exceptions.DuplicateReminderException;
 import seedu.address.model.reminders.exceptions.ReminderNotFoundException;
@@ -58,7 +57,7 @@ public class ModelManager extends ComponentManager implements Model {
     private SortedList<ReadOnlyReminder> sortedReminderList;
 
     /**
-     * Initializes a ModelManager with the given addressBook and userPrefs.
+     * Initializes a ModelManager with the given addressBook, reminders and userPrefs.
      */
     public ModelManager(ReadOnlyAddressBook addressBook, ReadOnlyUniqueReminderList reminders, UserPrefs userPrefs) {
         super();

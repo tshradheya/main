@@ -6,7 +6,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import seedu.address.model.reminders.ReadOnlyReminder;
-import seedu.address.model.reminders.Reminder;
 
 /**
  * An UI component that displays the content, date and time of a Reminder.

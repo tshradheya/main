@@ -13,7 +13,7 @@ import javafx.beans.property.SimpleObjectProperty;
  *  Represents a reminder in iContacts.
  */
 
-public class Reminder implements ReadOnlyReminder{
+public class Reminder implements ReadOnlyReminder {
 
     private ObjectProperty<String> reminder;
     private ObjectProperty<Date> date;

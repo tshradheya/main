@@ -70,7 +70,9 @@ public class ImageDisplayPictureStorage implements DisplayPictureStorage {
      * @param filepath of image to be deleted
      */
     public void deleteImageFromDirectory(String  filepath) {
-
+        if (filepath.equalsIgnoreCase("")) {
+            return;
+        }
         File file = new File("pictures/" + filepath + ".png");
 
         logger.info(filepath + "deleted during exit");

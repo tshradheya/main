@@ -144,6 +144,7 @@ public class StorageManager extends ComponentManager implements Storage {
         logger.fine("Attempting to write to data file: " + filePath);
         remindersStorage.saveReminders(reminderList, filePath);
     }
+    //@@author tshradheya
 
     @Override
     public void readImageFromDevice(String path, int newPath) throws IOException {
@@ -181,5 +182,6 @@ public class StorageManager extends ComponentManager implements Storage {
     public void handleDisplayPictureDeleteEvent(DisplayPictureDeleteEvent event) {
         deleteImageFromDirectory(event.path);
     }
+    //@@author
 
 }

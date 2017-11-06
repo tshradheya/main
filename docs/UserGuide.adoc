@@ -76,7 +76,8 @@ Format: `addReminder rd/REMINDER d/DATE ti/TIME`
 ****
 * All three parameters REMINDER, DATE and TIME must be filled. +
 * The order of the parameters cannot be changed. +
-* DATE must be in the format dd/mm/yyyy, dd.mm.yyyy or dd-mm-yyyy. +
+* DATE must be in the format dd/mm/yyyy. `'-'`, `'/'` and `'.'` can be used to separate the day, month and year field of the date,
+ and they need not be paired up (i.e. 24.03/2017 is acceptable as well). +
 * TIME must be in 24-hr format, with a colon separating the hour and minute values. Example: 08:00, 16:00, 23:59. +
 * REMINDER can be of any value, as long as it is not empty.
 ****
@@ -84,17 +85,18 @@ Format: `addReminder rd/REMINDER d/DATE ti/TIME`
 Examples:
 
 * `addReminder rd/Dinner with family d/10/10/2017 ti/18:00` (See Figure 1)
-* `addReminder rd/CS2105 Assignment d/26/10/2017 ti/23:59`
+* `addReminder rd/CS2105 Assignment d/26.10-2017 ti/23:59`
 
 image::ReminderPast.png[width=500]
 _Figure 1: Reminder for a dinner with family on 10/10/2017 at 18:00_
 
-[NOTE]
-The reminder cells are colored differently according to the urgency of the event. +
-If the event has past, the reminder cell is colored in dark grey (See Figure 1). +
-If the event is going to happen today, the reminder cell is colored in red (See Figure 2). +
-If the event is going to happen within three days, the reminder cell is colored in yellow (See Figure 3). +
-If the event is more than three days away, the reminder cell is colored in green. (See Figure 4).
+****
+* The reminder cells are colored differently according to the urgency of the event. +
+* If the event has past, the reminder cell is colored in dark grey (See Figure 1). +
+* If the event is going to happen today, the reminder cell is colored in red (See Figure 2). +
+* If the event is going to happen within three days, the reminder cell is colored in yellow (See Figure 3). +
+* If the event is more than three days away, the reminder cell is colored in green. (See Figure 4).
+****
 
 image::ReminderToday.png[width=500]
 _Figure 2: Event happening today._
@@ -553,7 +555,7 @@ Format: `toggle`
 * Executing the `select` command would always bring the browser to the front.
 * Toggling to the browser without first executing a `select` command would display a default background (See Figure 3).
 * Executing this `toggle` command when the application is showing the details of a contact would always bring the reminders panel to the front, and then
-alternate between the reminders panel and the browser.
+alternate between the reminders panel and the browser on further execution of the `toggle` command.
 ****
 
 
@@ -606,7 +608,7 @@ e.g.`select 2`
 * *Redo* : `redo`
 * *Toggle* : `toggle`
 * *Theme* : `theme THEME` +
-e.g. `theme sky`
+e.g. `theme day`
 
 
 == Since V1.3

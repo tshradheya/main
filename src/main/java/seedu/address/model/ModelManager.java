@@ -32,6 +32,8 @@ import seedu.address.model.person.ReadOnlyPerson;
 import seedu.address.model.person.UpcomingBirthdayInCurrentMonthPredicate;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
+import seedu.address.model.reminders.ReadOnlyReminder;
+import seedu.address.model.reminders.ReadOnlyUniqueReminderList;
 import seedu.address.model.reminders.Reminder;
 import seedu.address.model.reminders.UniqueReminderList;
 import seedu.address.model.reminders.exceptions.DuplicateReminderException;
@@ -53,12 +55,12 @@ public class ModelManager extends ComponentManager implements Model {
 
     private SortedList<ReadOnlyPerson> sortedfilteredPersons;
     private SortedList<ReadOnlyPerson> sortedFilteredPersonsForBirthdayListPanel;
-    private SortedList<Reminder> sortedReminderList;
+    private SortedList<ReadOnlyReminder> sortedReminderList;
 
     /**
      * Initializes a ModelManager with the given addressBook and userPrefs.
      */
-    public ModelManager(ReadOnlyAddressBook addressBook, UniqueReminderList reminders, UserPrefs userPrefs) {
+    public ModelManager(ReadOnlyAddressBook addressBook, ReadOnlyUniqueReminderList reminders, UserPrefs userPrefs) {
         super();
         requireAllNonNull(addressBook, reminders, userPrefs);
 
@@ -156,7 +158,7 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public void updateReminder(Reminder target, Reminder editedReminder)
+    public void updateReminder(ReadOnlyReminder target, ReadOnlyReminder editedReminder)
             throws DuplicateReminderException, ReminderNotFoundException {
         requireAllNonNull(target, editedReminder);
 
@@ -328,7 +330,7 @@ public class ModelManager extends ComponentManager implements Model {
     //=========== UniqueReminderList Accessors =================================================================
 
     @Override
-    public ObservableList<Reminder> getSortedReminderList() {
+    public ObservableList<ReadOnlyReminder> getSortedReminderList() {
         return sortedReminderList;
     }
 
@@ -338,13 +340,13 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public void addReminder(Reminder toAdd) throws DuplicateReminderException {
+    public void addReminder(ReadOnlyReminder toAdd) throws DuplicateReminderException {
         reminderList.add(toAdd);
         indicateRemindersChanged();
     }
 
     @Override
-    public void deleteReminder(Reminder target) throws ReminderNotFoundException {
+    public void deleteReminder(ReadOnlyReminder target) throws ReminderNotFoundException {
         reminderList.remove(target);
         indicateRemindersChanged();
     }

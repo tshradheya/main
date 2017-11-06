@@ -6,6 +6,7 @@ import javax.xml.bind.annotation.XmlElement;
 
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.reminders.Date;
+import seedu.address.model.reminders.ReadOnlyReminder;
 import seedu.address.model.reminders.Reminder;
 import seedu.address.model.reminders.Time;
 
@@ -32,7 +33,7 @@ public class XmlAdaptedReminder {
      *
      * @param source future changes to this will not affect the created XmlAdaptedReminder
      */
-    public XmlAdaptedReminder(Reminder source) {
+    public XmlAdaptedReminder(ReadOnlyReminder source) {
         this.reminder = source.getReminder();
         this.date = source.getDate().value;
         this.time = source.getTime().value;

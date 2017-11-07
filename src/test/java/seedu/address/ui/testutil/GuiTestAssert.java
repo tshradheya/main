@@ -87,6 +87,7 @@ public class GuiTestAssert {
 
     }
 
+    //@@author justinpoh
     /**
      * Asserts that {@code actualCard} displays the details of {@code expectedPerson}.
      */
@@ -106,6 +107,7 @@ public class GuiTestAssert {
         assertEquals(expectedReminder.getDate().toString(), actualCard.getDate());
         assertEquals(expectedReminder.getTime().toString(), actualCard.getTime());
     }
+    //@@author
 
     /**
      * Asserts that the list in {@code personListPanelHandle} displays the details of {@code persons} correctly and

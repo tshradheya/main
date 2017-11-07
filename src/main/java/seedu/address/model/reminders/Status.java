@@ -5,6 +5,7 @@ import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
+//@@author justinpoh
 /**
  * Represents a Reminder's status in the program.
  * Guarantees: immutable.

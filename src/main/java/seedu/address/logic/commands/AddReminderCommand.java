@@ -10,6 +10,7 @@ import seedu.address.model.reminders.ReadOnlyReminder;
 import seedu.address.model.reminders.Reminder;
 import seedu.address.model.reminders.exceptions.DuplicateReminderException;
 
+//@@author justinpoh
 /**
  *  Adds a reminder to the program.
  */

@@ -68,6 +68,7 @@ Examples:
 * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01`
 * `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 b/21/10/1995 t/criminal`
 
+// tag::addReminder[]
 === Adding a reminder: `addReminder`[V1.3]
 
 Adds a reminder to iContacts. +
@@ -106,6 +107,7 @@ _Figure 3: Event happening within three days._
 
 image::ReminderNormal.png[width=500]
 _Figure 2: Event not happening anytime soon._
+// end::addReminder[]
 
 === Viewing details of a contact: `details`
 
@@ -181,6 +183,7 @@ Edits the name of the 2nd person to be `Betsy Crower` and clears all existing ta
 * `edit 3 b/` +
 Clear the birthday of the 3rd person.
 
+// tag::editReminder[]
 === Editing a reminder: `editReminder`[V1.4]
 
 Edits an existing reminder in iContacts. +
@@ -198,6 +201,7 @@ Examples:
 Edits the content of the 1st reminder to be `Drink coffee`.
 * `editReminder 3 d/25/12/2017 ti/19:00` +
 Edits the date and time of the 3rd reminder to be `25/12/2017` and `19:00` respectively.
+// end::editReminder[]
 
 === Frequently Viewed Contacts[V1.4]
 
@@ -393,6 +397,7 @@ Deletes the 2nd person in the address book.
 `delete 1` +
 Deletes the 1st person in the results of the `find` command.
 
+// tag::deleteReminder[]
 === Deleting a reminder: `deleteReminder`[V1.4]
 
 Deletes the specified reminder from iContacts. +
@@ -410,6 +415,7 @@ Examples:
 Deletes the 1st reminder in iContacts.
 * `deleteReminder 20` +
 Deletes the 20th reminder in iContacts.
+// end::deleteReminder[]
 
 === Selecting a person : `select`
 
@@ -542,6 +548,7 @@ Exports the last displayed list to `newData` folder as `newList.xml`.
 * `export newList` +
 Saves the last displayed list to the default location as `newList.xml`.
 
+// tag::toggle[]
 === Toggling between reminders panel and browser: `toggle`[V1.2]
 
 Toggle between the reminders panel (See Figure 1) and the browser (See Figure 2) as needed. +
@@ -567,6 +574,7 @@ _Figure 2 : The browser panel._
 
 image::DefaultBackground.png[width="790"]
 _Figure 3 : The default panel._
+// end::toggle[]
 
 == FAQ
 

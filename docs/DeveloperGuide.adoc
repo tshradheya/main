@@ -725,7 +725,7 @@ Desktop.getDesktop().browse(new URI(String.format(GMAIL_EMAIL_URL, recipients, s
 **Pros:** No dependency on other apps +
 **Cons:** Does not auto fill in the text due to older version of browser
 
-
+// tag::toggle[]
 === Toggling mechanism
 
 image::togglingMechanism1.png[width="790]
@@ -829,12 +829,12 @@ Cons: More difficult to implement. +
 **Alternative 2:** Only set visibility of browser and reminders panel as required (set browser visibility to false to display reminders and vice versa). +
 Pros: Easier to implement. +
 Cons: Users cannot interact with the reminders panel (since the browser is technically still at the front).
+// end::toggle[]
 
-
-
+//tag::reminder[]
 === Reminder Implementation
 image::RemindersUML.png[width="790"]
-_Figure 1: UML diagram showing the implementation of reminders_
+_Figure 1: UML diagram showing the implementation of Reminder._
 
 The `Reminder` object represents a reminder in iContacts. It contains a `String` variable, which represents
 the actual reminder from the user, and also a `Date`, `Time` and `Status` object which represents the date, time and link:#status[status] of the reminder respectively. +
@@ -842,6 +842,9 @@ the actual reminder from the user, and also a `Date`, `Time` and `Status` object
 In terms of how `Reminder` objects are kept in-memory during the execution of the program, `Reminder` objects are
 kept within `UniqueReminderList`, which assures that there are no duplicate `Reminder` objects. The `UniqueReminderList`
 object is then kept and used by `ModelManager` to carry out commands related to reminders while the program is running. +
+
+As can be seen from Figure 1 above, as part of _defensive programming_, `Reminder` implements the `ReadOnlyReminder` interface. The `ReadOnlyReminder` interface only allows read operations, thus helping
+to prevent inappropriate modifications to `Reminder` objects. Similarly, `UniqueReminderList` implements the `ReadOnlyUniqueReminderList` interface for the same reason. +
 
 `Reminder` objects are stored in a XML storage file in a JAXB-friendly version `XmlAdaptedReminder`. Notably, the `Status` object is not stored along with
 the `Reminder` object; it is instantiated and initialized with an appropriate value during runtime when the `Reminder` object is instantiated.
@@ -868,8 +871,8 @@ This can be seen below:
 
 [source, java]
 ----
-public class UniqueReminderList implements Iterable<Reminder> {
-    public UniqueReminderList(XmlSerializableReminders xmlReminders) {
+public class UniqueReminderList implements Iterable<Reminder>, ReadOnlyUniqueReminderList {
+    public UniqueReminderList(ReadOnlyUniqueReminderList xmlReminders) {
         requireNonNull(xmlReminders);
         try {
             setReminders(xmlReminders.toModelType());
@@ -878,9 +881,9 @@ public class UniqueReminderList implements Iterable<Reminder> {
         }
     }
 
-    public void setReminders(List<Reminder> reminders) throws DuplicateReminderException {
+    public void setReminders(List<ReadOnlyReminder> reminders) throws DuplicateReminderException {
         final UniqueReminderList replacement = new UniqueReminderList();
-        for (final Reminder reminder : reminders) {
+        for (final ReadOnlyReminder reminder : reminders) {
             replacement.add(new Reminder(reminder));
         }
         setReminders(replacement);
@@ -892,18 +895,20 @@ public class UniqueReminderList implements Iterable<Reminder> {
 }
 ----
 
+As can be seen from the code snippet above and in Figure 1, as part of _defensive programming_, `XmlSerializableReminders` also implements the `ReadOnlyUniqueReminderList` interface. +
+
 To save, the `saveReminders` method in `StorageManager` is invoked:
 
 [source, java]
 ----
 
 @Override
-    public void saveReminders(UniqueReminderList reminderList) throws IOException {
+    public void saveReminders(ReadOnlyUniqueReminderList reminderList) throws IOException {
         saveReminders(reminderList, remindersStorage.getRemindersFilePath());
     }
 
 @Override
-    public void saveReminders(UniqueReminderList reminderList, String filePath) throws IOException {
+    public void saveReminders(ReadOnlyUniqueReminderList reminderList, String filePath) throws IOException {
         logger.fine("Attempting to write to data file: " + filePath);
         remindersStorage.saveReminders(reminderList, filePath);
     }
@@ -911,7 +916,7 @@ To save, the `saveReminders` method in `StorageManager` is invoked:
 ----
 
 This will then invoke the `saveReminders` method in `XmlRemindersStorage`, and go on to invoke the `saveRemindersToFile` method in `XmlFileStorage`,
-and the `saveDataToFile` method in `XmlUtil`.
+and then the `saveDataToFile` method in `XmlUtil`.
 
 ==== Design Consideration
 **Aspect:** How to store Reminders in-memory +
@@ -921,6 +926,8 @@ Cons: More changes have to be made to the existing code base, making it tougher 
 **Alternative 2:** Store Reminder objects within AddressBook. +
 Pros: Easier to implement as lesser changes have to be made to the existing program. +
 Cons: Violates the _Single-Responsibility Principle_.
+//end::reminder[]
+
 
 // tag::theme[]
 === Theme-changing mechanism

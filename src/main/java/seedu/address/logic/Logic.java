@@ -8,7 +8,7 @@ import seedu.address.logic.commands.CommandResult;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.ReadOnlyPerson;
-import seedu.address.model.reminders.Reminder;
+import seedu.address.model.reminders.ReadOnlyReminder;
 
 /**
  * API of the Logic component
@@ -30,7 +30,7 @@ public interface Logic {
     ObservableList<ReadOnlyPerson> getBirthdayPanelFilteredPersonList();
 
     /** Returns an unmodifiable view of the reminder list */
-    ObservableList<Reminder> getReminderList();
+    ObservableList<ReadOnlyReminder> getReminderList();
 
     /** Returns the list of input entered by the user, encapsulated in a {@code ListElementPointer} object */
     ListElementPointer getHistorySnapshot();

@@ -29,6 +29,7 @@ import seedu.address.model.email.Subject;
 import seedu.address.model.person.ReadOnlyPerson;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
+import seedu.address.model.reminders.ReadOnlyReminder;
 import seedu.address.model.reminders.Reminder;
 import seedu.address.model.reminders.UniqueReminderList;
 import seedu.address.model.reminders.exceptions.DuplicateReminderException;
@@ -39,6 +40,7 @@ public class AddReminderCommandTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
+    //@@author justinpoh
     @Test
     public void constructor_nullReminder_throwsNullPointerException() {
         thrown.expect(NullPointerException.class);
@@ -100,6 +102,7 @@ public class AddReminderCommandTest {
         command.setData(model, new CommandHistory(), new UndoRedoStack());
         return command;
     }
+    //@@author
 
     /**
      * A default model stub that have all of the methods failing.
@@ -132,7 +135,7 @@ public class AddReminderCommandTest {
         }
 
         @Override
-        public void deleteReminder(Reminder target) throws ReminderNotFoundException {
+        public void deleteReminder(ReadOnlyReminder target) throws ReminderNotFoundException {
             fail("This method should not be called.");
         }
         @Override
@@ -217,7 +220,7 @@ public class AddReminderCommandTest {
         }
 
         @Override
-        public ObservableList<Reminder> getSortedReminderList() {
+        public ObservableList<ReadOnlyReminder> getSortedReminderList() {
             fail("This method should not be called");
             return null;
         }
@@ -229,7 +232,7 @@ public class AddReminderCommandTest {
         }
 
         @Override
-        public void addReminder(Reminder reminder) throws DuplicateReminderException {
+        public void addReminder(ReadOnlyReminder reminder) throws DuplicateReminderException {
             fail("This method should not be called");
         }
 
@@ -255,7 +258,7 @@ public class AddReminderCommandTest {
         }
 
         @Override
-        public void updateReminder(Reminder target, Reminder editedReminder)
+        public void updateReminder(ReadOnlyReminder target, ReadOnlyReminder editedReminder)
                 throws DuplicateReminderException, ReminderNotFoundException {
             fail("This method should not be called");
         }
@@ -268,7 +271,7 @@ public class AddReminderCommandTest {
         final ArrayList<Reminder> remindersAdded = new ArrayList<>();
 
         @Override
-        public void addReminder(Reminder reminder) throws DuplicateReminderException {
+        public void addReminder(ReadOnlyReminder reminder) throws DuplicateReminderException {
             remindersAdded.add(new Reminder(reminder));
         }
     }
@@ -278,7 +281,7 @@ public class AddReminderCommandTest {
      */
     private class ModelStubThrowingDuplicateReminderException extends ModelStub {
         @Override
-        public void addReminder(Reminder reminder) throws DuplicateReminderException {
+        public void addReminder(ReadOnlyReminder reminder) throws DuplicateReminderException {
             throw new DuplicateReminderException();
         }
     }

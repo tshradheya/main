@@ -25,12 +25,12 @@ import seedu.address.commons.events.ui.LoadPersonWebpageEvent;
 import seedu.address.commons.events.ui.PersonPanelSelectionChangedEvent;
 import seedu.address.commons.events.ui.ShowLocationEvent;
 import seedu.address.model.person.ReadOnlyPerson;
-import seedu.address.model.reminders.Reminder;
+import seedu.address.model.reminders.ReadOnlyReminder;
 
 public class BrowserAndRemindersPanelTest extends GuiUnitTest {
     private static final ObservableList<ReadOnlyPerson> TYPICAL_PERSONS =
             FXCollections.observableList(getTypicalPersons());
-    private static final ObservableList<Reminder> TYPICAL_REMINDERS =
+    private static final ObservableList<ReadOnlyReminder> TYPICAL_REMINDERS =
             FXCollections.observableList(getTypicalReminders());
     private PersonPanelSelectionChangedEvent selectionChangedEventStub;
     private ShowLocationEvent showLocationEventStub;

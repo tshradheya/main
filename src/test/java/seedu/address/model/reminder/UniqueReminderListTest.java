@@ -15,12 +15,13 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import seedu.address.model.reminders.Reminder;
+import seedu.address.model.reminders.ReadOnlyReminder;
 import seedu.address.model.reminders.UniqueReminderList;
 import seedu.address.model.reminders.exceptions.DuplicateReminderException;
 import seedu.address.model.reminders.exceptions.ReminderNotFoundException;
 import seedu.address.storage.XmlSerializableReminders;
 
+//@@author justinpoh
 public class UniqueReminderListTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -42,7 +43,7 @@ public class UniqueReminderListTest {
     @Test
     public void constructor_withDuplicateReminders_throwsAssertionError() {
         // repeat coffee reminder twice
-        List<Reminder> newReminders = Arrays.asList(COFFEE_REMINDER, COFFEE_REMINDER);
+        List<ReadOnlyReminder> newReminders = Arrays.asList(COFFEE_REMINDER, COFFEE_REMINDER);
         XmlSerializableReminders serializableReminders = new XmlSerializableReminders(newReminders);
 
         thrown.expect(AssertionError.class);

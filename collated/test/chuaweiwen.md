@@ -1,5 +1,5 @@
 # chuaweiwen
-###### \java\seedu\address\logic\commands\FilterCommandTest.java
+###### /java/seedu/address/logic/commands/FilterCommandTest.java
 ``` java
 package seedu.address.logic.commands;
 
@@ -117,7 +117,7 @@ public class FilterCommandTest {
     }
 }
 ```
-###### \java\seedu\address\logic\commands\NicknameCommandTest.java
+###### /java/seedu/address/logic/commands/NicknameCommandTest.java
 ``` java
 package seedu.address.logic.commands;
 
@@ -284,7 +284,7 @@ public class NicknameCommandTest {
     }
 }
 ```
-###### \java\seedu\address\logic\commands\ThemeCommandTest.java
+###### /java/seedu/address/logic/commands/ThemeCommandTest.java
 ``` java
 package seedu.address.logic.commands;
 
@@ -296,17 +296,17 @@ import org.junit.Test;
 
 import guitests.AddressBookGuiTest;
 import seedu.address.logic.parser.Theme;
-import seedu.address.logic.parser.ThemeNames;
+import seedu.address.logic.parser.ThemeList;
 
 public class ThemeCommandTest extends AddressBookGuiTest {
 
     @Test
     public void execute_setTheme_success() throws Exception {
-        Theme standardTheme = new Theme(ThemeNames.THEME_SKY, ThemeNames.THEME_SKY_CSS);
+        Theme standardTheme = new Theme(ThemeList.THEME_DAY, ThemeList.THEME_DAY_PATH);
         ThemeCommand themeCommand = new ThemeCommand(standardTheme);
 
-        String expectedList = "[view/" + ThemeNames.THEME_SKY_CSS + ", view/Extensions.css]";
-        String expectedMessage = String.format(ThemeCommand.MESSAGE_SET_THEME_SUCCESS, ThemeNames.THEME_SKY);
+        String expectedList = "[" + ThemeList.THEME_DAY_PATH + ", view/Extensions.css]";
+        String expectedMessage = String.format(ThemeCommand.MESSAGE_SET_THEME_SUCCESS, ThemeList.THEME_DAY);
         CommandResult result = themeCommand.execute();
 
         assertEquals(result.feedbackToUser, expectedMessage);
@@ -315,8 +315,8 @@ public class ThemeCommandTest extends AddressBookGuiTest {
 
     @Test
     public void equals() {
-        Theme standardTheme = new Theme(ThemeNames.THEME_DARK, ThemeNames.THEME_DARK_CSS);
-        Theme differentTheme = new Theme(ThemeNames.THEME_SKY, ThemeNames.THEME_SKY_CSS);
+        Theme standardTheme = new Theme(ThemeList.THEME_NIGHT, ThemeList.THEME_NIGHT_PATH);
+        Theme differentTheme = new Theme(ThemeList.THEME_DAY, ThemeList.THEME_DAY_PATH);
         ThemeCommand standardCommand = new ThemeCommand(standardTheme);
         ThemeCommand commandWithSameTheme = new ThemeCommand(standardTheme);
         ThemeCommand commandWithDifferentTheme = new ThemeCommand(differentTheme);
@@ -338,7 +338,7 @@ public class ThemeCommandTest extends AddressBookGuiTest {
     }
 }
 ```
-###### \java\seedu\address\logic\parser\AddressBookParserTest.java
+###### /java/seedu/address/logic/parser/AddressBookParserTest.java
 ``` java
     @Test
     public void parseCommand_nickname() throws Exception {
@@ -351,12 +351,12 @@ public class ThemeCommandTest extends AddressBookGuiTest {
     @Test
     public void parseCommand_theme() throws Exception {
         ThemeCommand command = (ThemeCommand) parser.parseCommand(
-                ThemeCommand.COMMAND_WORD + " " + ThemeNames.THEME_DARK);
-        Theme theme = new Theme(ThemeNames.THEME_DARK, ThemeNames.THEME_DARK_CSS);
+                ThemeCommand.COMMAND_WORD + " " + ThemeList.THEME_NIGHT);
+        Theme theme = new Theme(ThemeList.THEME_NIGHT, ThemeList.THEME_NIGHT_PATH);
         assertEquals(new ThemeCommand(theme), command);
     }
 ```
-###### \java\seedu\address\logic\parser\AddressBookParserTest.java
+###### /java/seedu/address/logic/parser/AddressBookParserTest.java
 ``` java
     @Test
     public void parseCommand_filter() throws Exception {
@@ -367,7 +367,7 @@ public class ThemeCommandTest extends AddressBookGuiTest {
         assertEquals(new FilterCommand(new NameAndTagsContainsKeywordsPredicate(nameKeywords, tagKeywords)), command);
     }
 ```
-###### \java\seedu\address\logic\parser\FilterCommandParserTest.java
+###### /java/seedu/address/logic/parser/FilterCommandParserTest.java
 ``` java
 package seedu.address.logic.parser;
 
@@ -470,7 +470,7 @@ public class FilterCommandParserTest {
 
 }
 ```
-###### \java\seedu\address\logic\parser\NicknameCommandParserTest.java
+###### /java/seedu/address/logic/parser/NicknameCommandParserTest.java
 ``` java
 package seedu.address.logic.parser;
 
@@ -528,7 +528,7 @@ public class NicknameCommandParserTest {
     }
 }
 ```
-###### \java\seedu\address\logic\parser\ThemeCommandParserTest.java
+###### /java/seedu/address/logic/parser/ThemeCommandParserTest.java
 ``` java
 package seedu.address.logic.parser;
 
@@ -547,8 +547,8 @@ public class ThemeCommandParserTest {
 
     @Test
     public void parse_existingArgs_returnsThemeCommand() throws Exception {
-        ThemeCommand expectedCommand = new ThemeCommand(new Theme(ThemeNames.THEME_DARK, ThemeNames.THEME_DARK_CSS));
-        assertParseSuccess(parser, ThemeNames.THEME_DARK, expectedCommand);
+        ThemeCommand expectedCommand = new ThemeCommand(new Theme(ThemeList.THEME_NIGHT, ThemeList.THEME_NIGHT_PATH));
+        assertParseSuccess(parser, ThemeList.THEME_NIGHT, expectedCommand);
     }
 
     @Test
@@ -564,7 +564,7 @@ public class ThemeCommandParserTest {
     }
 }
 ```
-###### \java\seedu\address\logic\parser\ThemeTest.java
+###### /java/seedu/address/logic/parser/ThemeTest.java
 ``` java
 package seedu.address.logic.parser;
 
@@ -577,11 +577,11 @@ public class ThemeTest {
 
     @Test
     public void equals() {
-        Theme standardTheme = new Theme(ThemeNames.THEME_DARK, ThemeNames.THEME_DARK_CSS);
-        Theme sameTheme = new Theme(ThemeNames.THEME_DARK, ThemeNames.THEME_DARK_CSS);
-        Theme differentTheme = new Theme(ThemeNames.THEME_SKY, ThemeNames.THEME_SKY_CSS);
-        Theme themeWithDifferentName = new Theme(ThemeNames.THEME_SKY, ThemeNames.THEME_DARK_CSS);
-        Theme themeWithDifferentCss = new Theme(ThemeNames.THEME_DARK, ThemeNames.THEME_SKY_CSS);
+        Theme standardTheme = new Theme(ThemeList.THEME_DARK, ThemeList.THEME_DARK_PATH);
+        Theme sameTheme = new Theme(ThemeList.THEME_DARK, ThemeList.THEME_DARK_PATH);
+        Theme differentTheme = new Theme(ThemeList.THEME_SKY, ThemeList.THEME_SKY_PATH);
+        Theme themeWithDifferentName = new Theme(ThemeList.THEME_SKY, ThemeList.THEME_DARK_PATH);
+        Theme themeWithDifferentCss = new Theme(ThemeList.THEME_DARK, ThemeList.THEME_SKY_PATH);
 
         // same object -> returns true
         assertTrue(standardTheme.equals(standardTheme));
@@ -606,7 +606,7 @@ public class ThemeTest {
     }
 }
 ```
-###### \java\seedu\address\model\person\NameAndTagsContainsKeywordsPredicateTest.java
+###### /java/seedu/address/model/person/NameAndTagsContainsKeywordsPredicateTest.java
 ``` java
 package seedu.address.model.person;
 
@@ -752,7 +752,7 @@ public class NameAndTagsContainsKeywordsPredicateTest {
     }
 }
 ```
-###### \java\seedu\address\model\person\NicknameTest.java
+###### /java/seedu/address/model/person/NicknameTest.java
 ``` java
 package seedu.address.model.person;
 

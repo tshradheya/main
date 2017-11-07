@@ -1,3 +1,4 @@
+/* @@author justinpoh */
 .background {
     -fx-background-color: #f2f8ff;
     background-color: #f2f8ff; /* Used in the default.html file */
@@ -412,4 +413,3 @@
 .error {
     -fx-text-fill: derive(#dc143c, 0%) !important; /* The error class should always override the default text-fill style */
 }
-

@@ -1,3 +1,4 @@
+/* @@author justinpoh */
 .background {
     -fx-background-color: derive(#383838, -40%);
     background-color: #383838; /* Used in the default.html file */

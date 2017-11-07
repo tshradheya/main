@@ -2,9 +2,11 @@ package seedu.address.testutil;
 
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.reminders.Date;
+import seedu.address.model.reminders.ReadOnlyReminder;
 import seedu.address.model.reminders.Reminder;
 import seedu.address.model.reminders.Time;
 
+//@@author justinpoh
 /**
  * A utility class to help with building Reminder objects.
  */
@@ -29,7 +31,7 @@ public class ReminderBuilder {
     /**
      * Initializes the ReminderBuilder with the data of {@code reminderToCopy}.
      */
-    public ReminderBuilder(Reminder reminderToCopy) {
+    public ReminderBuilder(ReadOnlyReminder reminderToCopy) {
         this.reminder = new Reminder(reminderToCopy);
     }
 

@@ -5,14 +5,15 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
-import seedu.address.model.reminders.Reminder;
+import seedu.address.model.reminders.ReadOnlyReminder;
 
+//@@author justinpoh
 /**
- * An UI component that displays the content, date and time of a Reminder.
+ * An UI component that displays the content, date, time and status of a Reminder.
  */
 public class ReminderCard extends UiPart<Region> {
     private static final String FXML = "ReminderCard.fxml";
-    public final Reminder source;
+    public final ReadOnlyReminder source;
 
     @FXML
     private HBox cardPane;
@@ -27,7 +28,7 @@ public class ReminderCard extends UiPart<Region> {
     @FXML
     private Label status;
 
-    public ReminderCard(Reminder reminder, int displayedIndex) {
+    public ReminderCard(ReadOnlyReminder reminder, int displayedIndex) {
         super(FXML);
         source = reminder;
         id.setText(displayedIndex + ". ");
@@ -51,7 +52,7 @@ public class ReminderCard extends UiPart<Region> {
      * Binds the individual UI elements to observe their respective {@code Reminder} properties
      * so that they will be notified of any changes.
      */
-    private void bindListeners(Reminder source) {
+    private void bindListeners(ReadOnlyReminder source) {
         reminder.textProperty().bind(Bindings.convert(source.reminderProperty()));
         date.textProperty().bind(Bindings.convert(source.dateProperty()));
         time.textProperty().bind(Bindings.convert(source.timeProperty()));

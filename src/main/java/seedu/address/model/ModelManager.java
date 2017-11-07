@@ -18,6 +18,7 @@ import seedu.address.commons.core.ComponentManager;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.model.AddressBookChangedEvent;
 import seedu.address.commons.events.model.DisplayPictureChangedEvent;
+import seedu.address.commons.events.model.DisplayPictureDeleteEvent;
 import seedu.address.commons.events.model.PopularContactChangedEvent;
 import seedu.address.commons.events.model.RemindersChangedEvent;
 import seedu.address.commons.events.ui.LoadPersonWebpageEvent;
@@ -32,10 +33,12 @@ import seedu.address.model.person.ReadOnlyPerson;
 import seedu.address.model.person.UpcomingBirthdayInCurrentMonthPredicate;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
-import seedu.address.model.reminders.Reminder;
+import seedu.address.model.reminders.ReadOnlyReminder;
+import seedu.address.model.reminders.ReadOnlyUniqueReminderList;
 import seedu.address.model.reminders.UniqueReminderList;
 import seedu.address.model.reminders.exceptions.DuplicateReminderException;
 import seedu.address.model.reminders.exceptions.ReminderNotFoundException;
+
 
 /**
  * Represents the in-memory model of the address book data.
@@ -53,12 +56,12 @@ public class ModelManager extends ComponentManager implements Model {
 
     private SortedList<ReadOnlyPerson> sortedfilteredPersons;
     private SortedList<ReadOnlyPerson> sortedFilteredPersonsForBirthdayListPanel;
-    private SortedList<Reminder> sortedReminderList;
+    private SortedList<ReadOnlyReminder> sortedReminderList;
 
     /**
-     * Initializes a ModelManager with the given addressBook and userPrefs.
+     * Initializes a ModelManager with the given addressBook, reminders and userPrefs.
      */
-    public ModelManager(ReadOnlyAddressBook addressBook, UniqueReminderList reminders, UserPrefs userPrefs) {
+    public ModelManager(ReadOnlyAddressBook addressBook, ReadOnlyUniqueReminderList reminders, UserPrefs userPrefs) {
         super();
         requireAllNonNull(addressBook, reminders, userPrefs);
 
@@ -108,6 +111,7 @@ public class ModelManager extends ComponentManager implements Model {
     private void indicateAddressBookChanged() {
         raise(new AddressBookChangedEvent(addressBook));
     }
+    //@@author tshradheya
 
     /** Raises an event to indicate model has changed and favourite contacts might be updated */
     private void indicatePopularContactsChangedPossibility() {
@@ -121,6 +125,7 @@ public class ModelManager extends ComponentManager implements Model {
         raise(displayPictureChangedEvent);
         return displayPictureChangedEvent.isRead();
     }
+    //@@author
 
     /** Raises an event to indicate the reminders have changed */
     private void indicateRemindersChanged() {
@@ -130,6 +135,7 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public synchronized void deletePerson(ReadOnlyPerson target) throws PersonNotFoundException {
         addressBook.removePerson(target);
+        raise(new DisplayPictureDeleteEvent(target.getDisplayPicture().getPath()));
         indicateAddressBookChanged();
         indicatePopularContactsChangedPossibility();
         updatePopularContactList();
@@ -143,6 +149,7 @@ public class ModelManager extends ComponentManager implements Model {
         indicatePopularContactsChangedPossibility();
         updatePopularContactList();
     }
+    //@@author tshradheya
 
     @Override
     public void updatePerson(ReadOnlyPerson target, ReadOnlyPerson editedPerson)
@@ -154,15 +161,17 @@ public class ModelManager extends ComponentManager implements Model {
         indicatePopularContactsChangedPossibility();
         updatePopularContactList();
     }
+    //@@author
 
     @Override
-    public void updateReminder(Reminder target, Reminder editedReminder)
+    public void updateReminder(ReadOnlyReminder target, ReadOnlyReminder editedReminder)
             throws DuplicateReminderException, ReminderNotFoundException {
         requireAllNonNull(target, editedReminder);
 
         reminderList.setReminder(target, editedReminder);
         indicateRemindersChanged();
     }
+    //@@author tshradheya
 
     @Override
     public boolean addDisplayPicture(String path, int newPath) throws IOException {
@@ -281,6 +290,7 @@ public class ModelManager extends ComponentManager implements Model {
         updatePopularContactList();
         return FXCollections.observableList(listOfPersonsForPopularContacts);
     }
+    //@@author
 
     //=========== Filtered Person List Accessors =============================================================
 
@@ -328,7 +338,7 @@ public class ModelManager extends ComponentManager implements Model {
     //=========== UniqueReminderList Accessors =================================================================
 
     @Override
-    public ObservableList<Reminder> getSortedReminderList() {
+    public ObservableList<ReadOnlyReminder> getSortedReminderList() {
         return sortedReminderList;
     }
 
@@ -338,13 +348,13 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public void addReminder(Reminder toAdd) throws DuplicateReminderException {
+    public void addReminder(ReadOnlyReminder toAdd) throws DuplicateReminderException {
         reminderList.add(toAdd);
         indicateRemindersChanged();
     }
 
     @Override
-    public void deleteReminder(Reminder target) throws ReminderNotFoundException {
+    public void deleteReminder(ReadOnlyReminder target) throws ReminderNotFoundException {
         reminderList.remove(target);
         indicateRemindersChanged();
     }

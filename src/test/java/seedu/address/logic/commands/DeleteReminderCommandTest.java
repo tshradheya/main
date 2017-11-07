@@ -18,8 +18,9 @@ import seedu.address.logic.UndoRedoStack;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
-import seedu.address.model.reminders.Reminder;
+import seedu.address.model.reminders.ReadOnlyReminder;
 
+//@@author justinpoh
 /**
  * Contains integration tests (interaction with the Model) and unit tests for {@code DeleteReminderCommand}.
  */
@@ -29,7 +30,7 @@ public class DeleteReminderCommandTest {
 
     @Test
     public void execute_validIndexSortedReminderList_success() throws Exception {
-        Reminder reminderToDelete = model.getSortedReminderList().get(INDEX_FIRST_PERSON.getZeroBased());
+        ReadOnlyReminder reminderToDelete = model.getSortedReminderList().get(INDEX_FIRST_PERSON.getZeroBased());
 
         DeleteReminderCommand deleteReminderCommand = prepareCommand(INDEX_FIRST_PERSON);
 

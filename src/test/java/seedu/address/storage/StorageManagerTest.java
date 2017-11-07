@@ -21,6 +21,7 @@ import seedu.address.commons.util.FileUtil;
 import seedu.address.model.AddressBook;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.UserPrefs;
+import seedu.address.model.reminders.ReadOnlyUniqueReminderList;
 import seedu.address.model.reminders.UniqueReminderList;
 import seedu.address.ui.testutil.EventsCollectorRule;
 
@@ -152,10 +153,11 @@ public class StorageManagerTest {
         }
 
         @Override
-        public void saveReminders(UniqueReminderList reminderList, String filePath) throws IOException {
+        public void saveReminders(ReadOnlyUniqueReminderList reminderList, String filePath) throws IOException {
             throw new IOException("dummy exception");
         }
     }
+    //@@author tshradheya
 
     @Test
     public void handleDisplayPictureChangedEvent_exceptionThrown_eventRaised() throws IOException {
@@ -166,5 +168,6 @@ public class StorageManagerTest {
         storage.handleDisplayPictureChangedEvent(new DisplayPictureChangedEvent("dummy", 123));
         assertTrue(eventsCollectorRule.eventsCollector.getMostRecent() instanceof DataSavingExceptionEvent);
     }
+    //@@author
 
 }

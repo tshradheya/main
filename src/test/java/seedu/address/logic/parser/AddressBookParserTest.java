@@ -198,7 +198,7 @@ public class AddressBookParserTest {
         assertTrue(parser.parseCommand(ToggleCommand.COMMAND_WORD) instanceof ToggleCommand);
         assertTrue(parser.parseCommand(ToggleCommand.COMMAND_WORD + " 3") instanceof ToggleCommand);
     }
-
+    //@@author tshradheya
     @Test
     public void parseCommand_viewtag() throws Exception {
         String keyword = "foo";
@@ -220,6 +220,7 @@ public class AddressBookParserTest {
 
         assertEquals(new EmailCommand(new PersonContainsTagPredicate(tag), subject, body, service), command);
     }
+    //@@author
 
     @Test
     public void parseAliasCommand_find() throws Exception {
@@ -285,11 +286,12 @@ public class AddressBookParserTest {
     @Test
     public void parseCommand_theme() throws Exception {
         ThemeCommand command = (ThemeCommand) parser.parseCommand(
-                ThemeCommand.COMMAND_WORD + " " + ThemeNames.THEME_DARK);
-        Theme theme = new Theme(ThemeNames.THEME_DARK, ThemeNames.THEME_DARK_CSS);
+                ThemeCommand.COMMAND_WORD + " " + ThemeList.THEME_NIGHT);
+        Theme theme = new Theme(ThemeList.THEME_NIGHT, ThemeList.THEME_NIGHT_PATH);
         assertEquals(new ThemeCommand(theme), command);
     }
     //@@author
+    //@@author tshradheya
 
     @Test
     public void parseCommand_displayPicture() throws  Exception {
@@ -301,6 +303,7 @@ public class AddressBookParserTest {
 
         assertEquals(new DisplayPictureCommand(INDEX_FIRST_PERSON, displayPicture), displayPictureCommand);
     }
+    //@@author
 
     @Test
     public void parseAliasCommand_list() throws Exception {
@@ -314,6 +317,7 @@ public class AddressBookParserTest {
                 SelectCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased());
         assertEquals(new SelectCommand(INDEX_FIRST_PERSON), command);
     }
+    //@@author tshradheya
 
     @Test
     public void parseCommand_details() throws Exception {
@@ -321,6 +325,7 @@ public class AddressBookParserTest {
                 DetailsCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased());
         assertEquals(new DetailsCommand(INDEX_FIRST_PERSON), command);
     }
+    //@@author
 
     @Test
     public void parseAliasCommand_select() throws Exception {
@@ -328,6 +333,7 @@ public class AddressBookParserTest {
                 SelectCommand.COMMAND_ALIAS + " " + INDEX_FIRST_PERSON.getOneBased());
         assertEquals(new SelectCommand(INDEX_FIRST_PERSON), command);
     }
+    //@@author tshradheya
 
     @Test
     public void parseCommand_location() throws Exception {
@@ -335,6 +341,7 @@ public class AddressBookParserTest {
                 LocationCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased());
         assertEquals(new LocationCommand(INDEX_FIRST_PERSON), command);
     }
+    //@@author
 
     //@@author chuaweiwen
     @Test

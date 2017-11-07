@@ -9,17 +9,17 @@ import org.junit.Test;
 
 import guitests.AddressBookGuiTest;
 import seedu.address.logic.parser.Theme;
-import seedu.address.logic.parser.ThemeNames;
+import seedu.address.logic.parser.ThemeList;
 
 public class ThemeCommandTest extends AddressBookGuiTest {
 
     @Test
     public void execute_setTheme_success() throws Exception {
-        Theme standardTheme = new Theme(ThemeNames.THEME_SKY, ThemeNames.THEME_SKY_CSS);
+        Theme standardTheme = new Theme(ThemeList.THEME_DAY, ThemeList.THEME_DAY_PATH);
         ThemeCommand themeCommand = new ThemeCommand(standardTheme);
 
-        String expectedList = "[view/" + ThemeNames.THEME_SKY_CSS + ", view/Extensions.css]";
-        String expectedMessage = String.format(ThemeCommand.MESSAGE_SET_THEME_SUCCESS, ThemeNames.THEME_SKY);
+        String expectedList = "[" + ThemeList.THEME_DAY_PATH + ", view/Extensions.css]";
+        String expectedMessage = String.format(ThemeCommand.MESSAGE_SET_THEME_SUCCESS, ThemeList.THEME_DAY);
         CommandResult result = themeCommand.execute();
 
         assertEquals(result.feedbackToUser, expectedMessage);
@@ -28,8 +28,8 @@ public class ThemeCommandTest extends AddressBookGuiTest {
 
     @Test
     public void equals() {
-        Theme standardTheme = new Theme(ThemeNames.THEME_DARK, ThemeNames.THEME_DARK_CSS);
-        Theme differentTheme = new Theme(ThemeNames.THEME_SKY, ThemeNames.THEME_SKY_CSS);
+        Theme standardTheme = new Theme(ThemeList.THEME_NIGHT, ThemeList.THEME_NIGHT_PATH);
+        Theme differentTheme = new Theme(ThemeList.THEME_DAY, ThemeList.THEME_DAY_PATH);
         ThemeCommand standardCommand = new ThemeCommand(standardTheme);
         ThemeCommand commandWithSameTheme = new ThemeCommand(standardTheme);
         ThemeCommand commandWithDifferentTheme = new ThemeCommand(differentTheme);

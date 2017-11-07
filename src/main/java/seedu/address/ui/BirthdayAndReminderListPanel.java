@@ -11,8 +11,9 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.Region;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.model.person.ReadOnlyPerson;
-import seedu.address.model.reminders.Reminder;
+import seedu.address.model.reminders.ReadOnlyReminder;
 
+//@@author justinpoh
 /**
  * Panel containing the list of persons with birthday in the current month.
  */
@@ -30,13 +31,14 @@ public class BirthdayAndReminderListPanel extends UiPart<Region> {
     private ListView<ReminderCard> reminderListView;
 
     public BirthdayAndReminderListPanel(ObservableList<ReadOnlyPerson> birthdayList,
-                                        ObservableList<Reminder> reminderList) {
+                                        ObservableList<ReadOnlyReminder> reminderList) {
         super(FXML);
         setConnections(birthdayList, reminderList);
         registerAsAnEventHandler(this);
     }
 
-    private void setConnections(ObservableList<ReadOnlyPerson> birthdayList, ObservableList<Reminder> reminderList) {
+    private void setConnections(ObservableList<ReadOnlyPerson> birthdayList,
+                                ObservableList<ReadOnlyReminder> reminderList) {
         ObservableList<BirthdayReminderCard> birthdayMappedList = EasyBind.map(
                 birthdayList, (birthdayPerson) -> new BirthdayReminderCard(birthdayPerson,
                         birthdayList.indexOf(birthdayPerson) + 1));

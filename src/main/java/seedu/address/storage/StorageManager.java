@@ -11,12 +11,13 @@ import seedu.address.commons.core.ComponentManager;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.model.AddressBookChangedEvent;
 import seedu.address.commons.events.model.DisplayPictureChangedEvent;
+import seedu.address.commons.events.model.DisplayPictureDeleteEvent;
 import seedu.address.commons.events.model.RemindersChangedEvent;
 import seedu.address.commons.events.storage.DataSavingExceptionEvent;
 import seedu.address.commons.exceptions.DataConversionException;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.UserPrefs;
-import seedu.address.model.reminders.UniqueReminderList;
+import seedu.address.model.reminders.ReadOnlyUniqueReminderList;
 
 /**
  * Manages storage of AddressBook data in local storage.
@@ -97,6 +98,7 @@ public class StorageManager extends ComponentManager implements Storage {
         }
     }
 
+    //@@author justinpoh
     @Override
     @Subscribe
     public void handleRemindersChangedEvent(RemindersChangedEvent event) {
@@ -109,6 +111,7 @@ public class StorageManager extends ComponentManager implements Storage {
             raise (new DataSavingExceptionEvent(e));
         }
     }
+    //@@author
 
     @Override
     public void backupAddressBook(ReadOnlyAddressBook addressBook) throws IOException {
@@ -117,33 +120,36 @@ public class StorageManager extends ComponentManager implements Storage {
 
     // ================ Reminders methods ==============================
 
+    //@@author justinpoh
     @Override
     public String getRemindersFilePath() {
         return remindersStorage.getRemindersFilePath();
     }
 
     @Override
-    public Optional<XmlSerializableReminders> readReminders() throws DataConversionException, IOException {
+    public Optional<ReadOnlyUniqueReminderList> readReminders() throws DataConversionException, IOException {
         return readReminders(remindersStorage.getRemindersFilePath());
     }
 
     @Override
-    public Optional<XmlSerializableReminders> readReminders(String filePath) throws DataConversionException, IOException {
+    public Optional<ReadOnlyUniqueReminderList> readReminders(String filePath) throws DataConversionException,
+            IOException {
         logger.fine("Attempting to read data from file: " + filePath);
         return remindersStorage.readReminders(filePath);
     }
 
     @Override
-    public void saveReminders(UniqueReminderList reminderList) throws IOException {
+    public void saveReminders(ReadOnlyUniqueReminderList reminderList) throws IOException {
         saveReminders(reminderList, remindersStorage.getRemindersFilePath());
     }
 
     @Override
-    public void saveReminders(UniqueReminderList reminderList, String filePath) throws IOException {
+    public void saveReminders(ReadOnlyUniqueReminderList reminderList, String filePath) throws IOException {
         logger.fine("Attempting to write to data file: " + filePath);
         remindersStorage.saveReminders(reminderList, filePath);
     }
-
+    //@@author
+    //@@author tshradheya
     @Override
     public void readImageFromDevice(String path, int newPath) throws IOException {
         logger.fine("Attempting to read from file: " + path);
@@ -154,6 +160,12 @@ public class StorageManager extends ComponentManager implements Storage {
     public void saveImageInDirectory(BufferedImage image, String uniquePath) throws IOException {
         logger.fine("Attempting to write to file: " + uniquePath);
         displayPictureStorage.saveImageInDirectory(image, uniquePath);
+    }
+
+    @Override
+    public void deleteImageFromDirectory(String pathName) {
+        logger.fine("Attempting to delete to file: " + pathName);
+        displayPictureStorage.deleteImageFromDirectory(pathName);
     }
 
     @Override
@@ -168,5 +180,12 @@ public class StorageManager extends ComponentManager implements Storage {
             raise(new DataSavingExceptionEvent(e));
         }
     }
+
+    @Override
+    @Subscribe
+    public void handleDisplayPictureDeleteEvent(DisplayPictureDeleteEvent event) {
+        deleteImageFromDirectory(event.path);
+    }
+    //@@author
 
 }

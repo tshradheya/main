@@ -11,7 +11,7 @@ import seedu.address.model.email.Subject;
 import seedu.address.model.person.ReadOnlyPerson;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
-import seedu.address.model.reminders.Reminder;
+import seedu.address.model.reminders.ReadOnlyReminder;
 import seedu.address.model.reminders.UniqueReminderList;
 import seedu.address.model.reminders.exceptions.DuplicateReminderException;
 import seedu.address.model.reminders.exceptions.ReminderNotFoundException;
@@ -33,7 +33,7 @@ public interface Model {
     ReadOnlyAddressBook getAddressBook();
 
     /** Returns an unmodifiable view of the sorted list of reminders */
-    ObservableList<Reminder> getSortedReminderList();
+    ObservableList<ReadOnlyReminder> getSortedReminderList();
 
     /** Returns the reminders */
     UniqueReminderList getUniqueReminderList();
@@ -45,10 +45,10 @@ public interface Model {
     void addPerson(ReadOnlyPerson person) throws DuplicatePersonException;
 
     /** Adds the given reminder */
-    void addReminder(Reminder reminder) throws DuplicateReminderException;
+    void addReminder(ReadOnlyReminder reminder) throws DuplicateReminderException;
 
     /** Deletes the given reminder. */
-    void deleteReminder(Reminder target) throws ReminderNotFoundException;
+    void deleteReminder(ReadOnlyReminder target) throws ReminderNotFoundException;
 
     /** Reads and Stores the image */
     boolean addDisplayPicture(String path, int newPath) throws IOException;
@@ -81,7 +81,7 @@ public interface Model {
      *      another existing reminder in the list.
      * @throws ReminderNotFoundException if {@code target} could not be found in the list.
      */
-    void updateReminder(Reminder target, Reminder editedReminder)
+    void updateReminder(ReadOnlyReminder target, ReadOnlyReminder editedReminder)
             throws DuplicateReminderException, ReminderNotFoundException;
 
     /** Returns an unmodifiable view of the filtered person list */

@@ -8,6 +8,7 @@ import java.time.temporal.ChronoUnit;
 
 import seedu.address.commons.exceptions.IllegalValueException;
 
+//@@author justinpoh
 /**
  * Represents a Person's birthday in the address book.
  * Guarantees: immutable; is valid as declared in {@link #isValidBirthday(String)}
@@ -16,11 +17,12 @@ public class Birthday {
 
     public static final String MESSAGE_BIRTHDAY_CONSTRAINTS = "Birthday must be a valid date"
             + " and in the following format:\n"
-            + "'.', '-' and '/' can be used to seperate the day, month and year fields.\n"
+            + "'.', '-' and '/' can be used to separate the day, month and year fields,"
+            + " and need not be used in pairs (i.e. 21.10/1995 works as well).\n"
             + "Day field: 1 - 31 (allows leading zeroes).\n"
             + "Month field: 1-12 (allows leading zeroes).\n"
             + "Year field: 1900 - 2099.\n"
-            + "Example: 21/10/1995, 21-05-1996. 8.10.1987";
+            + "Example: 21/10/1995, 21-05-1996, 8.10.1987, 01/12-1995, 01.01-1990";
     public static final int EMPTY_BIRTHDAY_FIELD_MONTH = 0;
     public static final int EMPTY_BIRTHDAY_FIELD_DAY = 0;
 
@@ -31,6 +33,8 @@ public class Birthday {
     private static final int DATE_DAY_INDEX = 0;
     private static final int DATE_MONTH_INDEX = 1;
     private static final int DATE_YEAR_INDEX = 2;
+
+    private static final int DUMMY_YEAR = 2000;
 
     private static final String BIRTHDAY_VALIDATION_REGEX = "(0[1-9]|[1-9]|1[0-9]|2[0-9]|3[01])[///./-]"
             + "(0[1-9]|1[0-2]|[1-9])[///./-](19|20)[0-9][0-9]";
@@ -143,13 +147,13 @@ public class Birthday {
             return false;
         }
         final String[] splitDate = getSplitDate(value);
-        final int year = Integer.parseInt(splitDate[DATE_YEAR_INDEX]);
         final int month = Integer.parseInt(splitDate[DATE_MONTH_INDEX]);
         final int day = Integer.parseInt(splitDate[DATE_DAY_INDEX]);
 
-        final LocalDate birthday = LocalDate.of(year, month, day);
+        final boolean isMonthEqual = (month == currentDate.getMonthValue());
+        final boolean isDayEqual = day == (currentDate.getDayOfMonth());
 
-        return birthday.equals(currentDate);
+        return isMonthEqual && isDayEqual;
     }
 
     /**
@@ -161,13 +165,16 @@ public class Birthday {
             return false;
         }
         final String[] splitDate = getSplitDate(value);
-        final int year = Integer.parseInt(splitDate[DATE_YEAR_INDEX]);
         final int month = Integer.parseInt(splitDate[DATE_MONTH_INDEX]);
         final int day = Integer.parseInt(splitDate[DATE_DAY_INDEX]);
 
-        final LocalDate birthday = LocalDate.of(year, month, day);
-        final long daysUntilBirthday = currentDate.until(birthday, ChronoUnit.DAYS);
+        final int currentMonth = currentDate.getMonthValue();
+        final int currentDay = currentDate.getDayOfMonth();
 
+        final LocalDate birthday = LocalDate.of(DUMMY_YEAR, month, day);
+        final LocalDate currentDummyDate = LocalDate.of(DUMMY_YEAR, currentMonth, currentDay);
+
+        final long daysUntilBirthday = currentDummyDate.until(birthday, ChronoUnit.DAYS);
         return daysUntilBirthday == BIRTHDAY_TOMORROW_VALIDATOR;
     }
 

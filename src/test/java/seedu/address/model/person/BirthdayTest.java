@@ -13,6 +13,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+//@@author justinpoh
 public class BirthdayTest {
 
     @Rule
@@ -45,8 +46,10 @@ public class BirthdayTest {
         LocalDate testCurrentDate = LocalDate.of(2017, 12, 10);
 
         // is birthday today -> returns true
-        Birthday birthdayToday = getBirthdayTestInstance("10/12/2017", testCurrentDate);
-        assertTrue(birthdayToday.isBirthdayToday());
+        Birthday birthdayTodaySameYear = getBirthdayTestInstance("10/12/2017", testCurrentDate);
+        assertTrue(birthdayTodaySameYear.isBirthdayToday());
+        Birthday birthdayTodayDifferentYear = getBirthdayTestInstance("10/12/1995", testCurrentDate);
+        assertTrue(birthdayTodayDifferentYear.isBirthdayToday());
 
         // is not birthday today -> returns true
         Birthday notBirthdayTodayPast = getBirthdayTestInstance("11/12/2017", testCurrentDate);
@@ -62,8 +65,10 @@ public class BirthdayTest {
         LocalDate testCurrentDate = LocalDate.of(2017, 12, 10);
 
         // is birthday tomorrow -> returns true
-        Birthday birthdayTomorrow = getBirthdayTestInstance("11/12/2017", testCurrentDate);
-        assertTrue(birthdayTomorrow.isBirthdayTomorrow());
+        Birthday birthdayTomorrowSameYear = getBirthdayTestInstance("11/12/2017", testCurrentDate);
+        assertTrue(birthdayTomorrowSameYear.isBirthdayTomorrow());
+        Birthday birthdayTomorrowDifferentYear = getBirthdayTestInstance("11/12/2000", testCurrentDate);
+        assertTrue(birthdayTomorrowDifferentYear.isBirthdayTomorrow());
 
         // is not birthday tomorrow -> returns false
         Birthday birthdayToday = getBirthdayTestInstance("10/12/2017", testCurrentDate);

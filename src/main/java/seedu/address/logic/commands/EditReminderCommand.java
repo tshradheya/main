@@ -13,11 +13,13 @@ import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.CollectionUtil;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.reminders.Date;
+import seedu.address.model.reminders.ReadOnlyReminder;
 import seedu.address.model.reminders.Reminder;
 import seedu.address.model.reminders.Time;
 import seedu.address.model.reminders.exceptions.DuplicateReminderException;
 import seedu.address.model.reminders.exceptions.ReminderNotFoundException;
 
+//@@author justinpoh
 /**
  * Edits the details of an existing reminder in the application.
  */
@@ -59,13 +61,13 @@ public class EditReminderCommand extends Command {
 
     @Override
     public CommandResult execute() throws CommandException {
-        List<Reminder> reminderList = model.getSortedReminderList();
+        List<ReadOnlyReminder> reminderList = model.getSortedReminderList();
 
         if (index.getZeroBased() >= reminderList.size()) {
             throw new CommandException(Messages.MESSAGE_INVALID_REMINDER_DISPLAYED_INDEX);
         }
 
-        Reminder reminderToEdit = reminderList.get(index.getZeroBased());
+        ReadOnlyReminder reminderToEdit = reminderList.get(index.getZeroBased());
         Reminder editedReminder = createEditedReminder(reminderToEdit, editReminderDescriptor);
 
         try {
@@ -82,7 +84,7 @@ public class EditReminderCommand extends Command {
      * Creates and returns a {@code Reminder} with the details of {@code reminderToEdit}
      * edited with {@code editReminderDescriptor}.
      */
-    private static Reminder createEditedReminder (Reminder reminderToEdit,
+    private static Reminder createEditedReminder (ReadOnlyReminder reminderToEdit,
                                                   EditReminderDescriptor editReminderDescriptor) {
         assert reminderToEdit != null;
 

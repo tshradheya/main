@@ -5,12 +5,14 @@ import static java.util.Objects.requireNonNull;
 import java.util.Iterator;
 import java.util.List;
 
+import org.fxmisc.easybind.EasyBind;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import seedu.address.model.reminders.exceptions.DuplicateReminderException;
 import seedu.address.model.reminders.exceptions.ReminderNotFoundException;
-import seedu.address.storage.XmlSerializableReminders;
 
+//@@author justinpoh
 /**
  * A list of reminders that enforces uniqueness between its elements and does not allow nulls.
  *
@@ -18,8 +20,10 @@ import seedu.address.storage.XmlSerializableReminders;
  *
  * @see Reminder#equals(Object)
  */
-public class UniqueReminderList implements Iterable<Reminder> {
+public class UniqueReminderList implements Iterable<Reminder>, ReadOnlyUniqueReminderList {
     private final ObservableList<Reminder> internalList = FXCollections.observableArrayList();
+    // used by asObservableList()
+    private final ObservableList<ReadOnlyReminder> mappedList = EasyBind.map(internalList, (reminder) -> reminder);
 
     public UniqueReminderList() {
     }
@@ -32,10 +36,10 @@ public class UniqueReminderList implements Iterable<Reminder> {
     /**
      * Constructor used for loading reminder from storage file into program.
      */
-    public UniqueReminderList(XmlSerializableReminders xmlReminders) {
+    public UniqueReminderList(ReadOnlyUniqueReminderList xmlReminders) {
         requireNonNull(xmlReminders);
         try {
-            setReminders(xmlReminders.toModelType());
+            setReminders(xmlReminders.asObservableList());
         } catch (DuplicateReminderException dre) {
             assert false : "Reminders from storage should not have duplicates";
         }
@@ -48,7 +52,7 @@ public class UniqueReminderList implements Iterable<Reminder> {
     /**
      * Returns true if the list contains an equivalent reminder as the given argument.
      */
-    public boolean contains(Reminder toCheck) {
+    public boolean contains(ReadOnlyReminder toCheck) {
         requireNonNull(toCheck);
         return internalList.contains(toCheck);
     }
@@ -57,12 +61,12 @@ public class UniqueReminderList implements Iterable<Reminder> {
      * Adds a reminder to the list.
      * @throws DuplicateReminderException if the reminder to add is a duplicate of an existing reminder in the list.
      */
-    public void add(Reminder toAdd) throws DuplicateReminderException {
+    public void add(ReadOnlyReminder toAdd) throws DuplicateReminderException {
         requireNonNull(toAdd);
         if (contains(toAdd)) {
             throw new DuplicateReminderException();
         }
-        internalList.add(toAdd);
+        internalList.add(new Reminder(toAdd));
     }
 
     /**
@@ -71,7 +75,7 @@ public class UniqueReminderList implements Iterable<Reminder> {
      * @throws DuplicateReminderException if the replacement is equivalent to another existing reminder in the list.
      * @throws ReminderNotFoundException if {@code target} could not be found in the list.
      */
-    public void setReminder(Reminder target, Reminder editedReminder)
+    public void setReminder(ReadOnlyReminder target, ReadOnlyReminder editedReminder)
             throws DuplicateReminderException, ReminderNotFoundException {
         requireNonNull(editedReminder);
 
@@ -92,7 +96,7 @@ public class UniqueReminderList implements Iterable<Reminder> {
      *
      * @throws ReminderNotFoundException if no such reminder could be found in the list.
      */
-    public boolean remove(Reminder toRemove) throws ReminderNotFoundException {
+    public boolean remove(ReadOnlyReminder toRemove) throws ReminderNotFoundException {
         requireNonNull(toRemove);
         final boolean reminderFoundAndDeleted = internalList.remove(toRemove);
         if (!reminderFoundAndDeleted) {
@@ -105,9 +109,9 @@ public class UniqueReminderList implements Iterable<Reminder> {
         this.internalList.setAll(replacement.internalList);
     }
 
-    public void setReminders(List<Reminder> reminders) throws DuplicateReminderException {
+    public void setReminders(List<? extends ReadOnlyReminder> reminders) throws DuplicateReminderException {
         final UniqueReminderList replacement = new UniqueReminderList();
-        for (final Reminder reminder : reminders) {
+        for (final ReadOnlyReminder reminder : reminders) {
             replacement.add(new Reminder(reminder));
         }
         setReminders(replacement);
@@ -116,8 +120,8 @@ public class UniqueReminderList implements Iterable<Reminder> {
     /**
      * Returns the list as an unmodiafiable {@code ObservableList}.
      */
-    public ObservableList<Reminder> asObservableList() {
-        return FXCollections.unmodifiableObservableList(internalList);
+    public ObservableList<ReadOnlyReminder> asObservableList() {
+        return FXCollections.unmodifiableObservableList(mappedList);
     }
 
     @Override

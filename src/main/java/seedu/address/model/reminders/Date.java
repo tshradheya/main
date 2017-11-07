@@ -7,14 +7,20 @@ import java.time.LocalDate;
 
 import seedu.address.commons.exceptions.IllegalValueException;
 
+//@@author justinpoh
 /**
  * Represents a Reminder's date in the program.
  * Guarantees: immutable; is valid as declared in {@link #isValidDate(String)}
  */
 public class Date {
-    public static final String MESSAGE_DATE_CONSTRAINTS = "Date must be in the format dd-mm-yyyy,"
-            + " dd/mm/yyyy or dd.mm.yyyy, and must be a valid date.\n"
-            + "Example: 22-10-2019, 23.12.1997, 24/12/1989.\n";
+    public static final String MESSAGE_DATE_CONSTRAINTS = "Date must be valid,"
+            + " and in the following format:\n"
+            + "'.', '-' and '/' can be used to separate the day, month and year fields,"
+            + " and need not be used in pairs (i.e. 21.10/1995 works as well).\n"
+            + "Day field: 1 - 31 (allows leading zeroes).\n"
+            + "Month field: 1-12 (allows leading zeroes).\n"
+            + "Year field: 1900 - 2099.\n"
+            + "Example: 21/10/1995, 21-05-1996, 8.10.1987, 01/12-1995, 01.01-1990";
 
     public static final String DATE_SPLIT_REGEX = "[///./-]";
 

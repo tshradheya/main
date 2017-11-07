@@ -7,14 +7,18 @@ import java.util.stream.Collectors;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import seedu.address.commons.exceptions.IllegalValueException;
-import seedu.address.model.reminders.Reminder;
+import seedu.address.model.reminders.ReadOnlyReminder;
+import seedu.address.model.reminders.ReadOnlyUniqueReminderList;
 
+//@@author justinpoh
 /**
  * A List of reminders that is serializable to XML format.
  */
 @XmlRootElement(name = "reminders")
-public class XmlSerializableReminders {
+public class XmlSerializableReminders implements ReadOnlyUniqueReminderList {
 
     @XmlElement
     private List<XmlAdaptedReminder> reminders;
@@ -30,24 +34,23 @@ public class XmlSerializableReminders {
     /**
      * Conversion
      */
-    public XmlSerializableReminders(List<Reminder> source) {
+    public XmlSerializableReminders(List<ReadOnlyReminder> source) {
         this();
         reminders.addAll(source.stream().map(XmlAdaptedReminder::new).collect(Collectors.toList()));
     }
 
-    /**
-     * Converts this jaxb-friendly list of XmlAdaptedReminder into a list of
-     * the model's Reminder objects.
-     */
-    public List<Reminder> toModelType() {
-        final List<Reminder> listOfReminders = new ArrayList<>();
-        try {
-            for (XmlAdaptedReminder reminder : reminders) {
-                listOfReminders.add(reminder.toModelType());
+    @Override
+    public ObservableList<ReadOnlyReminder> asObservableList() {
+
+        final ObservableList<ReadOnlyReminder> reminders = this.reminders.stream().map(p -> {
+            try {
+                return p.toModelType();
+            } catch (IllegalValueException e) {
+                e.printStackTrace();
+                //TODO: better error handling
+                return null;
             }
-        } catch (IllegalValueException ive) {
-            throw new AssertionError("Date in storage should not be problematic!");
-        }
-        return listOfReminders;
+        }).collect(Collectors.toCollection(FXCollections::observableArrayList));
+        return FXCollections.unmodifiableObservableList(reminders);
     }
 }

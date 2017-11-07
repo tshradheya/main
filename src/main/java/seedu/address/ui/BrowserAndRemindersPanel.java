@@ -41,7 +41,7 @@ import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.PopularityCounter;
 import seedu.address.model.person.ReadOnlyPerson;
-import seedu.address.model.reminders.Reminder;
+import seedu.address.model.reminders.ReadOnlyReminder;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -49,6 +49,7 @@ import seedu.address.model.tag.Tag;
  */
 public class BrowserAndRemindersPanel extends UiPart<Region> {
 
+    //@@author justinpoh
     /**
      * An Enumeration to differentiate between the child nodes and to keep track of which is
      * in front.
@@ -56,6 +57,7 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
     private enum Node {
         BROWSER, REMINDERS, DETAILS
     }
+    //@@author
 
     public static final String DEFAULT_PAGE = "default.html";
     public static final String GOOGLE_SEARCH_URL_PREFIX = "https://www.google.com.sg/search?safe=off&q=";
@@ -89,7 +91,7 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
 
 
     public BrowserAndRemindersPanel(ObservableList<ReadOnlyPerson> birthdayPanelFilteredPersonList,
-                                    ObservableList<Reminder> reminderList) {
+                                    ObservableList<ReadOnlyReminder> reminderList) {
         super(FXML);
 
         // To prevent triggering events for typing inside the loaded Web page.
@@ -152,6 +154,7 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
         browser = null;
     }
 
+    //@@author justinpoh
     /**
      * Check which child is currently at the front, and do the appropriate toggling between the children nodes.
      */
@@ -176,7 +179,8 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
             throw new AssertionError("It should not be possible to land here");
         }
     }
-
+    //@@author
+    //@@author tshradheya
     private void setUpToShowRemindersPanel() {
         detailsPanel.setVisible(false);
         remindersPanel.setVisible(true);
@@ -194,8 +198,8 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
      */
     private void setUpToShowLocation() {
         setUpToShowWebBrowser();
-        remindersPanel.toFront();
-        currentlyInFront = Node.REMINDERS;
+        browser.toFront();
+        currentlyInFront = Node.BROWSER;
     }
 
     /**
@@ -296,11 +300,13 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
     }
 
 
+    //@@author justinpoh
     @Subscribe
     private void handleBrowserPanelToggleEvent(BrowserAndRemindersPanelToggleEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
         toggleBrowserPanel();
     }
+    //@@author
 
     @Subscribe
     private void handleShowLocationEvent(ShowLocationEvent event) {
@@ -324,5 +330,6 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
         browser.toFront();
         loadPersonPage(event.getPerson());
     }
+    //@@author
 
 }

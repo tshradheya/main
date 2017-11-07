@@ -26,6 +26,7 @@ import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.UserPrefs;
+import seedu.address.model.reminders.ReadOnlyUniqueReminderList;
 import seedu.address.model.reminders.UniqueReminderList;
 import seedu.address.model.util.SampleDataUtil;
 import seedu.address.storage.AddressBookPictureStorage;
@@ -102,8 +103,8 @@ public class MainApp extends Application {
     private Model initModelManager(Storage storage, UserPrefs userPrefs) {
         Optional<ReadOnlyAddressBook> addressBookOptional;
         ReadOnlyAddressBook initialData;
-        Optional<XmlSerializableReminders> remindersOptional;
-        XmlSerializableReminders initialReminders;
+        Optional<ReadOnlyUniqueReminderList> remindersOptional;
+        ReadOnlyUniqueReminderList initialReminders;
         try {
             addressBookOptional = storage.readAddressBook();
             if (!addressBookOptional.isPresent()) {
@@ -240,8 +241,7 @@ public class MainApp extends Application {
     @Subscribe
     public void handleChangeThemeRequestEvent(ChangeThemeRequestEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
-        String filePath = "view/" + event.theme.getCss();
-        userPrefs.setThemeFilePath(filePath);
+        userPrefs.setThemeFilePath(event.theme.getFilePath());
     }
     //@@author
 

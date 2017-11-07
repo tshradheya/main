@@ -1,0 +1,346 @@
+= Shradheya Thakre - Project Portfolio
+ifdef::env-github,env-browser[:outfilesuffix: .adoc]
+:imagesDir: ../images
+:stylesDir: ../stylesheets
+
+== Project: iContacts
+
+iContacts is an address book application with target audience as university students for managing contacts and other aspects of their university life in an efficient manner. iContacts is an Command Line Interface(CLI) application where most commands are executed by typing. Through this application, a student can manage his contacts by saving various details like their Display Picture, Birthday, Address and lot more. The user can also add reminders to keep track of deadlines and view location and send emails to his contacts.
+The purpose of this portfolio is to convey to the reader on how to use the various features, the style in which the features are implemented and their architectural design.
+
+*Code contributed*: [https://github.com/CS2103AUG2017-W14-B1/main/blob/master/collated/main/tshradheya.md[Functional code]] [https://github.com/CS2103AUG2017-W14-B1/main/blob/master/collated/test/tshradheya.md[Test code]]
+
+=== Enhancement Added: Display Picture for Contacts
+
+==== External behavior
+
+---
+
+==== Adding Display picture for each person : `displaypic`
+
+Adds a Display Picture to an existing person in the address book. +
+Format: `displaypic INDEX PATHOFIMAGE`
+
+****
+* The picture at the path address will be added to the person at the specified `INDEX` of currently shown list
+* The person can have either 0 or 1 display picture
+* Existing picture will be updated to with the new input path
+* Picture can be removed by leaving the PATHOFIMAGE empty
+* The picture is also deleted when the person is deleted using the `delete` command
+* The image should be on the local computer and the `PATHOFIMAGE` specified must be valid
+****
+
+Examples:
+
+* `displaypic 1 C:\Users\Admin\Desktop\Sem 3 Mods\CS2103T\mypic.jpg`
+Adds the `mypic.jpg` at the given path to the person at `INDEX` 1 as his display picture(See figure 1)
+* `displaypic 3 `
+Removes the existing display picture for the person at `INDEX` 3
+
+image::displaypic.png[width="790"]
+_Figure 1 : Display Picture for contacts_
+
+---
+
+
+==== Justification
+
+
+The command is implemented in this manner because of the following reasons:
+
+* By specifying the index, there is no ambiguity as to who should be assigned the display picture.
+* The `PATHOFIMAGE` must be an absolute path on the local device to make sure the image is referenced.
+* The image is stored in directory with a unique name to avoid conflict. Hashcode of user's email address is used to maintain uniqueness.
+* The task is done using CLI to follow project requirements.
+* The image is stored in jpg format to ensure maximum compatibility.
+
+
+==== Implementation
+
+---
+
+The Display Picture mechanism is done by using ImageView in JavaFX which is a part of the UI Component.
+
+The `displaypic` command adds/updates the display picture for the contact specified. The image is then displayed as ImageView in PersonCard.
+The arguments of the command are `INDEX` and `PATHOFIMAGE`. The image needs to be present in the local device of the user.
+
+This command works by retrieving the image using `BufferedImage`. The command extracts the image from the specified absolute path of image e.g. `C:\Users\Admin\Desktop\My files\pic.jpg`.
+
+By executing the given code below, a new folder named 'pictures/' is created if it is missing. The folder is used to store the images
+
+[source,java]
+----
+
+public void createPictureStorageFolder() throws IOException {
+        requireNonNull(filePath);
+
+        logger.info("Picture folder "  + filePath + " created if missing");
+        File file  = new File(filePath);
+        FileUtil.createIfMissing(file);
+    }
+
+----
+
+It then stores the image in the folder called `/pictures/` present in the same directory as `.jar`  by giving it a unique hashcode based on user's email address.
+The reading and writing of images is done using the `ImageIO` class.
+
+The following UML diagram shows the Storage Architecture for reading and writing of image file:
+
+image::UMLStorageDisplaypic.PNG[width="300"]
+_Figure 2 : UML Diagram for the extended Storage Diagram._
+
+
+The sequence diagram for adding a display picture is shown below: +
+
+image::SDforDisplayPicture.PNG[width="800"]
+_Figure 3 : Sequence Diagram for Display Picture Command._
+
+
+The binder for refreshing the image every time the picture is updated is implemented by the following function:
+
+
+[source,java]
+----
+public class PersonCard extends UiPart<Region> {
+    private void assignImage(ReadOnlyPerson person) {
+
+        Image image = new Image("file:" + "pictures/" + person.getDisplayPicture().getPath() + ".png",
+                            IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
+
+        displayPicture.setFill(new ImagePattern(image));
+    }
+}
+----
+
+The `Circle` shape is used for better UI/UX design and is filled with the `ImagePatten`. The wireframe used to display the image for each person is shown below:
+
+image::WireFramePersonCard.PNG[width="300"]
+_Figure 4 : Wireframe for the UI._
+
+
+The new image stored in directory is given a unique name which is formed using hashcode of the unique email address of each contact:
+
+[source,java]
+----
+public class DisplayPictureCommand extends Command {
+
+    @Override
+    public CommandResult execute() throws CommandException, IOException {
+        /... executes function of Reading and Writing Image ...
+
+        displayPicture.setPath(readAndStoreImage.execute(displayPicture.getPath(),
+                            personToEdit.getEmail().hashCode())); // image name formed in this line
+    }
+}
+----
+
+===== Design Considerations
+
+**Aspect:** At what stage should the image be read and stored +
+**Alternative 1 (current choice):** Make proper Storage Architecture for reading and writing of Image   +
+**Pros:** Follows existing Architectural Design and Software Engineering Principles like OCP  +
+**Cons:** Takes time and tougher to implement +
+**Alternative 2:** Invoke 'ReadAndStoreImage' from Logic component. +
+**Pros:** Easier for new developers to understand the sequence diagram and maintains event-driven nature. +
+**Cons:** Bad Architectural design and doesn't follow the pre existing pattern also defies Law of Demeter
+
+---
+
+**Aspect:** How should the image be taken from user +
+**Alternative 1 (current choice):** User has to enter the absolute path of image by checking his local device.   +
+**Pros:** Complete CLI process  +
+**Cons:** Might be problematic for user to copy and paste and might result in error of path giving fail command. +
+**Alternative 2:** Pop up a `FileChooser` after command is entered. +
+**Pros:** Easier for users to mention the correct image quickly. +
+**Cons:** Will no longer be a CLI process completely.
+
+---
+
+=== Enhancement Added: Display Location of an contact
+
+==== External behavior
+
+---
+
+==== Displaying location to a contact's address: `location`
+
+Uses Google Maps to show location of the address of the selected `INDEX`
+Format: location INDEX
+
+****
+* The location is shown in browser panel using Google Maps
+* The current location is the location of device from where the command is executed
+* The command is only valid for INDEX which have an valid address
+****
+
+Examples:
+
+* `location 2`
+Returns location of the address of person at `INDEX` 2
+
+image::directon.PNG[width="790"]
+
+---
+
+
+==== Justification
+
+To be filled in according to CS2101
+
+==== Implementation
+
+---
+
+The location command through an event-driven mechanism. The below diagram shows sequence diagram for it.
+
+image::locationSD.PNG[width="790"]
+_Figure 21 : Sequence diagram for the Location Command._
+
+The execution of command raises an event `ShowLocationEvent`. This causes the `BrowserAndReminderPanel` to switch to Node `Browser` irrespective of current state of the application. The activity diagram for such a case is shown below:
+
+image::locationAD.PNG[width="790"]
+_Figure 22 : Sequence diagram for the Location Command._
+
+Following is the code written to ensure the GUI set up for the command.
+
+[source, java]
+----
+private void setUpToShowLocation() {
+    if (currentlyInFront == Node.REMINDERS) {
+        browser.toFront();
+        currentlyInFront = Node.BROWSER;
+        raise(new TurnLabelsOffEvent());
+    }
+}
+----
+
+The URL for denoting the specified person's address in Google Maps is set up through the following code
+
+[source, java]
+----
+public String loadPersonLocation(String address) {
+
+        String[] splitAddressByWords = address.split("\\s");
+
+        String keywordsOfUrl = "";
+
+        for (String word: splitAddressByWords) {
+            keywordsOfUrl += word;
+            keywordsOfUrl += "+";
+        }
+
+        loadPage(GOOGLE_MAPS_URL + keywordsOfUrl);
+}
+----
+
+
+==== Design Considerations
+
+**Aspect:** What to use to show the location +
+**Alternative 1 (current choice):** Show using google maps url in BrowserPanel  +
+**Pros:** We will be able to get the location easily with accuracy +
+**Cons:** Limited functionality of URL +
+**Alternative 2:** Google Maps API +
+**Pros:**  Allows more functionality +
+**Cons:** Uses more resources for the exact same feature and doesn't utilise pre existing browser properly
+
+---
+
+
+=== Enhancement Added: Email to a group of contacts
+
+==== External behavior
+
+---
+==== Email to a group of people having a particular tag: `email` [V1.3]
+
+Opens up the link to send email to all people of having a particular tag
+Format: email s/SERVICE to/KEYWORD sub/SUBJECT b/BODY
+
+****
+* The `KEYWORD` should be a tag which has atleast 1 person associated with it
+* The `SERVICE` supported are only `gmail` and `outlook`
+* The `SUBJECT` and `BODY` prefix are optional and can be not mentioned
+* The email drafting will open up in the default browser of your local device
+* The command will add all people with the `KEYWORD` tag as the recepeints, subject as `SUBJECT` and body as `BODY`
+****
+
+Examples:
+
+* `email s/gmail to/cs2103 sub/Meeting body/Morning 10 am `
+Allows to send email after drafting message to everyone with the tag `cs2103` in the default browser
+
+
+---
+
+
+==== Justification
+
+To be filled in according to CS2101
+
+==== Implementation
+
+---
+
+==== Emailing mechanism
+
+The email command lets the user compose an email in default browser with filled in data like recipients, subject and body.
+
+[NOTE]
+The recipients are all contacts belonging to a particular tag.
+[NOTE]
+The only two services offered are `gmail` and `outlook` as our target users are students.
+
+The email command through an event driven mechanism. The below diagram shows sequence diagram for it.
+
+image::emailSD.PNG[width="790"]
+_Figure 23 : Sequence diagram for the Email Command._
+
+The given command is parsed to know the `Service` , `tag` to which email has to be sent, `Subject` and `Body`.
+
+The parsing takes place in the following manner:
+
+image::ParserSDEmail.PNG[width="790"]
+_Figure 24 : Sequence diagram for parsing the Email Command._
+
+
+The execution of command raises an event `SendingEmailEvent`.
+
+The URL for composing the mail set up through the following code
+
+[source, java]
+----
+public static final String GMAIL_EMAIL_URL =
+            "https://mail.google.com/mail/?view=cm&fs=1&tf=1&source=mailto&to=%1$s&su=%2$s&body=%3$s";
+
+public static final String OUTLOOK_EMAIL_URL =
+            "https://outlook.office.com/?path=/mail/action/compose&to=%1$s&subject=%2$s&body=%3$s";
+
+Desktop.getDesktop().browse(new URI(String.format(GMAIL_EMAIL_URL, recipients, subject, body)));
+----
+
+==== Design Considerations
+
+**Aspect:** Where to compose the mail +
+**Alternative 1 (current choice):** Opens the default browser of Desktop  +
+**Pros:** The browser has user already signed up and browser supports the url +
+**Cons:** Depending on third party apps +
+**Alternative 2:** Open in `BrowserPanel` +
+**Pros:** No dependency on other apps +
+**Cons:** Does not auto fill in the text due to older version of browser
+
+---
+
+=== Enhancement Proposed: Add command `remark`
+
+{Explain similar to the Undo/Redo feature above.}
+
+=== Other contributions
+
+* Managed all Issues and Milestone by managing the project and assigning work
+* Managed merging of all PR's and handling of Merge Conflicts
+* Wrote additional tests to increase coverage from 88% to 91%
+
+== Project: NUSEvents
+
+{Optionally (not graded), you may include other projects in your portfolio.}

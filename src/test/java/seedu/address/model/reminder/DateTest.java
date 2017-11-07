@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import seedu.address.model.reminders.Date;
 
+//@@author justinpoh
 public class DateTest {
 
     @Test
@@ -35,10 +36,15 @@ public class DateTest {
         // valid leap day -> returns true
         assertTrue(Date.isValidDate("29/02/2016"));
 
-        // valid date -> returns true
+        // valid dates with paired separator -> returns true
         assertTrue(Date.isValidDate("01/01/2017"));
         assertTrue(Date.isValidDate("01.01.2017"));
         assertTrue(Date.isValidDate("01-01-2017"));
+
+        // valid dates with flexible separator -> returns true
+        assertTrue(Date.isValidDate("01/01.2017"));
+        assertTrue(Date.isValidDate("01.01-2017"));
+        assertTrue(Date.isValidDate("01-01/2017"));
     }
 
     @Test

@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import seedu.address.model.reminders.ReadOnlyReminder;
 import seedu.address.model.reminders.Reminder;
 import seedu.address.model.reminders.UniqueReminderList;
 import seedu.address.storage.XmlSerializableReminders;
 
+//@@author justinpoh
 /**
  * A utility class containing a list of {@code Reminder} objects to be used in tests.
  */
@@ -27,7 +29,7 @@ public class TypicalReminders {
 
     private TypicalReminders() {} //prevents instantiation
 
-    public static List<Reminder> getTypicalReminders() {
+    public static List<ReadOnlyReminder> getTypicalReminders() {
         return new ArrayList<>(Arrays.asList(COFFEE_REMINDER, HOMEWORK_REMINDER, DINNER_REMINDER));
     }
 

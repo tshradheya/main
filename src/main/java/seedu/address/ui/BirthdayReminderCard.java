@@ -7,7 +7,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import seedu.address.model.person.ReadOnlyPerson;
 
-
+//@@author justinpoh
 /**
  * An UI component that displays the name, nickname and birthday of a Person.
  */
@@ -58,7 +58,7 @@ public class BirthdayReminderCard extends UiPart<Region> {
     }
 
     /**
-     * Initiates the appropriate icon depending on {@ode person}'s birthday.
+     * Initiates the appropriate icon depending on {@code person}'s birthday.
      */
     private void initIcon() {
         if (person.getBirthday().isBirthdayToday()) {

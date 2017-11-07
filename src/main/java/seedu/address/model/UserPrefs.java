@@ -14,7 +14,7 @@ public class UserPrefs {
     private String remindersFilePath = "data/reminders.xml";
     private String addressBookPicturesPath = "pictures/default.png";
     private String addressBookName = "MyAddressBook";
-    private String themeFilePath = "view/DarkTheme.css";
+    private String themeFilePath = "view/NightTheme.css";
 
     public UserPrefs() {
         this.setGuiSettings(500, 500, 0, 0);
@@ -33,9 +33,11 @@ public class UserPrefs {
     }
 
 
+    //@@author justinpoh
     public String getRemindersFilePath() {
         return remindersFilePath;
     }
+    //@@author
 
     public void setRemindersFilePath(String remindersFilePath) {
         this.remindersFilePath = remindersFilePath;
@@ -44,18 +46,21 @@ public class UserPrefs {
     public String getAddressBookFilePath() {
         return addressBookFilePath;
     }
+    //@@author tshradheya
 
     public String getAddressBookPicturesPath() {
         return addressBookPicturesPath;
     }
+    //@@author
 
     public void setAddressBookFilePath(String addressBookFilePath) {
         this.addressBookFilePath = addressBookFilePath;
     }
-
+    //@@author tshradheya
     public void setAddressBookPicturesPath(String addressBookPicturesPath) {
         this.addressBookPicturesPath = addressBookPicturesPath;
     }
+    //@@author
 
     public String getAddressBookName() {
         return addressBookName;

@@ -20,6 +20,7 @@ import seedu.address.model.reminders.Reminder;
 import seedu.address.model.reminders.Status;
 import seedu.address.testutil.ReminderBuilder;
 
+//@@author justinpoh
 public class StatusTest {
 
     private static final String DEFAULT_DATE = "10/10/2017";

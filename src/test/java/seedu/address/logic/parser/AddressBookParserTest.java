@@ -285,8 +285,8 @@ public class AddressBookParserTest {
     @Test
     public void parseCommand_theme() throws Exception {
         ThemeCommand command = (ThemeCommand) parser.parseCommand(
-                ThemeCommand.COMMAND_WORD + " " + ThemeNames.THEME_DARK);
-        Theme theme = new Theme(ThemeNames.THEME_DARK, ThemeNames.THEME_DARK_CSS);
+                ThemeCommand.COMMAND_WORD + " " + ThemeList.THEME_DARK);
+        Theme theme = new Theme(ThemeList.THEME_DARK, ThemeList.THEME_DARK_PATH);
         assertEquals(new ThemeCommand(theme), command);
     }
     //@@author

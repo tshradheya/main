@@ -1,5 +1,5 @@
 # chuaweiwen
-###### \java\seedu\address\logic\commands\FilterCommandTest.java
+###### /java/seedu/address/logic/commands/FilterCommandTest.java
 ``` java
 package seedu.address.logic.commands;
 
@@ -117,7 +117,7 @@ public class FilterCommandTest {
     }
 }
 ```
-###### \java\seedu\address\logic\commands\NicknameCommandTest.java
+###### /java/seedu/address/logic/commands/NicknameCommandTest.java
 ``` java
 package seedu.address.logic.commands;
 
@@ -284,7 +284,7 @@ public class NicknameCommandTest {
     }
 }
 ```
-###### \java\seedu\address\logic\commands\ThemeCommandTest.java
+###### /java/seedu/address/logic/commands/ThemeCommandTest.java
 ``` java
 package seedu.address.logic.commands;
 
@@ -338,7 +338,7 @@ public class ThemeCommandTest extends AddressBookGuiTest {
     }
 }
 ```
-###### \java\seedu\address\logic\parser\AddressBookParserTest.java
+###### /java/seedu/address/logic/parser/AddressBookParserTest.java
 ``` java
     @Test
     public void parseCommand_nickname() throws Exception {
@@ -356,7 +356,7 @@ public class ThemeCommandTest extends AddressBookGuiTest {
         assertEquals(new ThemeCommand(theme), command);
     }
 ```
-###### \java\seedu\address\logic\parser\AddressBookParserTest.java
+###### /java/seedu/address/logic/parser/AddressBookParserTest.java
 ``` java
     @Test
     public void parseCommand_filter() throws Exception {
@@ -367,7 +367,7 @@ public class ThemeCommandTest extends AddressBookGuiTest {
         assertEquals(new FilterCommand(new NameAndTagsContainsKeywordsPredicate(nameKeywords, tagKeywords)), command);
     }
 ```
-###### \java\seedu\address\logic\parser\FilterCommandParserTest.java
+###### /java/seedu/address/logic/parser/FilterCommandParserTest.java
 ``` java
 package seedu.address.logic.parser;
 
@@ -470,7 +470,7 @@ public class FilterCommandParserTest {
 
 }
 ```
-###### \java\seedu\address\logic\parser\NicknameCommandParserTest.java
+###### /java/seedu/address/logic/parser/NicknameCommandParserTest.java
 ``` java
 package seedu.address.logic.parser;
 
@@ -528,7 +528,7 @@ public class NicknameCommandParserTest {
     }
 }
 ```
-###### \java\seedu\address\logic\parser\ThemeCommandParserTest.java
+###### /java/seedu/address/logic/parser/ThemeCommandParserTest.java
 ``` java
 package seedu.address.logic.parser;
 
@@ -564,7 +564,7 @@ public class ThemeCommandParserTest {
     }
 }
 ```
-###### \java\seedu\address\logic\parser\ThemeTest.java
+###### /java/seedu/address/logic/parser/ThemeTest.java
 ``` java
 package seedu.address.logic.parser;
 
@@ -606,7 +606,7 @@ public class ThemeTest {
     }
 }
 ```
-###### \java\seedu\address\model\person\NameAndTagsContainsKeywordsPredicateTest.java
+###### /java/seedu/address/model/person/NameAndTagsContainsKeywordsPredicateTest.java
 ``` java
 package seedu.address.model.person;
 
@@ -752,7 +752,7 @@ public class NameAndTagsContainsKeywordsPredicateTest {
     }
 }
 ```
-###### \java\seedu\address\model\person\NicknameTest.java
+###### /java/seedu/address/model/person/NicknameTest.java
 ``` java
 package seedu.address.model.person;
 

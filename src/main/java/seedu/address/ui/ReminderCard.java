@@ -7,8 +7,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import seedu.address.model.reminders.ReadOnlyReminder;
 
+//@@author justinpoh
 /**
- * An UI component that displays the content, date and time of a Reminder.
+ * An UI component that displays the content, date, time and status of a Reminder.
  */
 public class ReminderCard extends UiPart<Region> {
     private static final String FXML = "ReminderCard.fxml";

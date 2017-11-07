@@ -11,8 +11,9 @@ import java.util.logging.Logger;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.exceptions.DataConversionException;
 import seedu.address.commons.util.FileUtil;
-import seedu.address.model.reminders.UniqueReminderList;
+import seedu.address.model.reminders.ReadOnlyUniqueReminderList;
 
+//@@author justinpoh
 /**
  * A class to access reminder data stored as an xml file.
  */
@@ -33,7 +34,7 @@ public class XmlRemindersStorage implements RemindersStorage {
     }
 
     @Override
-    public Optional<XmlSerializableReminders> readReminders() throws DataConversionException, IOException {
+    public Optional<ReadOnlyUniqueReminderList> readReminders() throws DataConversionException, IOException {
         return readReminders(filePath);
     }
 
@@ -42,7 +43,7 @@ public class XmlRemindersStorage implements RemindersStorage {
      * @param filePath location of the data. Cannot be null
      * @throws DataConversionException if the file is not in the correct format.
      */
-    public Optional<XmlSerializableReminders> readReminders(String filePath) throws DataConversionException,
+    public Optional<ReadOnlyUniqueReminderList> readReminders(String filePath) throws DataConversionException,
                                                                                     FileNotFoundException {
         requireNonNull(filePath);
 
@@ -59,15 +60,15 @@ public class XmlRemindersStorage implements RemindersStorage {
     }
 
     @Override
-    public void saveReminders(UniqueReminderList reminderList) throws IOException {
+    public void saveReminders(ReadOnlyUniqueReminderList reminderList) throws IOException {
         saveReminders(reminderList, filePath);
     }
 
     /**
-     * Similar to {@link #saveReminders(UniqueReminderList)}
+     * Similar to {@link #saveReminders(ReadOnlyUniqueReminderList)}
      * @param filePath location of the data. Cannot be null
      */
-    public void saveReminders(UniqueReminderList reminderList, String filePath) throws IOException {
+    public void saveReminders(ReadOnlyUniqueReminderList reminderList, String filePath) throws IOException {
         requireNonNull(reminderList);
         requireNonNull(filePath);
 

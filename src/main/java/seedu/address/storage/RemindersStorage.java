@@ -4,8 +4,9 @@ import java.io.IOException;
 import java.util.Optional;
 
 import seedu.address.commons.exceptions.DataConversionException;
-import seedu.address.model.reminders.UniqueReminderList;
+import seedu.address.model.reminders.ReadOnlyUniqueReminderList;
 
+//@@author justinpoh
 /**
  * Represents a storage for {@link seedu.address.model.reminders.UniqueReminderList}.
  */
@@ -22,23 +23,23 @@ public interface RemindersStorage {
      * @throws DataConversionException if the data in storage is not in the expected format.
      * @throws IOException if there was any problem when reading from the storage.
      */
-    Optional<XmlSerializableReminders> readReminders() throws DataConversionException, IOException;
+    Optional<ReadOnlyUniqueReminderList> readReminders() throws DataConversionException, IOException;
 
     /**
      * @see #getRemindersFilePath()
      */
-    Optional<XmlSerializableReminders> readReminders(String filePath) throws DataConversionException,
+    Optional<ReadOnlyUniqueReminderList> readReminders(String filePath) throws DataConversionException,
             IOException;
 
     /**
-     * Saves the given {@link UniqueReminderList} to the storage.
+     * Saves the given {@link ReadOnlyUniqueReminderList} to the storage.
      * @param reminderList cannot be null.
      * @throws IOException if there was any problem writing to the file.
      */
-    void saveReminders(UniqueReminderList reminderList) throws IOException;
+    void saveReminders(ReadOnlyUniqueReminderList reminderList) throws IOException;
 
     /**
-     * @see #saveReminders(UniqueReminderList)
+     * @see #saveReminders(ReadOnlyUniqueReminderList)
      */
-    void saveReminders(UniqueReminderList reminderList, String filePath) throws IOException;
+    void saveReminders(ReadOnlyUniqueReminderList reminderList, String filePath) throws IOException;
 }

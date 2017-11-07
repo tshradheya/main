@@ -29,32 +29,6 @@ public class BrowserAndRemindersPanelToggleEvent extends BaseEvent {
     }
 }
 ```
-###### /java/seedu/address/commons/events/ui/TurnLabelsOffEvent.java
-``` java
-/**
- * Turn birthday and reminders labels off whenever the browser is brought to the front.
- */
-public class TurnLabelsOffEvent extends BaseEvent {
-    @Override
-    public String toString() {
-        return this.getClass().getSimpleName();
-    }
-}
-```
-###### /java/seedu/address/commons/events/ui/TurnLabelsOnEvent.java
-``` java
-/**
- * Turn birthday and reminders labels on whenever the birthday and reminder lists
- * are brought to the front.
- */
-
-public class TurnLabelsOnEvent extends BaseEvent {
-    @Override
-    public String toString() {
-        return this.getClass().getSimpleName();
-    }
-}
-```
 ###### /java/seedu/address/logic/commands/AddReminderCommand.java
 ``` java
 /**
@@ -85,10 +59,10 @@ public class AddReminderCommand extends Command {
     /**
      * Creates an AddReminderCommand to add the specified {@code Reminder}
      */
-    public AddReminderCommand(Reminder toAdd) {
+    public AddReminderCommand(ReadOnlyReminder toAdd) {
         requireNonNull(toAdd);
 
-        this.toAdd = toAdd;
+        this.toAdd = new Reminder(toAdd);
     }
 
     @Override
@@ -134,13 +108,13 @@ public class DeleteReminderCommand extends Command {
 
     @Override
     public CommandResult execute() throws CommandException {
-        List<Reminder> reminderListing = model.getSortedReminderList();
+        List<ReadOnlyReminder> reminderListing = model.getSortedReminderList();
 
         if (targetIndex.getZeroBased() >= reminderListing.size()) {
             throw new CommandException(Messages.MESSAGE_INVALID_REMINDER_DISPLAYED_INDEX);
         }
 
-        Reminder reminderToDelete = reminderListing.get(targetIndex.getZeroBased());
+        ReadOnlyReminder reminderToDelete = reminderListing.get(targetIndex.getZeroBased());
 
         try {
             model.deleteReminder(reminderToDelete);
@@ -202,13 +176,13 @@ public class EditReminderCommand extends Command {
 
     @Override
     public CommandResult execute() throws CommandException {
-        List<Reminder> reminderList = model.getSortedReminderList();
+        List<ReadOnlyReminder> reminderList = model.getSortedReminderList();
 
         if (index.getZeroBased() >= reminderList.size()) {
             throw new CommandException(Messages.MESSAGE_INVALID_REMINDER_DISPLAYED_INDEX);
         }
 
-        Reminder reminderToEdit = reminderList.get(index.getZeroBased());
+        ReadOnlyReminder reminderToEdit = reminderList.get(index.getZeroBased());
         Reminder editedReminder = createEditedReminder(reminderToEdit, editReminderDescriptor);
 
         try {
@@ -225,7 +199,7 @@ public class EditReminderCommand extends Command {
      * Creates and returns a {@code Reminder} with the details of {@code reminderToEdit}
      * edited with {@code editReminderDescriptor}.
      */
-    private static Reminder createEditedReminder (Reminder reminderToEdit,
+    private static Reminder createEditedReminder (ReadOnlyReminder reminderToEdit,
                                                   EditReminderDescriptor editReminderDescriptor) {
         assert reminderToEdit != null;
 
@@ -344,33 +318,8 @@ public class ToggleCommand extends Command {
 
 }
 ```
-###### /java/seedu/address/logic/Logic.java
-``` java
-    /** Returns an unmodifiable view of the birthday panel filtered person list */
-    ObservableList<ReadOnlyPerson> getBirthdayPanelFilteredPersonList();
-
-    /** Returns an unmodifiable view of the reminder list */
-    ObservableList<Reminder> getReminderList();
-```
-###### /java/seedu/address/logic/LogicManager.java
-``` java
-    @Override
-    public ObservableList<ReadOnlyPerson> getBirthdayPanelFilteredPersonList() {
-        return model.getBirthdayPanelFilteredPersonList();
-    }
-
-    @Override
-    public ObservableList<Reminder> getReminderList() {
-        return model.getSortedReminderList();
-    }
-```
 ###### /java/seedu/address/logic/parser/AddReminderCommandParser.java
 ``` java
-/**
- * Parses input arguments and creates a new AddReminderCommand object
- */
-public class AddReminderCommandParser implements Parser<AddReminderCommand> {
-
     /**
      * Parses the given {@code String} of arguments in the context of the AddReminderCommand
      * and returns an AddReminderCommand object for execution.
@@ -395,42 +344,12 @@ public class AddReminderCommandParser implements Parser<AddReminderCommand> {
         try {
             Date date = ParserUtil.parseDate(argMultimap.getValue(PREFIX_DATE)).get();
             Time time = ParserUtil.parseTime(argMultimap.getValue(PREFIX_TIME)).get();
-            Reminder toAdd = new Reminder(reminder, date, time);
+            ReadOnlyReminder toAdd = new Reminder(reminder, date, time);
             return new AddReminderCommand(toAdd);
         } catch (IllegalValueException ive) {
             throw new ParseException(ive.getMessage());
         }
     }
-```
-###### /java/seedu/address/logic/parser/AddressBookParser.java
-``` java
-        case AddReminderCommand.COMMAND_WORD:
-            return new AddReminderCommandParser().parse(arguments);
-```
-###### /java/seedu/address/logic/parser/AddressBookParser.java
-``` java
-        case EditReminderCommand.COMMAND_WORD:
-            return new EditReminderCommandParser().parse(arguments);
-```
-###### /java/seedu/address/logic/parser/AddressBookParser.java
-``` java
-        case DeleteReminderCommand.COMMAND_WORD:
-            return new DeleteReminderCommandParser().parse(arguments);
-```
-###### /java/seedu/address/logic/parser/AddressBookParser.java
-``` java
-        case ToggleCommand.COMMAND_WORD:
-            return new ToggleCommand();
-```
-###### /java/seedu/address/logic/parser/CliSyntax.java
-``` java
-    public static final Prefix PREFIX_BIRTHDAY = new Prefix("b/");
-```
-###### /java/seedu/address/logic/parser/CliSyntax.java
-``` java
-    public static final Prefix PREFIX_REMINDER = new Prefix("rd/");
-    public static final Prefix PREFIX_DATE = new Prefix("d/");
-    public static final Prefix PREFIX_TIME = new Prefix("ti/");
 ```
 ###### /java/seedu/address/logic/parser/DeleteReminderCommandParser.java
 ``` java
@@ -508,101 +427,6 @@ public class EditReminderCommandParser implements Parser<EditReminderCommand> {
     }
 }
 ```
-###### /java/seedu/address/model/Model.java
-``` java
-    /** Clears existing backing model and replaces with the provided new reminders. */
-    void resetReminders(UniqueReminderList newReminders);
-```
-###### /java/seedu/address/model/Model.java
-``` java
-    /** Returns an unmodifiable view of the sorted list of reminders */
-    ObservableList<Reminder> getSortedReminderList();
-
-    /** Returns the reminders */
-    UniqueReminderList getUniqueReminderList();
-```
-###### /java/seedu/address/model/Model.java
-``` java
-    /** Adds the given reminder */
-    void addReminder(Reminder reminder) throws DuplicateReminderException;
-
-    /** Deletes the given reminder. */
-    void deleteReminder(Reminder target) throws ReminderNotFoundException;
-```
-###### /java/seedu/address/model/Model.java
-``` java
-    /**
-     * Replaces the given reminder {@code target} with {@code editedReminder}.
-     *
-     * @throws DuplicateReminderException if updating the reminder's details causes the reminder to be equivalent to
-     *      another existing reminder in the list.
-     * @throws ReminderNotFoundException if {@code target} could not be found in the list.
-     */
-    void updateReminder(Reminder target, Reminder editedReminder)
-            throws DuplicateReminderException, ReminderNotFoundException;
-```
-###### /java/seedu/address/model/ModelManager.java
-``` java
-        filteredPersonsForBirthdayListPanel = new FilteredList<>(this.addressBook.getPersonList());
-        filteredPersonsForBirthdayListPanel.setPredicate(new BirthdayInCurrentMonthPredicate());
-```
-###### /java/seedu/address/model/ModelManager.java
-``` java
-        sortedFilteredPersonsForBirthdayListPanel = new SortedList<>(filteredPersonsForBirthdayListPanel,
-                Comparator.comparingInt(birthday -> birthday.getBirthday().getDayOfBirthday()));
-        sortedReminderList = new SortedList<>(reminderList.asObservableList(),
-                Comparator.comparing(reminder -> reminder.getLocalDateTime()));
-```
-###### /java/seedu/address/model/ModelManager.java
-``` java
-    /** Raises an event to indicate the reminders have changed */
-    private void indicateRemindersChanged() {
-        raise(new RemindersChangedEvent(reminderList));
-    }
-```
-###### /java/seedu/address/model/ModelManager.java
-``` java
-    @Override
-    public ObservableList<Reminder> getSortedReminderList() {
-        return sortedReminderList;
-    }
-
-    @Override
-    public UniqueReminderList getUniqueReminderList() {
-        return reminderList;
-    }
-
-    @Override
-    public void addReminder(Reminder toAdd) throws DuplicateReminderException {
-        reminderList.add(toAdd);
-        indicateRemindersChanged();
-    }
-
-    @Override
-    public void deleteReminder(Reminder target) throws ReminderNotFoundException {
-        reminderList.remove(target);
-        indicateRemindersChanged();
-    }
-
-    @Override
-    public void resetReminders(UniqueReminderList newReminders) {
-        reminderList.setReminders(newReminders);
-        indicateRemindersChanged();
-    }
-
-    @Override
-    public void updateReminder(Reminder target, Reminder editedReminder)
-            throws DuplicateReminderException, ReminderNotFoundException {
-        requireAllNonNull(target, editedReminder);
-
-        reminderList.setReminder(target, editedReminder);
-        indicateRemindersChanged();
-    }
-```
-###### /java/seedu/address/model/ModelManager.java
-``` java
-                && reminderList.equals(other.reminderList);
-```
 ###### /java/seedu/address/model/person/Birthday.java
 ``` java
 /**
@@ -613,42 +437,39 @@ public class Birthday {
 
     public static final String MESSAGE_BIRTHDAY_CONSTRAINTS = "Birthday must be a valid date"
             + " and in the following format:\n"
-            + "'.', '-' and '/' can be used to seperate the day, month and year fields.\n"
+            + "'.', '-' and '/' can be used to separate the day, month and year fields,"
+            + " and need not be used in pairs (i.e. 21.10/1995 works as well).\n"
             + "Day field: 1 - 31 (allows leading zeroes).\n"
             + "Month field: 1-12 (allows leading zeroes).\n"
             + "Year field: 1900 - 2099.\n"
-            + "Example: 21/10/1995, 21-05-1996. 8.10.1987";
+            + "Example: 21/10/1995, 21-05-1996, 8.10.1987, 01/12-1995, 01.01-1990";
     public static final int EMPTY_BIRTHDAY_FIELD_MONTH = 0;
     public static final int EMPTY_BIRTHDAY_FIELD_DAY = 0;
-    private static final int[] MONTH_TO_DAY_MAPPING = {31, 28, 31, 30, 31, 30, 31, 31,
-        30, 31, 30, 31};
 
     private static final String EMPTY_STRING = "";
 
     private static final String BIRTHDAY_DASH_SEPARATOR = "-";
 
-    private static final int ZERO_BASED_ADJUSTMENT = 1;
-
-    private static final int SMALLEST_POSSIBLE_DAY = 1;
-
-    private static final int LEAP_YEAR_MONTH_FEBRUARY = 2;
-    private static final int LEAP_YEAR_DAY = 29;
-    private static final int LEAP_YEAR_REQUIREMENT_FIRST = 4;
-    private static final int LEAP_YEAR_REQUIREMENT_SECOND = 100;
-    private static final int LEAP_YEAR_REQUIREMENT_THIRD = 400;
-
     private static final int DATE_DAY_INDEX = 0;
     private static final int DATE_MONTH_INDEX = 1;
     private static final int DATE_YEAR_INDEX = 2;
+
+    private static final int DUMMY_YEAR = 2000;
 
     private static final String BIRTHDAY_VALIDATION_REGEX = "(0[1-9]|[1-9]|1[0-9]|2[0-9]|3[01])[///./-]"
             + "(0[1-9]|1[0-2]|[1-9])[///./-](19|20)[0-9][0-9]";
     private static final String BIRTHDAY_SPLIT_REGEX = "[///./-]";
 
+    private static final int BIRTHDAY_TOMORROW_VALIDATOR = 1;
+
     public final String value;
 
+    private final LocalDate currentDate;
+
+
     /**
-     * Validates the given birthday.
+     * Validates the given birthday and instantiate a LocalDate object with the date as of the date
+     * this Birthday object was instantiated.
      *
      * @throws IllegalValueException if given birthday string is invalid.
      */
@@ -665,36 +486,18 @@ public class Birthday {
         } else {
             this.value = convertToDefaultDateFormat(birthday);
         }
+
+        currentDate = LocalDate.now();
     }
 
     /**
-     * Get the month of the birthday in this Birthday object.
-     * If the birthday field is empty, return EMPTY_BIRTHDAY_FIELD_MONTH
+     * This constructor is used for testing purposes.
+     * This is because the use of {@code LocalDate.now()} is not static and might lead to
+     * tests failing depending on the time the tests are conducted.
      */
-    public int getMonthOfBirthday() {
-        if (value.isEmpty()) {
-            return EMPTY_BIRTHDAY_FIELD_MONTH;
-        }
-        String[] splitDate = value.split(BIRTHDAY_DASH_SEPARATOR);
-        try {
-            final int month = Integer.parseInt(splitDate[DATE_MONTH_INDEX]);
-            return month;
-        } catch (NumberFormatException nfe) {
-            throw new AssertionError("Should not happen");
-        }
-    }
-
-    /**
-     * Get the day of the birthday in this Birthday object.
-     * If the birthday field is empty, return EMPTY_BIRTHDAY_FIELD_DAY
-     */
-    public int getDayOfBirthday() {
-        if (value.isEmpty()) {
-            return EMPTY_BIRTHDAY_FIELD_DAY;
-        }
-        String[] splitDate = value.split(BIRTHDAY_DASH_SEPARATOR);
-        final int day = Integer.parseInt(splitDate[DATE_DAY_INDEX]);
-        return day;
+    private Birthday(String birthday, LocalDate currentDateForTesting) {
+        this.value = convertToDefaultDateFormat(birthday);
+        this.currentDate = currentDateForTesting;
     }
 
     /**
@@ -718,57 +521,98 @@ public class Birthday {
     }
 
     /**
+     * Return a Birthday instance that is used for testing.
+     */
+    public static Birthday getBirthdayTestInstance(String birthday, LocalDate currentDateForTesting) {
+        Birthday testInstance = new Birthday(birthday, currentDateForTesting);
+        return testInstance;
+    }
+
+    /**
+     * Get the month of the birthday in this Birthday object.
+     * If the birthday field is empty, return EMPTY_BIRTHDAY_FIELD_MONTH
+     */
+    public int getMonthOfBirthday() {
+        if (value.isEmpty()) {
+            return EMPTY_BIRTHDAY_FIELD_MONTH;
+        }
+        String[] splitDate = getSplitDate(value);
+        try {
+            final int month = Integer.parseInt(splitDate[DATE_MONTH_INDEX]);
+            return month;
+        } catch (NumberFormatException nfe) {
+            throw new AssertionError("Should not happen");
+        }
+    }
+
+    /**
+     * Get the day of the birthday in this Birthday object.
+     * If the birthday field is empty, return EMPTY_BIRTHDAY_FIELD_DAY
+     */
+    public int getDayOfBirthday() {
+        if (value.isEmpty()) {
+            return EMPTY_BIRTHDAY_FIELD_DAY;
+        }
+        String[] splitDate = getSplitDate(value);
+        final int day = Integer.parseInt(splitDate[DATE_DAY_INDEX]);
+        return day;
+    }
+
+    /**
+     * Returns true if the date for this Birthday object is the same
+     * as the date today (relative to the date this Birthday object was instantiated).
+     */
+    public boolean isBirthdayToday() {
+        if (value.isEmpty()) {
+            return false;
+        }
+        final String[] splitDate = getSplitDate(value);
+        final int month = Integer.parseInt(splitDate[DATE_MONTH_INDEX]);
+        final int day = Integer.parseInt(splitDate[DATE_DAY_INDEX]);
+
+        final boolean isMonthEqual = (month == currentDate.getMonthValue());
+        final boolean isDayEqual = day == (currentDate.getDayOfMonth());
+
+        return isMonthEqual && isDayEqual;
+    }
+
+    /**
+     * Returns true of the date for this Birthday object is tomorrow
+     * (relative to the date this Birthday object was instantiated)
+     */
+    public boolean isBirthdayTomorrow() {
+        if (value.isEmpty()) {
+            return false;
+        }
+        final String[] splitDate = getSplitDate(value);
+        final int month = Integer.parseInt(splitDate[DATE_MONTH_INDEX]);
+        final int day = Integer.parseInt(splitDate[DATE_DAY_INDEX]);
+
+        final int currentMonth = currentDate.getMonthValue();
+        final int currentDay = currentDate.getDayOfMonth();
+
+        final LocalDate birthday = LocalDate.of(DUMMY_YEAR, month, day);
+        final LocalDate currentDummyDate = LocalDate.of(DUMMY_YEAR, currentMonth, currentDay);
+
+        final long daysUntilBirthday = currentDummyDate.until(birthday, ChronoUnit.DAYS);
+        return daysUntilBirthday == BIRTHDAY_TOMORROW_VALIDATOR;
+    }
+
+    /**
      * Returns true if a given date is a valid date.
      * A date is valid if it exists.
      */
     private static boolean isValidDate(String[] splitDate) {
-        if (isValidLeapDay(splitDate)) {
-            return true;
-        }
+        final int year = Integer.parseInt(splitDate[DATE_YEAR_INDEX]);
+        final int month = Integer.parseInt(splitDate[DATE_MONTH_INDEX]);
+        final int day = Integer.parseInt(splitDate[DATE_DAY_INDEX]);
 
         try {
-            final int day = Integer.parseInt(splitDate[DATE_DAY_INDEX]);
-            final int month = Integer.parseInt(splitDate[DATE_MONTH_INDEX]);
-            final int dayUpperLimitForMonth = MONTH_TO_DAY_MAPPING[month - ZERO_BASED_ADJUSTMENT];
-            if (day < SMALLEST_POSSIBLE_DAY || day > dayUpperLimitForMonth) {
-                return false;
-            }
-        } catch (NumberFormatException nfe) {
-            throw new AssertionError("Not possible as birthday has passed through the regex");
+            LocalDate.of(year, month, day);
+        } catch (DateTimeException dte) {
+            return false;
         }
         return true;
-    }
-
-    /**
-     * Returns true if a given date is a valid leap day.
-     */
-    private static boolean isValidLeapDay(String[] splitDate) {
-        try {
-            final int day = Integer.parseInt(splitDate[DATE_DAY_INDEX]);
-            final int month = Integer.parseInt(splitDate[DATE_MONTH_INDEX]);
-            final int year = Integer.parseInt(splitDate[DATE_YEAR_INDEX]);
-            if (!isLeapYear(year) || day != LEAP_YEAR_DAY || month != LEAP_YEAR_MONTH_FEBRUARY) {
-                return false;
-            }
-        } catch (NumberFormatException nfe) {
-            throw new AssertionError("Not possible as birthday has passed through the regex");
-        }
-        return true;
-    }
-
-    /**
-     * Returns true if the year is a valid leap year.
-     * Algorithm to determine is a year is a valid leap year:
-     * https://support.microsoft.com/en-us/help/214019/method-to-determine-whether-a-year-is-a-leap-year
-     */
-    private static boolean isLeapYear(int year) {
-        if (year % LEAP_YEAR_REQUIREMENT_FIRST == 0 && year % LEAP_YEAR_REQUIREMENT_SECOND != 0) {
-            return true;
-        } else if (year % LEAP_YEAR_REQUIREMENT_FIRST == 0 && year % LEAP_YEAR_REQUIREMENT_SECOND == 0
-                && year % LEAP_YEAR_REQUIREMENT_THIRD == 0) {
-            return true;
-        }
-        return false;
     }
 
     /**
@@ -811,45 +655,6 @@ public class Birthday {
     }
 }
 ```
-###### /java/seedu/address/model/person/BirthdayInCurrentMonthPredicate.java
-``` java
-/**
- * Tests that a {@code ReadOnlyPerson}'s birthday month is the current month.
- * If a {@code ReadOnlyPerson} does not have a birthday recorded, return false.
- */
-public class BirthdayInCurrentMonthPredicate implements Predicate<ReadOnlyPerson> {
-    private final int currentMonth;
-
-    public BirthdayInCurrentMonthPredicate() {
-        // Added 1 because Calendar.getInstance().get(Calendar.MONTH) is zero-based.
-        this.currentMonth = Calendar.getInstance().get(Calendar.MONTH) + 1;
-    }
-
-    /**
-     * This constructor is made for the purpose of testing this predicate class.
-     * It also might have further use in filtering the birthdays in the future.
-     */
-    public BirthdayInCurrentMonthPredicate(int monthToFilter) {
-        this.currentMonth = monthToFilter;
-    }
-
-    @Override
-    public boolean test(ReadOnlyPerson person) {
-        final int month = person.getBirthday().getMonthOfBirthday();
-        if (month == Birthday.EMPTY_BIRTHDAY_FIELD_MONTH) {
-            return false;
-        }
-        return currentMonth == month;
-    }
-
-    @Override
-    public boolean equals(Object other) {
-        return other == this // short circuit if same object
-                || (other instanceof BirthdayInCurrentMonthPredicate // instanceof handles nulls
-                && this.currentMonth == ((BirthdayInCurrentMonthPredicate) other).currentMonth); // state check
-    }
-}
-```
 ###### /java/seedu/address/model/person/Person.java
 ``` java
     public void setBirthday(Birthday birthday) {
@@ -866,6 +671,64 @@ public class BirthdayInCurrentMonthPredicate implements Predicate<ReadOnlyPerson
         return birthday.get();
     }
 ```
+###### /java/seedu/address/model/person/UpcomingBirthdayInCurrentMonthPredicate.java
+``` java
+/**
+ * Tests that a {@code ReadOnlyPerson}'s birthday is within this month and have not past.
+ * If a {@code ReadOnlyPerson} does not have a birthday recorded, return false.
+ */
+public class UpcomingBirthdayInCurrentMonthPredicate implements Predicate<ReadOnlyPerson> {
+    private final int currentMonth;
+    private final int currentDay;
+
+    public UpcomingBirthdayInCurrentMonthPredicate() {
+        // Added 1 because Calendar.getInstance().get(Calendar.MONTH) is zero-based.
+        this.currentMonth = Calendar.getInstance().get(Calendar.MONTH) + 1;
+        this.currentDay = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+    }
+
+    /**
+     * This constructor is used for testing purposes only.
+     */
+    private UpcomingBirthdayInCurrentMonthPredicate(int monthToFilter, int dayToFilter) {
+        this.currentMonth = monthToFilter;
+        this.currentDay = dayToFilter;
+    }
+
+    /**
+     * Returns a UpcomingBirthdayInCurrentMonthPredicate instance that is used for testing,
+     * initialized with {@code monthToFilter} and {@code dayToFilter}.
+     */
+    public static UpcomingBirthdayInCurrentMonthPredicate getTestInstance(int monthToFilter, int dayToFilter) {
+        UpcomingBirthdayInCurrentMonthPredicate testPredicate =
+                new UpcomingBirthdayInCurrentMonthPredicate(monthToFilter, dayToFilter);
+        return testPredicate;
+    }
+
+    @Override
+    public boolean test(ReadOnlyPerson person) {
+        final int month = person.getBirthday().getMonthOfBirthday();
+        final int day = person.getBirthday().getDayOfBirthday();
+        if (month == Birthday.EMPTY_BIRTHDAY_FIELD_MONTH) {
+            return false;
+        }
+
+        if (month != currentMonth) {
+            return false;
+        }
+
+        return day >= currentDay;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return other == this // short circuit if same object
+                || (other instanceof UpcomingBirthdayInCurrentMonthPredicate // instanceof handles nulls
+                && this.currentMonth == ((UpcomingBirthdayInCurrentMonthPredicate) other).currentMonth) // state check
+                && this.currentDay == ((UpcomingBirthdayInCurrentMonthPredicate) other).currentDay;
+    }
+}
+```
 ###### /java/seedu/address/model/reminders/Date.java
 ``` java
 /**
@@ -873,17 +736,24 @@ public class BirthdayInCurrentMonthPredicate implements Predicate<ReadOnlyPerson
  * Guarantees: immutable; is valid as declared in {@link #isValidDate(String)}
  */
 public class Date {
-    public static final String MESSAGE_DATE_CONSTRAINTS = "Date must be in the format dd-mm-yyyy,"
-            + " dd/mm/yyyy or dd.mm.yyyy, and must be a valid date.\n"
-            + "Example: 22-10-2019, 23.12.1997, 24/12/1989.\n";
+    public static final String MESSAGE_DATE_CONSTRAINTS = "Date must be valid,"
+            + " and in the following format:\n"
+            + "'.', '-' and '/' can be used to separate the day, month and year fields,"
+            + " and need not be used in pairs (i.e. 21.10/1995 works as well).\n"
+            + "Day field: 1 - 31 (allows leading zeroes).\n"
+            + "Month field: 1-12 (allows leading zeroes).\n"
+            + "Year field: 1900 - 2099.\n"
+            + "Example: 21/10/1995, 21-05-1996, 8.10.1987, 01/12-1995, 01.01-1990";
+
+    public static final String DATE_SPLIT_REGEX = "[///./-]";
+
+    public static final int DATE_DAY_INDEX = 0;
+    public static final int DATE_MONTH_INDEX = 1;
+    public static final int DATE_YEAR_INDEX = 2;
+
     private static final String DATE_VALIDATION_REGEX = "(0[1-9]|[1-9]|1[0-9]|2[0-9]|3[01])[///./-]"
             + "(0[1-9]|1[0-2]|[1-9])[///./-](19|20)[0-9][0-9]";
-    private static final String DATE_SPLIT_REGEX = "[///./-]";
     private static final String DATE_SEPARATOR = "-";
-
-    private static final int DATE_DAY_INDEX = 0;
-    private static final int DATE_MONTH_INDEX = 1;
-    private static final int DATE_YEAR_INDEX = 2;
 
     public final String value;
 
@@ -985,17 +855,63 @@ public class DuplicateReminderException extends DuplicateDataException {
 public class ReminderNotFoundException extends Exception {
 }
 ```
+###### /java/seedu/address/model/reminders/ReadOnlyReminder.java
+``` java
+/**
+ * A read-only immutable interface for a Reminder in iContacts.
+ * Implementations should guarantee: details are present and not null, field values are validated.
+ */
+public interface ReadOnlyReminder {
+    ObjectProperty<String> reminderProperty();
+    String getReminder();
+    ObjectProperty<Date> dateProperty();
+    Date getDate();
+    ObjectProperty<Time> timeProperty();
+    Time getTime();
+    ObjectProperty<Status> statusProperty();
+    LocalDateTime getLocalDateTime();
+    boolean isEventToday();
+    boolean isEventWithinThreeDays();
+    boolean hasEventPast();
+
+    /**
+     * Returns true if both have the same state. (interfaces cannot override .equals)
+     */
+    default boolean isSameStateAs(ReadOnlyReminder other) {
+        return other == this // short circuit if same object
+                || (other != null // this is first to avoid NPE below
+                && other.getReminder().equals(this.getReminder()) // state checks here onwards
+                && other.getDate().equals(this.getDate())
+                && other.getTime().equals(this.getTime()));
+    }
+}
+```
+###### /java/seedu/address/model/reminders/ReadOnlyUniqueReminderList.java
+``` java
+/**
+ * Unmodifiable view of a UniqueReminderList
+ */
+public interface ReadOnlyUniqueReminderList {
+
+    /**
+     * Returns an unmodifiable view of the reminders list.
+     * This list will not contain any duplicate persons.
+     */
+    ObservableList<ReadOnlyReminder> asObservableList();
+}
+```
 ###### /java/seedu/address/model/reminders/Reminder.java
 ``` java
 /**
- *  Represents a reminder.
+ *  Represents a reminder in iContacts.
  */
 
-public class Reminder {
+public class Reminder implements ReadOnlyReminder {
 
     private ObjectProperty<String> reminder;
     private ObjectProperty<Date> date;
     private ObjectProperty<Time> time;
+    private ObjectProperty<Status> status;
 
     /**
      * Every field must be present and not null.
@@ -1006,12 +922,13 @@ public class Reminder {
         this.reminder = new SimpleObjectProperty<>(reminder);
         this.date = new SimpleObjectProperty<>(date);
         this.time = new SimpleObjectProperty<>(time);
+        this.status = new SimpleObjectProperty<>(new Status(this));
     }
 
     /**
-     * Creates a copy of the given Reminder.
+     * Creates a copy of the given ReadOnlyReminder.
      */
-    public Reminder(Reminder source) {
+    public Reminder(ReadOnlyReminder source) {
         this(source.getReminder(), source.getDate(), source.getTime());
     }
 
@@ -1056,12 +973,29 @@ public class Reminder {
     }
 
     @Override
+    public boolean hasEventPast() {
+        return status.get().hasEventPast();
+    }
+
+    @Override
+    public boolean isEventToday() {
+        return status.get().isEventToday();
+    }
+
+    @Override
+    public boolean isEventWithinThreeDays() {
+        return status.get().isEventWithinThreeDays();
+    }
+
+    public ObjectProperty<Status> statusProperty() {
+        return status;
+    }
+
+    @Override
     public boolean equals(Object other) {
         return this == other
-                || (other instanceof Reminder
-                && this.getReminder().equals(((Reminder) other).getReminder())
-                && this.getDate().equals(((Reminder) other).getDate())
-                && this.getTime().equals(((Reminder) other).getTime()));
+                || (other instanceof ReadOnlyReminder
+                && this.isSameStateAs((ReadOnlyReminder) other));
     }
 
     @Override
@@ -1072,6 +1006,155 @@ public class Reminder {
     @Override
     public String toString() {
         return reminder.get() + "\n" + date.get() + "\n" + time.get();
+    }
+}
+```
+###### /java/seedu/address/model/reminders/Status.java
+``` java
+/**
+ * Represents a Reminder's status in the program.
+ * Guarantees: immutable.
+ */
+public class Status {
+
+    private static final String STATUS_FORMAT_SINGLE_MESSAGE = "Status: %1$s day left.";
+    private static final String STATUS_FORMAT_MESSAGE = "Status: %1$s days left.";
+    private static final String STATUS_TODAY_MESSAGE = "Event happening today!";
+    private static final String STATUS_OVERDUE = "Event has past.";
+
+    private static final int ONE_DAY = 1;
+
+    private final LocalDate currentDate;
+    private final LocalTime currentTime;
+
+    private final LocalDate dateOfReminder;
+    private final LocalTime timeOfReminder;
+
+    private String status;
+
+    /**
+     * Initialize the status for this reminder.
+     */
+    public Status(Reminder reminder) {
+        currentDate = LocalDate.now();
+        currentTime = LocalTime.now();
+        this.dateOfReminder = reminder.getDate().toLocalDate();
+        this.timeOfReminder = reminder.getTime().toLocalTime();
+        initStatus();
+    }
+
+    /**
+     * This constructor is used for testing purposes only.
+     * This is because the use of {@code LocalDate.now()} and {@code LocalTime.now()} is not static and might lead to
+     * tests failing depending on the time the tests are conducted.
+     */
+    private Status(Reminder reminder, LocalDate defaultDate, LocalTime defaultTime) {
+        this.currentDate = defaultDate;
+        this.currentTime = defaultTime;
+        this.dateOfReminder = reminder.getDate().toLocalDate();
+        this.timeOfReminder = reminder.getTime().toLocalTime();
+        initStatus();
+    }
+
+    /**
+     * Return a Status instance that is used for testing, initialized with {@code reminder}, {@code defaultDate}
+     * and {@code defaultTime}.
+     */
+    public static Status getStatusTestInstance(Reminder reminder, LocalDate defaultDate, LocalTime defaultTime) {
+        Status testInstance = new Status(reminder, defaultDate, defaultTime);
+        return testInstance;
+    }
+
+    /**
+     * Returns true if the event has already past.
+     */
+    public boolean hasEventPast() {
+        final long daysUntilEvent = getDaysUntilEvent();
+        final long minutesUntilEvent = getMinutesUntilEvent();
+        if (daysUntilEvent > 0) {
+            return false;
+        } else if (daysUntilEvent == 0) {
+            if (minutesUntilEvent >= 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Returns true if the event is happening today (with respect to the date and time this object is created).
+     */
+    public boolean isEventToday() {
+        final long daysUntilEvent = getDaysUntilEvent();
+        final long minutesUntilEvent = getMinutesUntilEvent();
+
+        return daysUntilEvent == 0 && minutesUntilEvent >= 0;
+    }
+
+    /**
+     * Returns true if the event is happening within three days
+     * (with respect to the date and time this object is created.)
+     */
+    public boolean isEventWithinThreeDays() {
+        final long daysUntilEvent = getDaysUntilEvent();
+        final long minutesUntilEvent = getMinutesUntilEvent();
+        if (daysUntilEvent < 0 || daysUntilEvent > 3) {
+            return false;
+        }
+        if (daysUntilEvent == 0 && minutesUntilEvent < 0) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Carries out the actual initializing of the status.
+     */
+    private void initStatus() {
+        if (hasEventPast()) {
+            status = STATUS_OVERDUE;
+        } else if (isEventToday()) {
+            status = STATUS_TODAY_MESSAGE;
+        } else {
+            final long daysUntilEvent = getDaysUntilEvent();
+            if (daysUntilEvent == ONE_DAY) {
+                status = String.format(STATUS_FORMAT_SINGLE_MESSAGE, ONE_DAY);
+            } else {
+                status = String.format(STATUS_FORMAT_MESSAGE, getDaysUntilEvent());
+            }
+        }
+    }
+
+    /**
+     * Return the number of days left until {@code reminderDate} (with respect to the date this object is created).
+     */
+    private long getDaysUntilEvent() {
+        return currentDate.until(dateOfReminder, ChronoUnit.DAYS);
+    }
+
+    /**
+     * Return the difference in time between the current time and {@code reminderTime} in minutes
+     * (with respect to the time this object is created).
+     */
+    private long getMinutesUntilEvent() {
+        return currentTime.until(timeOfReminder, ChronoUnit.MINUTES);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(status, dateOfReminder, timeOfReminder);
+    }
+
+    @Override
+    public String toString() {
+        return status;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return this == other
+                || (other instanceof Status
+                && this.status.equals(((Status) other).status));
     }
 }
 ```
@@ -1087,12 +1170,13 @@ public class Time {
             + " with a colon separating the hour and minute.\n"
             + "Example: 09:00, 23:59, 17:56";
 
+    public static final String HOUR_MIN_SEPARATOR = ":";
+
+    public static final int TIME_HOUR_INDEX = 0;
+    public static final int TIME_MIN_INDEX = 1;
+
     private static final String TIME_VALIDATION_REGEX = "(0[0-9]|1[0-9]|2[0-3]):"
             + "(0[0-9]|1[0-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9])";
-    private static final String HOUR_MIN_SEPARATOR = ":";
-
-    private static final int TIME_HOUR_INDEX = 0;
-    private static final int TIME_MIN_INDEX = 1;
 
     public final String value;
 
@@ -1158,8 +1242,10 @@ public class Time {
  *
  * @see Reminder#equals(Object)
  */
-public class UniqueReminderList implements Iterable<Reminder> {
+public class UniqueReminderList implements Iterable<Reminder>, ReadOnlyUniqueReminderList {
     private final ObservableList<Reminder> internalList = FXCollections.observableArrayList();
+    // used by asObservableList()
+    private final ObservableList<ReadOnlyReminder> mappedList = EasyBind.map(internalList, (reminder) -> reminder);
 
     public UniqueReminderList() {
     }
@@ -1172,10 +1258,10 @@ public class UniqueReminderList implements Iterable<Reminder> {
     /**
      * Constructor used for loading reminder from storage file into program.
      */
-    public UniqueReminderList(XmlSerializableReminders xmlReminders) {
+    public UniqueReminderList(ReadOnlyUniqueReminderList xmlReminders) {
         requireNonNull(xmlReminders);
         try {
-            setReminders(xmlReminders.toModelType());
+            setReminders(xmlReminders.asObservableList());
         } catch (DuplicateReminderException dre) {
             assert false : "Reminders from storage should not have duplicates";
         }
@@ -1188,7 +1274,7 @@ public class UniqueReminderList implements Iterable<Reminder> {
     /**
      * Returns true if the list contains an equivalent reminder as the given argument.
      */
-    public boolean contains(Reminder toCheck) {
+    public boolean contains(ReadOnlyReminder toCheck) {
         requireNonNull(toCheck);
         return internalList.contains(toCheck);
     }
@@ -1197,12 +1283,12 @@ public class UniqueReminderList implements Iterable<Reminder> {
      * Adds a reminder to the list.
      * @throws DuplicateReminderException if the reminder to add is a duplicate of an existing reminder in the list.
      */
-    public void add(Reminder toAdd) throws DuplicateReminderException {
+    public void add(ReadOnlyReminder toAdd) throws DuplicateReminderException {
         requireNonNull(toAdd);
         if (contains(toAdd)) {
             throw new DuplicateReminderException();
         }
-        internalList.add(toAdd);
+        internalList.add(new Reminder(toAdd));
     }
 
     /**
@@ -1211,7 +1297,7 @@ public class UniqueReminderList implements Iterable<Reminder> {
      * @throws DuplicateReminderException if the replacement is equivalent to another existing reminder in the list.
      * @throws ReminderNotFoundException if {@code target} could not be found in the list.
      */
-    public void setReminder(Reminder target, Reminder editedReminder)
+    public void setReminder(ReadOnlyReminder target, ReadOnlyReminder editedReminder)
             throws DuplicateReminderException, ReminderNotFoundException {
         requireNonNull(editedReminder);
 
@@ -1232,7 +1318,7 @@ public class UniqueReminderList implements Iterable<Reminder> {
      *
      * @throws ReminderNotFoundException if no such reminder could be found in the list.
      */
-    public boolean remove(Reminder toRemove) throws ReminderNotFoundException {
+    public boolean remove(ReadOnlyReminder toRemove) throws ReminderNotFoundException {
         requireNonNull(toRemove);
         final boolean reminderFoundAndDeleted = internalList.remove(toRemove);
         if (!reminderFoundAndDeleted) {
@@ -1245,9 +1331,9 @@ public class UniqueReminderList implements Iterable<Reminder> {
         this.internalList.setAll(replacement.internalList);
     }
 
-    public void setReminders(List<Reminder> reminders) throws DuplicateReminderException {
+    public void setReminders(List<? extends ReadOnlyReminder> reminders) throws DuplicateReminderException {
         final UniqueReminderList replacement = new UniqueReminderList();
-        for (final Reminder reminder : reminders) {
+        for (final ReadOnlyReminder reminder : reminders) {
             replacement.add(new Reminder(reminder));
         }
         setReminders(replacement);
@@ -1256,8 +1342,8 @@ public class UniqueReminderList implements Iterable<Reminder> {
     /**
      * Returns the list as an unmodiafiable {@code ObservableList}.
      */
-    public ObservableList<Reminder> asObservableList() {
-        return FXCollections.unmodifiableObservableList(internalList);
+    public ObservableList<ReadOnlyReminder> asObservableList() {
+        return FXCollections.unmodifiableObservableList(mappedList);
     }
 
     @Override
@@ -1283,10 +1369,6 @@ public class UniqueReminderList implements Iterable<Reminder> {
     public String getRemindersFilePath() {
         return remindersFilePath;
     }
-
-    public void setRemindersFilePath(String remindersFilePath) {
-        this.remindersFilePath = remindersFilePath;
-    }
 ```
 ###### /java/seedu/address/storage/RemindersStorage.java
 ``` java
@@ -1306,31 +1388,36 @@ public interface RemindersStorage {
      * @throws DataConversionException if the data in storage is not in the expected format.
      * @throws IOException if there was any problem when reading from the storage.
      */
-    Optional<XmlSerializableReminders> readReminders() throws DataConversionException, IOException;
+    Optional<ReadOnlyUniqueReminderList> readReminders() throws DataConversionException, IOException;
 
     /**
      * @see #getRemindersFilePath()
      */
-    Optional<XmlSerializableReminders> readReminders(String filePath) throws DataConversionException,
+    Optional<ReadOnlyUniqueReminderList> readReminders(String filePath) throws DataConversionException,
             IOException;
 
     /**
-     * Saves the given {@link UniqueReminderList} to the storage.
+     * Saves the given {@link ReadOnlyUniqueReminderList} to the storage.
      * @param reminderList cannot be null.
      * @throws IOException if there was any problem writing to the file.
      */
-    void saveReminders(UniqueReminderList reminderList) throws IOException;
+    void saveReminders(ReadOnlyUniqueReminderList reminderList) throws IOException;
 
     /**
-     * @see #saveReminders(UniqueReminderList)
+     * @see #saveReminders(ReadOnlyUniqueReminderList)
      */
-    void saveReminders(UniqueReminderList reminderList, String filePath) throws IOException;
+    void saveReminders(ReadOnlyUniqueReminderList reminderList, String filePath) throws IOException;
 }
 ```
 ###### /java/seedu/address/storage/Storage.java
 ``` java
     @Override
-    void saveReminders(UniqueReminderList reminderList) throws IOException;
+    Optional<ReadOnlyUniqueReminderList> readReminders() throws DataConversionException, IOException;
+```
+###### /java/seedu/address/storage/Storage.java
+``` java
+    @Override
+    void saveReminders(ReadOnlyUniqueReminderList reminderList) throws IOException;
 ```
 ###### /java/seedu/address/storage/Storage.java
 ``` java
@@ -1364,23 +1451,24 @@ public interface RemindersStorage {
     }
 
     @Override
-    public Optional<XmlSerializableReminders> readReminders() throws DataConversionException, IOException {
+    public Optional<ReadOnlyUniqueReminderList> readReminders() throws DataConversionException, IOException {
         return readReminders(remindersStorage.getRemindersFilePath());
     }
 
     @Override
-    public Optional<XmlSerializableReminders> readReminders(String filePath) throws DataConversionException, IOException {
+    public Optional<ReadOnlyUniqueReminderList> readReminders(String filePath) throws DataConversionException,
+            IOException {
         logger.fine("Attempting to read data from file: " + filePath);
         return remindersStorage.readReminders(filePath);
     }
 
     @Override
-    public void saveReminders(UniqueReminderList reminderList) throws IOException {
+    public void saveReminders(ReadOnlyUniqueReminderList reminderList) throws IOException {
         saveReminders(reminderList, remindersStorage.getRemindersFilePath());
     }
 
     @Override
-    public void saveReminders(UniqueReminderList reminderList, String filePath) throws IOException {
+    public void saveReminders(ReadOnlyUniqueReminderList reminderList, String filePath) throws IOException {
         logger.fine("Attempting to write to data file: " + filePath);
         remindersStorage.saveReminders(reminderList, filePath);
     }
@@ -1410,7 +1498,7 @@ public class XmlAdaptedReminder {
      *
      * @param source future changes to this will not affect the created XmlAdaptedReminder
      */
-    public XmlAdaptedReminder(Reminder source) {
+    public XmlAdaptedReminder(ReadOnlyReminder source) {
         this.reminder = source.getReminder();
         this.date = source.getDate().value;
         this.time = source.getTime().value;
@@ -1428,6 +1516,34 @@ public class XmlAdaptedReminder {
 
 
 }
+```
+###### /java/seedu/address/storage/XmlFileStorage.java
+``` java
+    /**
+     * Saves the given reminders data to the specified file.
+     */
+    public static void saveRemindersToFile(File file, XmlSerializableReminders reminders)
+            throws FileNotFoundException {
+        try {
+            XmlUtil.saveDataToFile(file, reminders);
+        } catch (JAXBException e) {
+            assert false : "Unexpected exception " + e.getMessage();
+        }
+    }
+```
+###### /java/seedu/address/storage/XmlFileStorage.java
+``` java
+    /**
+     * Returns reminders in the file or an empty reminder list
+     */
+    public static XmlSerializableReminders loadRemindersFromSaveFile(File file) throws DataConversionException,
+                                                                            FileNotFoundException {
+        try {
+            return XmlUtil.getDataFromFile(file, XmlSerializableReminders.class);
+        } catch (JAXBException e) {
+            throw new DataConversionException(e);
+        }
+    }
 ```
 ###### /java/seedu/address/storage/XmlRemindersStorage.java
 ``` java
@@ -1451,7 +1567,7 @@ public class XmlRemindersStorage implements RemindersStorage {
     }
 
     @Override
-    public Optional<XmlSerializableReminders> readReminders() throws DataConversionException, IOException {
+    public Optional<ReadOnlyUniqueReminderList> readReminders() throws DataConversionException, IOException {
         return readReminders(filePath);
     }
 
@@ -1460,7 +1576,7 @@ public class XmlRemindersStorage implements RemindersStorage {
      * @param filePath location of the data. Cannot be null
      * @throws DataConversionException if the file is not in the correct format.
      */
-    public Optional<XmlSerializableReminders> readReminders(String filePath) throws DataConversionException,
+    public Optional<ReadOnlyUniqueReminderList> readReminders(String filePath) throws DataConversionException,
                                                                                     FileNotFoundException {
         requireNonNull(filePath);
 
@@ -1477,15 +1593,15 @@ public class XmlRemindersStorage implements RemindersStorage {
     }
 
     @Override
-    public void saveReminders(UniqueReminderList reminderList) throws IOException {
+    public void saveReminders(ReadOnlyUniqueReminderList reminderList) throws IOException {
         saveReminders(reminderList, filePath);
     }
 
     /**
-     * Similar to {@link #saveReminders(UniqueReminderList)}
+     * Similar to {@link #saveReminders(ReadOnlyUniqueReminderList)}
      * @param filePath location of the data. Cannot be null
      */
-    public void saveReminders(UniqueReminderList reminderList, String filePath) throws IOException {
+    public void saveReminders(ReadOnlyUniqueReminderList reminderList, String filePath) throws IOException {
         requireNonNull(reminderList);
         requireNonNull(filePath);
 
@@ -1501,7 +1617,7 @@ public class XmlRemindersStorage implements RemindersStorage {
  * A List of reminders that is serializable to XML format.
  */
 @XmlRootElement(name = "reminders")
-public class XmlSerializableReminders {
+public class XmlSerializableReminders implements ReadOnlyUniqueReminderList {
 
     @XmlElement
     private List<XmlAdaptedReminder> reminders;
@@ -1517,35 +1633,54 @@ public class XmlSerializableReminders {
     /**
      * Conversion
      */
-    public XmlSerializableReminders(List<Reminder> source) {
+    public XmlSerializableReminders(List<ReadOnlyReminder> source) {
         this();
         reminders.addAll(source.stream().map(XmlAdaptedReminder::new).collect(Collectors.toList()));
     }
 
-    /**
-     * Converts this jaxb-friendly list of XmlAdaptedReminder into a list of
-     * the model's Reminder objects.
-     */
-    public List<Reminder> toModelType() {
-        final List<Reminder> listOfReminders = new ArrayList<>();
-        try {
-            for (XmlAdaptedReminder reminder : reminders) {
-                listOfReminders.add(reminder.toModelType());
+    @Override
+    public ObservableList<ReadOnlyReminder> asObservableList() {
+
+        final ObservableList<ReadOnlyReminder> reminders = this.reminders.stream().map(p -> {
+            try {
+                return p.toModelType();
+            } catch (IllegalValueException e) {
+                e.printStackTrace();
+                //TODO: better error handling
+                return null;
             }
-        } catch (IllegalValueException ive) {
-            throw new AssertionError("Date in storage should not be problematic!");
-        }
-        return listOfReminders;
+        }).collect(Collectors.toCollection(FXCollections::observableArrayList));
+        return FXCollections.unmodifiableObservableList(reminders);
     }
 }
 ```
 ###### /java/seedu/address/ui/BirthdayAndReminderListPanel.java
 ``` java
+/**
+ * Panel containing the list of persons with birthday in the current month.
+ */
+public class BirthdayAndReminderListPanel extends UiPart<Region> {
+    private static final String FXML = "BirthdayAndReminderListPanel.fxml";
+    private static final String DIRECTORY_PATH = "view/";
+    private static final String REMINDER_TODAY_STYLE_SHEET = DIRECTORY_PATH + "reminderToday.css";
+    private static final String REMINDER_THREE_DAYS_STYLE_SHEET = DIRECTORY_PATH + "reminderWithinThreeDays.css";
+    private static final String REMINDER_NORMAL_STYLE_SHEET = DIRECTORY_PATH + "reminderNormal.css";
+    private final Logger logger = LogsCenter.getLogger(PersonListPanel.class);
+
+    @FXML
+    private ListView<BirthdayReminderCard> birthdayListView;
+    @FXML
+    private ListView<ReminderCard> reminderListView;
+
+    public BirthdayAndReminderListPanel(ObservableList<ReadOnlyPerson> birthdayList,
+                                        ObservableList<ReadOnlyReminder> reminderList) {
+        super(FXML);
         setConnections(birthdayList, reminderList);
-```
-###### /java/seedu/address/ui/BirthdayAndReminderListPanel.java
-``` java
-    private void setConnections(ObservableList<ReadOnlyPerson> birthdayList, ObservableList<Reminder> reminderList) {
+        registerAsAnEventHandler(this);
+    }
+
+    private void setConnections(ObservableList<ReadOnlyPerson> birthdayList,
+                                ObservableList<ReadOnlyReminder> reminderList) {
         ObservableList<BirthdayReminderCard> birthdayMappedList = EasyBind.map(
                 birthdayList, (birthdayPerson) -> new BirthdayReminderCard(birthdayPerson,
                         birthdayList.indexOf(birthdayPerson) + 1));
@@ -1571,9 +1706,11 @@ public class XmlSerializableReminders {
             if (empty || person == null) {
                 setGraphic(null);
                 setText(null);
+                return;
             } else {
                 setGraphic(person.getRoot());
             }
+
         }
     }
 
@@ -1589,11 +1726,22 @@ public class XmlSerializableReminders {
             if (empty || reminder == null) {
                 setGraphic(null);
                 setText(null);
-            } else {
-                setGraphic(reminder.getRoot());
+                return;
             }
+            this.getStylesheets().clear();
+            if (reminder.isEventToday()) {
+                this.getStylesheets().add(REMINDER_TODAY_STYLE_SHEET);
+            } else if (reminder.isEventWithinThreeDays()) {
+                this.getStylesheets().add(REMINDER_THREE_DAYS_STYLE_SHEET);
+            } else if (!reminder.hasEventPast()) {
+                this.getStylesheets().add(REMINDER_NORMAL_STYLE_SHEET);
+            }
+
+            setGraphic(reminder.getRoot());
         }
     }
+
+}
 ```
 ###### /java/seedu/address/ui/BirthdayReminderCard.java
 ``` java
@@ -1624,12 +1772,15 @@ public class BirthdayReminderCard extends UiPart<Region> {
     private Label nickname;
     @FXML
     private Label birthday;
+    @FXML
+    private Label icon;
 
     public BirthdayReminderCard(ReadOnlyPerson person, int displayedIndex) {
         super(FXML);
         this.person = person;
         id.setText(displayedIndex + ". ");
         bindListeners(person);
+        initIcon();
     }
 
 
@@ -1641,6 +1792,19 @@ public class BirthdayReminderCard extends UiPart<Region> {
         name.textProperty().bind(Bindings.convert(person.nameProperty()));
         nickname.textProperty().bind(Bindings.convert(person.nicknameProperty()));
         birthday.textProperty().bind(Bindings.convert(person.birthdayProperty()));
+    }
+
+    /**
+     * Initiates the appropriate icon depending on {@code person}'s birthday.
+     */
+    private void initIcon() {
+        if (person.getBirthday().isBirthdayToday()) {
+            icon.setVisible(true);
+        } else if (person.getBirthday().isBirthdayTomorrow()) {
+            icon.setVisible(true);
+        } else {
+            icon.setVisible(false);
+        }
     }
 
     @Override
@@ -1669,15 +1833,8 @@ public class BirthdayReminderCard extends UiPart<Region> {
      * in front.
      */
     private enum Node {
-        BROWSER, REMINDERS
+        BROWSER, REMINDERS, DETAILS
     }
-```
-###### /java/seedu/address/ui/BrowserAndRemindersPanel.java
-``` java
-        birthdayAndReminderListPanel = new BirthdayAndReminderListPanel(birthdayPanelFilteredPersonList, reminderList);
-
-        //remindersPanel should be displayed first so no need to shift it to the back.
-        remindersPanel.getChildren().add(birthdayAndReminderListPanel.getRoot());
 ```
 ###### /java/seedu/address/ui/BrowserAndRemindersPanel.java
 ``` java
@@ -1687,23 +1844,23 @@ public class BirthdayReminderCard extends UiPart<Region> {
     private void toggleBrowserPanel() {
         switch(currentlyInFront) {
         case BROWSER:
+            setUpToShowRemindersPanel();
             remindersPanel.toFront();
             currentlyInFront = Node.REMINDERS;
-            raise(new TurnLabelsOnEvent());
             break;
         case REMINDERS:
+            setUpToShowWebBrowser();
             browser.toFront();
             currentlyInFront = Node.BROWSER;
-            raise(new TurnLabelsOffEvent());
+            break;
+        case DETAILS:
+            setUpToShowRemindersPanel();
+            remindersPanel.toFront();
+            currentlyInFront = Node.REMINDERS;
             break;
         default:
             throw new AssertionError("It should not be possible to land here");
         }
-    }
-
-    private void bringBrowserToFront() {
-        browser.toFront();
-        currentlyInFront = Node.BROWSER;
     }
 ```
 ###### /java/seedu/address/ui/BrowserAndRemindersPanel.java
@@ -1714,52 +1871,14 @@ public class BirthdayReminderCard extends UiPart<Region> {
         toggleBrowserPanel();
     }
 ```
-###### /java/seedu/address/ui/HeaderPane.java
-``` java
-/**
- * The Header Pane of the App.
- */
-
-public class HeaderPane extends UiPart<Region> {
-
-    private static final String FXML = "HeaderPane.fxml";
-    private final Logger logger = LogsCenter.getLogger(PersonListPanel.class);
-
-    @FXML
-    private Label contacts;
-    @FXML
-    private Label birthdays;
-    @FXML
-    private Label reminders;
-
-    public HeaderPane() {
-        super(FXML);
-        registerAsAnEventHandler(this);
-    }
-
-    @Subscribe
-    private void handleTurnLabelsOffEvent(TurnLabelsOffEvent event) {
-        logger.info(LogsCenter.getEventHandlingLogMessage(event));
-        birthdays.setVisible(false);
-        reminders.setVisible(false);
-    }
-
-    @Subscribe
-    private void handleTurnLabelsOnEvent(TurnLabelsOnEvent event) {
-        logger.info(LogsCenter.getEventHandlingLogMessage(event));
-        birthdays.setVisible(true);
-        reminders.setVisible(true);
-    }
-}
-```
 ###### /java/seedu/address/ui/ReminderCard.java
 ``` java
 /**
- * An UI component that displays the content, date and time of a Reminder.
+ * An UI component that displays the content, date, time and status of a Reminder.
  */
 public class ReminderCard extends UiPart<Region> {
     private static final String FXML = "ReminderCard.fxml";
-    public final Reminder source;
+    public final ReadOnlyReminder source;
 
     @FXML
     private HBox cardPane;
@@ -1771,23 +1890,40 @@ public class ReminderCard extends UiPart<Region> {
     private Label date;
     @FXML
     private Label time;
+    @FXML
+    private Label status;
 
-    public ReminderCard(Reminder reminder, int displayedIndex) {
+    public ReminderCard(ReadOnlyReminder reminder, int displayedIndex) {
         super(FXML);
         source = reminder;
         id.setText(displayedIndex + ". ");
         bindListeners(reminder);
     }
 
+
+    public boolean isEventToday() {
+        return source.isEventToday();
+    }
+
+    public boolean isEventWithinThreeDays() {
+        return source.isEventWithinThreeDays();
+    }
+
+    public boolean hasEventPast() {
+        return source.hasEventPast();
+    }
+
     /**
      * Binds the individual UI elements to observe their respective {@code Reminder} properties
      * so that they will be notified of any changes.
      */
-    private void bindListeners(Reminder source) {
+    private void bindListeners(ReadOnlyReminder source) {
         reminder.textProperty().bind(Bindings.convert(source.reminderProperty()));
         date.textProperty().bind(Bindings.convert(source.dateProperty()));
         time.textProperty().bind(Bindings.convert(source.timeProperty()));
+        status.textProperty().bind(Bindings.convert(source.statusProperty()));
     }
+
 
     @Override
     public boolean equals(Object other) {
@@ -1810,16 +1946,18 @@ public class ReminderCard extends UiPart<Region> {
 ```
 ###### /resources/view/BirthdayAndReminderListPanel.fxml
 ``` fxml
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-
 <VBox xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <HBox VBox.vgrow="ALWAYS" alignment="CENTER">
          <children>
-            <ListView fx:id="birthdayListView" VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS"/>
-            <ListView fx:id="reminderListView" VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS"/>
+            <VBox HBox.hgrow="ALWAYS" fx:id="birthdayListHolder">
+               <Label text="Upcoming birthdays"/>
+               <ListView fx:id="birthdayListView" VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS"/>
+            </VBox>
+            <VBox HBox.hgrow="ALWAYS" fx:id="reminderListHolder">
+               <Label text="Reminders"/>
+               <ListView fx:id="reminderListView" VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS"/>
+            </VBox>
          </children>
       </HBox>
    </children>
@@ -1827,19 +1965,11 @@ public class ReminderCard extends UiPart<Region> {
 ```
 ###### /resources/view/BirthdayReminderCard.fxml
 ``` fxml
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
-
 <HBox id="cardPane" fx:id="cardPane" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
     <GridPane HBox.hgrow="ALWAYS">
         <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10" prefWidth="150" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
         </columnConstraints>
         <VBox alignment="CENTER_LEFT" minHeight="105" GridPane.columnIndex="0">
             <padding>
@@ -1857,6 +1987,11 @@ public class ReminderCard extends UiPart<Region> {
             </HBox>
             <Label fx:id="birthday" styleClass="cell_small_label" text="\$birthday" />
         </VBox>
+        <Label fx:id="icon" text="Birthday Soon" GridPane.columnIndex="1">
+            <graphic>
+                <MaterialDesignIconView glyphName="CAKE_VARIANT" size="20" />
+            </graphic>
+        </Label>
         <rowConstraints>
             <RowConstraints />
         </rowConstraints>
@@ -1865,31 +2000,840 @@ public class ReminderCard extends UiPart<Region> {
 ```
 ###### /resources/view/BrowserAndRemindersPanel.fxml
 ``` fxml
+<StackPane xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1">
+  <WebView fx:id="browser" />
   <StackPane fx:id="remindersPanel" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="600.0" prefWidth="800.0" />
+  <AnchorPane fx:id="detailsPanel" prefHeight="700.0" prefWidth="500.0" />
+</StackPane>
 ```
-###### /resources/view/HeaderPane.fxml
-``` fxml
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+###### /resources/view/DayTheme.css
+``` css
+.background {
+    -fx-background-color: #f2f8ff;
+    background-color: #f2f8ff; /* Used in the default.html file */
+}
 
-<FlowPane maxHeight="30" minHeight="30" prefHeight="30" styleClass="pane-with-border" VBox.vgrow="NEVER"
-          xmlns="http://javafx.com/javafx/8">
-    <Label fx:id="contacts" text="Contacts" translateX="130.0" xmlns:fx="http://javafx.com/fxml/1"/>
-    <Label fx:id="birthdays" text="Birthdays" translateX="550.0" xmlns:fx="http://javafx.com/fxml/1"/>
-    <Label fx:id="reminders" text="Reminders" translateX="900.0" xmlns:fx="http://javafx.com/fxml/1"/>
-</FlowPane>
+.label {
+    -fx-font-size: 15pt;
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-text-fill: derive(#383838, +30%);
+    -fx-opacity: 1;
+}
+
+.label-bright {
+    -fx-font-size: 11pt;
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-text-fill: white;
+    -fx-opacity: 1;
+}
+
+.label-header {
+    -fx-font-size: 32pt;
+    -fx-font-family: "Segoe UI Light";
+    -fx-text-fill: white;
+    -fx-opacity: 1;
+}
+
+.text-field {
+    -fx-font-size: 12pt;
+    -fx-font-family: "Segoe UI Semibold";
+}
+
+.tab-pane {
+    -fx-padding: 0 0 0 1;
+}
+
+.tab-pane .tab-header-area {
+    -fx-padding: 0 0 0 0;
+    -fx-min-height: 0;
+    -fx-max-height: 0;
+}
+
+.table-view {
+    -fx-base: #1d1d1d;
+    -fx-control-inner-background: #1d1d1d;
+    -fx-background-color: #1d1d1d;
+    -fx-table-cell-border-color: transparent;
+    -fx-table-header-border-color: transparent;
+    -fx-padding: 5;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: transparent;
+}
+
+.table-view .column-header, .table-view .filler {
+    -fx-size: 35;
+    -fx-border-width: 0 0 1 0;
+    -fx-background-color: transparent;
+    -fx-border-color:
+        transparent
+        transparent
+        derive(-fx-base, 80%)
+        transparent;
+    -fx-border-insets: 0 10 1 0;
+}
+
+.table-view .column-header .label {
+    -fx-font-size: 20pt;
+    -fx-font-family: "Segoe UI Light";
+    -fx-text-fill: white;
+    -fx-alignment: center-left;
+    -fx-opacity: 1;
+}
+
+.table-view:focused .table-row-cell:filled:focused:selected {
+    -fx-background-color: -fx-focus-color;
+}
+
+.split-pane:horizontal .split-pane-divider {
+    -fx-background-color: #f2f8ff;
+    -fx-border-color: #f2f8ff;
+}
+
+.split-pane {
+    -fx-border-radius: 0;
+    -fx-border-width: 0;
+    -fx-background-color: #f2f8ff;
+}
+
+.list-view {
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+    -fx-background-color: #f2f8ff;
+    -fx-border-width: 5;
+    -fx-border-radius: 18 18 18 18;
+}
+
+.list-cell {
+    -fx-label-padding: 0 0 0 0;
+    -fx-graphic-text-gap : 0;
+    -fx-background-radius: 18 18 18 18;
+    -fx-border-radius: 18 18 18 18;
+    -fx-padding: 10px;
+    -fx-background-insets: 10px, 10px;
+    -fx-background-color: transparent, -fx-background;
+}
+
+.list-cell:filled {
+    -fx-background-color: derive(#d6e5ff, +15%);
+}
+
+.list-cell:filled:selected {
+    -fx-background-color: derive(#d6e5ff, +40%);
+}
+
+.list-cell:filled:selected #cardPane {
+    -fx-border-color: derive(#d6e5ff, -10%);
+    -fx-border-width: 5;
+    -fx-border-radius: 18 18 18 18;
+}
+
+.list-cell:filled:selected #popularContactPane {
+    -fx-border-color: derive(#d6e5ff, -10%);
+    -fx-border-width: 2;
+    -fx-border-radius: 18 18 18 18;
+}
+
+.list-cell .label {
+    -fx-text-fill: derive(#383838, -40%);
+}
+
+.list-cell:empty {
+    /* Empty cells will not have alternating colours */
+    -fx-background: #f2f8ff;
+}
+
+.cell_big_label {
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-font-size: 16px;
+    -fx-text-fill: white;
+}
+
+.cell_small_label {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 13px;
+    -fx-text-fill: white;
+}
+
+.anchor-pane {
+     -fx-background-color: #f2f8ff;
+}
+
+.pane-with-border {
+     -fx-background-color: #f2f8ff;
+     -fx-border-color: #f2f8ff;
+     -fx-border-top-width: 1px;
+}
+
+.status-bar {
+    -fx-background-color: #f2f8ff;
+    -fx-text-fill: black;
+}
+
+.result-display {
+    -fx-background-color: #f2f8ff;
+    -fx-font-family: "Segoe UI Light";
+    -fx-font-size: 13pt;
+    -fx-text-fill: derive(#383838, +30%);
+}
+
+.result-display .label {
+    -fx-text-fill: black !important;
+}
+
+.scroll-bar:vertical .thumb,
+.scroll-bar:horizontal .thumb {
+    -fx-background-color: derive(#383838, +30%);
+    -fx-background-insets: 2 2 2 2;
+}
+
+.scroll-bar:vertical .track-background,
+.scroll-bar:horizontal .track-background {
+    -fx-background-color: #f2f8ff;
+}
+
+.scroll-bar:vertical > .increment-button,
+.scroll-bar:vertical > .decrement-button,
+.scroll-bar:horizontal > .increment-button,
+.scroll-bar:horizontal > .decrement-button {
+    -fx-padding: 3px;
+}
+
+.scroll-bar:vertical > .increment-button > .increment-arrow {
+    -fx-background-color: grey;
+    -fx-shape: "M 0 0 L 4 8 L 8 0 Z";
+    -fx-padding: 0.30em;
+    -fx-rotate: 0;
+}
+
+.scroll-bar:horizontal > .increment-button > .increment-arrow {
+    -fx-background-color: grey;
+    -fx-shape: "M 0 0 L 4 8 L 8 0 Z";
+    -fx-padding: 0.30em;
+    -fx-rotate: -90;
+}
+
+.scroll-bar:vertical > .decrement-button > .decrement-arrow {
+    -fx-background-color: grey;
+    -fx-shape: "M 0 0 L 4 8 L 8 0 Z";
+    -fx-padding: 0.30em;
+    -fx-rotate: -180;
+}
+
+.scroll-bar:horizontal > .decrement-button > .decrement-arrow {
+    -fx-background-color: grey;
+    -fx-shape: "M 0 0 L 4 8 L 8 0 Z";
+    -fx-padding: 0.30em;
+    -fx-rotate: 90;
+}
+
+.status-bar .label {
+    -fx-font-family: "Segoe UI Light";
+    -fx-text-fill: derive(#383838, +30%);
+}
+
+.status-bar-with-border {
+    -fx-background-color: derive(#1d1d1d, 30%);
+    -fx-border-color: derive(#1d1d1d, 25%);
+    -fx-border-width: 1px;
+}
+
+.status-bar-with-border .label {
+    -fx-text-fill: white;
+}
+
+.grid-pane {
+    -fx-background-color: #f2f8ff;
+    -fx-border-color: #f2f8ff;
+    -fx-border-width: 0px;
+}
+
+.grid-pane .anchor-pane {
+    -fx-background-color: #f2f8ff;
+}
+
+.context-menu {
+    -fx-background-color: derive(#1d1d1d, 50%);
+}
+
+.context-menu .label {
+    -fx-text-fill: white;
+}
+
+.menu-bar {
+    -fx-background-color: #f2f8ff;
+}
+
+.menu-bar .label {
+    -fx-font-size: 14pt;
+    -fx-font-family: "Segoe UI Light";
+    -fx-text-fill: derive(#383838, +30%);
+    -fx-opacity: 0.9;
+}
+
+.menu .left-container {
+    -fx-background-color: black;
+}
+
+/*
+ * Metro style Push Button
+ * Author: Pedro Duque Vieira
+ * http://pixelduke.wordpress.com/2012/10/23/jmetro-windows-8-controls-on-java/
+ */
+.button {
+    -fx-padding: 5 22 5 22;
+    -fx-border-color: #e2e2e2;
+    -fx-border-width: 2;
+    -fx-background-radius: 0;
+    -fx-background-color: #1d1d1d;
+    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+    -fx-font-size: 11pt;
+    -fx-text-fill: #d8d8d8;
+    -fx-background-insets: 0 0 0 0, 0, 1, 2;
+}
+
+.button:hover {
+    -fx-background-color: #3a3a3a;
+}
+
+.button:pressed, .button:default:hover:pressed {
+  -fx-background-color: #f2f8ff;
+  -fx-text-fill: #1d1d1d;
+}
+
+.button:focused {
+    -fx-border-color: #f2f8ff, #f2f8ff;
+    -fx-border-width: 1, 1;
+    -fx-border-style: solid, segments(1, 1);
+    -fx-border-radius: 0, 0;
+    -fx-border-insets: 1 1 1 1, 0;
+}
+
+.button:disabled, .button:default:disabled {
+    -fx-opacity: 0.4;
+    -fx-background-color: #1d1d1d;
+    -fx-text-fill: white;
+}
+
+.button:default {
+    -fx-background-color: -fx-focus-color;
+    -fx-text-fill: #ffffff;
+}
+
+.button:default:hover {
+    -fx-background-color: derive(-fx-focus-color, 30%);
+}
+
+.dialog-pane {
+    -fx-background-color: #1d1d1d;
+}
+
+.dialog-pane > *.button-bar > *.container {
+    -fx-background-color: #1d1d1d;
+}
+
+.dialog-pane > *.label.content {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+.dialog-pane:header *.header-panel {
+    -fx-background-color: derive(#1d1d1d, 25%);
+}
+
+.dialog-pane:header *.header-panel *.label {
+    -fx-font-size: 18px;
+    -fx-font-style: italic;
+    -fx-fill: white;
+    -fx-text-fill: white;
+}
+
+#cardPane {
+    -fx-background-color: transparent;
+    -fx-border-width: 0;
+}
+
+#commandTypeLabel {
+    -fx-font-size: 11px;
+    -fx-text-fill: #F70D1A;
+}
+
+#commandTextField {
+    -fx-background-color: transparent #383838 transparent #383838;
+    -fx-background-insets: 0;
+    -fx-border-color: derive(#383838, +30%);
+    -fx-border-insets: 0;
+    -fx-border-width: 2;
+    -fx-font-family: "Segoe UI Light";
+    -fx-font-size: 13pt;
+    -fx-text-fill: derive(#383838, +30%);
+}
+
+#filterField, #personListPanel, #personWebpage {
+    -fx-effect: innershadow(gaussian, black, 10, 0, 0, 0);
+}
+
+#resultDisplay {
+    -fx-border-color : derive(#383838, +30%);
+}
+
+#resultDisplay .content {
+    -fx-background-color: #f2f8ff;
+    -fx-background-radius: 0;
+}
+
+#tags {
+    -fx-hgap: 7;
+    -fx-vgap: 3;
+}
+
+#tags .label {
+    -fx-text-fill: white;
+    -fx-background-color: #3e7b91;
+    -fx-padding: 1 3 1 3;
+    -fx-border-radius: 18 18 18 18;
+    -fx-background-radius: 18 18 18 18;
+    -fx-font-size: 16;
+}
+
+#birthdayListHolder {
+    -fx-background-color: #f2f8ff;
+}
+
+#birthdayListHolder > .label {
+    -fx-background-color: #f2f8ff;
+}
+
+#reminderListHolder {
+    -fx-background-color: #f2f8ff;
+}
+
+#reminderListHolder > .label {
+    -fx-background-color: #f2f8ff;
+}
+
+#placeHolder {
+    -fx-border-color: derive(#383838, +30%);
+    -fx-border-width: 2;
+}
+
+.error {
+    -fx-text-fill: derive(#dc143c, 0%) !important; /* The error class should always override the default text-fill style */
+}
+
+```
+###### /resources/view/NightTheme.css
+``` css
+.background {
+    -fx-background-color: derive(#383838, -40%);
+    background-color: #383838; /* Used in the default.html file */
+}
+
+.label {
+    -fx-font-size: 15pt;
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-text-fill: #f0ffff;
+    -fx-opacity: 1;
+}
+
+.label-bright {
+    -fx-font-size: 11pt;
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-text-fill: white;
+    -fx-opacity: 1;
+}
+
+.label-header {
+    -fx-font-size: 32pt;
+    -fx-font-family: "Segoe UI Light";
+    -fx-text-fill: white;
+    -fx-opacity: 1;
+}
+
+.text-field {
+    -fx-font-size: 12pt;
+    -fx-font-family: "Segoe UI Semibold";
+}
+
+.tab-pane {
+    -fx-padding: 0 0 0 1;
+}
+
+.tab-pane .tab-header-area {
+    -fx-padding: 0 0 0 0;
+    -fx-min-height: 0;
+    -fx-max-height: 0;
+}
+
+.table-view {
+    -fx-base: #1d1d1d;
+    -fx-control-inner-background: #1d1d1d;
+    -fx-background-color: #1d1d1d;
+    -fx-table-cell-border-color: transparent;
+    -fx-table-header-border-color: transparent;
+    -fx-padding: 5;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: transparent;
+}
+
+.table-view .column-header, .table-view .filler {
+    -fx-size: 35;
+    -fx-border-width: 0 0 1 0;
+    -fx-background-color: transparent;
+    -fx-border-color:
+        transparent
+        transparent
+        derive(-fx-base, 80%)
+        transparent;
+    -fx-border-insets: 0 10 1 0;
+}
+
+.table-view .column-header .label {
+    -fx-font-size: 20pt;
+    -fx-font-family: "Segoe UI Light";
+    -fx-text-fill: white;
+    -fx-alignment: center-left;
+    -fx-opacity: 1;
+}
+
+.table-view:focused .table-row-cell:filled:focused:selected {
+    -fx-background-color: -fx-focus-color;
+}
+
+.split-pane:horizontal .split-pane-divider {
+    -fx-background-color: derive(#383838, -40%);
+    -fx-border-color: derive(#383838, -40%);
+}
+
+.split-pane {
+    -fx-border-radius: 0;
+    -fx-border-width: 0;
+    -fx-background-color: derive(#383838, -40%);
+}
+
+.list-view {
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+    -fx-background-color: derive(#383838, -40%);
+    -fx-border-width: 5;
+    -fx-border-radius: 18 18 18 18;
+}
+
+.list-cell {
+    -fx-label-padding: 0 0 0 0;
+    -fx-graphic-text-gap : 0;
+    -fx-background-radius: 18 18 18 18;
+    -fx-border-radius: 18 18 18 18;
+    -fx-padding: 10px;
+    -fx-background-insets: 10px, 10px;
+    -fx-background-color: transparent, -fx-background;
+}
+
+.list-cell:filled {
+    -fx-background-color: derive(#383838, 20%);
+}
+
+.list-cell:filled:selected {
+    -fx-background-color: derive(#383838, +50%);
+}
+
+.list-cell:filled:selected #cardPane {
+    -fx-border-color: derive(#383838, +100%);
+    -fx-border-width: 3;
+    -fx-border-radius: 18 18 18 18;
+}
+
+.list-cell:filled:selected #popularContactPane {
+    -fx-border-color: derive(#383838, +100%);
+    -fx-border-width: 2;
+    -fx-border-radius: 18 18 18 18;
+}
+
+.list-cell .label {
+    -fx-text-fill: white;
+}
+
+.list-cell:empty {
+    /* Empty cells will not have alternating colours */
+    -fx-background: derive(#383838, -40%);
+}
+
+.cell_big_label {
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-font-size: 16px;
+    -fx-text-fill: white;
+}
+
+.cell_small_label {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 13px;
+    -fx-text-fill: white;
+}
+
+.anchor-pane {
+     -fx-background-color: derive(#383838, -40%);
+}
+
+.pane-with-border {
+     -fx-background-color: derive(#383838, -40%);
+     -fx-border-color: derive(#383838, -40%);
+     -fx-border-top-width: 1px;
+}
+
+.status-bar {
+    -fx-background-color: derive(#1d1d1d, 20%);
+    -fx-text-fill: black;
+}
+
+.result-display {
+    -fx-background-color: derive(#383838, -40%);
+    -fx-font-family: "Segoe UI Light";
+    -fx-font-size: 13pt;
+    -fx-text-fill: white;
+}
+
+.result-display .label {
+    -fx-text-fill: black !important;
+}
+
+.scroll-bar:vertical .thumb,
+.scroll-bar:horizontal .thumb {
+    -fx-background-color: rgb(211,211,211);
+    -fx-background-insets: 2 2 2 2;
+}
+
+.scroll-bar:vertical .track-background,
+.scroll-bar:horizontal .track-background {
+    -fx-background-color: derive(#383838, -40%);
+}
+
+.scroll-bar:vertical > .increment-button,
+.scroll-bar:vertical > .decrement-button,
+.scroll-bar:horizontal > .increment-button,
+.scroll-bar:horizontal > .decrement-button {
+    -fx-padding: 3px;
+}
+
+.scroll-bar:vertical > .increment-button > .increment-arrow {
+    -fx-background-color: grey;
+    -fx-shape: "M 0 0 L 4 8 L 8 0 Z";
+    -fx-padding: 0.30em;
+    -fx-rotate: 0;
+}
+
+.scroll-bar:horizontal > .increment-button > .increment-arrow {
+    -fx-background-color: grey;
+    -fx-shape: "M 0 0 L 4 8 L 8 0 Z";
+    -fx-padding: 0.30em;
+    -fx-rotate: -90;
+}
+
+.scroll-bar:vertical > .decrement-button > .decrement-arrow {
+    -fx-background-color: grey;
+    -fx-shape: "M 0 0 L 4 8 L 8 0 Z";
+    -fx-padding: 0.30em;
+    -fx-rotate: -180;
+}
+
+.scroll-bar:horizontal > .decrement-button > .decrement-arrow {
+    -fx-background-color: grey;
+    -fx-shape: "M 0 0 L 4 8 L 8 0 Z";
+    -fx-padding: 0.30em;
+    -fx-rotate: 90;
+}
+
+.status-bar .label {
+    -fx-font-family: "Segoe UI Light";
+    -fx-text-fill: white;
+}
+
+.status-bar-with-border {
+    -fx-background-color: derive(#1d1d1d, 30%);
+    -fx-border-color: derive(#1d1d1d, 25%);
+    -fx-border-width: 1px;
+}
+
+.status-bar-with-border .label {
+    -fx-text-fill: white;
+}
+
+.grid-pane {
+    -fx-background-color: derive(#383838, -40%);
+    -fx-border-color: derive(#383838, -40%);
+    -fx-border-width: 0px;
+}
+
+.grid-pane .anchor-pane {
+    -fx-background-color: derive(#383838, -40%);
+}
+
+.context-menu {
+    -fx-background-color: derive(#1d1d1d, 50%);
+}
+
+.context-menu .label {
+    -fx-text-fill: white;
+}
+
+.menu-bar {
+    -fx-background-color: derive(#383838, -40%);
+}
+
+.menu-bar .label {
+    -fx-font-size: 14pt;
+    -fx-font-family: "Segoe UI Light";
+    -fx-text-fill: white;
+    -fx-opacity: 0.9;
+}
+
+.menu .left-container {
+    -fx-background-color: black;
+}
+
+/*
+ * Metro style Push Button
+ * Author: Pedro Duque Vieira
+ * http://pixelduke.wordpress.com/2012/10/23/jmetro-windows-8-controls-on-java/
+ */
+.button {
+    -fx-padding: 5 22 5 22;
+    -fx-border-color: #e2e2e2;
+    -fx-border-width: 2;
+    -fx-background-radius: 0;
+    -fx-background-color: #1d1d1d;
+    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+    -fx-font-size: 11pt;
+    -fx-text-fill: #d8d8d8;
+    -fx-background-insets: 0 0 0 0, 0, 1, 2;
+}
+
+.button:hover {
+    -fx-background-color: #3a3a3a;
+}
+
+.button:pressed, .button:default:hover:pressed {
+  -fx-background-color: white;
+  -fx-text-fill: #1d1d1d;
+}
+
+.button:focused {
+    -fx-border-color: white, white;
+    -fx-border-width: 1, 1;
+    -fx-border-style: solid, segments(1, 1);
+    -fx-border-radius: 0, 0;
+    -fx-border-insets: 1 1 1 1, 0;
+}
+
+.button:disabled, .button:default:disabled {
+    -fx-opacity: 0.4;
+    -fx-background-color: #1d1d1d;
+    -fx-text-fill: white;
+}
+
+.button:default {
+    -fx-background-color: -fx-focus-color;
+    -fx-text-fill: #ffffff;
+}
+
+.button:default:hover {
+    -fx-background-color: derive(-fx-focus-color, 30%);
+}
+
+.dialog-pane {
+    -fx-background-color: #1d1d1d;
+}
+
+.dialog-pane > *.button-bar > *.container {
+    -fx-background-color: #1d1d1d;
+}
+
+.dialog-pane > *.label.content {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+.dialog-pane:header *.header-panel {
+    -fx-background-color: derive(#1d1d1d, 25%);
+}
+
+.dialog-pane:header *.header-panel *.label {
+    -fx-font-size: 18px;
+    -fx-font-style: italic;
+    -fx-fill: white;
+    -fx-text-fill: white;
+}
+
+#cardPane {
+    -fx-background-color: transparent;
+    -fx-border-width: 0;
+}
+
+#commandTypeLabel {
+    -fx-font-size: 11px;
+    -fx-text-fill: #F70D1A;
+}
+
+#commandTextField {
+    -fx-background-color: transparent #383838 transparent #383838;
+    -fx-background-insets: 0;
+    -fx-border-color: derive(#383838, +100%);
+    -fx-border-insets: 0;
+    -fx-border-width: 2;
+    -fx-font-family: "Segoe UI Light";
+    -fx-font-size: 13pt;
+    -fx-text-fill: white;
+}
+
+#filterField, #personListPanel, #personWebpage {
+    -fx-effect: innershadow(gaussian, black, 10, 0, 0, 0);
+}
+
+#resultDisplay .content {
+    -fx-background-color: derive(#383838, -40%);
+    -fx-background-radius: 0;
+}
+
+#tags {
+    -fx-hgap: 7;
+    -fx-vgap: 3;
+}
+
+#tags .label {
+    -fx-text-fill: white;
+    -fx-background-color: #3e7b91;
+    -fx-padding: 1 3 1 3;
+    -fx-border-radius: 18 18 18 18;
+    -fx-background-radius: 18 18 18 18;
+    -fx-font-size: 16;
+}
+
+#birthdayListHolder {
+    -fx-background-color: derive(#383838, -40%);
+}
+
+#birthdayListHolder > .label {
+    -fx-background-color: derive(#383838, -40%);
+}
+
+#reminderListHolder {
+    -fx-background-color: derive(#383838, -40%);
+}
+
+#reminderListHolder > .label {
+    -fx-background-color: derive(#383838, -40%);
+}
+
+.error {
+    -fx-text-fill: #d06651 !important; /* The error class should always override the default text-fill style */
+}
 ```
 ###### /resources/view/ReminderCard.fxml
 ``` fxml
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
-
 <HBox id="cardPane" fx:id="cardPane" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
     <GridPane HBox.hgrow="ALWAYS">
         <columnConstraints>
@@ -1910,10 +2854,101 @@ public class ReminderCard extends UiPart<Region> {
             </HBox>
             <Label fx:id="date" styleClass="cell_big_label" text="\$date" />
             <Label fx:id="time" styleClass="cell_big_label" text="\$time" />
+            <Label fx:id="status" styleClass="cell_big_label" />
         </VBox>
         <rowConstraints>
             <RowConstraints />
         </rowConstraints>
     </GridPane>
 </HBox>
+```
+###### /resources/view/reminderNormal.css
+``` css
+.list-cell {
+     -fx-label-padding: 0 0 0 0;
+     -fx-graphic-text-gap : 0;
+     -fx-background-radius: 18 18 18 18;
+     -fx-border-radius: 18 18 18 18;
+     -fx-padding: 10px;
+     -fx-background-insets: 10px, 10px;
+     -fx-background-color: transparent, -fx-background;
+ }
+
+ .list-cell:filled {
+     -fx-background-color: derive(#006400, 0%);
+ }
+
+ .list-cell:filled:selected {
+     -fx-background-color: derive(#006400, +40%);
+ }
+
+ .list-cell:filled:selected #cardPane {
+     -fx-border-color: derive(#006400, +80%);
+     -fx-border-width: 3;
+     -fx-border-radius: 18 18 18 18;
+ }
+
+ .list-cell .label {
+     -fx-text-fill: white;
+ }
+```
+###### /resources/view/reminderToday.css
+``` css
+.list-cell {
+    -fx-label-padding: 0 0 0 0;
+    -fx-graphic-text-gap : 0;
+    -fx-background-radius: 18 18 18 18;
+    -fx-border-radius: 18 18 18 18;
+    -fx-padding: 10px;
+    -fx-background-insets: 10px, 10px;
+    -fx-background-color: transparent, -fx-background;
+}
+
+.list-cell:filled {
+    -fx-background-color: derive(#dc143c, 0%);
+}
+
+.list-cell:filled:selected {
+    -fx-background-color: derive(#dc143c, +30%);
+}
+
+.list-cell:filled:selected #cardPane {
+    -fx-border-color: derive(#dc143c, +80%);
+    -fx-border-width: 3;
+    -fx-border-radius: 18 18 18 18;
+}
+
+.list-cell .label {
+    -fx-text-fill: white;
+}
+```
+###### /resources/view/reminderWithinThreeDays.css
+``` css
+.list-cell {
+    -fx-label-padding: 0 0 0 0;
+    -fx-graphic-text-gap : 0;
+    -fx-background-radius: 18 18 18 18;
+    -fx-border-radius: 18 18 18 18;
+    -fx-padding: 10px;
+    -fx-background-insets: 10px, 10px;
+    -fx-background-color: transparent, -fx-background;
+}
+
+.list-cell:filled {
+    -fx-background-color: derive(#ff8c00, 0%);
+}
+
+.list-cell:filled:selected {
+    -fx-background-color: derive(#ff8c00, +30%);
+}
+
+.list-cell:filled:selected #cardPane {
+    -fx-border-color: derive(#ff8c00, +80%);
+    -fx-border-width: 3;
+    -fx-border-radius: 18 18 18 18;
+}
+
+.list-cell .label {
+    -fx-text-fill: white;
+}
 ```

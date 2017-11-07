@@ -22,6 +22,7 @@ import seedu.address.model.reminders.Time;
  */
 public class AddReminderCommandParser implements Parser<AddReminderCommand> {
 
+    //@@author justinpoh
     /**
      * Parses the given {@code String} of arguments in the context of the AddReminderCommand
      * and returns an AddReminderCommand object for execution.
@@ -52,7 +53,7 @@ public class AddReminderCommandParser implements Parser<AddReminderCommand> {
             throw new ParseException(ive.getMessage());
         }
     }
-
+    //@@author
     /**
      * Returns true if none of the prefixes contains empty {@code Optional} values in the given
      * {@code ArgumentMultimap}.

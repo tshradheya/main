@@ -85,10 +85,6 @@ public class ReminderCardHandle extends NodeHandle<Node> {
 ```
 ###### /java/seedu/address/logic/commands/AddReminderCommandTest.java
 ``` java
-public class AddReminderCommandTest {
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
-
     @Test
     public void constructor_nullReminder_throwsNullPointerException() {
         thrown.expect(NullPointerException.class);
@@ -151,31 +147,6 @@ public class AddReminderCommandTest {
         return command;
     }
 ```
-###### /java/seedu/address/logic/commands/AddReminderCommandTest.java
-``` java
-    /**
-     * A Model stub that always accept the reminder being added.
-     */
-    private class ModelStubAcceptingReminderAdded extends ModelStub {
-        final ArrayList<Reminder> remindersAdded = new ArrayList<>();
-
-        @Override
-        public void addReminder(Reminder reminder) throws DuplicateReminderException {
-            remindersAdded.add(new Reminder(reminder));
-        }
-    }
-
-    /**
-     * A Model stub that always throw a DuplicateReminderException when trying to add a reminder.
-     */
-    private class ModelStubThrowingDuplicateReminderException extends ModelStub {
-        @Override
-        public void addReminder(Reminder reminder) throws DuplicateReminderException {
-            throw new DuplicateReminderException();
-        }
-    }
-}
-```
 ###### /java/seedu/address/logic/commands/DeleteReminderCommandTest.java
 ``` java
 /**
@@ -187,7 +158,7 @@ public class DeleteReminderCommandTest {
 
     @Test
     public void execute_validIndexSortedReminderList_success() throws Exception {
-        Reminder reminderToDelete = model.getSortedReminderList().get(INDEX_FIRST_PERSON.getZeroBased());
+        ReadOnlyReminder reminderToDelete = model.getSortedReminderList().get(INDEX_FIRST_PERSON.getZeroBased());
 
         DeleteReminderCommand deleteReminderCommand = prepareCommand(INDEX_FIRST_PERSON);
 
@@ -266,7 +237,7 @@ public class EditReminderCommandTest {
     public void execute_someFieldsSpecified_success() throws Exception {
         // time field not changed
         Index indexLastReminder = Index.fromOneBased(model.getSortedReminderList().size());
-        Reminder lastReminder = model.getSortedReminderList().get(indexLastReminder.getZeroBased());
+        ReadOnlyReminder lastReminder = model.getSortedReminderList().get(indexLastReminder.getZeroBased());
 
         ReminderBuilder reminderInList = new ReminderBuilder(lastReminder);
         Reminder editedReminder = reminderInList.withReminder(VALID_REMINDER_ASSIGNMENT)
@@ -289,7 +260,7 @@ public class EditReminderCommandTest {
     @Test
     public void execute_noFieldSpecified_success() throws Exception {
         EditReminderCommand editReminderCommand = prepareCommand(INDEX_FIRST_PERSON, new EditReminderDescriptor());
-        Reminder editedReminder = model.getSortedReminderList().get(INDEX_FIRST_PERSON.getZeroBased());
+        ReadOnlyReminder editedReminder = model.getSortedReminderList().get(INDEX_FIRST_PERSON.getZeroBased());
 
         String expectedMessage = String.format(EditReminderCommand.MESSAGE_EDIT_REMINDER_SUCCESS, editedReminder);
 
@@ -406,20 +377,6 @@ public class ToggleCommandTest {
     }
 }
 ```
-###### /java/seedu/address/logic/LogicManagerTest.java
-``` java
-    @Test
-    public void getBirthdayPanelFilteredPersonList_modifyList_throwsUnsupportedOperationException() {
-        thrown.expect(UnsupportedOperationException.class);
-        logic.getBirthdayPanelFilteredPersonList().remove(0);
-    }
-
-    @Test
-    public void getReminderList_modifyList_throwsUnsupportedOperationException() {
-        thrown.expect(UnsupportedOperationException.class);
-        logic.getReminderList().remove(0);
-    }
-```
 ###### /java/seedu/address/logic/parser/AddReminderCommandParserTest.java
 ``` java
 public class AddReminderCommandParserTest {
@@ -464,45 +421,6 @@ public class AddReminderCommandParserTest {
                 Time.MESSAGE_TIME_CONSTRAINTS);
     }
 }
-```
-###### /java/seedu/address/logic/parser/AddressBookParserTest.java
-``` java
-    @Test
-    public void parseCommand_addReminder() throws Exception {
-        Reminder reminder = new ReminderBuilder().build();
-        AddReminderCommand command = (AddReminderCommand) parser.parseCommand(AddReminderCommand.COMMAND_WORD
-                + REMINDER_DESC_COFFEE + REMINDER_DESC_DATE_COFFEE + REMINDER_DESC_TIME_COFFEE);
-        assertEquals(new AddReminderCommand(reminder), command);
-    }
-```
-###### /java/seedu/address/logic/parser/AddressBookParserTest.java
-``` java
-    @Test
-    public void parseCommand_deleteReminder() throws Exception {
-        DeleteReminderCommand command = (DeleteReminderCommand) parser.parseCommand(
-                DeleteReminderCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased());
-        assertEquals(new DeleteReminderCommand(INDEX_FIRST_PERSON), command);
-    }
-```
-###### /java/seedu/address/logic/parser/AddressBookParserTest.java
-``` java
-    @Test
-    public void parseCommand_editReminder() throws Exception {
-        Reminder reminder = new ReminderBuilder().build();
-        EditReminderDescriptor descriptor = new EditReminderDescriptorBuilder(reminder).build();
-        EditReminderCommand command = (EditReminderCommand) parser
-                .parseCommand(EditReminderCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased()
-                + " " + REMINDER_DESC_COFFEE + REMINDER_DESC_DATE_COFFEE + REMINDER_DESC_TIME_COFFEE);
-        assertEquals(new EditReminderCommand(INDEX_FIRST_PERSON, descriptor), command);
-    }
-```
-###### /java/seedu/address/logic/parser/AddressBookParserTest.java
-``` java
-    @Test
-    public void parseCommand_toggle() throws Exception {
-        assertTrue(parser.parseCommand(ToggleCommand.COMMAND_WORD) instanceof ToggleCommand);
-        assertTrue(parser.parseCommand(ToggleCommand.COMMAND_WORD + " 3") instanceof ToggleCommand);
-    }
 ```
 ###### /java/seedu/address/logic/parser/DeleteReminderCommandParserTest.java
 ``` java
@@ -667,97 +585,72 @@ public class EditReminderCommandParserTest {
     }
 }
 ```
-###### /java/seedu/address/model/ModelManagerTest.java
-``` java
-    @Test
-    public void getBirthdayPanelFilteredPersonList_modifyList_throwsUnsupportedOperationException() {
-        ModelManager modelManager = new ModelManager();
-        thrown.expect(UnsupportedOperationException.class);
-        modelManager.getBirthdayPanelFilteredPersonList().remove(0);
-    }
-
-    @Test
-    public void getSortedReminderList_modifyList_throwsUnsupportedOperationException() {
-        ModelManager modelManager = new ModelManager();
-        thrown.expect(UnsupportedOperationException.class);
-        modelManager.getSortedReminderList().remove(0);
-    }
-```
-###### /java/seedu/address/model/ModelManagerTest.java
-``` java
-        // different list of reminders -> return false
-        XmlSerializableReminders differentReminders = new XmlSerializableReminders();
-        UniqueReminderList uniqueDifferentReminders = new UniqueReminderList(differentReminders);
-        assertFalse(modelManager.equals(new ModelManager(addressBook, uniqueDifferentReminders, userPrefs)));
-```
-###### /java/seedu/address/model/person/BirthdayInCurrentMonthPredicateTest.java
-``` java
-public class BirthdayInCurrentMonthPredicateTest {
-
-    private final int currentMonth = Calendar.getInstance().get(Calendar.MONTH) + 1;
-    private final int notCurrentMonth = Calendar.getInstance().get(Calendar.MONTH);
-
-    @Test
-    public void equals() {
-        BirthdayInCurrentMonthPredicate firstPredicate = new BirthdayInCurrentMonthPredicate();
-        BirthdayInCurrentMonthPredicate secondPredicate = new BirthdayInCurrentMonthPredicate(currentMonth);
-        BirthdayInCurrentMonthPredicate thirdPredicate = new BirthdayInCurrentMonthPredicate(notCurrentMonth);
-
-        // same object -> return true
-        assertTrue(firstPredicate.equals(firstPredicate));
-
-        // same value -> return true
-        assertTrue(firstPredicate.equals(secondPredicate));
-
-        // different types -> returns false
-        assertFalse(firstPredicate.equals(1));
-
-        // null -> returns false
-        assertFalse(firstPredicate.equals(null));
-
-        // different month -> returns false
-        assertFalse(firstPredicate.equals(thirdPredicate));
-    }
-
-    @Test
-    public void test_personContainsBirthdayCorrectMonth_returnsTrue() {
-        // testing for current month
-        BirthdayInCurrentMonthPredicate predicateCurrentMonth = new BirthdayInCurrentMonthPredicate();
-        final String birthdayInCurrentMonth = "01/" + currentMonth + "/1990";
-        assertTrue(predicateCurrentMonth.test(new PersonBuilder().withBirthday(birthdayInCurrentMonth).build()));
-
-        // testing for correct month, but not current month
-        BirthdayInCurrentMonthPredicate predicateNotCurrentMonth = new BirthdayInCurrentMonthPredicate(notCurrentMonth);
-        final String birthdayNotInCurrentMonth = "01/" + notCurrentMonth + "/1990";
-        assertTrue(predicateNotCurrentMonth.test(new PersonBuilder().withBirthday(birthdayNotInCurrentMonth).build()));
-    }
-
-    @Test
-    public void test_personContainsBirthdayWrongMonth_returnsFalse() {
-        // use current month as comparison
-        BirthdayInCurrentMonthPredicate predicateCurrentMonth = new BirthdayInCurrentMonthPredicate();
-        final String birthdayNotInCurrentMonth = "01/" + notCurrentMonth + "/1990";
-        assertFalse(predicateCurrentMonth.test(new PersonBuilder().withBirthday(birthdayNotInCurrentMonth).build()));
-
-        // use non-current month as comparison
-        BirthdayInCurrentMonthPredicate predicateNotCurrentMonth = new BirthdayInCurrentMonthPredicate(notCurrentMonth);
-        final String birthdayInCurrentMonth = "01/" + currentMonth + "/1990";
-        assertFalse(predicateNotCurrentMonth.test(new PersonBuilder().withBirthday(birthdayInCurrentMonth).build()));
-    }
-
-    @Test
-    public void test_personContainsNoBirthday_returnsFalse() {
-        BirthdayInCurrentMonthPredicate predicate = new BirthdayInCurrentMonthPredicate();
-        assertFalse(predicate.test(new PersonBuilder().withBirthday("").build()));
-    }
-}
-```
 ###### /java/seedu/address/model/person/BirthdayTest.java
 ``` java
 public class BirthdayTest {
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
+
+    @Test
+    public void getMonthOfBirthday() throws Exception {
+        // non-empty birthday string
+        Birthday birthday1 = new Birthday("21/11/2017");
+        assertEquals(11, birthday1.getMonthOfBirthday());
+
+        // empty birthday string
+        Birthday emptyBirthday = new Birthday("");
+        assertEquals(EMPTY_BIRTHDAY_FIELD_MONTH, emptyBirthday.getMonthOfBirthday());
+    }
+
+    @Test
+    public void getDayOfBirthday() throws Exception {
+        // non-empty birthday string
+        Birthday birthday1 = new Birthday("21/11/2017");
+        assertEquals(21, birthday1.getDayOfBirthday());
+
+        // empty birthday string
+        Birthday emptyBirthday = new Birthday("");
+        assertEquals(EMPTY_BIRTHDAY_FIELD_DAY, emptyBirthday.getDayOfBirthday());
+    }
+
+    @Test
+    public void isBirthdayToday() {
+        LocalDate testCurrentDate = LocalDate.of(2017, 12, 10);
+
+        // is birthday today -> returns true
+        Birthday birthdayTodaySameYear = getBirthdayTestInstance("10/12/2017", testCurrentDate);
+        assertTrue(birthdayTodaySameYear.isBirthdayToday());
+        Birthday birthdayTodayDifferentYear = getBirthdayTestInstance("10/12/1995", testCurrentDate);
+        assertTrue(birthdayTodayDifferentYear.isBirthdayToday());
+
+        // is not birthday today -> returns true
+        Birthday notBirthdayTodayPast = getBirthdayTestInstance("11/12/2017", testCurrentDate);
+        assertFalse(notBirthdayTodayPast.isBirthdayToday());
+
+        Birthday notBirthdayTodayUpcoming = getBirthdayTestInstance("13/12/2017", testCurrentDate);
+        assertFalse(notBirthdayTodayUpcoming.isBirthdayToday());
+
+    }
+
+    @Test
+    public void isBirthdayTomorrow() {
+        LocalDate testCurrentDate = LocalDate.of(2017, 12, 10);
+
+        // is birthday tomorrow -> returns true
+        Birthday birthdayTomorrowSameYear = getBirthdayTestInstance("11/12/2017", testCurrentDate);
+        assertTrue(birthdayTomorrowSameYear.isBirthdayTomorrow());
+        Birthday birthdayTomorrowDifferentYear = getBirthdayTestInstance("11/12/2000", testCurrentDate);
+        assertTrue(birthdayTomorrowDifferentYear.isBirthdayTomorrow());
+
+        // is not birthday tomorrow -> returns false
+        Birthday birthdayToday = getBirthdayTestInstance("10/12/2017", testCurrentDate);
+        assertFalse(birthdayToday.isBirthdayTomorrow());
+
+        Birthday birthdayAfterTomorrow = getBirthdayTestInstance("12/12/2017", testCurrentDate);
+        assertFalse(birthdayAfterTomorrow.isBirthdayTomorrow());
+
+    }
 
     @Test
     public void isValidBirthday() {
@@ -824,6 +717,87 @@ public class BirthdayTest {
 
 }
 ```
+###### /java/seedu/address/model/person/UpcomingBirthdayInCurrentMonthPredicateTest.java
+``` java
+public class UpcomingBirthdayInCurrentMonthPredicateTest {
+
+    private static final int MONTH_DECEMBER = 12;
+    private static final int MONTH_NOVEMBER = 11;
+    private static final  int MONTH_OCTOBER = 10;
+    private static final int DAY_TEN = 10;
+    private static final int DAY_ELEVEN = 11;
+    private static final int DAY_TWELVE = 12;
+    private static final int DEFAULT_YEAR = 2017;
+    private static final String FIELD_SEPARATOR = "-";
+
+    @Test
+    public void equals() {
+        UpcomingBirthdayInCurrentMonthPredicate firstPredicate = getTestInstance(MONTH_NOVEMBER, DAY_ELEVEN);
+        UpcomingBirthdayInCurrentMonthPredicate secondPredicate = getTestInstance(MONTH_NOVEMBER, DAY_ELEVEN);
+        UpcomingBirthdayInCurrentMonthPredicate thirdPredicate = getTestInstance(MONTH_DECEMBER, DAY_ELEVEN);
+        UpcomingBirthdayInCurrentMonthPredicate fourthPredicate = getTestInstance(MONTH_NOVEMBER, DAY_TWELVE);
+
+        // same object -> return true
+        assertTrue(firstPredicate.equals(firstPredicate));
+
+        // same value -> return true
+        assertTrue(firstPredicate.equals(secondPredicate));
+
+        // different types -> returns false
+        assertFalse(firstPredicate.equals(1));
+
+        // null -> returns false
+        assertFalse(firstPredicate.equals(null));
+
+        // different month -> returns false
+        assertFalse(firstPredicate.equals(thirdPredicate));
+
+        // different day -> returns false
+        assertFalse(firstPredicate.equals(fourthPredicate));
+    }
+
+    @Test
+    public void test_personContainsBirthdayCorrectMonthAndDay_returnsTrue() {
+        UpcomingBirthdayInCurrentMonthPredicate predicate = getTestInstance(MONTH_NOVEMBER, DAY_ELEVEN);
+
+        // same month and same day
+        final String birthdaySameMonthSameDay = DAY_ELEVEN + FIELD_SEPARATOR + MONTH_NOVEMBER
+                + FIELD_SEPARATOR + DEFAULT_YEAR;
+        assertTrue(predicate.test(new PersonBuilder().withBirthday(birthdaySameMonthSameDay).build()));
+
+        // same month and later day
+        final String birthdaySameMonthLaterDay = DAY_TWELVE + FIELD_SEPARATOR + MONTH_NOVEMBER
+                + FIELD_SEPARATOR + DEFAULT_YEAR;
+        assertTrue(predicate.test(new PersonBuilder().withBirthday(birthdaySameMonthLaterDay).build()));
+
+    }
+
+    @Test
+    public void test_personContainsBirthdayWrongMonthWrongDay_returnsFalse() {
+        UpcomingBirthdayInCurrentMonthPredicate predicate = getTestInstance(MONTH_NOVEMBER, DAY_ELEVEN);
+
+        // same month and earlier day
+        final String birthdaySameMonthEarlierDay = DAY_TEN + FIELD_SEPARATOR + MONTH_NOVEMBER
+                + FIELD_SEPARATOR + DEFAULT_YEAR;
+        assertFalse(predicate.test(new PersonBuilder().withBirthday(birthdaySameMonthEarlierDay).build()));
+
+        // different month same day
+        final String birthdayEarlierMonthSameDay = DAY_ELEVEN + FIELD_SEPARATOR + MONTH_OCTOBER
+                + FIELD_SEPARATOR + DEFAULT_YEAR;
+        assertFalse(predicate.test(new PersonBuilder().withBirthday(birthdayEarlierMonthSameDay).build()));
+
+        final String birthdayLaterMonthSameDay = DAY_ELEVEN + FIELD_SEPARATOR + MONTH_DECEMBER
+                + FIELD_SEPARATOR + DEFAULT_YEAR;
+        assertFalse(predicate.test(new PersonBuilder().withBirthday(birthdayLaterMonthSameDay).build()));
+    }
+
+    @Test
+    public void test_personContainsNoBirthday_returnsFalse() {
+        UpcomingBirthdayInCurrentMonthPredicate predicate = new UpcomingBirthdayInCurrentMonthPredicate();
+        assertFalse(predicate.test(new PersonBuilder().withBirthday("").build()));
+    }
+}
+```
 ###### /java/seedu/address/model/reminder/DateTest.java
 ``` java
 public class DateTest {
@@ -854,10 +828,15 @@ public class DateTest {
         // valid leap day -> returns true
         assertTrue(Date.isValidDate("29/02/2016"));
 
-        // valid date -> returns true
+        // valid dates with paired separator -> returns true
         assertTrue(Date.isValidDate("01/01/2017"));
         assertTrue(Date.isValidDate("01.01.2017"));
         assertTrue(Date.isValidDate("01-01-2017"));
+
+        // valid dates with flexible separator -> returns true
+        assertTrue(Date.isValidDate("01/01.2017"));
+        assertTrue(Date.isValidDate("01.01-2017"));
+        assertTrue(Date.isValidDate("01-01/2017"));
     }
 
     @Test
@@ -881,6 +860,222 @@ public class DateTest {
         // same value -> returns true
         Date date3 = new Date("01/01/2017");
         assertTrue(date1.equals(date3));
+    }
+}
+```
+###### /java/seedu/address/model/reminder/StatusTest.java
+``` java
+public class StatusTest {
+
+    private static final String DEFAULT_DATE = "10/10/2017";
+    private static final String DATE_DAY_PAST = "5/10/2017";
+    private static final String DATE_MONTH_PAST = "10/9/2017";
+    private static final String DATE_YEAR_PAST = "10/10/2016";
+    private static final String DATE_DAY_UPCOMING = "15/10/2017";
+    private static final String DATE_MONTH_UPCOMING = "10/11/2017";
+    private static final String DATE_YEAR_UPCOMING = "10/10/2018";
+    private static final String ONE_DAY_AWAY = "11/10/2017";
+    private static final String TWO_DAYS_AWAY = "12/10/2017";
+    private static final String THREE_DAYS_AWAY = "13/10/2017";
+    private static final String FOUR_DAYS_AWAY = "14/10/2017";
+    private static final String ONE_DAY_BEFORE = "09/10/2017";
+
+    private static final String DEFAULT_TIME = "12:30";
+    private static final String TIME_HOUR_PAST = "09:30";
+    private static final String TIME_MINUTE_PAST = "12:10";
+    private static final String TIME_HOUR_UPCOMING = "13:30";
+    private static final String TIME_MINUTE_UPCOMING = "12:40";
+
+    @Test
+    public void hasEventPast() throws Exception {
+
+        // day past -> returns true
+        Reminder reminder1 = new ReminderBuilder().withDate(DATE_DAY_PAST).withTime(DEFAULT_TIME).build();
+        Status status1 = getStatusTestInstance(reminder1, convertStringToLocalDate(DEFAULT_DATE),
+                convertStringToLocalTime(DEFAULT_TIME));
+        assertTrue(status1.hasEventPast());
+
+        // month past -> returns true
+        Reminder reminder2 = new ReminderBuilder().withDate(DATE_MONTH_PAST).withTime(DEFAULT_TIME).build();
+        Status status2 = getStatusTestInstance(reminder2, convertStringToLocalDate(DEFAULT_DATE),
+                convertStringToLocalTime(DEFAULT_TIME));
+        assertTrue(status2.hasEventPast());
+
+        // year past -> returns true
+        Reminder reminder3 = new ReminderBuilder().withDate(DATE_YEAR_PAST).withTime(DEFAULT_TIME).build();
+        Status status3 = getStatusTestInstance(reminder3, convertStringToLocalDate(DEFAULT_DATE),
+                convertStringToLocalTime(DEFAULT_TIME));
+        assertTrue(status3.hasEventPast());
+
+        // hour past -> returns true
+        Reminder reminder4 = new ReminderBuilder().withDate(DEFAULT_DATE).withTime(TIME_HOUR_PAST).build();
+        Status status4 = getStatusTestInstance(reminder4, convertStringToLocalDate(DEFAULT_DATE),
+                convertStringToLocalTime(DEFAULT_TIME));
+        assertTrue(status4.hasEventPast());
+
+        // minute past -> returns true
+        Reminder reminder5 = new ReminderBuilder().withDate(DEFAULT_DATE).withTime(TIME_MINUTE_PAST).build();
+        Status status5 = getStatusTestInstance(reminder5, convertStringToLocalDate(DEFAULT_DATE),
+                convertStringToLocalTime(DEFAULT_TIME));
+        assertTrue(status5.hasEventPast());
+
+        // upcoming day -> returns false
+        Reminder reminder6 = new ReminderBuilder().withDate(DATE_DAY_UPCOMING).withTime(DEFAULT_TIME).build();
+        Status status6 = getStatusTestInstance(reminder6, convertStringToLocalDate(DEFAULT_DATE),
+                convertStringToLocalTime(DEFAULT_TIME));
+        assertFalse(status6.hasEventPast());
+
+        // upcoming month -> returns false
+        Reminder reminder7 = new ReminderBuilder().withDate(DATE_MONTH_UPCOMING).withTime(DEFAULT_TIME).build();
+        Status status7 = getStatusTestInstance(reminder7, convertStringToLocalDate(DEFAULT_DATE),
+                convertStringToLocalTime(DEFAULT_TIME));
+        assertFalse(status7.hasEventPast());
+
+        // upcoming year -> returns false
+        Reminder reminder8 = new ReminderBuilder().withDate(DATE_YEAR_UPCOMING).withTime(DEFAULT_TIME).build();
+        Status status8 = getStatusTestInstance(reminder8, convertStringToLocalDate(DEFAULT_DATE),
+                convertStringToLocalTime(DEFAULT_TIME));
+        assertFalse(status8.hasEventPast());
+
+        // upcoming hour -> returns false
+        Reminder reminder9 = new ReminderBuilder().withDate(DEFAULT_DATE).withTime(TIME_HOUR_UPCOMING).build();
+        Status status9 = getStatusTestInstance(reminder9, convertStringToLocalDate(DEFAULT_DATE),
+                convertStringToLocalTime(DEFAULT_TIME));
+        assertFalse(status9.hasEventPast());
+
+        // upcoming minute -> returns false
+        Reminder reminder10 = new ReminderBuilder().withDate(DEFAULT_DATE).withTime(TIME_MINUTE_UPCOMING).build();
+        Status status10 = getStatusTestInstance(reminder10, convertStringToLocalDate(DEFAULT_DATE),
+                convertStringToLocalTime(DEFAULT_TIME));
+        assertFalse(status10.hasEventPast());
+
+        // same date and time -> returns false
+        Reminder reminder11 = new ReminderBuilder().withDate(DEFAULT_DATE).withTime(DEFAULT_TIME).build();
+        Status status11 = getStatusTestInstance(reminder11, convertStringToLocalDate(DEFAULT_DATE),
+                convertStringToLocalTime(DEFAULT_TIME));
+        assertFalse(status11.hasEventPast());
+    }
+
+    @Test
+    public void isEventToday() {
+        // different date -> returns false
+        Reminder reminder1 = new ReminderBuilder().withDate(DATE_DAY_PAST).withTime(DEFAULT_TIME).build();
+        Status status1 = getStatusTestInstance(reminder1, convertStringToLocalDate(DEFAULT_DATE),
+                convertStringToLocalTime(DEFAULT_TIME));
+        assertFalse(status1.isEventToday());
+
+        // time past -> returns false
+        Reminder reminder2 = new ReminderBuilder().withDate(DEFAULT_DATE).withTime(TIME_HOUR_PAST).build();
+        Status status2 = getStatusTestInstance(reminder2, convertStringToLocalDate(DEFAULT_DATE),
+                convertStringToLocalTime(DEFAULT_TIME));
+        assertFalse(status2.isEventToday());
+
+        // same date, same time -> returns true
+        Reminder reminder3 = new ReminderBuilder().withDate(DEFAULT_DATE).withTime(DEFAULT_TIME).build();
+        Status status3 = getStatusTestInstance(reminder3, convertStringToLocalDate(DEFAULT_DATE),
+                convertStringToLocalTime(DEFAULT_TIME));
+        assertTrue(status3.isEventToday());
+
+        // same date, upcoming time -> returns true
+        Reminder reminder4 = new ReminderBuilder().withDate(DEFAULT_DATE).withTime(TIME_HOUR_UPCOMING).build();
+        Status status4 = getStatusTestInstance(reminder4, convertStringToLocalDate(DEFAULT_DATE),
+                convertStringToLocalTime(DEFAULT_TIME));
+        assertTrue(status4.isEventToday());
+    }
+
+    @Test
+    public void isEventWithinThreeDays() {
+        // one day before -> returns false
+        Reminder reminder1 = new ReminderBuilder().withDate(ONE_DAY_BEFORE).withTime(DEFAULT_TIME).build();
+        Status status1 = getStatusTestInstance(reminder1, convertStringToLocalDate(DEFAULT_DATE),
+                convertStringToLocalTime(DEFAULT_TIME));
+        assertFalse(status1.isEventWithinThreeDays());
+
+        // same day -> returns true
+        Reminder reminder2 = new ReminderBuilder().withDate(DEFAULT_DATE).withTime(DEFAULT_TIME).build();
+        Status status2 = getStatusTestInstance(reminder2, convertStringToLocalDate(DEFAULT_DATE),
+                convertStringToLocalTime(DEFAULT_TIME));
+        assertTrue(status2.isEventWithinThreeDays());
+
+        // one day later -> returns true
+        Reminder reminder3 = new ReminderBuilder().withDate(ONE_DAY_AWAY).withTime(DEFAULT_TIME).build();
+        Status status3 = getStatusTestInstance(reminder3, convertStringToLocalDate(DEFAULT_DATE),
+                convertStringToLocalTime(DEFAULT_TIME));
+        assertTrue(status3.isEventWithinThreeDays());
+
+        // two days later -> returns true
+        Reminder reminder4 = new ReminderBuilder().withDate(TWO_DAYS_AWAY).withTime(DEFAULT_TIME).build();
+        Status status4 = getStatusTestInstance(reminder4, convertStringToLocalDate(DEFAULT_DATE),
+                convertStringToLocalTime(DEFAULT_TIME));
+        assertTrue(status4.isEventWithinThreeDays());
+
+        // three days later -> returns true
+        Reminder reminder5 = new ReminderBuilder().withDate(THREE_DAYS_AWAY).withTime(DEFAULT_TIME).build();
+        Status status5 = getStatusTestInstance(reminder5, convertStringToLocalDate(DEFAULT_DATE),
+                convertStringToLocalTime(DEFAULT_TIME));
+        assertTrue(status5.isEventWithinThreeDays());
+
+        // four days later -> returns false
+        Reminder reminder6 = new ReminderBuilder().withDate(FOUR_DAYS_AWAY).withTime(DEFAULT_TIME).build();
+        Status status6 = getStatusTestInstance(reminder6, convertStringToLocalDate(DEFAULT_DATE),
+                convertStringToLocalTime(DEFAULT_TIME));
+        assertFalse(status6.isEventWithinThreeDays());
+
+        // same day, time past -> returns false
+        Reminder reminder7 = new ReminderBuilder().withDate(DEFAULT_DATE).withTime(TIME_HOUR_PAST).build();
+        Status status7 = getStatusTestInstance(reminder7, convertStringToLocalDate(DEFAULT_DATE),
+                convertStringToLocalTime(DEFAULT_TIME));
+        assertFalse(status7.isEventWithinThreeDays());
+    }
+
+    @Test
+    public void equals() throws Exception {
+
+        // Since value of Status.value is dependent on the methods
+        // Status.hasEventPast, Status.isEventToday, Status.isEventWithinThreeDays,
+        // this equals test would not test for Status.value so thoroughly as the tests
+        // for the methods are already conducted above.
+
+        Reminder reminder1 = new ReminderBuilder().build();
+        Status status1 = new Status(reminder1);
+
+        // different type -> returns false
+        assertFalse(status1.equals(100));
+
+        // null -> returns false
+        assertFalse(status1.equals(null));
+
+        // same object -> returns true
+        assertTrue(status1.equals(status1));
+
+        // same value -> returns true
+        Reminder reminder2 = new ReminderBuilder(reminder1).build();
+        Status status2 = new Status(reminder2);
+        assertTrue(status1.equals(status2));
+    }
+
+    /**
+     * Converts a string in the form dd/mm/yyyy, dd.mm.yyyy or dd-mm-yyyy
+     * into a LocalDate object.
+     */
+    private LocalDate convertStringToLocalDate(String date) {
+        String[] splitDate = date.split(DATE_SPLIT_REGEX);
+
+        final int day = Integer.parseInt(splitDate[DATE_DAY_INDEX]);
+        final int month = Integer.parseInt(splitDate[DATE_MONTH_INDEX]);
+        final int year = Integer.parseInt(splitDate[DATE_YEAR_INDEX]);
+
+        return LocalDate.of(year, month, day);
+    }
+
+    /**
+     * Converts a string in the form hh:mm into a LocalTime object.
+     */
+    private LocalTime convertStringToLocalTime(String time) {
+        String[] splitTime = time.split(HOUR_MIN_SEPARATOR);
+        final int hour = Integer.parseInt(splitTime[TIME_HOUR_INDEX]);
+        final int min = Integer.parseInt(splitTime[TIME_MIN_INDEX]);
+        return LocalTime.of(hour, min);
     }
 }
 ```
@@ -954,7 +1149,7 @@ public class UniqueReminderListTest {
     @Test
     public void constructor_withDuplicateReminders_throwsAssertionError() {
         // repeat coffee reminder twice
-        List<Reminder> newReminders = Arrays.asList(COFFEE_REMINDER, COFFEE_REMINDER);
+        List<ReadOnlyReminder> newReminders = Arrays.asList(COFFEE_REMINDER, COFFEE_REMINDER);
         XmlSerializableReminders serializableReminders = new XmlSerializableReminders(newReminders);
 
         thrown.expect(AssertionError.class);
@@ -1023,51 +1218,6 @@ public class UniqueReminderListTest {
     }
 }
 ```
-###### /java/seedu/address/storage/StorageManagerTest.java
-``` java
-    @Test
-    public void remindersReadSave() throws Exception {
-        UniqueReminderList original = getUniqueTypicalReminders();
-        storageManager.saveReminders(original);
-        UniqueReminderList retrieved = new UniqueReminderList(storageManager.readReminders().get());
-        assertEquals(original, retrieved);
-    }
-```
-###### /java/seedu/address/storage/StorageManagerTest.java
-``` java
-    @Test
-    public void getRemindersFilePath() {
-        assertNotNull(storageManager.getRemindersFilePath());
-    }
-```
-###### /java/seedu/address/storage/StorageManagerTest.java
-``` java
-    @Test
-    public void handleRemindersChangedEvent_exceptionThrown_eventRaised() {
-        // Create a StorageManager while injecting a stub that  throws an exception when the save method is called
-        Storage storage = new StorageManager(new XmlAddressBookStorage("dummy"),
-                new XmlRemindersStorageExceptionThrowingStub("dummy"),
-                new JsonUserPrefsStorage("dummy"));
-        storage.handleRemindersChangedEvent(new RemindersChangedEvent(new UniqueReminderList()));
-        assertTrue(eventsCollectorRule.eventsCollector.getMostRecent() instanceof DataSavingExceptionEvent);
-    }
-
-
-    /**
-     * A Stub class to throw an exception when the save method is called
-     */
-    class XmlRemindersStorageExceptionThrowingStub extends XmlRemindersStorage {
-
-        public XmlRemindersStorageExceptionThrowingStub(String filePath) {
-            super(filePath);
-        }
-
-        @Override
-        public void saveReminders(UniqueReminderList reminderList, String filePath) throws IOException {
-            throw new IOException("dummy exception");
-        }
-    }
-```
 ###### /java/seedu/address/storage/XmlRemindersStorageTest.java
 ``` java
 public class XmlRemindersStorageTest {
@@ -1085,7 +1235,7 @@ public class XmlRemindersStorageTest {
         readReminders(null);
     }
 
-    private java.util.Optional<XmlSerializableReminders> readReminders(String filePath) throws Exception {
+    private java.util.Optional<ReadOnlyUniqueReminderList> readReminders(String filePath) throws Exception {
         return new XmlRemindersStorage(filePath).readReminders(addToTestDataPathIfNotNull(filePath));
     }
 
@@ -1114,7 +1264,7 @@ public class XmlRemindersStorageTest {
 
         //Save in new file and read back
         xmlRemindersStorage.saveReminders(original, filePath);
-        XmlSerializableReminders readBack = xmlRemindersStorage.readReminders(filePath).get();
+        ReadOnlyUniqueReminderList readBack = xmlRemindersStorage.readReminders(filePath).get();
         assertEquals(original, new UniqueReminderList(readBack));
 
         //Modify data, overwrite exiting file, and read back
@@ -1255,7 +1405,7 @@ public class ReminderBuilder {
     /**
      * Initializes the ReminderBuilder with the data of {@code reminderToCopy}.
      */
-    public ReminderBuilder(Reminder reminderToCopy) {
+    public ReminderBuilder(ReadOnlyReminder reminderToCopy) {
         this.reminder = new Reminder(reminderToCopy);
     }
 
@@ -1317,7 +1467,7 @@ public class TypicalReminders {
 
     private TypicalReminders() {} //prevents instantiation
 
-    public static List<Reminder> getTypicalReminders() {
+    public static List<ReadOnlyReminder> getTypicalReminders() {
         return new ArrayList<>(Arrays.asList(COFFEE_REMINDER, HOMEWORK_REMINDER, DINNER_REMINDER));
     }
 
@@ -1332,8 +1482,6 @@ public class TypicalReminders {
 ```
 ###### /java/seedu/address/ui/BirthdayReminderCardTest.java
 ``` java
-public class BirthdayReminderCardTest extends GuiUnitTest {
-
     @Test
     public void display() {
         // no nickname
@@ -1381,103 +1529,9 @@ public class BirthdayReminderCardTest extends GuiUnitTest {
         // same person, different index -> returns false
         assertFalse(birthdayCard.equals(new BirthdayReminderCard(person, 1)));
     }
-
-    /**
-     * Asserts that {@code personCard} displays the details of {@code expectedPerson} correctly and matches
-     * {@code expectedId}.
-     */
-    private void assertCardDisplay(BirthdayReminderCard personCard, ReadOnlyPerson expectedPerson, int expectedId) {
-        guiRobot.pauseForHuman();
-
-        BirthdayReminderCardHandle birthdayReminderCardHandle = new BirthdayReminderCardHandle(personCard.getRoot());
-
-        // verify id is displayed correctly
-        assertEquals(Integer.toString(expectedId) + ". ", birthdayReminderCardHandle.getId());
-
-        // verify person details are displayed correctly
-        assertBirthdayReminderCardDisplaysPerson(expectedPerson, birthdayReminderCardHandle);
-    }
-
-}
-```
-###### /java/seedu/address/ui/PersonCardTest.java
-``` java
-public class PersonCardTest extends GuiUnitTest {
-
-    @Test
-    public void display() {
-        // no tags
-        Person personWithNoTags = new PersonBuilder().withTags(new String[0]).build();
-        PersonCard personCard = new PersonCard(personWithNoTags, 1);
-        uiPartRule.setUiPart(personCard);
-        assertCardDisplay(personCard, personWithNoTags, 1);
-
-        // with tags
-        Person personWithTags = new PersonBuilder().build();
-        personCard = new PersonCard(personWithTags, 2);
-        uiPartRule.setUiPart(personCard);
-        assertCardDisplay(personCard, personWithTags, 2);
-
-        // changes made to Person reflects on card
-        guiRobot.interact(() -> {
-            personWithTags.setName(ALICE.getName());
-            personWithTags.setAddress(ALICE.getAddress());
-            personWithTags.setEmail(ALICE.getEmail());
-            personWithTags.setPhone(ALICE.getPhone());
-            personWithTags.setNickname(ALICE.getNickname());
-            personWithNoTags.setDisplayPicture(ALICE.getDisplayPicture());
-            personWithTags.setTags(ALICE.getTags());
-        });
-        assertCardDisplay(personCard, personWithTags, 2);
-    }
-
-    @Test
-    public void equals() {
-        Person person = new PersonBuilder().build();
-        PersonCard personCard = new PersonCard(person, 0);
-
-        // same person, same index -> returns true
-        PersonCard copy = new PersonCard(person, 0);
-        assertTrue(personCard.equals(copy));
-
-        // same object -> returns true
-        assertTrue(personCard.equals(personCard));
-
-        // null -> returns false
-        assertFalse(personCard.equals(null));
-
-        // different types -> returns false
-        assertFalse(personCard.equals(0));
-
-        // different person, same index -> returns false
-        Person differentPerson = new PersonBuilder().withName("differentName").build();
-        assertFalse(personCard.equals(new PersonCard(differentPerson, 0)));
-
-        // same person, different index -> returns false
-        assertFalse(personCard.equals(new PersonCard(person, 1)));
-    }
-
-    /**
-     * Asserts that {@code personCard} displays the details of {@code expectedPerson} correctly and matches
-     * {@code expectedId}.
-     */
-    private void assertCardDisplay(PersonCard personCard, ReadOnlyPerson expectedPerson, int expectedId) {
-        guiRobot.pauseForHuman();
-
-        PersonCardHandle personCardHandle = new PersonCardHandle(personCard.getRoot());
-
-        // verify id is displayed correctly
-        assertEquals(Integer.toString(expectedId) + ". ", personCardHandle.getId());
-
-        // verify person details are displayed correctly
-        assertCardDisplaysPerson(expectedPerson, personCardHandle);
-    }
-}
 ```
 ###### /java/seedu/address/ui/ReminderCardTest.java
 ``` java
-public class ReminderCardTest extends GuiUnitTest {
-
     @Test
     public void display() {
 
@@ -1520,23 +1574,6 @@ public class ReminderCardTest extends GuiUnitTest {
         // same person, different index -> returns false
         assertFalse(reminderCard.equals(new ReminderCard(reminder, 1)));
     }
-
-    /**
-     * Asserts that {@code reminderCard} displays the details of {@code expectedReminder} correctly and matches
-     * {@code expectedId}.
-     */
-    private void assertCardDisplay(ReminderCard reminderCard, Reminder expectedReminder, int expectedId) {
-        guiRobot.pauseForHuman();
-
-        ReminderCardHandle reminderCardHandle = new ReminderCardHandle(reminderCard.getRoot());
-
-        // verify id is displayed correctly
-        assertEquals(Integer.toString(expectedId) + ". ", reminderCardHandle.getId());
-
-        // verify person details are displayed correctly
-        assertReminderCardDisplaysReminder(expectedReminder, reminderCardHandle);
-    }
-}
 ```
 ###### /java/seedu/address/ui/testutil/GuiTestAssert.java
 ``` java

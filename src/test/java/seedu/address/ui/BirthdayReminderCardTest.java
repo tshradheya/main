@@ -15,6 +15,7 @@ import seedu.address.testutil.PersonBuilder;
 
 public class BirthdayReminderCardTest extends GuiUnitTest {
 
+    //@@author justinpoh
     @Test
     public void display() {
         // no nickname
@@ -62,6 +63,7 @@ public class BirthdayReminderCardTest extends GuiUnitTest {
         // same person, different index -> returns false
         assertFalse(birthdayCard.equals(new BirthdayReminderCard(person, 1)));
     }
+    //@@author
 
     /**
      * Asserts that {@code personCard} displays the details of {@code expectedPerson} correctly and matches

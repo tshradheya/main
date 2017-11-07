@@ -13,6 +13,7 @@ import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.reminders.ReadOnlyReminder;
 import seedu.address.model.reminders.ReadOnlyUniqueReminderList;
 
+//@@author justinpoh
 /**
  * A List of reminders that is serializable to XML format.
  */

@@ -10,6 +10,7 @@ import seedu.address.model.reminders.ReadOnlyReminder;
 import seedu.address.model.reminders.Reminder;
 import seedu.address.model.reminders.Time;
 
+//@@author justinpoh
 /**
  * JAXB-friendly version of the Reminder.
  */

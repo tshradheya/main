@@ -2,6 +2,7 @@ package seedu.address.model.reminders;
 
 import javafx.collections.ObservableList;
 
+//@@author justinpoh
 /**
  * Unmodifiable view of a UniqueReminderList
  */

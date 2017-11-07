@@ -40,6 +40,7 @@ public class AddReminderCommandTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
+    //@@author justinpoh
     @Test
     public void constructor_nullReminder_throwsNullPointerException() {
         thrown.expect(NullPointerException.class);
@@ -101,6 +102,7 @@ public class AddReminderCommandTest {
         command.setData(model, new CommandHistory(), new UndoRedoStack());
         return command;
     }
+    //@@author
 
     /**
      * A default model stub that have all of the methods failing.

@@ -351,8 +351,8 @@ public class ThemeCommandTest extends AddressBookGuiTest {
     @Test
     public void parseCommand_theme() throws Exception {
         ThemeCommand command = (ThemeCommand) parser.parseCommand(
-                ThemeCommand.COMMAND_WORD + " " + ThemeList.THEME_DARK);
-        Theme theme = new Theme(ThemeList.THEME_DARK, ThemeList.THEME_DARK_PATH);
+                ThemeCommand.COMMAND_WORD + " " + ThemeList.THEME_NIGHT);
+        Theme theme = new Theme(ThemeList.THEME_NIGHT, ThemeList.THEME_NIGHT_PATH);
         assertEquals(new ThemeCommand(theme), command);
     }
 ```

@@ -86,16 +86,14 @@ The reading and writing of images is done using the `ImageIO` class.
 
 The following UML diagram shows the Storage Architecture for reading and writing of image file:
 
+image::UMLStorageDisplaypic.PNG[width="300"]
+_Figure 2 : UML Diagram for the extended Storage Diagram._
+
 
 The sequence diagram for adding a display picture is shown below: +
 
 image::SDforDisplayPicture.PNG[width="800"]
-_Figure 19 : Sequence Diagram for Display Picture Command._
-
-The wireframe used to display the image for each person is shown below:
-
-image::WireFramePersonCard.PNG[width="400"]
-_Figure 20 : Wireframe for the UI._
+_Figure 3 : Sequence Diagram for Display Picture Command._
 
 
 The binder for refreshing the image every time the picture is updated is implemented by the following function:
@@ -114,7 +112,27 @@ public class PersonCard extends UiPart<Region> {
 }
 ----
 
+The `Circle` shape is used for better UI/UX design and is filled with the `ImagePatten`. The wireframe used to display the image for each person is shown below:
+
+image::WireFramePersonCard.PNG[width="300"]
+_Figure 4 : Wireframe for the UI._
+
+
 The new image stored in directory is given a unique name which is formed using hashcode of the unique email address of each contact:
+
+[source,java]
+----
+public class DisplayPictureCommand extends Command {
+
+    @Override
+    public CommandResult execute() throws CommandException, IOException {
+        /... executes function of Reading and Writing Image ...
+
+        displayPicture.setPath(readAndStoreImage.execute(displayPicture.getPath(),
+                            personToEdit.getEmail().hashCode())); // image name formed in this line
+    }
+}
+----
 
 ===== Design Considerations
 

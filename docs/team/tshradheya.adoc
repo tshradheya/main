@@ -1,0 +1,152 @@
+= Shradheya Thakre - Project Portfolio
+ifdef::env-github,env-browser[:outfilesuffix: .adoc]
+:imagesDir: ../images
+:stylesDir: ../stylesheets
+
+== Project: iContacts
+
+iContacts is an address book application with target audience as university students for managing contacts and other aspects of their university life in an efficient manner. iContacts is an Command Line Interface(CLI) application where most commands are executed by typing. Through this application, a student can manage his contacts by saving various details like their Display Picture, Birthday, Address and lot more. The user can also add reminders to keep track of deadlines and view location and send emails to his contacts.
+The purpose of this portfolio is to convey to the reader on how to use the various features, the style in which the features are implemented and their architectural design.
+
+*Code contributed*: [https://github.com/CS2103AUG2017-W14-B1/main/blob/master/collated/main/tshradheya.md[Functional code]] [https://github.com/CS2103AUG2017-W14-B1/main/blob/master/collated/test/tshradheya.md[Test code]]
+
+=== Enhancement Added: Display Picture for Contacts
+
+==== External behavior
+
+---
+
+==== Adding Display picture for each person : `displaypic`
+
+Adds a Display Picture to an existing person in the address book. +
+Format: `displaypic INDEX PATHOFIMAGE`
+
+****
+* The picture at the path address will be added to the person at the specified `INDEX` of currently shown list
+* The person can have either 0 or 1 display picture
+* Existing picture will be updated to with the new input path
+* Picture can be removed by leaving the PATHOFIMAGE empty
+* The picture is also deleted when the person is deleted using the `delete` command
+* The image should be on the local computer and the `PATHOFIMAGE` specified must be valid
+****
+
+Examples:
+
+* `displaypic 1 C:\Users\Admin\Desktop\Sem 3 Mods\CS2103T\mypic.jpg`
+Adds the `mypic.jpg` at the given path to the person at `INDEX` 1 as his display picture(See figure 1)
+* `displaypic 3 `
+Removes the existing display picture for the person at `INDEX` 3
+
+image::displaypic.png[width="790"]
+_Figure 1 : Display Picture for contacts_
+
+---
+
+
+==== Justification
+
+
+The command is implemented in this manner because of the following reasons:
+
+* By specifying the index, there is no ambiguity as to who should be assigned the display picture.
+* The `PATHOFIMAGE` must be an absolute path on the local device to make sure the image is referenced.
+* The image is stored in directory with a unique name to avoid conflict. Hashcode of user's email address is used to maintain uniqueness.
+* The task is done using CLI to follow project requirements.
+* The image is stored in jpg format to ensure maximum compatibility.
+
+
+==== Implementation
+
+---
+
+The Display Picture mechanism is done by using ImageView in JavaFX which is a part of the UI Component.
+
+The `displaypic` command adds/updates the display picture for the contact specified. The image is then displayed as ImageView in PersonCard.
+The arguments of the command are `INDEX` and `PATHOFIMAGE`. The image needs to be present in the local device of the user.
+
+This command works by retrieving the image using `BufferedImage`. The command extracts the image from the specified absolute path of image e.g. `C:\Users\Admin\Desktop\My files\pic.jpg`.
+
+By executing the given code below, a new folder named 'pictures/' is created if it is missing. The folder is used to store the images
+
+[source,java]
+----
+
+public void createPictureStorageFolder() throws IOException {
+        requireNonNull(filePath);
+
+        logger.info("Picture folder "  + filePath + " created if missing");
+        File file  = new File(filePath);
+        FileUtil.createIfMissing(file);
+    }
+
+----
+
+It then stores the image in the folder called `/pictures/` present in the same directory as `.jar`  by giving it a unique hashcode based on user's email address.
+The reading and writing of images is done using the `ImageIO` class.
+
+The following UML diagram shows the Storage Architecture for reading and writing of image file:
+
+
+The sequence diagram for adding a display picture is shown below: +
+
+image::SDforDisplayPicture.PNG[width="800"]
+_Figure 19 : Sequence Diagram for Display Picture Command._
+
+The wireframe used to display the image for each person is shown below:
+
+image::WireFramePersonCard.PNG[width="400"]
+_Figure 20 : Wireframe for the UI._
+
+
+The binder for refreshing the image every time the picture is updated is implemented by the following function:
+
+
+[source,java]
+----
+public class PersonCard extends UiPart<Region> {
+    private void assignImage(ReadOnlyPerson person) {
+
+        Image image = new Image("file:" + "pictures/" + person.getDisplayPicture().getPath() + ".png",
+                            IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
+
+        displayPicture.setFill(new ImagePattern(image));
+    }
+}
+----
+
+The new image stored in directory is given a unique name which is formed using hashcode of the unique email address of each contact:
+
+===== Design Considerations
+
+**Aspect:** At what stage should the image be read and stored +
+**Alternative 1 (current choice):** Make proper Storage Architecture for reading and writing of Image   +
+**Pros:** Follows existing Architectural Design and Software Engineering Principles like OCP  +
+**Cons:** Takes time and tougher to implement +
+**Alternative 2:** Invoke 'ReadAndStoreImage' from Logic component. +
+**Pros:** Easier for new developers to understand the sequence diagram and maintains event-driven nature. +
+**Cons:** Bad Architectural design and doesn't follow the pre existing pattern also defies Law of Demeter
+
+---
+
+**Aspect:** How should the image be taken from user +
+**Alternative 1 (current choice):** User has to enter the absolute path of image by checking his local device.   +
+**Pros:** Complete CLI process  +
+**Cons:** Might be problematic for user to copy and paste and might result in error of path giving fail command. +
+**Alternative 2:** Pop up a `FileChooser` after command is entered. +
+**Pros:** Easier for users to mention the correct image quickly. +
+**Cons:** Will no longer be a CLI process completely.
+
+---
+
+=== Enhancement Proposed: Add command `remark`
+
+{Explain similar to the Undo/Redo feature above.}
+
+=== Other contributions
+
+* Updated the GUI color scheme (Pull requests https://github.com[#33], https://github.com[#34])
+* Wrote additional tests to increase coverage from 88% to 92% (Pull requests https://github.com[#36], https://github.com[#38])
+
+== Project: NUSEvents
+
+{Optionally (not graded), you may include other projects in your portfolio.}

@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import seedu.address.testutil.PersonBuilder;
 
+//@@author justinpoh
 public class UpcomingBirthdayInCurrentMonthPredicateTest {
 
     private static final int MONTH_DECEMBER = 12;

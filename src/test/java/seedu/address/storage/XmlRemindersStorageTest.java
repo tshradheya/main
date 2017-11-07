@@ -16,9 +16,11 @@ import org.junit.rules.TemporaryFolder;
 
 import seedu.address.commons.exceptions.DataConversionException;
 import seedu.address.commons.util.FileUtil;
+import seedu.address.model.reminders.ReadOnlyUniqueReminderList;
 import seedu.address.model.reminders.Reminder;
 import seedu.address.model.reminders.UniqueReminderList;
 
+//@@author justinpoh
 public class XmlRemindersStorageTest {
     private static final String TEST_DATA_FOLDER = FileUtil.getPath("./src/test/data/XmlRemindersStorageTest/");
 
@@ -34,7 +36,7 @@ public class XmlRemindersStorageTest {
         readReminders(null);
     }
 
-    private java.util.Optional<XmlSerializableReminders> readReminders(String filePath) throws Exception {
+    private java.util.Optional<ReadOnlyUniqueReminderList> readReminders(String filePath) throws Exception {
         return new XmlRemindersStorage(filePath).readReminders(addToTestDataPathIfNotNull(filePath));
     }
 
@@ -63,7 +65,7 @@ public class XmlRemindersStorageTest {
 
         //Save in new file and read back
         xmlRemindersStorage.saveReminders(original, filePath);
-        XmlSerializableReminders readBack = xmlRemindersStorage.readReminders(filePath).get();
+        ReadOnlyUniqueReminderList readBack = xmlRemindersStorage.readReminders(filePath).get();
         assertEquals(original, new UniqueReminderList(readBack));
 
         //Modify data, overwrite exiting file, and read back

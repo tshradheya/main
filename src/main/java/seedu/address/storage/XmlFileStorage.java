@@ -24,6 +24,7 @@ public class XmlFileStorage {
         }
     }
 
+    //@@author justinpoh
     /**
      * Saves the given reminders data to the specified file.
      */
@@ -35,6 +36,7 @@ public class XmlFileStorage {
             assert false : "Unexpected exception " + e.getMessage();
         }
     }
+    //@@author
 
     /**
      * Returns address book in the file or an empty address book
@@ -48,6 +50,7 @@ public class XmlFileStorage {
         }
     }
 
+    //@@author justinpoh
     /**
      * Returns reminders in the file or an empty reminder list
      */
@@ -59,5 +62,6 @@ public class XmlFileStorage {
             throw new DataConversionException(e);
         }
     }
+    //@@author
 
 }

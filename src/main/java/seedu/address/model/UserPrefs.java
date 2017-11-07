@@ -33,9 +33,11 @@ public class UserPrefs {
     }
 
 
+    //@@author justinpoh
     public String getRemindersFilePath() {
         return remindersFilePath;
     }
+    //@@author
 
     public void setRemindersFilePath(String remindersFilePath) {
         this.remindersFilePath = remindersFilePath;

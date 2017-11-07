@@ -14,6 +14,7 @@ import seedu.address.testutil.ReminderBuilder;
 
 public class ReminderCardTest extends GuiUnitTest {
 
+    //@@author justinpoh
     @Test
     public void display() {
 
@@ -56,6 +57,7 @@ public class ReminderCardTest extends GuiUnitTest {
         // same person, different index -> returns false
         assertFalse(reminderCard.equals(new ReminderCard(reminder, 1)));
     }
+    //@@author
 
     /**
      * Asserts that {@code reminderCard} displays the details of {@code expectedReminder} correctly and matches

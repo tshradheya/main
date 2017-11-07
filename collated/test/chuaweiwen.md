@@ -302,11 +302,11 @@ public class ThemeCommandTest extends AddressBookGuiTest {
 
     @Test
     public void execute_setTheme_success() throws Exception {
-        Theme standardTheme = new Theme(ThemeList.THEME_SKY, ThemeList.THEME_SKY_PATH);
+        Theme standardTheme = new Theme(ThemeList.THEME_DAY, ThemeList.THEME_DAY_PATH);
         ThemeCommand themeCommand = new ThemeCommand(standardTheme);
 
-        String expectedList = "[" + ThemeList.THEME_SKY_PATH + ", view/Extensions.css]";
-        String expectedMessage = String.format(ThemeCommand.MESSAGE_SET_THEME_SUCCESS, ThemeList.THEME_SKY);
+        String expectedList = "[" + ThemeList.THEME_DAY_PATH + ", view/Extensions.css]";
+        String expectedMessage = String.format(ThemeCommand.MESSAGE_SET_THEME_SUCCESS, ThemeList.THEME_DAY);
         CommandResult result = themeCommand.execute();
 
         assertEquals(result.feedbackToUser, expectedMessage);
@@ -315,8 +315,8 @@ public class ThemeCommandTest extends AddressBookGuiTest {
 
     @Test
     public void equals() {
-        Theme standardTheme = new Theme(ThemeList.THEME_DARK, ThemeList.THEME_DARK_PATH);
-        Theme differentTheme = new Theme(ThemeList.THEME_SKY, ThemeList.THEME_SKY_PATH);
+        Theme standardTheme = new Theme(ThemeList.THEME_NIGHT, ThemeList.THEME_NIGHT_PATH);
+        Theme differentTheme = new Theme(ThemeList.THEME_DAY, ThemeList.THEME_DAY_PATH);
         ThemeCommand standardCommand = new ThemeCommand(standardTheme);
         ThemeCommand commandWithSameTheme = new ThemeCommand(standardTheme);
         ThemeCommand commandWithDifferentTheme = new ThemeCommand(differentTheme);
@@ -547,8 +547,8 @@ public class ThemeCommandParserTest {
 
     @Test
     public void parse_existingArgs_returnsThemeCommand() throws Exception {
-        ThemeCommand expectedCommand = new ThemeCommand(new Theme(ThemeList.THEME_DARK, ThemeList.THEME_DARK_PATH));
-        assertParseSuccess(parser, ThemeList.THEME_DARK, expectedCommand);
+        ThemeCommand expectedCommand = new ThemeCommand(new Theme(ThemeList.THEME_NIGHT, ThemeList.THEME_NIGHT_PATH));
+        assertParseSuccess(parser, ThemeList.THEME_NIGHT, expectedCommand);
     }
 
     @Test

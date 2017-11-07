@@ -6,19 +6,19 @@ package seedu.address.logic.parser;
  */
 public class Theme {
     private final String theme;
-    private final String css;
+    private final String filePath;
 
-    public Theme(String theme, String css) {
+    public Theme(String theme, String filePath) {
         this.theme = theme;
-        this.css = css;
+        this.filePath = filePath;
     }
 
     public String getTheme() {
         return theme;
     }
 
-    public String getCss() {
-        return css;
+    public String getFilePath() {
+        return filePath;
     }
 
     public String toString() {
@@ -40,7 +40,7 @@ public class Theme {
         }
 
         Theme otherTheme = (Theme) obj;
-        return otherTheme.getTheme().equals(getTheme()) && otherTheme.getCss().equals(getCss());
+        return otherTheme.getTheme().equals(getTheme()) && otherTheme.getFilePath().equals(getFilePath());
     }
 }
 //@@author

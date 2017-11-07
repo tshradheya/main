@@ -11,6 +11,7 @@ import seedu.address.commons.core.ComponentManager;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.model.AddressBookChangedEvent;
 import seedu.address.commons.events.model.DisplayPictureChangedEvent;
+import seedu.address.commons.events.model.DisplayPictureDeleteEvent;
 import seedu.address.commons.events.model.RemindersChangedEvent;
 import seedu.address.commons.events.storage.DataSavingExceptionEvent;
 import seedu.address.commons.exceptions.DataConversionException;
@@ -148,7 +149,7 @@ public class StorageManager extends ComponentManager implements Storage {
         remindersStorage.saveReminders(reminderList, filePath);
     }
     //@@author
-
+    //@@author tshradheya
     @Override
     public void readImageFromDevice(String path, int newPath) throws IOException {
         logger.fine("Attempting to read from file: " + path);
@@ -159,6 +160,12 @@ public class StorageManager extends ComponentManager implements Storage {
     public void saveImageInDirectory(BufferedImage image, String uniquePath) throws IOException {
         logger.fine("Attempting to write to file: " + uniquePath);
         displayPictureStorage.saveImageInDirectory(image, uniquePath);
+    }
+
+    @Override
+    public void deleteImageFromDirectory(String pathName) {
+        logger.fine("Attempting to delete to file: " + pathName);
+        displayPictureStorage.deleteImageFromDirectory(pathName);
     }
 
     @Override
@@ -173,5 +180,12 @@ public class StorageManager extends ComponentManager implements Storage {
             raise(new DataSavingExceptionEvent(e));
         }
     }
+
+    @Override
+    @Subscribe
+    public void handleDisplayPictureDeleteEvent(DisplayPictureDeleteEvent event) {
+        deleteImageFromDirectory(event.path);
+    }
+    //@@author
 
 }

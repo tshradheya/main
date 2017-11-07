@@ -180,7 +180,7 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
         }
     }
     //@@author
-
+    //@@author tshradheya
     private void setUpToShowRemindersPanel() {
         detailsPanel.setVisible(false);
         remindersPanel.setVisible(true);
@@ -198,8 +198,8 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
      */
     private void setUpToShowLocation() {
         setUpToShowWebBrowser();
-        remindersPanel.toFront();
-        currentlyInFront = Node.REMINDERS;
+        browser.toFront();
+        currentlyInFront = Node.BROWSER;
     }
 
     /**
@@ -330,5 +330,6 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
         browser.toFront();
         loadPersonPage(event.getPerson());
     }
+    //@@author
 
 }

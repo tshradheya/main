@@ -1,3 +1,4 @@
+//@@author tshradheya
 package seedu.address.storage;
 
 import java.awt.image.BufferedImage;
@@ -11,5 +12,7 @@ public interface DisplayPictureStorage {
     void readImageFromDevice(String imagePath, int newPath) throws IOException;
 
     void saveImageInDirectory(BufferedImage image, String uniquePath) throws IOException;
+
+    void deleteImageFromDirectory(String  filepath);
 
 }

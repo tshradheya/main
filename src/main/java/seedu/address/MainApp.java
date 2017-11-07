@@ -241,8 +241,7 @@ public class MainApp extends Application {
     @Subscribe
     public void handleChangeThemeRequestEvent(ChangeThemeRequestEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
-        String filePath = "view/" + event.theme.getCss();
-        userPrefs.setThemeFilePath(filePath);
+        userPrefs.setThemeFilePath(event.theme.getFilePath());
     }
     //@@author
 

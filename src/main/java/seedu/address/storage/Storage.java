@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import seedu.address.commons.events.model.AddressBookChangedEvent;
 import seedu.address.commons.events.model.DisplayPictureChangedEvent;
+import seedu.address.commons.events.model.DisplayPictureDeleteEvent;
 import seedu.address.commons.events.model.RemindersChangedEvent;
 import seedu.address.commons.events.storage.DataSavingExceptionEvent;
 import seedu.address.commons.exceptions.DataConversionException;
@@ -62,4 +63,6 @@ public interface Storage extends AddressBookStorage, UserPrefsStorage, Reminders
     //@@author
 
     void handleDisplayPictureChangedEvent(DisplayPictureChangedEvent event) throws IOException;
+
+    void handleDisplayPictureDeleteEvent(DisplayPictureDeleteEvent event);
 }

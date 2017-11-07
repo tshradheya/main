@@ -12,7 +12,6 @@ import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.exceptions.DataConversionException;
 import seedu.address.commons.util.FileUtil;
 import seedu.address.model.reminders.ReadOnlyUniqueReminderList;
-import seedu.address.model.reminders.UniqueReminderList;
 
 //@@author justinpoh
 /**

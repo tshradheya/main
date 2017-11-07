@@ -11,7 +11,6 @@ import seedu.address.commons.exceptions.DataConversionException;
 import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.reminders.ReadOnlyUniqueReminderList;
-import seedu.address.model.reminders.UniqueReminderList;
 
 /**
  * API of the Storage component

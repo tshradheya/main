@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import seedu.address.commons.exceptions.DataConversionException;
 import seedu.address.model.reminders.ReadOnlyUniqueReminderList;
-import seedu.address.model.reminders.UniqueReminderList;
 
 //@@author justinpoh
 /**

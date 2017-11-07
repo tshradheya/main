@@ -1,12 +1,102 @@
 # tshradheya
+###### \java\guitests\guihandles\DetailsPanelHandle.java
+``` java
+package guitests.guihandles;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javafx.scene.Node;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.Region;
+
+/**
+ * Provides a handle to a person details in the panel.
+ */
+public class DetailsPanelHandle extends NodeHandle<Node> {
+    private static final String NAME_FIELD_ID = "#detailsName";
+    private static final String ADDRESS_FIELD_ID = "#detailsAddress";
+    private static final String PHONE_FIELD_ID = "#detailsPhone";
+    private static final String EMAIL_FIELD_ID = "#detailsEmail";
+    private static final String NICKNAME_FIELD_ID = "#detailsNickname";
+    private static final String BIRTHDAY_FIELD_ID = "#detailsBirthday";
+    private static final String DISPLAY_PICTURE_FIELD_ID = "#detailsDisplayPicture";
+    private static final String TAGS_FIELD_ID = "#detailsTag";
+
+    private final Label nameLabel;
+    private final Label addressLabel;
+    private final Label phoneLabel;
+    private final Label emailLabel;
+    private final Label nicknameLabel;
+    private final Label birthdayLabel;
+    private final ImageView displayPictureImageView;
+    private final List<Label> tagLabels;
+
+    public DetailsPanelHandle(Node cardNode) {
+        super(cardNode);
+
+        this.nameLabel = getChildNode(NAME_FIELD_ID);
+        this.addressLabel = getChildNode(ADDRESS_FIELD_ID);
+        this.phoneLabel = getChildNode(PHONE_FIELD_ID);
+        this.emailLabel = getChildNode(EMAIL_FIELD_ID);
+        this.nicknameLabel = getChildNode(NICKNAME_FIELD_ID);
+        this.birthdayLabel = getChildNode(BIRTHDAY_FIELD_ID);
+        this.displayPictureImageView = getChildNode(DISPLAY_PICTURE_FIELD_ID);
+
+        Region tagsContainer = getChildNode(TAGS_FIELD_ID);
+        this.tagLabels = tagsContainer
+                .getChildrenUnmodifiable()
+                .stream()
+                .map(Label.class::cast)
+                .collect(Collectors.toList());
+    }
+
+    public String getName() {
+        return nameLabel.getText();
+    }
+
+    public String getAddress() {
+        return addressLabel.getText();
+    }
+
+    public String getPhone() {
+        return phoneLabel.getText();
+    }
+
+    public String getEmail() {
+        return emailLabel.getText();
+    }
+
+    public String getNickname() {
+        return nicknameLabel.getText();
+    }
+
+    public String getBirthday() {
+        return birthdayLabel.getText();
+    }
+
+    public Image getDisplayPictureImageView() {
+        return displayPictureImageView.getImage();
+    }
+
+    public List<String> getTags() {
+        return tagLabels
+                .stream()
+                .map(Label::getText)
+                .collect(Collectors.toList());
+    }
+}
+```
 ###### \java\guitests\guihandles\PopularContactCardHandle.java
 ``` java
 package guitests.guihandles;
 
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Circle;
 
 /**
  * Provides a handle to a person card in the Popular Contact list panel.
@@ -19,7 +109,7 @@ public class PopularContactCardHandle extends NodeHandle<Node> {
 
     private final Label idLabel;
     private final Label nameLabel;
-    private final ImageView displayPictureImageView;
+    private final Circle displayPictureImageView;
 
     public PopularContactCardHandle(Node cardNode) {
         super(cardNode);
@@ -38,8 +128,8 @@ public class PopularContactCardHandle extends NodeHandle<Node> {
         return nameLabel.getText();
     }
 
-    public Image getDisplayPictureImageView() {
-        return displayPictureImageView.getImage();
+    public Paint getDisplayPictureImageView() {
+        return displayPictureImageView.getFill();
     }
 }
 ```
@@ -181,79 +271,148 @@ public class PopularContactsPanelHandle extends NodeHandle<ListView<PopularConta
     }
 }
 ```
-###### \java\seedu\address\logic\commands\AddCommandTest.java
+###### \java\seedu\address\logic\commands\DetailsCommandTest.java
 ``` java
+package seedu.address.logic.commands;
 
-        @Override
-        public boolean addDisplayPicture(String path, int newPath) throws IOException {
-            fail("This method should not be called");
-            return false;
-        }
-```
-###### \java\seedu\address\logic\commands\AddCommandTest.java
-``` java
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+import static seedu.address.logic.commands.CommandTestUtil.showFirstPersonOnly;
+import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
+import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
+import static seedu.address.testutil.TypicalIndexes.INDEX_THIRD_PERSON;
+import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
+import static seedu.address.testutil.TypicalReminders.getUniqueTypicalReminders;
 
-        @Override
-        public void updateFilteredPersonListForViewTag(Predicate<ReadOnlyPerson> predicate) {
-            fail("This method should not be called.");
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+
+import seedu.address.commons.core.Messages;
+import seedu.address.commons.core.index.Index;
+import seedu.address.commons.events.ui.ShowDetailsEvent;
+import seedu.address.logic.CommandHistory;
+import seedu.address.logic.UndoRedoStack;
+import seedu.address.logic.commands.exceptions.CommandException;
+import seedu.address.model.Model;
+import seedu.address.model.ModelManager;
+import seedu.address.model.UserPrefs;
+import seedu.address.ui.testutil.EventsCollectorRule;
+
+public class DetailsCommandTest {
+
+    @Rule
+    public final EventsCollectorRule eventsCollectorRule = new EventsCollectorRule();
+
+    private Model model;
+
+    @Before
+    public void setUp() {
+        model = new ModelManager(getTypicalAddressBook(), getUniqueTypicalReminders(), new UserPrefs());
+    }
+
+    @Test
+    public void execute_validIndexUnfilteredList_success() {
+        Index lastPersonIndex = Index.fromOneBased(model.getFilteredPersonList().size());
+
+        assertExecutionSuccess(INDEX_FIRST_PERSON);
+        assertExecutionSuccess(INDEX_THIRD_PERSON);
+        assertExecutionSuccess(lastPersonIndex);
+    }
+
+    @Test
+    public void execute_invalidIndexUnfilteredList_failure() {
+        Index outOfBoundsIndex = Index.fromOneBased(model.getFilteredPersonList().size() + 1);
+
+        assertExecutionFailure(outOfBoundsIndex, Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+    }
+
+    @Test
+    public void execute_validIndexFilteredList_success() {
+        showFirstPersonOnly(model);
+
+        assertExecutionSuccess(INDEX_FIRST_PERSON);
+    }
+
+    @Test
+    public void execute_invalidIndexFilteredList_failure() {
+        showFirstPersonOnly(model);
+
+        Index outOfBoundsIndex = INDEX_SECOND_PERSON;
+        // ensures that outOfBoundIndex is still in bounds of address book list
+        assertTrue(outOfBoundsIndex.getZeroBased() < model.getAddressBook().getPersonList().size());
+
+        assertExecutionFailure(outOfBoundsIndex, Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+    }
+
+    @Test
+    public void equals() {
+        DetailsCommand detailsFirstCommand = new DetailsCommand(INDEX_FIRST_PERSON);
+        DetailsCommand detailsSecondCommand = new DetailsCommand(INDEX_SECOND_PERSON);
+
+        // same object -> returns true
+        assertTrue(detailsFirstCommand.equals(detailsFirstCommand));
+
+        // same values -> returns true
+        DetailsCommand selectFirstCommandCopy = new DetailsCommand(INDEX_FIRST_PERSON);
+        assertTrue(detailsFirstCommand.equals(selectFirstCommandCopy));
+
+        // different types -> returns false
+        assertFalse(detailsFirstCommand.equals(1));
+
+        // null -> returns false
+        assertFalse(detailsFirstCommand.equals(null));
+
+        // different person -> returns false
+        assertFalse(detailsFirstCommand.equals(detailsSecondCommand));
+    }
+
+    /**
+     * Executes a {@code SelectCommand} with the given {@code index}, and checks that {@code JumpToListRequestEvent}
+     * is raised with the correct index.
+     */
+    private void assertExecutionSuccess(Index index) {
+        DetailsCommand detailsCommand = prepareCommand(index);
+
+        try {
+            CommandResult commandResult = detailsCommand.execute();
+            assertEquals(String.format(DetailsCommand.MESSAGE_DETAILS_PERSON_SUCCESS, index.getOneBased()),
+                    commandResult.feedbackToUser);
+        } catch (CommandException ce) {
+            throw new IllegalArgumentException("Execution of command should not fail.", ce);
         }
 
-        @Override
-        public void increaseCounterByOneForATag(List<ReadOnlyPerson> filteredPersonList) {
-            fail("This method should not be called");
-        }
+        ShowDetailsEvent lastEvent = (ShowDetailsEvent) eventsCollectorRule.eventsCollector.getMostRecent();
+        assertEquals(index, Index.fromZeroBased(lastEvent.targetIndex));
+    }
 
-        @Override
-        public ReadOnlyPerson increaseCounterByOne(ReadOnlyPerson person) {
-            fail("This method should not be called");
-            return person;
-        }
+    /**
+     * Executes a {@code SelectCommand} with the given {@code index}, and checks that a {@code CommandException}
+     * is thrown with the {@code expectedMessage}.
+     */
+    private void assertExecutionFailure(Index index, String expectedMessage) {
+        DetailsCommand detailsCommand = prepareCommand(index);
 
-        @Override
-        public ObservableList<ReadOnlyPerson> getPopularContactList() {
-            fail("This method should not be called");
-            return new ImmutableObservableList<>();
+        try {
+            detailsCommand.execute();
+            fail("The expected CommandException was not thrown.");
+        } catch (CommandException ce) {
+            assertEquals(expectedMessage, ce.getMessage());
+            assertTrue(eventsCollectorRule.eventsCollector.isEmpty());
         }
+    }
 
-        @Override
-        public void refreshWithPopulatingAddressBook() {
-            fail("This method should not be called");
-        }
-
-        @Override
-        public void updatePopularContactList() {
-            fail("This method should not be called");
-        }
-
-        @Override
-        public void getOnlyTopFiveMaximum() {
-            fail("This method should not be called");
-        }
-
-        @Override
-        public void updatePersonsPopularityCounterByOne(ReadOnlyPerson person) throws DuplicatePersonException,
-                PersonNotFoundException {
-            fail("This method should not be called");
-        }
-```
-###### \java\seedu\address\logic\commands\AddCommandTest.java
-``` java
-
-        @Override
-        public void showLocation(ReadOnlyPerson person) {
-            fail("This method should not be called");
-        }
-
-        @Override
-        public void processEmailEvent(String recipients, Subject subject, Body body, Service service) {
-            fail("This method should not be called");
-        }
-
-        @Override
-        public String createEmailRecipients(Predicate<ReadOnlyPerson> predicate) {
-            fail("This method should not be called");
-            return "";
-        }
+    /**
+     * Returns a {@code SelectCommand} with parameters {@code index}.
+     */
+    private DetailsCommand prepareCommand(Index index) {
+        DetailsCommand detailsCommand = new DetailsCommand(index);
+        detailsCommand.setData(model, new CommandHistory(), new UndoRedoStack());
+        return detailsCommand;
+    }
+}
 ```
 ###### \java\seedu\address\logic\commands\DisplayPictureCommandTest.java
 ``` java
@@ -468,32 +627,6 @@ public class EmailCommandTest {
 
 
 }
-```
-###### \java\seedu\address\logic\commands\ExportCommandTest.java
-``` java
-
-    public static final String VALID_PATH = "/storage/classmates";
-    private Model model = new ModelManager(getTypicalAddressBook(), getUniqueTypicalReminders(), new UserPrefs());
-
-    @Test
-    public void execute_invalidPersonIndexUnfilteredList_failure() throws Exception {
-        Index outOfBoundIndex = Index.fromOneBased(model.getFilteredPersonList().size() + 1);
-        ExportCommand exportCommand = prepareCommand(Integer.toString(outOfBoundIndex.getOneBased()), VALID_PATH);
-
-        assertCommandFailure(exportCommand, model, Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
-    }
-
-    @Test
-    public void execute_invalidPersonIndexFilteredList_failure() throws Exception {
-        showFirstPersonOnly(model);
-        Index outOfBoundIndex = INDEX_SECOND_PERSON;
-        // ensures that outOfBoundIndex is still within bounds of address book list
-        assertTrue(outOfBoundIndex.getZeroBased() < model.getAddressBook().getPersonList().size());
-
-        ExportCommand exportCommand = prepareCommand(Integer.toString(outOfBoundIndex.getOneBased()), VALID_PATH);
-
-        assertCommandFailure(exportCommand, model, Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
-    }
 ```
 ###### \java\seedu\address\logic\commands\LocationCommandTest.java
 ``` java
@@ -731,6 +864,281 @@ public class ViewTagCommandTest {
 
 }
 ```
+###### \java\seedu\address\logic\parser\AddressBookParserTest.java
+``` java
+    @Test
+    public void parseCommand_viewtag() throws Exception {
+        String keyword = "foo";
+        ViewTagCommand command = (ViewTagCommand) parser.parseCommand(ViewTagCommand.COMMAND_WORD + " " + keyword);
+
+        assertEquals(new ViewTagCommand(new PersonContainsTagPredicate(keyword)), command);
+    }
+
+    @Test
+    public void parseCommand_email() throws Exception {
+        String tag = "friends";
+        Service service = new Service("gmail");
+        Subject subject = new Subject("hello");
+        Body body = new Body("meeting at 8pm");
+
+        EmailCommand command = (EmailCommand) parser.parseCommand(EmailCommand.COMMAND_WORD
+                + " " + PREFIX_EMAIL_SERVICE + service.service + " " + PREFIX_EMAIL_TO + tag
+                + " " + PREFIX_EMAIL_SUBJECT + subject.subject + " " + PREFIX_EMAIL_BODY + body.body);
+
+        assertEquals(new EmailCommand(new PersonContainsTagPredicate(tag), subject, body, service), command);
+    }
+```
+###### \java\seedu\address\logic\parser\AddressBookParserTest.java
+``` java
+
+    @Test
+    public void parseCommand_displayPicture() throws  Exception {
+        final DisplayPicture displayPicture  = new DisplayPicture(Integer.toString(VALID_EMAIL_AMY.hashCode()));
+
+        DisplayPictureCommand displayPictureCommand =
+                (DisplayPictureCommand) parser.parseCommand(DisplayPictureCommand.COMMAND_WORD + " "
+                + INDEX_FIRST_PERSON.getOneBased() + " " + displayPicture.getPath());
+
+        assertEquals(new DisplayPictureCommand(INDEX_FIRST_PERSON, displayPicture), displayPictureCommand);
+    }
+```
+###### \java\seedu\address\logic\parser\AddressBookParserTest.java
+``` java
+
+    @Test
+    public void parseCommand_details() throws Exception {
+        DetailsCommand command = (DetailsCommand) parser.parseCommand(
+                DetailsCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased());
+        assertEquals(new DetailsCommand(INDEX_FIRST_PERSON), command);
+    }
+```
+###### \java\seedu\address\logic\parser\AddressBookParserTest.java
+``` java
+
+    @Test
+    public void parseCommand_location() throws Exception {
+        LocationCommand command = (LocationCommand) parser.parseCommand(
+                LocationCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased());
+        assertEquals(new LocationCommand(INDEX_FIRST_PERSON), command);
+    }
+```
+###### \java\seedu\address\logic\parser\DetailsCommandParserTest.java
+``` java
+package seedu.address.logic.parser;
+
+import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
+import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
+import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
+
+import java.io.IOException;
+
+import org.junit.Test;
+
+import seedu.address.logic.commands.DetailsCommand;
+
+public class DetailsCommandParserTest {
+
+    private DetailsCommandParser parser = new DetailsCommandParser();
+
+    @Test
+    public void parse_validArgs_returnsSelectCommand() throws IOException {
+        assertParseSuccess(parser, "1", new DetailsCommand(INDEX_FIRST_PERSON));
+    }
+
+    @Test
+    public void parse_invalidArgs_throwsParseException() throws IOException {
+        assertParseFailure(parser, "a", String.format(MESSAGE_INVALID_COMMAND_FORMAT, DetailsCommand.MESSAGE_USAGE));
+    }
+}
+```
+###### \java\seedu\address\logic\parser\DisplayPictureCommandParserTest.java
+``` java
+package seedu.address.logic.parser;
+
+import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
+import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
+import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
+
+import org.junit.Test;
+
+import seedu.address.commons.core.index.Index;
+import seedu.address.logic.commands.DisplayPictureCommand;
+import seedu.address.model.person.DisplayPicture;
+
+public class DisplayPictureCommandParserTest {
+
+    private DisplayPictureCommandParser parser = new DisplayPictureCommandParser();
+
+    @Test
+    public void parse_indexSpecified_failure() throws Exception {
+        final DisplayPicture displayPicture = new DisplayPicture("somepath");
+
+
+        Index targetIndex = INDEX_FIRST_PERSON;
+
+        // file path present
+        String userInput = targetIndex.getOneBased() + " " +  "somepath";
+        DisplayPictureCommand expectedCommand = new DisplayPictureCommand(INDEX_FIRST_PERSON,
+                new DisplayPicture(displayPicture.getPath()));
+        assertParseSuccess(parser, userInput, expectedCommand);
+
+        //no file path
+        userInput = targetIndex.getOneBased() + " ";
+        expectedCommand = new DisplayPictureCommand(INDEX_FIRST_PERSON,
+                new DisplayPicture(""));
+        assertParseSuccess(parser, userInput, expectedCommand);
+    }
+
+    @Test
+    public void parse_noFieldSpecified_failure() throws Exception {
+        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, DisplayPictureCommand.MESSAGE_USAGE);
+
+        // nothing at all
+        assertParseFailure(parser, DisplayPictureCommand.COMMAND_WORD, expectedMessage);
+    }
+}
+```
+###### \java\seedu\address\logic\parser\EmailCommandParserTest.java
+``` java
+package seedu.address.logic.parser;
+
+import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
+import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
+import static seedu.address.testutil.EmailBuilder.DEFAULT_BODY;
+import static seedu.address.testutil.EmailBuilder.DEFAULT_SERVICE;
+import static seedu.address.testutil.EmailBuilder.DEFAULT_SUBJECT;
+import static seedu.address.testutil.EmailBuilder.DEFAULT_TAG;
+
+import java.io.IOException;
+
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+
+import seedu.address.logic.commands.EmailCommand;
+import seedu.address.model.email.Body;
+import seedu.address.model.email.Service;
+import seedu.address.model.email.Subject;
+import seedu.address.model.person.PersonContainsTagPredicate;
+import seedu.address.testutil.EmailBuilder;
+
+public class EmailCommandParserTest {
+
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
+
+    private EmailCommandParser emailCommandParser = new EmailCommandParser();
+
+    @Test
+    public void allFieldsPresent_success() throws IOException {
+        EmailCommand emailCommand = new EmailBuilder().withPredicate(new PersonContainsTagPredicate(DEFAULT_TAG))
+                .withSubject(new Subject(DEFAULT_SUBJECT)).withBody(new Body(DEFAULT_BODY))
+                .withService(new Service(DEFAULT_SERVICE)).build();
+
+        assertParseSuccess(emailCommandParser, EmailCommand.COMMAND_WORD + " s/"
+                        + DEFAULT_SERVICE + " to/" + DEFAULT_TAG + " sub/" + DEFAULT_SUBJECT + " body/" + DEFAULT_BODY,
+                new EmailCommand(new PersonContainsTagPredicate(DEFAULT_TAG), new Subject(DEFAULT_SUBJECT),
+                        new Body(DEFAULT_BODY), new Service(DEFAULT_SERVICE)));
+    }
+
+    @Test
+    public void optionalFieldsMissingSuccess() throws IOException {
+        EmailCommand emailCommand = new EmailBuilder().withPredicate(new PersonContainsTagPredicate(DEFAULT_TAG))
+                .withService(new Service(DEFAULT_SERVICE)).build();
+
+        assertParseSuccess(emailCommandParser, EmailCommand.COMMAND_WORD + " s/"
+                        + DEFAULT_SERVICE + " to/" + DEFAULT_TAG + " sub/" + " body/",
+                new EmailCommand(new PersonContainsTagPredicate(DEFAULT_TAG), new Subject(""),
+                        new Body(""), new Service(DEFAULT_SERVICE)));
+    }
+
+    @Test
+    public void parse_compulsoryFieldMissingRecipients_failure() throws Exception {
+        EmailCommand emailCommand = new EmailBuilder().withPredicate(new PersonContainsTagPredicate(DEFAULT_TAG)).build();
+
+        assertParseFailure(emailCommandParser, EmailCommand.COMMAND_WORD + " s/"
+                        + DEFAULT_SERVICE + " sub/" + " body/",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, EmailCommand.MESSAGE_USAGE));
+    }
+
+    @Test
+    public void parse_compulsoryFieldMissingService_failure() throws Exception {
+
+        assertParseFailure(emailCommandParser, EmailCommand.COMMAND_WORD + " to/"
+                        + DEFAULT_TAG + " sub/" + " body/",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, EmailCommand.MESSAGE_USAGE));
+    }
+}
+```
+###### \java\seedu\address\logic\parser\LocationCommandParserTest.java
+``` java
+package seedu.address.logic.parser;
+
+import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
+import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
+import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
+
+import org.junit.Test;
+
+import seedu.address.logic.commands.LocationCommand;
+
+public class LocationCommandParserTest {
+    private LocationCommandParser parser = new LocationCommandParser();
+
+    @Test
+    public void parse_validArgs_returnsLocationCommand() throws Exception {
+        assertParseSuccess(parser, "1", new LocationCommand(INDEX_FIRST_PERSON));
+    }
+
+    @Test
+    public void parse_invalidArgs_throwsParseException() throws Exception {
+        assertParseFailure(parser, "a",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, LocationCommand.MESSAGE_USAGE));
+    }
+}
+```
+###### \java\seedu\address\logic\parser\ViewTagCommandParserTest.java
+``` java
+package seedu.address.logic.parser;
+
+import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
+import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
+
+import org.junit.Test;
+
+import seedu.address.logic.commands.ViewTagCommand;
+import seedu.address.model.person.PersonContainsTagPredicate;
+
+public class ViewTagCommandParserTest {
+
+    private ViewTagCommandParser parser = new ViewTagCommandParser();
+
+    @Test
+    public void parse_emptyArg_throwsParseException() throws Exception {
+        assertParseFailure(parser, "   ", String.format(MESSAGE_INVALID_COMMAND_FORMAT, ViewTagCommand.MESSAGE_USAGE));
+    }
+
+
+    @Test
+    public void parse_validArgs_returnsViewTagCommand() throws Exception {
+
+        ViewTagCommand expectedViewTagCommand =
+                new ViewTagCommand(new PersonContainsTagPredicate("foo"));
+
+        //Testing when no whitespaces trailing keywords
+        assertParseSuccess(parser, "foo", expectedViewTagCommand);
+
+        //Testing when whitespaces are present before or after keyword
+        assertParseSuccess(parser, " \n  foo  ", expectedViewTagCommand);
+    }
+
+}
+```
 ###### \java\seedu\address\model\email\BodyTest.java
 ``` java
 package seedu.address.model.email;
@@ -820,6 +1228,13 @@ public class SubjectTest {
         modelManager.addDisplayPicture(TEST_DATA_FOLDER + "1137944384.png", 1137944384);
         assertTrue(eventsCollectorRule.eventsCollector.getMostRecent() instanceof DisplayPictureChangedEvent);
     }
+
+    @Test
+    public void selectCommandExecuted_eventRaised() throws PersonNotFoundException {
+        ModelManager modelManager = new ModelManager();
+        modelManager.showPersonWebpage(ALICE);
+        assertTrue(eventsCollectorRule.eventsCollector.getMostRecent() instanceof LoadPersonWebpageEvent);
+    }
 ```
 ###### \java\seedu\address\model\person\DisplayPictureTest.java
 ``` java
@@ -853,49 +1268,6 @@ public class DisplayPictureTest {
 
         // same nickname -> returns true
         assertTrue(standardDisplayPicture.equals(sameDisplayPicture));
-    }
-}
-```
-###### \java\seedu\address\model\person\EmailTest.java
-``` java
-package seedu.address.model.person;
-
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import org.junit.Test;
-
-public class EmailTest {
-
-    @Test
-    public void isValidEmail() {
-        // blank email
-        assertFalse(Email.isValidEmail("")); // empty string
-        assertFalse(Email.isValidEmail(" ")); // spaces only
-
-        // missing parts
-        assertFalse(Email.isValidEmail("@example.com")); // missing local part
-        assertFalse(Email.isValidEmail("peterjackexample.com")); // missing '@' symbol
-        assertFalse(Email.isValidEmail("peterjack@")); // missing domain name
-
-        // invalid parts
-        assertFalse(Email.isValidEmail("-@example.com")); // invalid local part
-        assertFalse(Email.isValidEmail("peterjack@-")); // invalid domain name
-        assertFalse(Email.isValidEmail("peter jack@example.com")); // spaces in local part
-        assertFalse(Email.isValidEmail("peterjack@exam ple.com")); // spaces in domain name
-        assertFalse(Email.isValidEmail("peterjack@@example.com")); // double '@' symbol
-        assertFalse(Email.isValidEmail("peter@jack@example.com")); // '@' symbol in local part
-        assertFalse(Email.isValidEmail("peterjack@example@com")); // '@' symbol in domain name
-
-        // valid email
-        assertTrue(Email.isValidEmail("PeterJack_1190@example.com"));
-        assertTrue(Email.isValidEmail("a@b"));  // minimal
-        assertTrue(Email.isValidEmail("test@localhost"));   // alphabets only
-        assertTrue(Email.isValidEmail("123@145"));  // numeric local part and domain name
-        assertTrue(Email.isValidEmail("a1@example1.com"));  // mixture of alphanumeric and dot characters
-        assertTrue(Email.isValidEmail("_user_@_e_x_a_m_p_l_e_.com_"));    // underscores
-        assertTrue(Email.isValidEmail("peter_jack@very_very_very_long_example.com"));   // long domain name
-        assertTrue(Email.isValidEmail("if.you.dream.it_you.can.do.it@example.com"));    // long local part
     }
 }
 ```
@@ -1032,14 +1404,6 @@ public class AddressBookPictureStorageTest {
         assertEquals(addressBookPictureStorage.getAddressBookPicturePath(), PATH);
     }
 
-    /*@Test
-    public void createPicturesPath_throwsIoException() throws IOException {
-        thrown.expect(IOException.class);
-        AddressBookPictureStorage addressBookPictureStorage = new AddressBookPictureStorage(INVALID_PATH);
-        addressBookPictureStorage.createPictureStorageFolder();
-    }
-    */
-
     @Test
     public void saveAddressBookPicturePath_nullFilePath_throwsNullPointerException() throws IOException {
         thrown.expect(NullPointerException.class);
@@ -1166,15 +1530,58 @@ public class EmailBuilder {
     }
 }
 ```
-###### \java\seedu\address\ui\PersonCardTest.java
+###### \java\seedu\address\ui\DetailsPanelTest.java
 ``` java
+package seedu.address.ui;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static seedu.address.testutil.TypicalPersons.ALICE;
+import static seedu.address.ui.testutil.GuiTestAssert.assertCardDisplaysPersonDetailsPanel;
+
+import org.junit.Test;
+
+import guitests.guihandles.DetailsPanelHandle;
+import seedu.address.model.person.DisplayPicture;
+import seedu.address.model.person.Person;
+import seedu.address.model.person.ReadOnlyPerson;
+import seedu.address.testutil.PersonBuilder;
+
+public class DetailsPanelTest extends GuiUnitTest {
+
+    @Test
+    public void display() {
+        // no tags
+        Person personWithNoTags = new PersonBuilder().withTags(new String[0]).build();
+        DetailsPanel detailsPanel = new DetailsPanel(personWithNoTags);
+        uiPartRule.setUiPart(detailsPanel);
+        assertCardDisplay(detailsPanel, personWithNoTags, 1);
+
+        // with tags
+        Person personWithTags = new PersonBuilder().build();
+        detailsPanel = new DetailsPanel(personWithTags);
+        uiPartRule.setUiPart(detailsPanel);
+        assertCardDisplay(detailsPanel, personWithTags, 2);
+
+        // changes made to Person reflects on card
+        guiRobot.interact(() -> {
+            personWithTags.setName(ALICE.getName());
+            personWithTags.setAddress(ALICE.getAddress());
+            personWithTags.setEmail(ALICE.getEmail());
+            personWithTags.setPhone(ALICE.getPhone());
+            personWithTags.setNickname(ALICE.getNickname());
+            personWithNoTags.setDisplayPicture(ALICE.getDisplayPicture());
+            personWithTags.setTags(ALICE.getTags());
+        });
+        assertCardDisplay(detailsPanel, personWithTags, 2);
+    }
 
     @Test
     public void displayImage() {
         Person personWithDisplayPicture = new PersonBuilder().withDisplayPicture("1137944384").build();
-        PersonCard personCard = new PersonCard(personWithDisplayPicture, 1);
-        uiPartRule.setUiPart(personCard);
-        assertCardDisplay(personCard, personWithDisplayPicture, 1);
+        DetailsPanel detailsPanel = new DetailsPanel(personWithDisplayPicture);
+        uiPartRule.setUiPart(detailsPanel);
+        assertCardDisplay(detailsPanel, personWithDisplayPicture, 1);
 
         // changes made to Person reflects on card
         guiRobot.interact(() -> {
@@ -1187,6 +1594,43 @@ public class EmailBuilder {
             personWithDisplayPicture.setTags(ALICE.getTags());
         });
     }
+
+    @Test
+    public void equals() {
+        Person person = new PersonBuilder().build();
+        DetailsPanel detailsPanel = new DetailsPanel(person);
+
+        // same person, same index -> returns true
+        DetailsPanel copy = new DetailsPanel(person);
+        assertTrue(detailsPanel.equals(copy));
+
+        // same object -> returns true
+        assertTrue(detailsPanel.equals(detailsPanel));
+
+        // null -> returns false
+        assertFalse(detailsPanel.equals(null));
+
+        // different types -> returns false
+        assertFalse(detailsPanel.equals(0));
+
+        // different person, same index -> returns false
+        Person differentPerson = new PersonBuilder().withName("differentName").build();
+        assertFalse(detailsPanel.equals(new DetailsPanel(differentPerson)));
+    }
+
+    /**
+     * Asserts that {@code personCard} displays the details of {@code expectedPerson} correctly and matches
+     * {@code expectedId}.
+     */
+    private void assertCardDisplay(DetailsPanel detailsPanel, ReadOnlyPerson expectedPerson, int expectedId) {
+        guiRobot.pauseForHuman();
+
+        DetailsPanelHandle detailsPanelHandle = new DetailsPanelHandle(detailsPanel.getRoot());
+
+        // verify person details are displayed correctly
+        assertCardDisplaysPersonDetailsPanel(expectedPerson, detailsPanelHandle);
+    }
+}
 ```
 ###### \java\seedu\address\ui\PopularContactCardTest.java
 ``` java
@@ -1313,29 +1757,153 @@ public class PopularContactListPanelTest extends GuiUnitTest {
 
 }
 ```
-###### \java\seedu\address\ui\testutil\GuiTestAssert.java
+###### \java\systemtests\DetailsCommandSystemTest.java
 ``` java
+package systemtests;
+
+import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.commons.core.Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX;
+import static seedu.address.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
+import static seedu.address.logic.commands.DetailsCommand.MESSAGE_DETAILS_PERSON_SUCCESS;
+import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
+import static seedu.address.testutil.TypicalPersons.KEYWORD_MATCHING_MEIER;
+import static seedu.address.testutil.TypicalPersons.getTypicalPersons;
+
+import org.junit.Test;
+
+import seedu.address.commons.core.index.Index;
+import seedu.address.logic.commands.ClearCommand;
+
+import seedu.address.logic.commands.DetailsCommand;
+import seedu.address.logic.commands.RedoCommand;
+import seedu.address.logic.commands.UndoCommand;
+import seedu.address.model.Model;
+
+public class DetailsCommandSystemTest extends AddressBookSystemTest {
+    @Test
+    public void details() {
+        /* Case: select the first card in the person list, command with leading spaces and trailing spaces
+         * -> selected
+         */
+        String command = "   " + DetailsCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased() + "   ";
+        assertCommandSuccess(command, INDEX_FIRST_PERSON);
+
+        /* Case: select the last card in the person list -> selected */
+        Index personCount = Index.fromOneBased(getTypicalPersons().size());
+        command = DetailsCommand.COMMAND_WORD + " " + personCount.getOneBased();
+        assertCommandSuccess(command, personCount);
+
+        /* Case: undo previous selection -> rejected */
+        command = UndoCommand.COMMAND_WORD;
+        String expectedResultMessage = UndoCommand.MESSAGE_FAILURE;
+        assertCommandFailure(command, expectedResultMessage);
+
+        /* Case: redo selecting last card in the list -> rejected */
+        command = RedoCommand.COMMAND_WORD;
+        expectedResultMessage = RedoCommand.MESSAGE_FAILURE;
+        assertCommandFailure(command, expectedResultMessage);
+
+        /* Case: select the middle card in the person list -> selected */
+        Index middleIndex = Index.fromOneBased(personCount.getOneBased() / 2);
+        command = DetailsCommand.COMMAND_WORD + " " + middleIndex.getOneBased();
+        assertCommandSuccess(command, middleIndex);
+
+        /* Case: invalid index (size + 1) -> rejected */
+        int invalidIndex = getModel().getFilteredPersonList().size() + 1;
+        assertCommandFailure(DetailsCommand.COMMAND_WORD + " " + invalidIndex, MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+
+        /* Case: select the current selected card -> selected */
+        assertCommandSuccess(command, middleIndex);
+
+        /* Case: filtered person list, select index within bounds of address book but out of bounds of person list
+         * -> rejected
+         */
+        showPersonsWithName(KEYWORD_MATCHING_MEIER);
+        invalidIndex = getModel().getAddressBook().getPersonList().size();
+        assertCommandFailure(DetailsCommand.COMMAND_WORD + " " + invalidIndex, MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+
+        /* Case: filtered person list, select index within bounds of address book and person list -> selected */
+        Index validIndex = Index.fromOneBased(1);
+        assert validIndex.getZeroBased() < getModel().getFilteredPersonList().size();
+        command = DetailsCommand.COMMAND_WORD + " " + validIndex.getOneBased();
+        assertCommandSuccess(command, validIndex);
+
+        /* Case: invalid index (0) -> rejected */
+        assertCommandFailure(DetailsCommand.COMMAND_WORD + " " + 0,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, DetailsCommand.MESSAGE_USAGE));
+
+        /* Case: invalid index (-1) -> rejected */
+        assertCommandFailure(DetailsCommand.COMMAND_WORD + " " + -1,
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, DetailsCommand.MESSAGE_USAGE));
+
+        /* Case: invalid arguments (alphabets) -> rejected */
+        assertCommandFailure(DetailsCommand.COMMAND_WORD + " abc",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, DetailsCommand.MESSAGE_USAGE));
+
+        /* Case: invalid arguments (extra argument) -> rejected */
+        assertCommandFailure(DetailsCommand.COMMAND_WORD + " 1 abc",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, DetailsCommand.MESSAGE_USAGE));
+
+        /* Case: mixed case command word -> rejected */
+        assertCommandFailure("SeLeCt 1", MESSAGE_UNKNOWN_COMMAND);
+
+        /* Case: select from empty address book -> rejected */
+        executeCommand(ClearCommand.COMMAND_WORD);
+        assert getModel().getAddressBook().getPersonList().size() == 0;
+        assertCommandFailure(DetailsCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased(),
+                MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
+    }
 
     /**
-     * Asserts that {@code actualCard} displays the same values as {@code expectedCard}.
+     * Executes {@code command} and verifies that the command box displays an empty string, the result display
+     * box displays the success message of executing select command with the {@code expectedSelectedCardIndex}
+     * of the selected person, and the model related components equal to the current model.
+     * These verifications are done by
+     * {@code AddressBookSystemTest#assertApplicationDisplaysExpected(String, String, Model)}.<br>
+     * Also verifies that the command box has the default style class and the status bar remain unchanged. The resulting
+     * browser url and selected card will be verified if the current selected card and the card at
+     * {@code expectedSelectedCardIndex} are different.
+     * @see AddressBookSystemTest#assertApplicationDisplaysExpected(String, String, Model)
+     * @see AddressBookSystemTest#assertSelectedCardChanged(Index)
      */
-    public static void assertPopularCardEquals(PopularContactCardHandle expectedCard,
-                                               PopularContactCardHandle actualCard) {
-        assertEquals(expectedCard.getRank(), actualCard.getRank());
-        assertEquals(expectedCard.getName(), actualCard.getName());
+    private void assertCommandSuccess(String command, Index expectedSelectedCardIndex) {
+        Model expectedModel = getModel();
+        String expectedResultMessage = String.format(
+                MESSAGE_DETAILS_PERSON_SUCCESS, expectedSelectedCardIndex.getOneBased());
+        int preExecutionSelectedCardIndex = getPersonListPanel().getSelectedCardIndex();
+
+        executeCommand(command);
+        assertApplicationDisplaysExpected("", expectedResultMessage, expectedModel);
+
+        if (preExecutionSelectedCardIndex == expectedSelectedCardIndex.getZeroBased()) {
+            assertSelectedCardUnchangedForDetails();
+        } else {
+            assertSelectedCardChangedForDetails(expectedSelectedCardIndex);
+        }
+
+        assertCommandBoxShowsDefaultStyle();
+        assertStatusBarUnchangedExceptSyncStatus();
     }
-```
-###### \java\seedu\address\ui\testutil\GuiTestAssert.java
-``` java
 
     /**
-     * Asserts that {@code actualCard} displays the details of {@code expectedPerson}.
+     * Executes {@code command} and verifies that the command box displays {@code command}, the result display
+     * box displays {@code expectedResultMessage} and the model related components equal to the current model.
+     * These verifications are done by
+     * {@code AddressBookSystemTest#assertApplicationDisplaysExpected(String, String, Model)}.<br>
+     * Also verifies that the browser url, selected card and status bar remain unchanged, and the command box has the
+     * error style.
+     * @see AddressBookSystemTest#assertApplicationDisplaysExpected(String, String, Model)
      */
-    public static void assertCardDisplaysPopularPerson(ReadOnlyPerson expectedPerson,
-                                                       PopularContactCardHandle actualCard) {
-        assertEquals(expectedPerson.getName().fullName, actualCard.getName());
+    private void assertCommandFailure(String command, String expectedResultMessage) {
+        Model expectedModel = getModel();
 
+        executeCommand(command);
+        assertApplicationDisplaysExpected(command, expectedResultMessage, expectedModel);
+        assertSelectedCardUnchanged();
+        assertCommandBoxShowsErrorStyle();
+        assertStatusBarUnchanged();
     }
+}
 ```
 ###### \java\systemtests\EmailCommandSystemTest.java
 ``` java
@@ -1393,7 +1961,6 @@ public class EmailCommandSystemTest extends AddressBookSystemTest {
         Model expectedModel = getModel();
 
         executeCommand(command);
-        assertApplicationDisplaysExpected(command, expectedResultMessage, expectedModel);
         assertSelectedCardUnchanged();
         assertCommandBoxShowsErrorStyle();
         assertStatusBarUnchanged();
@@ -1406,8 +1973,8 @@ public class EmailCommandSystemTest extends AddressBookSystemTest {
 package systemtests;
 
 import static seedu.address.commons.core.Messages.MESSAGE_PERSONS_LISTED_OVERVIEW;
+import static seedu.address.logic.commands.DetailsCommand.MESSAGE_DETAILS_PERSON_SUCCESS;
 import static seedu.address.logic.commands.LocationCommand.MESSAGE_FIND_LOCATION_SUCCESS;
-import static seedu.address.logic.commands.SelectCommand.MESSAGE_SELECT_PERSON_SUCCESS;
 import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
 import static seedu.address.testutil.TypicalPersons.ALICE;
 import static seedu.address.testutil.TypicalPersons.BENSON;
@@ -1419,9 +1986,9 @@ import static seedu.address.testutil.TypicalPersons.KEYWORD_TAG_ENEMY;
 import org.junit.Test;
 
 import seedu.address.commons.core.index.Index;
+import seedu.address.logic.commands.DetailsCommand;
 import seedu.address.logic.commands.ListCommand;
 import seedu.address.logic.commands.LocationCommand;
-import seedu.address.logic.commands.SelectCommand;
 import seedu.address.logic.commands.ViewTagCommand;
 import seedu.address.model.Model;
 
@@ -1431,11 +1998,11 @@ public class PopularContactsSystemTest extends AddressBookSystemTest {
     public void favouriteContactsTest() {
 
         /* Selecting first one to increase popularity counter by one */
-        String command = "   " + SelectCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased() + "   ";
+        String command = "   " + DetailsCommand.COMMAND_WORD + " " + INDEX_FIRST_PERSON.getOneBased() + "   ";
         Model expectedModel = getModel();
         ModelHelper.setFilteredListPopularContacts(expectedModel, ALICE, BENSON, CARL, DANIEL, ELLE);
-        assertCommandSuccessForSelect(command, INDEX_FIRST_PERSON);
-        assertSelectedCardChanged(INDEX_FIRST_PERSON);
+        assertCommandSuccessForDetails(command, INDEX_FIRST_PERSON);
+        assertSelectedCardChangedForDetails(INDEX_FIRST_PERSON);
 
 
         /* Executing viewtag to increase popularity counter by one for everyone in the tag */
@@ -1469,20 +2036,13 @@ public class PopularContactsSystemTest extends AddressBookSystemTest {
      * @param command
      * @param expectedSelectedCardIndex
      */
-    private void assertCommandSuccessForSelect(String command, Index expectedSelectedCardIndex) {
+    private void assertCommandSuccessForDetails(String command, Index expectedSelectedCardIndex) {
         Model expectedModel = getModel();
         String expectedResultMessage = String.format(
-                MESSAGE_SELECT_PERSON_SUCCESS, expectedSelectedCardIndex.getOneBased());
-        int preExecutionSelectedCardIndex = getPersonListPanel().getSelectedCardIndex();
+                MESSAGE_DETAILS_PERSON_SUCCESS, expectedSelectedCardIndex.getOneBased());
 
         executeCommand(command);
         assertApplicationDisplaysExpected("", expectedResultMessage, expectedModel);
-
-        if (preExecutionSelectedCardIndex == expectedSelectedCardIndex.getZeroBased()) {
-            assertSelectedCardUnchanged();
-        } else {
-            assertSelectedCardChanged(expectedSelectedCardIndex);
-        }
 
         assertCommandBoxShowsDefaultStyle();
         assertStatusBarUnchangedExceptSyncStatus();

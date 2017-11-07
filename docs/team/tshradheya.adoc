@@ -156,14 +156,190 @@ public class DisplayPictureCommand extends Command {
 
 ---
 
+=== Enhancement Added: Display Location of an contact
+
+==== External behavior
+
+---
+
+==== Displaying location to a contact's address: `location`
+
+Uses Google Maps to show location of the address of the selected `INDEX`
+Format: location INDEX
+
+****
+* The location is shown in browser panel using Google Maps
+* The current location is the location of device from where the command is executed
+* The command is only valid for INDEX which have an valid address
+****
+
+Examples:
+
+* `location 2`
+Returns location of the address of person at `INDEX` 2
+
+image::directon.PNG[width="790"]
+
+---
+
+
+==== Justification
+
+To be filled in according to CS2101
+
+==== Implementation
+
+---
+
+The location command through an event-driven mechanism. The below diagram shows sequence diagram for it.
+
+image::locationSD.PNG[width="790"]
+_Figure 21 : Sequence diagram for the Location Command._
+
+The execution of command raises an event `ShowLocationEvent`. This causes the `BrowserAndReminderPanel` to switch to Node `Browser` irrespective of current state of the application. The activity diagram for such a case is shown below:
+
+image::locationAD.PNG[width="790"]
+_Figure 22 : Sequence diagram for the Location Command._
+
+Following is the code written to ensure the GUI set up for the command.
+
+[source, java]
+----
+private void setUpToShowLocation() {
+    if (currentlyInFront == Node.REMINDERS) {
+        browser.toFront();
+        currentlyInFront = Node.BROWSER;
+        raise(new TurnLabelsOffEvent());
+    }
+}
+----
+
+The URL for denoting the specified person's address in Google Maps is set up through the following code
+
+[source, java]
+----
+public String loadPersonLocation(String address) {
+
+        String[] splitAddressByWords = address.split("\\s");
+
+        String keywordsOfUrl = "";
+
+        for (String word: splitAddressByWords) {
+            keywordsOfUrl += word;
+            keywordsOfUrl += "+";
+        }
+
+        loadPage(GOOGLE_MAPS_URL + keywordsOfUrl);
+}
+----
+
+
+==== Design Considerations
+
+**Aspect:** What to use to show the location +
+**Alternative 1 (current choice):** Show using google maps url in BrowserPanel  +
+**Pros:** We will be able to get the location easily with accuracy +
+**Cons:** Limited functionality of URL +
+**Alternative 2:** Google Maps API +
+**Pros:**  Allows more functionality +
+**Cons:** Uses more resources for the exact same feature and doesn't utilise pre existing browser properly
+
+---
+
+
+=== Enhancement Added: Email to a group of contacts
+
+==== External behavior
+
+---
+==== Email to a group of people having a particular tag: `email` [V1.3]
+
+Opens up the link to send email to all people of having a particular tag
+Format: email s/SERVICE to/KEYWORD sub/SUBJECT b/BODY
+
+****
+* The `KEYWORD` should be a tag which has atleast 1 person associated with it
+* The `SERVICE` supported are only `gmail` and `outlook`
+* The `SUBJECT` and `BODY` prefix are optional and can be not mentioned
+* The email drafting will open up in the default browser of your local device
+* The command will add all people with the `KEYWORD` tag as the recepeints, subject as `SUBJECT` and body as `BODY`
+****
+
+Examples:
+
+* `email s/gmail to/cs2103 sub/Meeting body/Morning 10 am `
+Allows to send email after drafting message to everyone with the tag `cs2103` in the default browser
+
+
+---
+
+
+==== Justification
+
+To be filled in according to CS2101
+
+==== Implementation
+
+---
+
+==== Emailing mechanism
+
+The email command lets the user compose an email in default browser with filled in data like recipients, subject and body.
+
+[NOTE]
+The recipients are all contacts belonging to a particular tag.
+[NOTE]
+The only two services offered are `gmail` and `outlook` as our target users are students.
+
+The email command through an event driven mechanism. The below diagram shows sequence diagram for it.
+
+image::emailSD.PNG[width="790"]
+_Figure 23 : Sequence diagram for the Email Command._
+
+The given command is parsed to know the `Service` , `tag` to which email has to be sent, `Subject` and `Body`.
+
+The parsing takes place in the following manner:
+
+image::ParserSDEmail.PNG[width="790"]
+_Figure 24 : Sequence diagram for parsing the Email Command._
+
+
+The execution of command raises an event `SendingEmailEvent`.
+
+The URL for composing the mail set up through the following code
+
+[source, java]
+----
+public static final String GMAIL_EMAIL_URL =
+            "https://mail.google.com/mail/?view=cm&fs=1&tf=1&source=mailto&to=%1$s&su=%2$s&body=%3$s";
+
+public static final String OUTLOOK_EMAIL_URL =
+            "https://outlook.office.com/?path=/mail/action/compose&to=%1$s&subject=%2$s&body=%3$s";
+
+Desktop.getDesktop().browse(new URI(String.format(GMAIL_EMAIL_URL, recipients, subject, body)));
+----
+
+==== Design Considerations
+
+**Aspect:** Where to compose the mail +
+**Alternative 1 (current choice):** Opens the default browser of Desktop  +
+**Pros:** The browser has user already signed up and browser supports the url +
+**Cons:** Depending on third party apps +
+**Alternative 2:** Open in `BrowserPanel` +
+**Pros:** No dependency on other apps +
+**Cons:** Does not auto fill in the text due to older version of browser
+
+---
+
 === Enhancement Proposed: Add command `remark`
 
 {Explain similar to the Undo/Redo feature above.}
 
 === Other contributions
 
-* Updated the GUI color scheme (Pull requests https://github.com[#33], https://github.com[#34])
-* Wrote additional tests to increase coverage from 88% to 92% (Pull requests https://github.com[#36], https://github.com[#38])
+* Managed all Issues and Milestone by managing the project and assigning work
+* Managed merging of all PR's and handling of Merge Conflicts
+* Wrote additional tests to increase coverage from 88% to 91%
 
 == Project: NUSEvents
 

@@ -1,5 +1,5 @@
 # chuaweiwen
-###### /java/seedu/address/commons/events/ui/ChangeThemeRequestEvent.java
+###### \java\seedu\address\commons\events\ui\ChangeThemeRequestEvent.java
 ``` java
 package seedu.address.commons.events.ui;
 
@@ -23,7 +23,7 @@ public class ChangeThemeRequestEvent extends BaseEvent {
     }
 }
 ```
-###### /java/seedu/address/logic/commands/FilterCommand.java
+###### \java\seedu\address\logic\commands\FilterCommand.java
 ``` java
 package seedu.address.logic.commands;
 
@@ -63,7 +63,7 @@ public class FilterCommand extends Command {
     }
 }
 ```
-###### /java/seedu/address/logic/commands/NicknameCommand.java
+###### \java\seedu\address\logic\commands\NicknameCommand.java
 ``` java
 package seedu.address.logic.commands;
 
@@ -170,7 +170,7 @@ public class NicknameCommand extends UndoableCommand {
     }
 }
 ```
-###### /java/seedu/address/logic/commands/ThemeCommand.java
+###### \java\seedu\address\logic\commands\ThemeCommand.java
 ``` java
 package seedu.address.logic.commands;
 
@@ -191,8 +191,6 @@ public class ThemeCommand extends Command {
             + "List of available themes: "
             + ThemeNames.THEME_DARK + ", "
             + ThemeNames.THEME_SKY + "\n"
-            + ThemeNames.THEME_DAY + "\n"
-            + ThemeNames.THEME_NIGHT + "\n"
             + "Example: " + COMMAND_WORD + " dark";
 
     public static final String MESSAGE_SET_THEME_SUCCESS = "Successfully set theme: %1$s";
@@ -227,7 +225,7 @@ public class ThemeCommand extends Command {
     }
 }
 ```
-###### /java/seedu/address/logic/parser/AddressBookParser.java
+###### \java\seedu\address\logic\parser\AddressBookParser.java
 ``` java
         case NicknameCommand.COMMAND_WORD:
             return new NicknameCommandParser().parse(arguments);
@@ -235,12 +233,12 @@ public class ThemeCommand extends Command {
         case ThemeCommand.COMMAND_WORD:
             return new ThemeCommandParser().parse(arguments);
 ```
-###### /java/seedu/address/logic/parser/AddressBookParser.java
+###### \java\seedu\address\logic\parser\AddressBookParser.java
 ``` java
         case FilterCommand.COMMAND_WORD:
             return new FilterCommandParser().parse(arguments);
 ```
-###### /java/seedu/address/logic/parser/FilterCommandParser.java
+###### \java\seedu\address\logic\parser\FilterCommandParser.java
 ``` java
 package seedu.address.logic.parser;
 
@@ -314,7 +312,7 @@ public class FilterCommandParser implements Parser<FilterCommand> {
     }
 }
 ```
-###### /java/seedu/address/logic/parser/NicknameCommandParser.java
+###### \java\seedu\address\logic\parser\NicknameCommandParser.java
 ``` java
 package seedu.address.logic.parser;
 
@@ -360,7 +358,7 @@ public class NicknameCommandParser implements Parser<NicknameCommand> {
     }
 }
 ```
-###### /java/seedu/address/logic/parser/Theme.java
+###### \java\seedu\address\logic\parser\Theme.java
 ``` java
 package seedu.address.logic.parser;
 
@@ -407,7 +405,7 @@ public class Theme {
     }
 }
 ```
-###### /java/seedu/address/logic/parser/ThemeCommandParser.java
+###### \java\seedu\address\logic\parser\ThemeCommandParser.java
 ``` java
 package seedu.address.logic.parser;
 
@@ -441,12 +439,6 @@ public class ThemeCommandParser implements Parser<ThemeCommand> {
         case ThemeNames.THEME_SKY:
             return new ThemeCommand(new Theme(trimmedArgs, ThemeNames.THEME_SKY_CSS));
 
-        case ThemeNames.THEME_DAY:
-            return new ThemeCommand(new Theme(trimmedArgs, ThemeNames.THEME_DAY_CSS));
-
-        case ThemeNames.THEME_NIGHT:
-            return new ThemeCommand(new Theme(trimmedArgs, ThemeNames.THEME_NIGHT_CSS));
-
         default:
             throw new ParseException(
                 String.format(MESSAGE_UNKNOWN_THEME, ThemeCommand.MESSAGE_USAGE));
@@ -454,7 +446,7 @@ public class ThemeCommandParser implements Parser<ThemeCommand> {
     }
 }
 ```
-###### /java/seedu/address/logic/parser/ThemeNames.java
+###### \java\seedu\address\logic\parser\ThemeNames.java
 ``` java
 package seedu.address.logic.parser;
 
@@ -464,16 +456,12 @@ package seedu.address.logic.parser;
 public class ThemeNames {
     public static final String THEME_DARK = "dark";
     public static final String THEME_SKY = "sky";
-    public static final String THEME_DAY = "day";
-    public static final String THEME_NIGHT = "night";
 
     public static final String THEME_DARK_CSS = "DarkTheme.css";
     public static final String THEME_SKY_CSS = "SkyTheme.css";
-    public static final String THEME_DAY_CSS = "DayTheme.css";
-    public static final String THEME_NIGHT_CSS = "NightTheme.css";
 }
 ```
-###### /java/seedu/address/MainApp.java
+###### \java\seedu\address\MainApp.java
 ``` java
     @Subscribe
     public void handleChangeThemeRequestEvent(ChangeThemeRequestEvent event) {
@@ -482,7 +470,7 @@ public class ThemeNames {
         userPrefs.setThemeFilePath(filePath);
     }
 ```
-###### /java/seedu/address/model/person/NameAndTagsContainsKeywordsPredicate.java
+###### \java\seedu\address\model\person\NameAndTagsContainsKeywordsPredicate.java
 ``` java
 package seedu.address.model.person;
 
@@ -575,7 +563,7 @@ public class NameAndTagsContainsKeywordsPredicate implements Predicate<ReadOnlyP
 
 }
 ```
-###### /java/seedu/address/model/person/Nickname.java
+###### \java\seedu\address\model\person\Nickname.java
 ``` java
 package seedu.address.model.person;
 
@@ -616,7 +604,7 @@ public class Nickname {
 
 }
 ```
-###### /java/seedu/address/model/UserPrefs.java
+###### \java\seedu\address\model\UserPrefs.java
 ``` java
     public String getThemeFilePath() {
         return themeFilePath;
@@ -626,7 +614,7 @@ public class Nickname {
         this.themeFilePath = themeFilePath;
     }
 ```
-###### /java/seedu/address/ui/MainWindow.java
+###### \java\seedu\address\ui\MainWindow.java
 ``` java
     @Subscribe
     private void handleChangeThemeEvent(ChangeThemeRequestEvent event) {
@@ -644,7 +632,7 @@ public class Nickname {
         scene.getStylesheets().add(STYLE);
     }
 ```
-###### /resources/view/SkyTheme.css
+###### \resources\view\SkyTheme.css
 ``` css
 .background {
     -fx-background-color: derive(#9bd8ff, 20%);
@@ -652,7 +640,7 @@ public class Nickname {
 }
 
 .label {
-    -fx-font-size: 15pt;
+    -fx-font-size: 11pt;
     -fx-font-family: "Segoe UI Semibold";
     -fx-text-fill: #555555;
     -fx-opacity: 0.9;
@@ -736,7 +724,6 @@ public class Nickname {
 }
 
 .list-view {
-    -fx-background-color: derive(#9bd8ff, 20%);
     -fx-background-insets: 0;
     -fx-padding: 0;
 }
@@ -766,11 +753,6 @@ public class Nickname {
 
 .list-cell .label {
     -fx-text-fill: black;
-}
-
-.list-cell:empty {
-    /* Empty cells will not have alternating colours */
-    -fx-background: derive(#9bd8ff, 20%);
 }
 
 .cell_big_label {
@@ -1002,21 +984,4 @@ public class Nickname {
     -fx-background-radius: 2;
     -fx-font-size: 11;
 }
-
-#birthdayListHolder {
-    -fx-background-color: derive(#9bd8ff, 20%);
-}
-
-#birthdayListHolder > .label {
-    -fx-background-color: derive(#9bd8ff, 20%);
-}
-
-#reminderListHolder {
-    -fx-background-color: derive(#9bd8ff, 20%);
-}
-
-#reminderListHolder > .label {
-    -fx-background-color: derive(#9bd8ff, 20%);
-}
-
 ```

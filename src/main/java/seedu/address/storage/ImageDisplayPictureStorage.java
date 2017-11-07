@@ -1,3 +1,4 @@
+//@@author tshradheya
 package seedu.address.storage;
 
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_IMAGE;
@@ -5,9 +6,11 @@ import static seedu.address.commons.core.Messages.MESSAGE_INVALID_IMAGE;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 
+import seedu.address.commons.core.LogsCenter;
 import seedu.address.logic.commands.DisplayPictureCommand;
 import seedu.address.logic.parser.exceptions.ImageException;
 
@@ -16,7 +19,11 @@ import seedu.address.logic.parser.exceptions.ImageException;
  */
 public class ImageDisplayPictureStorage implements DisplayPictureStorage {
 
+    private static final Logger logger = LogsCenter.getLogger(ImageDisplayPictureStorage.class);
+
+
     public ImageDisplayPictureStorage() {
+        logger.info("Constructor used to create instance of DisplayPictureStorage.class");
     }
 
     /**
@@ -56,6 +63,20 @@ public class ImageDisplayPictureStorage implements DisplayPictureStorage {
             throw  new ImageException(String.format(MESSAGE_INVALID_IMAGE,
                     DisplayPictureCommand.MESSAGE_IMAGE_PATH_FAIL));
         }
+    }
+
+    /**
+     * Deletes image from /pictures/ directory
+     * @param filepath of image to be deleted
+     */
+    public void deleteImageFromDirectory(String  filepath) {
+        if (filepath.equalsIgnoreCase("")) {
+            logger.info("image not present so cannot be deleted");
+        }
+        File file = new File("pictures/" + filepath + ".png");
+
+        logger.info(filepath + "deleted during exit");
+        file.deleteOnExit();
     }
 
 }

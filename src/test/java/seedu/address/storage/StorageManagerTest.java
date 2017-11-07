@@ -156,6 +156,7 @@ public class StorageManagerTest {
             throw new IOException("dummy exception");
         }
     }
+    //@@author tshradheya
 
     @Test
     public void handleDisplayPictureChangedEvent_exceptionThrown_eventRaised() throws IOException {
@@ -166,5 +167,6 @@ public class StorageManagerTest {
         storage.handleDisplayPictureChangedEvent(new DisplayPictureChangedEvent("dummy", 123));
         assertTrue(eventsCollectorRule.eventsCollector.getMostRecent() instanceof DataSavingExceptionEvent);
     }
+    //@@author
 
 }

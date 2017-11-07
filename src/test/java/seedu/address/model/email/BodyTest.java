@@ -1,3 +1,4 @@
+//@@author tshradheya
 package seedu.address.model.email;
 
 import static junit.framework.TestCase.assertFalse;

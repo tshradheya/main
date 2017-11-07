@@ -42,6 +42,7 @@ public class SelectCommand extends Command {
         if (targetIndex.getZeroBased() >= lastShownList.size()) {
             throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
         }
+        //@@author tshradheya
 
         try {
             model.updatePersonsPopularityCounterByOne(lastShownList.get(targetIndex.getZeroBased()));
@@ -51,7 +52,7 @@ public class SelectCommand extends Command {
         } catch (PersonNotFoundException pnfe) {
             throw new AssertionError("The target person cannot be missing");
         }
-
+        //@@author
         EventsCenter.getInstance().post(new JumpToListRequestEvent(targetIndex));
         return new CommandResult(String.format(MESSAGE_SELECT_PERSON_SUCCESS, targetIndex.getOneBased()));
 

@@ -16,11 +16,9 @@ public class ThemeCommand extends Command {
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Changes the theme of the address book\n"
             + "Parameter: THEME\n"
             + "List of available themes: "
-            + ThemeList.THEME_DARK + ", "
             + ThemeList.THEME_DAY + ", "
-            + ThemeList.THEME_NIGHT + ", "
-            + ThemeList.THEME_SKY + "\n"
-            + "Example: " + COMMAND_WORD + " dark";
+            + ThemeList.THEME_NIGHT + "\n"
+            + "Example: " + COMMAND_WORD + " day";
 
     public static final String MESSAGE_SET_THEME_SUCCESS = "Successfully set theme: %1$s";
 

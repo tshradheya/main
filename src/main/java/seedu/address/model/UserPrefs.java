@@ -14,7 +14,7 @@ public class UserPrefs {
     private String remindersFilePath = "data/reminders.xml";
     private String addressBookPicturesPath = "pictures/default.png";
     private String addressBookName = "MyAddressBook";
-    private String themeFilePath = "view/DarkTheme.css";
+    private String themeFilePath = "view/NightTheme.css";
 
     public UserPrefs() {
         this.setGuiSettings(500, 500, 0, 0);

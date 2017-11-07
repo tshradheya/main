@@ -567,7 +567,7 @@ e.g.`select 2`
 * *Redo* : `redo`
 * *Toggle* : `toggle`
 * *Theme* : `theme THEME` +
-e.g. `theme sky`
+e.g. `theme day`
 
 
 == Since V1.3

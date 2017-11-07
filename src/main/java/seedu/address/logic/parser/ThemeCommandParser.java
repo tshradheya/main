@@ -25,17 +25,11 @@ public class ThemeCommandParser implements Parser<ThemeCommand> {
         }
 
         switch(trimmedArgs) {
-        case ThemeList.THEME_DARK:
-            return new ThemeCommand(new Theme(trimmedArgs, ThemeList.THEME_DARK_PATH));
-
         case ThemeList.THEME_DAY:
             return new ThemeCommand(new Theme(trimmedArgs, ThemeList.THEME_DAY_PATH));
 
         case ThemeList.THEME_NIGHT:
             return new ThemeCommand(new Theme(trimmedArgs, ThemeList.THEME_NIGHT_PATH));
-
-        case ThemeList.THEME_SKY:
-            return new ThemeCommand(new Theme(trimmedArgs, ThemeList.THEME_SKY_PATH));
 
         default:
             throw new ParseException(

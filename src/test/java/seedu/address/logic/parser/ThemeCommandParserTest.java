@@ -16,8 +16,8 @@ public class ThemeCommandParserTest {
 
     @Test
     public void parse_existingArgs_returnsThemeCommand() throws Exception {
-        ThemeCommand expectedCommand = new ThemeCommand(new Theme(ThemeList.THEME_DARK, ThemeList.THEME_DARK_PATH));
-        assertParseSuccess(parser, ThemeList.THEME_DARK, expectedCommand);
+        ThemeCommand expectedCommand = new ThemeCommand(new Theme(ThemeList.THEME_NIGHT, ThemeList.THEME_NIGHT_PATH));
+        assertParseSuccess(parser, ThemeList.THEME_NIGHT, expectedCommand);
     }
 
     @Test

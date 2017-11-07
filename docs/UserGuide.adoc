@@ -468,14 +468,14 @@ Changes the theme of the address book to a specific theme. +
 Format: `theme THEME`
 
 ****
-* The search is case insensitive. e.g `dark` will match `Dark`.
-* Only full theme names will be matched e.g. `dark` will not match `dar`.
+* The search is case insensitive. e.g `night` will match `Night`.
+* Only full theme names will be matched e.g. `night` will not match `nigh`.
 ****
 
 Examples:
 
-* `theme sky` +
-Changes the theme to `sky`.
+* `theme day` +
+Changes the theme to `day`.
 
 image::themeDisplay.png[width="790"]
 // end::theme[]

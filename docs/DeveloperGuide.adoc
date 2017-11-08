@@ -101,7 +101,7 @@ This section will explain the design aspects of iContacts.
 image::Architecture.png[width="600"]
 _Figure 1 : Architecture Diagram_
 
-The *_Architecture Diagram_* given above explains the high-level design of iContacts.
+The *_Architecture Diagram_* given above (Refer to Figure 1) explains the high-level design of iContacts.
 
 [TIP]
 The `.pptx` files used to create diagrams in this document can be found in the link:{repoURL}/docs/diagrams/[diagrams] folder. To update a diagram, modify the diagram in the pptx file, select the objects of the diagram, and choose `Save as picture`.
@@ -130,7 +130,7 @@ Each of the four components
 *** defines its _API_ in an `interface` with the same name as the Component.
 *** exposes its functionality using a `{Component Name}Manager` class.
 
-For example, the `Logic` component (see the class diagram given below) defines its API in the `Logic.java` interface and exposes its functionality using the `LogicManager.java` class.
+For example, the `Logic` component (Refer to Figure 2) defines its API in the `Logic.java` interface and exposes its functionality using the `LogicManager.java` class.
 
 image::LogicClassDiagram.png[width="800"]
 _Figure 2 : Class Diagram of the Logic component_
@@ -138,7 +138,7 @@ _Figure 2 : Class Diagram of the Logic component_
 
 === Events-Driven nature of the design
 
-The _Sequence Diagram_ below shows how the components interact for the scenario where the user issues the command `delete 1`.
+The _Sequence Diagram_ below (Refer to Figure 3) shows how the components interact for the scenario where the user issues the command `delete 1`.
 
 image::SDforDeletePerson.png[width="800"]
 _Figure 3 : Component interactions for `delete 1` command (part 1)_
@@ -146,7 +146,7 @@ _Figure 3 : Component interactions for `delete 1` command (part 1)_
 [NOTE]
 Note how the `Model` simply raises a `AddressBookChangedEvent` when the Address Book data are changed, instead of asking the `Storage` to save the updates to the hard disk.
 
-The diagram below shows how the `EventsCenter` reacts to that event, which eventually results in the updates being saved to the hard disk and the status bar of the UI being updated to reflect the 'Last Updated' time.
+The diagram below (Refer to Figure 4) shows how the `EventsCenter` reacts to that event, which eventually results in the updates being saved to the hard disk and the status bar of the UI being updated to reflect the 'Last Updated' time.
 
 image::SDforDeletePersonEventHandling.png[width="800"]
 _Figure 4 : Component interactions for `delete 1` command (part 2)_
@@ -160,7 +160,7 @@ This section explains the `UI`, `Logic`, `Model` and `Storage` component used in
 
 ==== UI component
 
-The `UI` component provides with the API of Graphical User Interface. The figure below shows the structure of the `UI` component.
+The `UI` component provides with the API of Graphical User Interface. The figure below (Refer to Figure 5) shows the structure of the `UI` component.
 
 image::UiClassDiagram.png[width="800"]
 _Figure 5 : Structure of the UI component_
@@ -178,7 +178,7 @@ The `UI` component
 * responds to events raised from various parts of iContacts and updates the `Ui` accordingly.
 
 ==== Logic component
-The `Logic` component deals with how each command and its parser would be executed in an event-driven design. The figures below shows the structure of the `Logic` component.
+The `Logic` component deals with how each command and its parser would be executed in an event-driven design. The figures below (Refer to Figures 6, 7) shows the structure of the `Logic` component.
 
 image::LogicClassDiagram.png[width="800"]
 _Figure 6 : Structure of the Logic component_
@@ -191,13 +191,13 @@ link:{repoURL}/src/main/java/seedu/address/logic/Logic.java[`Logic.java`]
 
 The `Logic` uses the `AddressBookParser` class to parse the user command. This results in a `Command` object which is executed by the `LogicManager`. The command execution can affect the `Model` (e.g. adding a person) and/or raise events. The result of the command execution is encapsulated as a `CommandResult` object which is passed back to the `UI`.
 
-The figure below shows the sequence diagram of interactions within the `Logic` component for the `execute("delete 1")` API call.
+The figure below (Refer to Figure 8) shows the sequence diagram of interactions within the `Logic` component for the `execute("delete 1")` API call.
 
 image::DeletePersonSdForLogic.png[width="800"]
 _Figure 8 : Interactions inside the Logic component for the `delete 1` command_
 
 ==== Model component
-The `Model` Component handles the contacts in address book and all its stored details in data structures which provides API to create, read, update and delete the contacts in the address book. The figure below shows the structure of the `Model` component.
+The `Model` Component handles the contacts in address book and all its stored details in data structures which provides API to create, read, update and delete the contacts in the address book. The figure below (Refer to Figure 9) shows the structure of the `Model` component.
 
 
 image::ModelClassDiagram.png[width="800"]
@@ -213,7 +213,7 @@ The `Model` component
 * does not depend on any of the other three components.
 
 ==== Storage component
-The `Storage` component handles the storage of all data of address book in the local device. The figure below shows the structure of Storage component.
+The `Storage` component handles the storage of all data of address book in the local device. The figure below (Refer to Figure 10) shows the structure of Storage component.
 
 image::StorageClassDiagram.png[width="800"]
 _Figure 10 : Structure of the Storage component_
@@ -437,7 +437,7 @@ For the `FindCommand` to work properly `nameKeywords` must be non-empty. The cod
 
 The undo/redo mechanism is facilitated by an `UndoRedoStack`, which resides inside `LogicManager`. It supports undoing and redoing of commands that modifies the state of the address book (e.g. `add`, `edit`). Such commands will inherit from `UndoableCommand`.
 
-`UndoRedoStack` only deals with `UndoableCommands`. Commands that cannot be undone will inherit from `Command` instead. The following diagram shows the inheritance diagram for commands:
+`UndoRedoStack` only deals with `UndoableCommands`. Commands that cannot be undone will inherit from `Command` instead. The following diagram (Refer to Figure 11) shows the inheritance diagram for commands:
 
 image::LogicCommandClassDiagram.png[width="800"]
 _Figure 11 : Inheritance diagram for commands_
@@ -477,12 +477,12 @@ public class DeleteCommand extends UndoableCommand {
 
 Suppose that the user has just launched the application. The `UndoRedoStack` will be empty at the beginning.
 
-The user executes a new `UndoableCommand`, `delete 5`, to delete the 5th person in the address book. The current state of the address book is saved before the `delete 5` command executes. The `delete 5` command will then be pushed onto the `undoStack` (the current state is saved together with the command).
+The user executes a new `UndoableCommand`, `delete 5`, to delete the 5th person in the address book. The current state of the address book is saved before the `delete 5` command executes. The `delete 5` command will then be pushed onto the `undoStack` (the current state is saved together with the command) (Refer to Figure 12).
 
 image::UndoRedoStartingStackDiagram.png[width="800"]
 _Figure 12 : Stack diagram after executing Delete command_
 
-As the user continues to use the program, more commands are added into the `undoStack`. For example, the user may execute `add n/David ...` to add a new person.
+As the user continues to use the program, more commands are added into the `undoStack`. For example, the user may execute `add n/David ...` to add a new person (Refer to Figure 13).
 
 image::UndoRedoNewCommand1StackDiagram.png[width="800"]
 _Figure 13 : Stack diagram after executing Add command_
@@ -492,7 +492,7 @@ If a command fails its execution, it will not be pushed to the `UndoRedoStack` a
 
 The user now decides that adding the person was a mistake, and decides to undo that action using `undo`.
 
-We will pop the most recent command out of the `undoStack` and push it back to the `redoStack`. We will restore the address book to the state before the `add` command executed.
+We will pop the most recent command out of the `undoStack` and push it back to the `redoStack`. We will restore the address book to the state before the `add` command executed (Refer to Figure 14).
 
 image::UndoRedoExecuteUndoStackDiagram.png[width="800"]
 _Figure 14 : Stack diagram after executing Undo command_
@@ -500,7 +500,7 @@ _Figure 14 : Stack diagram after executing Undo command_
 [NOTE]
 If the `undoStack` is empty, then there are no other commands left to be undone, and an `Exception` will be thrown when popping the `undoStack`.
 
-The following sequence diagram shows how the undo operation works:
+The following sequence diagram (Refer to Figure 15) shows how the undo operation works:
 
 image::UndoRedoSequenceDiagram.png[width="800"]
 _Figure 15 : Sequence diagram of the undo operation_
@@ -510,17 +510,17 @@ The redo does the exact opposite (pops from `redoStack`, push to `undoStack`, an
 [NOTE]
 If the `redoStack` is empty, then there are no other commands left to be redone, and an `Exception` will be thrown when popping the `redoStack`.
 
-The user now decides to execute a new command, `clear`. As before, `clear` will be pushed into the `undoStack`. This time the `redoStack` is no longer empty. It will be purged as it no longer make sense to redo the `add n/David` command (this is the behavior that most modern desktop applications follow).
+The user now decides to execute a new command, `clear`. As before, `clear` will be pushed into the `undoStack`. This time the `redoStack` is no longer empty. It will be purged as it no longer make sense to redo the `add n/David` command (this is the behavior that most modern desktop applications follow) (Refer to Figure 16).
 
 image::UndoRedoNewCommand2StackDiagram.png[width="800"]
 _Figure 16 : Stack diagram after executing Clear command_
 
-Commands that are not undoable are not added into the `undoStack`. For example, `list`, which inherits from `Command` rather than `UndoableCommand`, will not be added after execution:
+Commands that are not undoable are not added into the `undoStack`. For example, `list`, which inherits from `Command` rather than `UndoableCommand`, will not be added after execution (Refer to Figure 17):
 
 image::UndoRedoNewCommand3StackDiagram.png[width="800"]
 _Figure 17 : Stack diagram remains unchanged after executing List command_
 
-The following activity diagram summarize what happens inside the `UndoRedoStack` when a user executes a new command:
+The following activity diagram (Refer to Figure 18) summarize what happens inside the `UndoRedoStack` when a user executes a new command:
 
 image::UndoRedoActivityDiagram.png[width="200"]
 _Figure 18 : Activity diagram for UndoRedoStack_
@@ -579,12 +579,12 @@ This command works by retrieving the image using `BufferedImage`. The command ex
 It then stores the image in the working directory's `\src\main\resources\images\` folder by giving it a unique hashcode based on user's email address.
 The reading and writing of images is done using the `ImageIO` class.
 
-The sequence diagram for adding a display picture is shown below: +
+The sequence diagram for adding a display picture is shown below (Refer to Figure 19): +
 
 image::SDforDisplayPicture.PNG[width="800"]
 _Figure 19 : Sequence Diagram for Display Picture Command._
 
-The wireframe used to display the image for each person is shown below:
+The wireframe used to display the image for each person is shown below (Refer to Figure 20):
 
 image::WireFramePersonCard.PNG[width="500"]
 _Figure 20 : Wireframe for the UI._
@@ -649,12 +649,12 @@ The command is implemented in this manner because of the following reasons:
 **Cons:** Will no longer be a CLI process completely.
 
 === Location mechanism
-The location command through an event-driven mechanism. The below diagram shows sequence diagram for it.
+The location command through an event-driven mechanism. The below diagram (Refer to Figure 21) shows sequence diagram for it.
 
 image::locationSD.PNG[width="790"]
 _Figure 21 : Sequence diagram for the Location Command._
 
-The execution of command raises an event `ShowLocationEvent`. This causes the `BrowserAndReminderPanel` to switch to Node `Browser` irrespective of current state of the application. The activity diagram for such a case is shown below:
+The execution of command raises an event `ShowLocationEvent`. This causes the `BrowserAndReminderPanel` to switch to Node `Browser` irrespective of current state of the application. The activity diagram for such a case is shown below (Refer to Figure 22):
 
 image::locationAD.PNG[width="790"]
 _Figure 22 : Sequence diagram for the Location Command._
@@ -713,14 +713,14 @@ The recipients are all contacts belonging to a particular tag.
 [NOTE]
 The only two services offered are `gmail` and `outlook` as our target users are students.
 
-The email command through an event driven mechanism. The below diagram shows sequence diagram for it.
+The email command through an event driven mechanism. The below diagram (Refer to Figure 23) shows sequence diagram for it.
 
 image::emailSD.PNG[width="790"]
 _Figure 23 : Sequence diagram for the Email Command._
 
 The given command is parsed to know the `Service` , `tag` to which email has to be sent, `Subject` and `Body`.
 
-The parsing takes place in the following manner:
+The parsing takes place in the following manner (Refer to Figure 24):
 
 image::ParserSDEmail.PNG[width="790"]
 _Figure 24 : Sequence diagram for parsing the Email Command._
@@ -759,12 +759,12 @@ The toggling mechanism is an event-driven mechanism.
 image::togglingMechanism1.png[width="790]
 _Figure 25 : Component interactions for the toggling mechanism._
 
-The above diagram shows the high-level overview of the component interactions for the toggling mechanism. +
+The above diagram (Refer to Figure 25) shows the high-level overview of the component interactions for the toggling mechanism. +
 
 image::togglingMechanism2.png[width="790"]
 _Figure 26 : Sequence diagram for the first part of the toggling mechanism._
 
-As seen from the sequence diagram above, when the user type the command for `toggle`, an instance of `ToggleCommand` would be created. +
+As seen from the sequence diagram above (Refer to Figure 26), when the user type the command for `toggle`, an instance of `ToggleCommand` would be created. +
 Upon execution by `LogicManager`, the event `BrowserAndRemindersPanelToggleEvent` would be posted by the `EventCenter`, to the `EventBus`.
 
 [source, java]
@@ -779,7 +779,7 @@ public class ToggleCommand extends Command {
 ----
 
 
-As seen from the diagram below, the method `handleBrowserToggleEvent()` in the `BrowserAndRemindersPanel` class in the `UI` component will then listen for the event,
+As seen from the diagram below (Refer to Figure 27), the method `handleBrowserToggleEvent()` in the `BrowserAndRemindersPanel` class in the `UI` component will then listen for the event,
 and upon receiving the event, it will invoke the method `toggleBrowserPanel` to trigger the actual toggling.
 
 image::togglingMechanism3.png[width="790"]
@@ -864,16 +864,16 @@ Cons: Users cannot interact with the reminders panel (since the browser is techn
 //tag::reminder[]
 === Reminder Implementation
 image::RemindersUML.png[width="790"]
-_Figure 1: UML diagram showing the implementation of Reminder._
+_Figure 28: UML diagram showing the implementation of Reminder._
 
 The `Reminder` object represents a reminder in iContacts. It contains a `String` variable, which represents
-the actual reminder from the user, and also a `Date`, `Time` and `Status` object which represents the date, time and link:#status[status] of the reminder respectively. +
+the actual reminder from the user, and also a `Date`, `Time` and `Status` object which represents the date, time and link:#status[status] of the reminder respectively (Refer to Figure 28). +
 
 In terms of how `Reminder` objects are kept in-memory during the execution of the program, `Reminder` objects are
-kept within `UniqueReminderList`, which assures that there are no duplicate `Reminder` objects. The `UniqueReminderList`
+kept within `UniqueReminderList` (Refer to Figure 28), which assures that there are no duplicate `Reminder` objects. The `UniqueReminderList`
 object is then kept and used by `ModelManager` to carry out commands related to reminders while the program is running. +
 
-As can be seen from Figure 1 above, as part of _defensive programming_, `Reminder` implements the `ReadOnlyReminder` interface. The `ReadOnlyReminder` interface only allows read operations, thus helping
+As can be seen from Figure 28 above, as part of _defensive programming_, `Reminder` implements the `ReadOnlyReminder` interface. The `ReadOnlyReminder` interface only allows read operations, thus helping
 to prevent inappropriate modifications to `Reminder` objects. Similarly, `UniqueReminderList` implements the `ReadOnlyUniqueReminderList` interface for the same reason. +
 
 `Reminder` objects are stored in a XML storage file in a JAXB-friendly version `XmlAdaptedReminder`. Notably, the `Status` object is not stored along with
@@ -925,7 +925,7 @@ public class UniqueReminderList implements Iterable<Reminder>, ReadOnlyUniqueRem
 }
 ----
 
-As can be seen from the code snippet above and in Figure 1, as part of _defensive programming_, `XmlSerializableReminders` also implements the `ReadOnlyUniqueReminderList` interface. +
+As can be seen from the code snippet above and in Figure 28, as part of _defensive programming_, `XmlSerializableReminders` also implements the `ReadOnlyUniqueReminderList` interface. +
 
 To save, the `saveReminders` method in `StorageManager` is invoked:
 
@@ -966,12 +966,12 @@ Cons: Violates the _Single-Responsibility Principle_.
 image::themeChangingMechanism1.png[width="790"]
 _Figure 29 : Component interactions for the theme-changing mechanism_
 
-The theme-changing mechanism is an event-driven mechanism. The above diagram shows the high-level overview of the component interactions for the theme-changing mechanism.
+The theme-changing mechanism is an event-driven mechanism. The above diagram (Refer to Figure 29) shows the high-level overview of the component interactions for the theme-changing mechanism.
 
 image::themeChangingMechanism2.png[width="790"]
 _Figure 30 : Sequence diagram for the first part of the theme-changing mechanism_
 
-As shown from the sequence diagram above, after the user entered the command `theme sky`, a new object `ThemeCommand` will be created. The `LogicManager` will then execute `ThemeCommand`, and the event `ChangeThemeRequestEvent` will be posted by `EventsCenter`. The code snippet below shows the `execute()` method of `ThemeCommand`:
+As shown from the sequence diagram above (Refer to Figure 30), after the user entered the command `theme sky`, a new object `ThemeCommand` will be created. The `LogicManager` will then execute `ThemeCommand`, and the event `ChangeThemeRequestEvent` will be posted by `EventsCenter`. The code snippet below shows the `execute()` method of `ThemeCommand`:
 
 ----
 public class ThemeCommand extends Command {
@@ -986,7 +986,7 @@ public class ThemeCommand extends Command {
 image::themeChangingMechanism3.png[width="790"]
 _Figure 31 : Sequence diagram for the second part of the theme-changing mechanism_
 
-As shown from the sequence diagram above, the method `handleChangeThemeEvent()` in `MainWindow` will handle the event and change the theme of the address book through the method `changeTheme()` accordingly.
+As shown from the sequence diagram above (Refer to Figure 31), the method `handleChangeThemeEvent()` in `MainWindow` will handle the event and change the theme of the address book through the method `changeTheme()` accordingly.
 // end::theme[]
 
 === Logging
@@ -1036,7 +1036,7 @@ Here are the steps to convert the project documentation files to PDF format.
 .  Set the destination to `Save as PDF`, then click `Save` to save a copy of the file in PDF format. For best results, use the settings indicated in the screenshot below.
 
 image::chrome_save_as_pdf.png[width="300"]
-_Figure 5.6.1 : Saving documentation as PDF files in Chrome_
+_Figure 32 : Saving documentation as PDF files in Chrome_
 
 == Testing
 
@@ -1165,15 +1165,17 @@ Do take a look at the link:#model-component[Design: Model Component] section bef
 [TIP]
 Do take a look at the link:#ui-component[Design: UI Component] section before attempting to modify the `UI` component.
 
-. Use different colors for different tags inside person cards. For example, `friends` tags can be all in grey, and `colleagues` tags can be all in red.
+. Use different colors for different tags inside person cards. For example, `friends` tags can be all in grey, and `colleagues` tags can be all in red (Refer to Figures 33 and 34).
 +
 **Before**
 +
 image::getting-started-ui-tag-before.png[width="300"]
+_Figure 33: Before applying colors to tags._
 +
 **After**
 +
 image::getting-started-ui-tag-after.png[width="300"]
+_Figure 34: After applying colors to tags._
 +
 ****
 * Hints
@@ -1183,15 +1185,17 @@ image::getting-started-ui-tag-after.png[width="300"]
 ** See this https://github.com/se-edu/addressbook-level4/pull/592/files[PR] for the full solution.
 ****
 
-. Modify link:{repoURL}/src/main/java/seedu/address/commons/events/ui/NewResultAvailableEvent.java[`NewResultAvailableEvent`] such that link:{repoURL}/src/main/java/seedu/address/ui/ResultDisplay.java[`ResultDisplay`] can show a different style on error (currently it shows the same regardless of errors).
+. Modify link:{repoURL}/src/main/java/seedu/address/commons/events/ui/NewResultAvailableEvent.java[`NewResultAvailableEvent`] such that link:{repoURL}/src/main/java/seedu/address/ui/ResultDisplay.java[`ResultDisplay`] can show a different style on error (currently it shows the same regardless of errors) (Refer to Figures 35 and 36).
 +
 **Before**
 +
 image::getting-started-ui-result-before.png[width="200"]
+_Figure 35: Style before modification._
 +
 **After**
 +
 image::getting-started-ui-result-after.png[width="200"]
+_Figure 36: Style after modification._
 +
 ****
 * Hints
@@ -1203,15 +1207,17 @@ image::getting-started-ui-result-after.png[width="200"]
 ** See this https://github.com/se-edu/addressbook-level4/pull/593/files[PR] for the full solution.
 ****
 
-. Modify the link:{repoURL}/src/main/java/seedu/address/ui/StatusBarFooter.java[`StatusBarFooter`] to show the total number of people in the address book.
+. Modify the link:{repoURL}/src/main/java/seedu/address/ui/StatusBarFooter.java[`StatusBarFooter`] to show the total number of people in the address book (Refer to Figures 37 and 38).
 +
 **Before**
 +
 image::getting-started-ui-status-before.png[width="500"]
+_Figure 37: No values showed before modification._
 +
 **After**
 +
 image::getting-started-ui-status-after.png[width="500"]
+_Figure 38: Number of persons showed after modification._
 +
 ****
 * Hints

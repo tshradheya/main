@@ -1,3 +1,4 @@
+//@@author edwinghy
 package seedu.address.logic.commands;
 
 import static org.junit.Assert.assertFalse;
@@ -79,3 +80,4 @@ public class ExportCommandTest {
         return exportCommand;
     }
 }
+//@@author

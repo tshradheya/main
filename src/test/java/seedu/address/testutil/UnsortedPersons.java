@@ -1,4 +1,4 @@
-//@@author edwin
+//@@author edwinghy
 
 package seedu.address.testutil;
 

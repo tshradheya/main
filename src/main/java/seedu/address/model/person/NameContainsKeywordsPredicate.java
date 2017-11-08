@@ -15,7 +15,7 @@ public class NameContainsKeywordsPredicate implements Predicate<ReadOnlyPerson> 
         this.keywords = keywords;
     }
 
-    //@@author edwin
+    //@@author edwinghy
     @Override
     public boolean test(ReadOnlyPerson person) {
         return keywords.stream()

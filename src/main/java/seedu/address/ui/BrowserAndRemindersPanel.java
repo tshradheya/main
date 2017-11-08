@@ -300,11 +300,6 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
         detailsPanel.getChildren().add(personDetails.getRoot());
     }
 
-    @Subscribe
-    private void handleUpdatePersonListPanelSelection(PopularContactPanelSelectionChangedEvent event) {
-
-    }
-
 
     //@@author justinpoh
     @Subscribe

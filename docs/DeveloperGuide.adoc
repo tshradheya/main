@@ -812,7 +812,7 @@ public class BrowserAndRemindersPanel extends UIPart<Region> {
 
 
         //... Other cases ...
-        
+
         }
     }
 }

@@ -1,3 +1,4 @@
+//@@author edwinghy
 package seedu.address.testutil;
 
 /**
@@ -9,3 +10,4 @@ public class TypicalPath {
     public static final String PATH_IMPORT_2 = "C:\\Exports\\test2.xml";
     public static final String PATH_CONTACT = "C:\\Contacts\\test";
 }
+//@@author

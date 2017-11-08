@@ -1,3 +1,4 @@
+//@@author edwinghy
 package seedu.address.logic.parser;
 
 import static java.util.Objects.requireNonNull;
@@ -20,3 +21,4 @@ public class ImportCommandParser implements Parser<ImportCommand> {
         return new ImportCommand(path);
     }
 }
+//@@author

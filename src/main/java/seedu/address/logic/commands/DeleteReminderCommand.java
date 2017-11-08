@@ -14,7 +14,7 @@ import seedu.address.model.reminders.exceptions.ReminderNotFoundException;
  */
 public class DeleteReminderCommand extends Command {
 
-    public static final String COMMAND_WORD = "deleteReminder";
+    public static final String COMMAND_WORD = "deletereminder";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Deletes the reminder identified by the index number used in the reminder listing.\n"

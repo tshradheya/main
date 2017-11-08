@@ -373,7 +373,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     @Override
     public Index getIndexOfGivenPerson(ReadOnlyPerson person) {
-        for ( int i = 0; i < filteredPersons.size(); i++) {
+        for (int i = 0; i < filteredPersons.size(); i++) {
             ReadOnlyPerson readOnlyPerson = filteredPersons.get(i);
             if (readOnlyPerson.isSameStateAs(person)) {
                 return Index.fromZeroBased(i);

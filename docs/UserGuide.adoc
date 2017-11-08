@@ -403,10 +403,10 @@ Deletes the 2nd person in the address book.
 Deletes the 1st person in the results of the `find` command.
 
 // tag::deleteReminder[]
-=== Deleting a reminder: `deleteReminder`[V1.4]
+=== Deleting a reminder: `deletereminder`[V1.4]
 
 Deletes the specified reminder from iContacts. +
-Format: `deleteReminder INDEX`
+Format: `deletereminder INDEX`
 
 ****
 * Deletes the reminder at the specified `INDEX`.
@@ -416,9 +416,9 @@ Format: `deleteReminder INDEX`
 
 Examples:
 
-* `deleteReminder 1` +
+* `deletereminder 1` +
 Deletes the 1st reminder in iContacts.
-* `deleteReminder 20` +
+* `deletereminder 20` +
 Deletes the 20th reminder in iContacts.
 // end::deleteReminder[]
 

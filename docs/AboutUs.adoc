@@ -33,8 +33,8 @@ Role: Project Supervisor
 image::edwinghy.jpg[width="150", align="left"]
 {empty}[https://github.com/edwinghy[github]]
 
-Role: Developer + Testing +
-Responsibilities: UI component
+Role: Developer
+Responsibilities: Documentation, Storage
 
 '''
 
@@ -42,8 +42,8 @@ Responsibilities: UI component
 image::justinpoh.jpg[width="150", align="left"]
 {empty}[https://github.com/justinpoh[github]]
 
-Role: Developer + Documentation +
-Responsibilities: Logic component
+Role: Developer
+Responsibilities: UI, Model
 
 '''
 
@@ -51,8 +51,8 @@ Responsibilities: Logic component
 image::tshradheya.jpg[width="150", align="left"]
 {empty}[https://github.com/tshradheya[github]]
 
-Role: Developer + Integration +
-Responsibilities: Model component
+Role: Team lead +
+Responsibilities: Deliverables and deadlines, Scheduling and tracking, Model
 
 '''
 
@@ -60,7 +60,7 @@ Responsibilities: Model component
 image::chuaweiwen.jpg[width="150", align="left"]
 {empty}[https://github.com/chuaweiwen[github]]
 
-Role: Developer + Code quality +
-Responsibilities: Storage component
+Role: Developer
+Responsibilities: Documentation, Logic
 
 '''

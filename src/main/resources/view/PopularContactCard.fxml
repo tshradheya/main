@@ -7,6 +7,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <VBox id="popularContactPane" fx:id="popularContactPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="94.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Circle fx:id="popularContactDisplayPicture" fill="WHITE" layoutX="150.0" layoutY="186.0" radius="35.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0">
@@ -17,6 +18,9 @@
          <children>
             <Label fx:id="rank" prefHeight="15.0" prefWidth="25.0" styleClass="cell_small_label" />
             <Label fx:id="popularContactName" styleClass="cell_small_label" text="\$name" textAlignment="CENTER">
+               <graphic>
+                  <FontAwesomeIconView glyphName="STAR" fill="gold" size="14" />
+               </graphic>
                <padding>
                   <Insets left="10.0" />
                </padding>

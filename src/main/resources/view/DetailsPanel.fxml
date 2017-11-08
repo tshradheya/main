@@ -11,6 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
 <AnchorPane fx:id="anchorPane" prefHeight="200.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1">
    <children>
@@ -26,7 +27,7 @@
             </ImageView>
             <VBox prefHeight="200.0" prefWidth="549.0">
                <children>
-                  <Label fx:id="detailsName" prefHeight="50.0" prefWidth="371.0" text="Shradheya Thakre">
+                  <Label fx:id="detailsName" prefHeight="50.0" prefWidth="371.0" text="\$name">
                      <font>
                         <Font name="Helvetica Bold" size="30.0" />
                      </font>
@@ -53,8 +54,8 @@
          <children>
             <FlowPane fx:id="detailsTag" hgap="10.0" prefHeight="54.0" prefWidth="685.0" />
             <Label fx:id="detailsPhone" prefHeight="39.0" prefWidth="700.0" text="\$phone">
-               <graphic>
-                  <MaterialDesignIconView glyphName="PHONE" size="20" />
+               <graphic >
+                  <FontAwesomeIconView glyphName="PHONE" size="20" fill="green"  />
                </graphic>
                <VBox.margin>
                   <Insets bottom="20.0" />
@@ -62,7 +63,7 @@
             </Label>
             <Label fx:id="detailsAddress" prefHeight="50.0" prefWidth="700.0" text="\$address">
                <graphic>
-                  <MaterialDesignIconView glyphName="MAP" size="20" />
+                  <MaterialDesignIconView glyphName="MAP" size="20" fill="blue" />
                </graphic>
                <VBox.margin>
                   <Insets bottom="20.0" />
@@ -70,7 +71,7 @@
             </Label>
             <Label fx:id="detailsEmail" prefHeight="50.0" prefWidth="700.0" text="\$email">
                <graphic>
-                  <MaterialDesignIconView glyphName="GMAIL" size="20" />
+                  <FontAwesomeIconView glyphName="ENVELOPE" size="20" fill="crimson" />
                </graphic>
                <VBox.margin>
                   <Insets bottom="20.0" />
@@ -78,7 +79,7 @@
             </Label>
             <Label fx:id="detailsBirthday" prefHeight="50.0" prefWidth="700.0" text="\$birthday">
                <graphic>
-                  <MaterialDesignIconView glyphName="CAKE_VARIANT" size="20" />
+                  <MaterialDesignIconView glyphName="CAKE_VARIANT" size="20" fill="yellow" />
                </graphic>
             </Label>
          </children>

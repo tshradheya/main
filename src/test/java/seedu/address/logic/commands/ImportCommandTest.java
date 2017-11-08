@@ -10,7 +10,9 @@ import static seedu.address.testutil.TypicalPath.PATH_IMPORT_2;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 import static seedu.address.testutil.TypicalReminders.getUniqueTypicalReminders;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
 import seedu.address.logic.CommandHistory;
 import seedu.address.logic.UndoRedoStack;
@@ -21,8 +23,12 @@ import seedu.address.model.UserPrefs;
 
 public class ImportCommandTest {
 
-    public static final String VALID_PATH = "\\storage\\classmates";
-    public static final String INVALID_PATH = "\\storage\\classmate.xml";
+    public static final String VALID_PATH = "classmates";
+    public static final String INVALID_PATH = "classmate.xml";
+
+    @Rule
+    public TemporaryFolder folder = new TemporaryFolder();
+
     private Model model = new ModelManager(getTypicalAddressBook(), getUniqueTypicalReminders(), new UserPrefs());
 
     @Test
@@ -33,7 +39,10 @@ public class ImportCommandTest {
 
     @Test
     public void execute_import_success() throws Exception {
-        ExportCommand exportCommand = new ExportCommand("1-3", VALID_PATH);
+
+        String tempFolderPath = folder.getRoot().getPath();
+
+        ExportCommand exportCommand = new ExportCommand("1-3", tempFolderPath + VALID_PATH);
         exportCommand.setData(model, new CommandHistory(), new UndoRedoStack());
         exportCommand.execute();
 
@@ -41,8 +50,10 @@ public class ImportCommandTest {
         clearCommand.setData(model, new CommandHistory(), new UndoRedoStack());
         clearCommand.executeUndoableCommand();
 
-        ImportCommand importCommand = prepareCommand(VALID_PATH + ".xml");
+        ImportCommand importCommand = prepareCommand( tempFolderPath + VALID_PATH + ".xml");
         assertCommandSuccess(importCommand, model, String.format(importCommand.MESSAGE_SUCCESS, "3", "0"), model);
+
+
     }
 
     @Test

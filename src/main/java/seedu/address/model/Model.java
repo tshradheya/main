@@ -97,6 +97,8 @@ public interface Model {
 
     void updateFilteredListToShowAll();
 
+    void showDefaultPanel();
+
     /** Returns an unmodifiable view of the birthday panel filtered person list */
     ObservableList<ReadOnlyPerson> getBirthdayPanelFilteredPersonList();
 

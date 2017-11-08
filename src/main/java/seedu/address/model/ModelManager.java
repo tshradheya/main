@@ -23,6 +23,7 @@ import seedu.address.commons.events.model.PopularContactChangedEvent;
 import seedu.address.commons.events.model.RemindersChangedEvent;
 import seedu.address.commons.events.ui.LoadPersonWebpageEvent;
 import seedu.address.commons.events.ui.SendingEmailEvent;
+import seedu.address.commons.events.ui.ShowDefaultPanelEvent;
 import seedu.address.commons.events.ui.ShowLocationEvent;
 import seedu.address.model.email.Body;
 import seedu.address.model.email.Service;
@@ -330,6 +331,11 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public void updateFilteredListToShowAll() {
         filteredPersons.setPredicate(null);
+    }
+
+    @Override
+    public void showDefaultPanel() {
+        raise(new ShowDefaultPanelEvent());
     }
 
     @Override

@@ -48,6 +48,7 @@ public class PopularContactPanel extends UiPart<Region> {
                     if (newValue != null) {
                         logger.fine("Selection in person list panel changed to : '" + newValue + "'");
                         raise(new PopularContactPanelSelectionChangedEvent(newValue, newValue.person));
+                        raise(new UpdatePersonListPanelSelection(newValue.person));
                     }
                 });
     }

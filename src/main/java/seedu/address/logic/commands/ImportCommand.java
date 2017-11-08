@@ -1,3 +1,4 @@
+//@@author edwinghy
 package seedu.address.logic.commands;
 
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PATH;
@@ -75,3 +76,4 @@ public class ImportCommand extends UndoableCommand {
                 && path.equals(((ImportCommand) other).path));
     }
 }
+//@@author

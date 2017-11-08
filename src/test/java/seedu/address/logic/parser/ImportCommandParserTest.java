@@ -1,3 +1,4 @@
+//@@author edwinghy
 package seedu.address.logic.parser;
 
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PATH;
@@ -19,3 +20,5 @@ public class ImportCommandParserTest {
         assertParseSuccess(parser, userInput, expectedCommand);
     }
 }
+//@@author
+

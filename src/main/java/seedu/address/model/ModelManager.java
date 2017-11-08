@@ -303,6 +303,7 @@ public class ModelManager extends ComponentManager implements Model {
         return FXCollections.unmodifiableObservableList(sortedfilteredPersons);
     }
 
+    //@@author edwinghy
     @Override
     public void sortFilteredPersonList() {
 
@@ -310,6 +311,7 @@ public class ModelManager extends ComponentManager implements Model {
         sortedfilteredPersons.setComparator(sortByName);
         indicateAddressBookChanged();
     }
+    //@@author
 
     @Override
     public void updateFilteredPersonList(Predicate<ReadOnlyPerson> predicate) {

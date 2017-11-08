@@ -131,13 +131,14 @@ public class AddressBookParserTest {
         assertEquals(new DeleteReminderCommand(INDEX_FIRST_PERSON), command);
     }
 
+    //@@author edwinghy
     @Test
     public void parseCommand_sort() throws Exception {
         SortCommand command = (SortCommand) parser.parseCommand(SortCommand.COMMAND_WORD);
         assertTrue(command instanceof SortCommand);
         assertTrue(parser.parseCommand(SortCommand.COMMAND_WORD) instanceof SortCommand);
     }
-
+    //@@author
     @Test
     public void parseAliasCommand_delete() throws Exception {
         DeleteCommand command = (DeleteCommand) parser.parseCommand(
@@ -391,7 +392,7 @@ public class AddressBookParserTest {
         thrown.expectMessage(MESSAGE_UNKNOWN_COMMAND);
         parser.parseCommand("unknownCommand");
     }
-
+    //@@author edwinghy
     @Test
     public void parseCommand_export() throws Exception {
         ExportCommand command = (ExportCommand) parser.parseCommand(ExportCommand.COMMAND_WORD + " "
@@ -405,4 +406,5 @@ public class AddressBookParserTest {
                 + PREFIX_PATH + PATH_IMPORT);
         assertEquals(new ImportCommand(PATH_IMPORT), command);
     }
+    //@@author
 }

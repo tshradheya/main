@@ -1,3 +1,4 @@
+//@@author edwinghy
 package seedu.address.testutil;
 
 /**
@@ -9,3 +10,4 @@ public class TypicalRange {
     public static final String RANGE_1_AND_3 = "1,3";
     public static final String RANGE_1_TO_3 = "1-3";
 }
+//@@author

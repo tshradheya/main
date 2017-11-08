@@ -1,3 +1,4 @@
+//@@author edwinghy
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
@@ -138,3 +139,4 @@ public class ExportCommand extends Command {
         return splitStringComma;
     }
 }
+//@@author

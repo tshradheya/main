@@ -1,3 +1,4 @@
+//@@author edwinghy
 package seedu.address.logic.parser;
 
 import static java.util.Objects.requireNonNull;
@@ -24,3 +25,4 @@ public class ExportCommandParser implements Parser<ExportCommand> {
         return new ExportCommand(range, path);
     }
 }
+//@@author

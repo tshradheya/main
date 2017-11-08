@@ -1,3 +1,4 @@
+//@@author edwinghy
 package seedu.address.logic.commands;
 
 /**
@@ -21,4 +22,6 @@ public class SortCommand extends Command {
         return new CommandResult(MESSAGE_SUCCESS);
     }
 }
+//@author
+
 

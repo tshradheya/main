@@ -1,0 +1,105 @@
+= Justin Poh - Project Portfolio
+ifdef::env-github,env-browser[:outfilesuffix: .adoc]
+:imagesDir: ../images
+:stylesDir: ../stylesheets
+
+== Project: iContacts
+iContacts is an application that targets University students, aiming to help them manage their contacts and other aspects of their university life in an efficient manner.
+iContacts is a Command Line Interface (CLI) application, where most of the commands are executed by typing rather than clicking on buttons.
+Through iContacts, users would be able to store, manage and search through contact information efficiently and effectively.
+Not only that, users would be able to set display pictures for each contact, and also add reminders for upcoming events.
+Last but not least, iContacts allow users to easily share contact information amongst each other via its import and export mechanism.
+
+*Code contributed*: [https://github.com/CS2103AUG2017-W14-B1/main/blob/master/collated/main/justinpoh.md[Functional code]] [https://github.com/CS2103AUG2017-W14-B1/main/blob/master/collated/test/justinpoh.md[Test code]]
+
+=== Enhancement Added: Toggle
+
+==== External behavior
+
+---
+#Start of Extract [from: User Guide]#
+
+include::../UserGuide.adoc[tag=toggle]
+
+#End of Extract#
+
+---
+
+==== Justification
+
+To make iContacts useful and appealing, it needs to be able to provide more functionality to users, and this also mean that it needs
+to be able to display more information. Without this toggling mechanism, users would have to squint their eyes as all the information
+and the browser would be squeezed together. Hence, to ensure a much more pleasant user experience, this toggling mechanism is required,
+as it allows related information to be displayed together without being squeezed. +
+
+
+However, we choose to permanently display the list of contacts as we felt that iContacts is first and foremost an address book, hence
+the list of contacts is the most important information within iContacts and thus should always be displayed.
+
+==== Implementation
+
+---
+#Start of Extract [from: Developer Guide]#
+
+include::../DeveloperGuide.adoc[tag=toggle]
+
+#End of Extract#
+
+---
+
+=== Enhancement Added: Implemented Reminder
+
+==== External behavior
+
+---
+#Start of Extract [from: User Guide]#
+
+include::../UserGuide.adoc[tag=addReminder]
+
+include::../UserGuide.adoc[tag=editReminder]
+
+include::../UserGuide.adoc[tag=deleteReminder]
+
+#End of Extract#
+
+---
+
+==== Justification
+While iContacts allow users to store, manage and search for contact information efficiently, this alone is not
+sufficient to meet the needs of University students. Students often have multiple outstanding tasks or events such as
+assignments or meetings. Hence, what these students need is the ability to set reminders for upcoming tasks or events.
+
+We chose to display the reminders chronologically instead of having them pop-up when the event is nearing as we feel
+that it is more user-friendly to permanently display the reminders for the users to see. Displaying the reminders permanently
+can grant users a sense of the quantity of upcoming tasks and events. Also, only reminding the users of an upcoming task or event
+when it is nearing might give the user insufficient time to prepare for it. Instead, permanently displaying the reminders
+with a countdown to the event allows user to better prepare for it.
+
+We also recognise that there is a need to differentiate reminders based on the level of urgency. Therefore, we chose to do this
+by coloring the reminder cells differently. Using color is simple but powerful.
+
+==== Implementation
+
+---
+#Start of Extract [from: Developer Guide]#
+
+include::../DeveloperGuide.adoc[tag=reminder]
+
+#End of Extract#
+
+---
+
+=== Other contributions
+
+* Created the current default GUI of iContacts, as well as creating the Day theme for iContacts. (Pull requests https://github.com/CS2103AUG2017-W14-B1/main/pull/195[#195])
+* Updated component diagrams in DG and diagrams in UG during the project. (Pull requests https://github.com/CS2103AUG2017-W14-B1/main/pull/171[#171],
+ https://github.com/CS2103AUG2017-W14-B1/main/pull/200[#200], https://github.com/CS2103AUG2017-W14-B1/main/pull/201/files[#201],
+ https://github.com/CS2103AUG2017-W14-B1/main/pull/149[#149], https://github.com/CS2103AUG2017-W14-B1/main/pull/108[#108])
+* Updated READ.ME. (Pull requests https://github.com/CS2103AUG2017-W14-B1/main/pull/86[#86])
+* Updated AboutUs.adoc. (Pull requests https://github.com/CS2103AUG2017-W14-B1/main/pull/88[#88])
+* Updated Glossary. (Pull requests https://github.com/CS2103AUG2017-W14-B1/main/pull/59[#59], https://github.com/CS2103AUG2017-W14-B1/main/pull/70[#70])
+* Updated NFR. (Pull requests https://github.com/CS2103AUG2017-W14-B1/main/pull/50[#50])
+
+== Project: PowerPointLabs
+
+{Optionally (not graded), you may include other projects in your portfolio.}

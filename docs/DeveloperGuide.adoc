@@ -752,7 +752,7 @@ Desktop.getDesktop().browse(new URI(String.format(GMAIL_EMAIL_URL, recipients, s
 **Pros:** No dependency on other apps +
 **Cons:** Does not auto fill in the text due to older version of browser
 
-
+// tag::toggle[]
 === Toggling mechanism
 The toggling mechanism is an event-driven mechanism.
 
@@ -764,8 +764,8 @@ The above diagram shows the high-level overview of the component interactions fo
 image::togglingMechanism2.png[width="790"]
 _Figure 26 : Sequence diagram for the first part of the toggling mechanism._
 
-As seen from the sequence diagram above, when the user type the command for toggle, an instance of `ToggleCommand` would be instantiated. Upon execution by `LogicManager`, the event `BrowserAndRemindersPanelToggleEvent` would be posted by the `EventCenter`, to the `EventBus`:
-
+As seen from the sequence diagram above, when the user type the command for `toggle`, an instance of `ToggleCommand` would be created. +
+Upon execution by `LogicManager`, the event `BrowserAndRemindersPanelToggleEvent` would be posted by the `EventCenter`, to the `EventBus`.
 
 [source, java]
 ----
@@ -800,43 +800,20 @@ public class BrowserAndRemindersPanel extends UIPart<Region> {
     private void toggleBrowserPanel() {
         switch(currentlyInFront) {
         case BROWSER:
-            birthdayList.toFront();
+            setUpToShowRemindersPanel();
+            remindersPanel.toFront();
             currentlyInFront = Node.REMINDERS;
-            raise(new TurnLabelsOnEvent());
             break;
         case REMINDERS:
+            setUpToShowWebBrowser();
             browser.toFront();
             currentlyInFront = Node.BROWSER;
-            raise(new TurnLabelsOffEvent());
             break;
-        default:
-            //... Should not come to the default case ...
+
+
+        //... Other cases ...
+
         }
-    }
-}
-----
-
-As seen from the code snippet above, two other events `TurnLabelsOnEvent` and `TurnLabelsOffEvent` can still be raised.
-When the browser is being brought to the front, the *birthdays* and *reminders* heading just above the list of birthday reminders and
-reminders should be turned off. When the reminders panel is brought to the front, these heading should be turned on. The handling of these two events
-are in the `HeaderPane` class, where the variables `birthdays` and `reminders`, representing the `Label` header object for birthday reminders and reminders
-respectively, are turned on and off by simply setting their visibility appropriately:
-
-[source, java]
-----
-public class HeaderPane extends UIPart<Region> {
-    @Subscribe
-    private void handleTurnLabelsOffEvent(TurnLabelsOffEvent event) {
-        logger.info(LogsCenter.getEventHandlingLogMessage(event));
-        birthdays.setVisible(false);
-        reminders.setVisible(false);
-    }
-
-    @Subscribe
-    private void handleTurnLabelsOnEvent(TurnLabelsOnEvent event) {
-         logger.info(LogsCenter.getEventHandlingLogMessage(event));
-         birthdays.setVisible(true);
-         reminders.setVisible(true);
     }
 }
 ----
@@ -847,35 +824,60 @@ One important thing to note that when the `select` command is executed, the brow
 ----
 public class BrowserAndRemindersPanel extends UIPart<Region> {
     @Subscribe
-    private void handlePersonPanelSelectionChangedEvent(PersonPanelSelectionChangedEvent event) {
-        logger.info(LogsCenter.getEventHandlingLogMessage(event));
-        loadPersonPage(event.getNewSelection().person);
-        bringBrowserToFront();
-        raise(new TurnLabelsOffEvent());
+    private void handleLoadPersonPageEvent(LoadPersonWebpageEvent event) {
+        setUpToShowWebBrowser();
+        currentlyInFront = Node.BROWSER;
+        browser.toFront();
+        loadPersonPage(event.getPerson());
     }
 
-    private void bringBrowserToFront() {
-        browser.toFront();
-        currentlyInFront = Node.BROWSER;
-    }
+    private void setUpToShowWebBrowser() {
+        browser.setVisible(true);
+        detailsPanel.setVisible(false);
+        remindersPanel.setVisible(false);
+     }
 }
 ----
 
-As seen from the code snippet above, the `PersonPanelSelectionChangedEvent` is posted whenever the `select` command is executed. Within the `handlePersonPanelSelectionChangedEvent`
-method, there is the method `bringBrowserToFront`, which would then bring the browser panel to the front no matter what.
+The `LoadPersonWebpageEvent` is posted whenever the `select` command is executed. Within the `handleLoadPersonPageEvent`
+method, the statement `browser.toFront()` and the method `setUpToShowWebBrowser` would then bring the browser panel to the front no matter what, and also make it visible.
 
+==== Design Considerations
+
+**Aspect:** Usage of browser area +
+**Alternative 1 (current choice):** Allow users to toggle between the browser and reminders panel. +
+Pros: Can use the entire space for either the browser or reminders panel. +
+Cons: Users need to manually switch between the browser and reminders panel. +
+**Alternative 2:** Put reminders and browser side-by-side. +
+Pros: Users do not need to manually switch between the browser and reminders panel. +
+Cons: Too little space for browser and reminders. Difficult to read.
+
+**Aspect:** Implementation of toggling mechanism. +
+**Alternative 1 (current choice):** Bring browser and reminders panel to the front as required, on top of setting their visibility suitably. +
+Pros: Users can interact with both browser and reminders (can scroll through reminders etc). +
+Cons: More difficult to implement. +
+**Alternative 2:** Only set visibility of browser and reminders panel as required (set browser visibility to false to display reminders and vice versa). +
+Pros: Easier to implement. +
+Cons: Users cannot interact with the reminders panel (since the browser is technically still at the front).
+// end::toggle[]
+
+//tag::reminder[]
 === Reminder Implementation
 image::RemindersUML.png[width="790"]
-_Figure 28: UML diagram showing the implementation of reminders_
+_Figure 1: UML diagram showing the implementation of Reminder._
 
 The `Reminder` object represents a reminder in iContacts. It contains a `String` variable, which represents
-the actual reminder from the user, and also a `DueDate` object which represents the date and time for the reminder. +
+the actual reminder from the user, and also a `Date`, `Time` and `Status` object which represents the date, time and link:#status[status] of the reminder respectively. +
 
 In terms of how `Reminder` objects are kept in-memory during the execution of the program, `Reminder` objects are
 kept within `UniqueReminderList`, which assures that there are no duplicate `Reminder` objects. The `UniqueReminderList`
 object is then kept and used by `ModelManager` to carry out commands related to reminders while the program is running. +
 
-`Reminder` objects are stored in a XML storage file in a JAXB-friendly version `XmlAdaptedReminder`.
+As can be seen from Figure 1 above, as part of _defensive programming_, `Reminder` implements the `ReadOnlyReminder` interface. The `ReadOnlyReminder` interface only allows read operations, thus helping
+to prevent inappropriate modifications to `Reminder` objects. Similarly, `UniqueReminderList` implements the `ReadOnlyUniqueReminderList` interface for the same reason. +
+
+`Reminder` objects are stored in a XML storage file in a JAXB-friendly version `XmlAdaptedReminder`. Notably, the `Status` object is not stored along with
+the `Reminder` object; it is instantiated and initialized with an appropriate value during runtime when the `Reminder` object is instantiated.
 When the program starts, `XmlAdaptedReminder` objects are read in as `XmlSerializableReminders` via `XmlFileStorage` and `XmlUtil`.
 This can be seen below:
 
@@ -899,8 +901,8 @@ This can be seen below:
 
 [source, java]
 ----
-public class UniqueReminderList implements Iterable<Reminder> {
-    public UniqueReminderList(XmlSerializableReminders xmlReminders) {
+public class UniqueReminderList implements Iterable<Reminder>, ReadOnlyUniqueReminderList {
+    public UniqueReminderList(ReadOnlyUniqueReminderList xmlReminders) {
         requireNonNull(xmlReminders);
         try {
             setReminders(xmlReminders.toModelType());
@@ -909,9 +911,9 @@ public class UniqueReminderList implements Iterable<Reminder> {
         }
     }
 
-    public void setReminders(List<Reminder> reminders) throws DuplicateReminderException {
+    public void setReminders(List<ReadOnlyReminder> reminders) throws DuplicateReminderException {
         final UniqueReminderList replacement = new UniqueReminderList();
-        for (final Reminder reminder : reminders) {
+        for (final ReadOnlyReminder reminder : reminders) {
             replacement.add(new Reminder(reminder));
         }
         setReminders(replacement);
@@ -923,18 +925,20 @@ public class UniqueReminderList implements Iterable<Reminder> {
 }
 ----
 
+As can be seen from the code snippet above and in Figure 1, as part of _defensive programming_, `XmlSerializableReminders` also implements the `ReadOnlyUniqueReminderList` interface. +
+
 To save, the `saveReminders` method in `StorageManager` is invoked:
 
 [source, java]
 ----
 
 @Override
-    public void saveReminders(UniqueReminderList reminderList) throws IOException {
+    public void saveReminders(ReadOnlyUniqueReminderList reminderList) throws IOException {
         saveReminders(reminderList, remindersStorage.getRemindersFilePath());
     }
 
 @Override
-    public void saveReminders(UniqueReminderList reminderList, String filePath) throws IOException {
+    public void saveReminders(ReadOnlyUniqueReminderList reminderList, String filePath) throws IOException {
         logger.fine("Attempting to write to data file: " + filePath);
         remindersStorage.saveReminders(reminderList, filePath);
     }
@@ -942,17 +946,19 @@ To save, the `saveReminders` method in `StorageManager` is invoked:
 ----
 
 This will then invoke the `saveReminders` method in `XmlRemindersStorage`, and go on to invoke the `saveRemindersToFile` method in `XmlFileStorage`,
-and the `saveDataToFile` method in `XmlUtil`.
+and then the `saveDataToFile` method in `XmlUtil`.
 
 [discrete]
 ==== Design Consideration
 **Aspect:** How to store Reminders in-memory +
-**Alternative 1 (current choice):** Store Reminder objects in UniqueReminderList, independent of AddressBook +
-Pros: Makes more sense, because a Reminder should not be part of AddressBook +
-Cons: More changes have to be made to the existing program, making it tougher to implement +
-**Alternative 2:** Store Reminder objects within AddressBook +
-Pros: Does not make sense +
-Cons: Easier to implement
+**Alternative 1 (current choice):** Store Reminder objects in UniqueReminderList, independent of AddressBook. +
+Pros: Follows the _Single-Responsibility Principle_, because a reminder should not be an address book's responsibility. +
+Cons: More changes have to be made to the existing code base, making it tougher to implement. +
+**Alternative 2:** Store Reminder objects within AddressBook. +
+Pros: Easier to implement as lesser changes have to be made to the existing program. +
+Cons: Violates the _Single-Responsibility Principle_.
+//end::reminder[]
+
 
 // tag::theme[]
 === Theme-changing mechanism
@@ -1789,4 +1795,12 @@ AppVeyor
 
 ....
 A hosted, distributed integration service used to build and test software projects hosted at GitHub on a Microsoft Windows virtual machine.
+....
+
+
+[[status]]
+Status
+
+....
+A description of the current state of the event, whether it has past, is happening now, is within three days or later.
 ....

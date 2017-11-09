@@ -345,7 +345,7 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public UniqueReminderList getUniqueReminderList() {
+    public ReadOnlyUniqueReminderList getUniqueReminderList() {
         return reminderList;
     }
 

@@ -12,6 +12,7 @@ import seedu.address.model.person.ReadOnlyPerson;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
 import seedu.address.model.reminders.ReadOnlyReminder;
+import seedu.address.model.reminders.ReadOnlyUniqueReminderList;
 import seedu.address.model.reminders.UniqueReminderList;
 import seedu.address.model.reminders.exceptions.DuplicateReminderException;
 import seedu.address.model.reminders.exceptions.ReminderNotFoundException;
@@ -36,7 +37,7 @@ public interface Model {
     ObservableList<ReadOnlyReminder> getSortedReminderList();
 
     /** Returns the reminders */
-    UniqueReminderList getUniqueReminderList();
+    ReadOnlyUniqueReminderList getUniqueReminderList();
 
     /** Deletes the given person. */
     void deletePerson(ReadOnlyPerson target) throws PersonNotFoundException;

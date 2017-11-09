@@ -48,7 +48,7 @@ public class Birthday {
 
 
     /**
-     * Validates the given birthday and instantiate a LocalDate object with the date as of the date
+     * Validates the given birthday and instantiate a LocalDate object with the date
      * this Birthday object was instantiated.
      *
      * @throws IllegalValueException if given birthday string is invalid.
@@ -72,8 +72,8 @@ public class Birthday {
 
     /**
      * This constructor is used for testing purposes.
-     * This is because the use of {@code LocalDate.now()} is not static and might lead to
-     * tests failing depending on the time the tests are conducted.
+     * This is because the value of {@code LocalDate.now()} is dependent on the date the tests are conducted
+     * and might lead to tests failing depending on the date the tests are conducted.
      */
     private Birthday(String birthday, LocalDate currentDateForTesting) {
         this.value = convertToDefaultDateFormat(birthday);
@@ -196,7 +196,7 @@ public class Birthday {
     }
 
     /**
-     * Converts the date into logical segments.
+     * Converts the date into the year, month and date fields.
      */
     private static String[] getSplitDate(String trimmedDate) {
         return trimmedDate.split(BIRTHDAY_SPLIT_REGEX);

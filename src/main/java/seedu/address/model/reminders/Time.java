@@ -14,7 +14,7 @@ import seedu.address.commons.exceptions.IllegalValueException;
 public class Time {
 
     public static final String MESSAGE_TIME_CONSTRAINTS = "Time must be in 24-hour format,"
-            + " with a colon separating the hour and minute.\n"
+            + " with a colon separating the hour and minute fields.\n"
             + "Example: 09:00, 23:59, 17:56";
 
     public static final String HOUR_MIN_SEPARATOR = ":";

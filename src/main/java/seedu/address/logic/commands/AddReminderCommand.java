@@ -24,24 +24,20 @@ public class AddReminderCommand extends Command {
             + PREFIX_REMINDER + "REMINDER "
             + PREFIX_DATE + "DATE "
             + PREFIX_TIME + "TIME\n"
-            + "REMINDER must be non-empty. DATE must be in the format dd-mm-yyyy, dd/mm/yyyy or dd.mm.yyyy, "
-            + "and must be a valid date. TIME is in 24-hour format.\n"
             + "Example: " + COMMAND_WORD + " "
             + PREFIX_REMINDER + "Dinner with Family "
             + PREFIX_DATE + "22-11-2017 "
             + PREFIX_TIME + "1700\n";
 
-    public static final String MESSAGE_SUCCESS = "New reminder added!";
-    public static final String MESSAGE_DUPLICATE_REMINDER = "This reminder already exists!";
+    public static final String MESSAGE_SUCCESS = "New reminder added.";
+    public static final String MESSAGE_DUPLICATE_REMINDER = "This reminder already exists in iContacts.";
 
     private Reminder toAdd;
 
     /**
-     * Creates an AddReminderCommand to add the specified {@code Reminder}
+     * Creates an AddReminderCommand to add the specified {@code ReadOnlyReminder}
      */
     public AddReminderCommand(ReadOnlyReminder toAdd) {
-        requireNonNull(toAdd);
-
         this.toAdd = new Reminder(toAdd);
     }
 

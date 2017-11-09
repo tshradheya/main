@@ -25,7 +25,7 @@ public class Status {
     private final LocalDate dateOfReminder;
     private final LocalTime timeOfReminder;
 
-    private String status;
+    private final String status;
 
     /**
      * Initialize the status for this reminder.
@@ -35,20 +35,20 @@ public class Status {
         currentTime = LocalTime.now();
         this.dateOfReminder = reminder.getDate().toLocalDate();
         this.timeOfReminder = reminder.getTime().toLocalTime();
-        initStatus();
+        this.status = getStatus();
     }
 
     /**
      * This constructor is used for testing purposes only.
-     * This is because the use of {@code LocalDate.now()} and {@code LocalTime.now()} is not static and might lead to
-     * tests failing depending on the time the tests are conducted.
+     * This is because the values of {@code LocalDate.now()} and {@code LocalTime.now()} is dependent on the date and
+     * time the tests are conducted and might lead to tests failing depending on the date and time the tests are conducted.
      */
     private Status(Reminder reminder, LocalDate defaultDate, LocalTime defaultTime) {
         this.currentDate = defaultDate;
         this.currentTime = defaultTime;
         this.dateOfReminder = reminder.getDate().toLocalDate();
         this.timeOfReminder = reminder.getTime().toLocalTime();
-        initStatus();
+        this.status = getStatus();
     }
 
     /**
@@ -63,7 +63,7 @@ public class Status {
     /**
      * Returns true if the event has already past.
      */
-    public boolean hasEventPast() {
+    public boolean hasEventPassed() {
         final long daysUntilEvent = getDaysUntilEvent();
         final long minutesUntilEvent = getMinutesUntilEvent();
         if (daysUntilEvent > 0) {
@@ -103,33 +103,36 @@ public class Status {
     }
 
     /**
-     * Carries out the actual initializing of the status.
+     * Returns the correct status depending on the given {@code reminder} to this Status object
+     * @see Status(Reminder)
      */
-    private void initStatus() {
-        if (hasEventPast()) {
-            status = STATUS_OVERDUE;
+    private String getStatus() {
+        if (hasEventPassed()) {
+            return STATUS_OVERDUE;
         } else if (isEventToday()) {
-            status = STATUS_TODAY_MESSAGE;
+            return STATUS_TODAY_MESSAGE;
         } else {
             final long daysUntilEvent = getDaysUntilEvent();
             if (daysUntilEvent == ONE_DAY) {
-                status = String.format(STATUS_FORMAT_SINGLE_MESSAGE, ONE_DAY);
+                return String.format(STATUS_FORMAT_SINGLE_MESSAGE, ONE_DAY);
             } else {
-                status = String.format(STATUS_FORMAT_MESSAGE, getDaysUntilEvent());
+                return String.format(STATUS_FORMAT_MESSAGE, getDaysUntilEvent());
             }
         }
     }
 
     /**
-     * Return the number of days left until {@code reminderDate} (with respect to the date this object is created).
+     * Returns the number of days left until {@code reminderDate} (with respect to the date this object is created).
      */
     private long getDaysUntilEvent() {
         return currentDate.until(dateOfReminder, ChronoUnit.DAYS);
     }
 
     /**
-     * Return the difference in time between the current time and {@code reminderTime} in minutes
+     * Returns the difference in time between the current time and {@code reminderTime} in minutes
      * (with respect to the time this object is created).
+     * Note that this method only returns the difference in time, and does not take into consideration the difference
+     * in days.
      */
     private long getMinutesUntilEvent() {
         return currentTime.until(timeOfReminder, ChronoUnit.MINUTES);

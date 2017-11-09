@@ -21,7 +21,7 @@ import seedu.address.model.reminders.exceptions.ReminderNotFoundException;
 
 //@@author justinpoh
 /**
- * Edits the details of an existing reminder in the application.
+ * Edits the details of an existing reminder in iContacts.
  */
 public class EditReminderCommand extends Command {
 
@@ -30,14 +30,15 @@ public class EditReminderCommand extends Command {
             + "by the index number. "
             + "Existing values will be overwritten by the input values.\n"
             + "Parameters: INDEX (must be a positive integer) "
-            + "[" + PREFIX_REMINDER + "REMINDER (cannot be empty)]"
+            + "[" + PREFIX_REMINDER + "REMINDER]"
             + "[" + PREFIX_DATE + "DATE]"
             + "[" + PREFIX_TIME + "TIME]\n"
+            + "Additionally, if REMINDER is edited, the new value must contain at least one character.\n"
             + "Example: " + COMMAND_WORD + " 1 "
             + PREFIX_REMINDER + "Changed reminder";
 
 
-    public static final String MESSAGE_EDIT_REMINDER_SUCCESS = "Edited Reminder: %1$s";
+    public static final String MESSAGE_EDIT_REMINDER_SUCCESS = "Edited Reminder: %1$s.";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
     public static final String MESSAGE_DUPLICATE_REMINDER = "This reminder already exists in iContacts.";
 

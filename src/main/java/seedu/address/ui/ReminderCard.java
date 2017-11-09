@@ -44,8 +44,8 @@ public class ReminderCard extends UiPart<Region> {
         return source.isEventWithinThreeDays();
     }
 
-    public boolean hasEventPast() {
-        return source.hasEventPast();
+    public boolean hasEventPassed() {
+        return source.hasEventPassed();
     }
 
     /**

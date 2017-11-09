@@ -18,10 +18,10 @@ public class DeleteReminderCommand extends Command {
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Deletes the reminder identified by the index number used in the reminder listing.\n"
-            + "Parameters: INDEX (must be a positive integer)\n"
-            + "Example: " + COMMAND_WORD + " 1";
+            + "Parameters: INDEX (must be a positive integer).\n"
+            + "Example: " + COMMAND_WORD + " 1.";
 
-    public static final String MESSAGE_DELETE_REMINDER_SUCCESS = "Deleted reminder: %1$s";
+    public static final String MESSAGE_DELETE_REMINDER_SUCCESS = "Deleted reminder: %1$s.";
 
     private final Index targetIndex;
 
@@ -42,7 +42,7 @@ public class DeleteReminderCommand extends Command {
         try {
             model.deleteReminder(reminderToDelete);
         } catch (ReminderNotFoundException rnfe) {
-            assert false : "The target reminder cannot be missing";
+            assert false : "The target reminder cannot be missing.";
         }
 
         return new CommandResult(String.format(MESSAGE_DELETE_REMINDER_SUCCESS, reminderToDelete.toString()));

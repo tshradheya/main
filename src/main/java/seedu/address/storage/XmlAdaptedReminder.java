@@ -12,7 +12,7 @@ import seedu.address.model.reminders.Time;
 
 //@@author justinpoh
 /**
- * JAXB-friendly version of the Reminder.
+ * JAXB-friendly version of Reminder.
  */
 public class XmlAdaptedReminder {
 

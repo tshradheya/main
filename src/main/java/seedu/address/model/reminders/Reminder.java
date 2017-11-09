@@ -81,8 +81,8 @@ public class Reminder implements ReadOnlyReminder {
     }
 
     @Override
-    public boolean hasEventPast() {
-        return status.get().hasEventPast();
+    public boolean hasEventPassed() {
+        return status.get().hasEventPassed();
     }
 
     @Override

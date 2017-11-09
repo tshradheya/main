@@ -7,6 +7,7 @@ import java.util.function.Predicate;
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.events.model.UpdateListForSelectionEvent;
+import seedu.address.commons.events.model.UpdatePopularityCounterForSelectionEvent;
 import seedu.address.model.email.Body;
 import seedu.address.model.email.Service;
 import seedu.address.model.email.Subject;
@@ -125,5 +126,8 @@ public interface Model {
     Index getIndexOfGivenPerson(ReadOnlyPerson person);
 
     void handleUpdateListForSelectionEvent(UpdateListForSelectionEvent updateListForSelectionEvent);
+
+    void handleUpdatePopularityCounterForSelectionEvent(
+            UpdatePopularityCounterForSelectionEvent updatePopularityCounterForSelectionEvent);
 
 }

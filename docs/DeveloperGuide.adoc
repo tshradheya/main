@@ -752,6 +752,27 @@ Desktop.getDesktop().browse(new URI(String.format(GMAIL_EMAIL_URL, recipients, s
 **Pros:** No dependency on other apps +
 **Cons:** Does not auto fill in the text due to older version of browser
 
+=== Frequently Visited Contacts mechanism
+
+The mechanism to show the top five most frequently visited contacts is facilitated by the `PopularityCounter` of each contact.
+For every new person added into the address book, he is assigned a popularity counter of `0`. The top five popular contacts are extracted by sorting the list based on the field `PopularityCounter` of each person. In case of same popularity counter, the person who was added before is given higher priority.
+
+The Frequently Visited Contacts mechanism is an event-driven mechanism. However, there is no explicit command to view the top five frequently visited contacts as they are always refreshed whenever there is an change in the address book. They are always displayed on the UI below the `CommandResult` panel. The
+The event to refresh the Popular Contacts List, `PopularContactChangedEvent` is triggered whenever any of the command that increases `PopularityCounter` is execcuted.
+
+
+Following are the commands which will increase the `PopularityCounter` by one for the contacts viewed/searched:
+* `viewtag`
+* `select`
+* `details`
+* `location`
+* `email`
+
+Each visit/search
+
+
+
+
 // tag::toggle[]
 === Toggling mechanism
 The toggling mechanism is an event-driven mechanism.

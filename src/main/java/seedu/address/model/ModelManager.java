@@ -25,6 +25,7 @@ import seedu.address.commons.events.model.DisplayPictureDeleteEvent;
 import seedu.address.commons.events.model.PopularContactChangedEvent;
 import seedu.address.commons.events.model.RemindersChangedEvent;
 import seedu.address.commons.events.model.UpdateListForSelectionEvent;
+import seedu.address.commons.events.model.UpdatePopularityCounterForSelectionEvent;
 import seedu.address.commons.events.ui.LoadPersonWebpageEvent;
 import seedu.address.commons.events.ui.SendingEmailEvent;
 import seedu.address.commons.events.ui.ShowDefaultPanelEvent;
@@ -388,6 +389,21 @@ public class ModelManager extends ComponentManager implements Model {
         updateFilteredListToShowAll();
         Index index = getIndexOfGivenPerson(updateListForSelectionEvent.getPerson());
         updateListForSelectionEvent.setIndex(index);
+    }
+
+    @Override
+    @Subscribe
+    public void handleUpdatePopularityCounterForSelectionEvent(
+            UpdatePopularityCounterForSelectionEvent updatePopularityCounterForSelectionEvent) {
+        try {
+            updatePersonsPopularityCounterByOne(updatePopularityCounterForSelectionEvent.getPerson());
+        } catch (DuplicatePersonException dpe) {
+            assert false : "Is not possible as counter will be increased by one";
+        } catch (PersonNotFoundException pnfe) {
+            assert false : "Only existing person can be selected";
+        }
+
+        updatePopularContactList();
     }
 
     @Override

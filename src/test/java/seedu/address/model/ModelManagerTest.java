@@ -18,6 +18,7 @@ import org.junit.rules.ExpectedException;
 
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.events.model.DisplayPictureChangedEvent;
+import seedu.address.commons.events.model.UpdateListForSelectionEvent;
 import seedu.address.commons.events.ui.LoadPersonWebpageEvent;
 import seedu.address.commons.util.FileUtil;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
@@ -80,10 +81,12 @@ public class ModelManagerTest {
         UserPrefs userPrefs = new UserPrefs();
         UniqueReminderList uniqueReminders = getUniqueTypicalReminders();
         ModelManager modelManager = new ModelManager(addressBook, uniqueReminders, userPrefs);
-        modelManager.updateFilteredListToShowAll();
-        Index index = modelManager.getIndexOfGivenPerson(ALICE);
         Index expectedIndex = Index.fromOneBased(1);
-        assertEquals(index.getZeroBased(), expectedIndex.getZeroBased() );
+
+
+        UpdateListForSelectionEvent updateListForSelectionEvent = new UpdateListForSelectionEvent(ALICE);
+        modelManager.handleUpdateListForSelectionEvent(updateListForSelectionEvent);
+        assertEquals(updateListForSelectionEvent.getIndex().getZeroBased(), expectedIndex.getZeroBased());
     }
     //@@author
 

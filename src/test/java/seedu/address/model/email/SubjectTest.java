@@ -30,6 +30,6 @@ public class SubjectTest {
 
         assertNotEquals(subject.hashCode(), anotherSubject.hashCode());
 
-        assertNotEquals(subject.toString(), anotherSubject.toString() );
+        assertNotEquals(subject.toString(), anotherSubject.toString());
     }
 }

@@ -774,11 +774,12 @@ public void updatePopularContactList() {
 ----
 
 Following are the commands which will increase the `PopularityCounter` by one for the contacts viewed/searched:
-* `viewtag`
-* `select`
-* `details`
-* `location`
-* `email`
+
+*** `viewtag`
+*** `select`
+*** `details`
+*** `location`
+*** `email`
 
 [NOTE]
 Manual selection of person through a click also increases the popularity counter of that person. This is the same action as `details` command.
@@ -800,7 +801,7 @@ public ReadOnlyPerson increaseCounterByOne(ReadOnlyPerson person) {
 Following is the sequence diagram which shows how the event is triggered and how the saving of updated address book takes place:
 
 
-image::frequentlyVisitedSD.png[width="790"]
+image::frequentlyVisitedSD.PNG[width="790"]
 _Figure TBD : Sequence diagram for frequently visited mechanism._
 
 
@@ -839,7 +840,7 @@ The `selectionModel()` of `PersonListView` is now linked to `details` command ra
 
 Following is the wireframe for the Details Panel:
 
-image::wireframeForDetailsPael.PNG[width="600"]
+image::wireframeDetailsPanel.PNG[width="600"]
 _Figure TBD : Wireframe for Details Panel._
 
 Using the `FontAwesomeFx` library, an icon is set for each label as seen in the UI.

@@ -80,7 +80,17 @@ public class SampleDataUtil {
                      new DisplayPicture(""), new PopularityCounter(0), getTagSet("nusStudentClub")),
                 new Person(new Name("Maria"), new Phone("29339282"), new Email("maria@example.com"),
                      new Address("Jurong West, 1182022"), new Birthday("10/12/1996"), new Nickname(""),
-                     new DisplayPicture(""), new PopularityCounter(0), getTagSet("nusStudentClub"))
+                     new DisplayPicture(""), new PopularityCounter(0), getTagSet("nusStudentClub")),
+                new Person(new Name("Eugene Tan"), new Phone("92283828"), new Email("eugie@example.com"),
+                     new Address("Lentor Avenue, Singapore"), new Birthday("18/11/1996"), new Nickname(""),
+                     new DisplayPicture(""), new PopularityCounter(0), getTagSet("enemy")),
+                new Person(new Name("Nathan"), new Phone("92283828"), new Email("nath@example.com"),
+                     new Address("Bintan, Indonesia"), new Birthday("18/7/1996"), new Nickname(""),
+                     new DisplayPicture(""), new PopularityCounter(0), getTagSet("intern")),
+                new Person(new Name("Piyush"), new Phone("28728828"), new Email("piyuswag@example.com"),
+                     new Address("Toronto, Canada"), new Birthday("4/9/1996"), new Nickname(""),
+                     new DisplayPicture(""), new PopularityCounter(0), getTagSet("basketballTeam")),
+
             };
         } catch (IllegalValueException e) {
             throw new AssertionError("sample data cannot be invalid", e);

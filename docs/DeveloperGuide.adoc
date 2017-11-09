@@ -814,6 +814,11 @@ The `DetailsPanel` is an Anchor Pane which is embedded inside `BrowserAndReminde
 [NOTE]
 At any point of time, only one of the three panels(Borwser, Reminder, Details) inside `BrowserAndReminderPanel` will have the visibility set as `true` and in front of the other two panels.
 
+The UML diagram below represents the UI structure for the `BrowserAndReminderPanel`:
+
+image::umlDetails.png[width="790"]
+_Figure TBD : UML Diagram for Panel._
+
 The code to ensure only Details Panel is displayed on execution of command is shown below:
 
 [source, java]
@@ -832,12 +837,12 @@ The `selectionModel()` of `PersonListView` is now linked to `details` command ra
 [NOTE]
 `select` command now only scrolls to the INDEX specified whereas `details` command scrolls to and selects the person to show his details in the panel.
 
-Following is the sequence diagram which shows how the event is triggered and how the saving of updated address book takes place:
+Following is the wireframe for the Details Panel:
 
+image::wireframeForDetailsPael.PNG[width="600"]
+_Figure TBD : Wireframe for Details Panel._
 
-image::frequentlyVisitedSD.png[width="790"]
-_Figure TBD : Sequence diagram for frequently visited mechanism._
-
+Using the `FontAwesomeFx` library, an icon is set for each label as seen in the UI.
 
 // tag::toggle[]
 === Toggling mechanism

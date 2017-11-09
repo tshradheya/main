@@ -50,12 +50,19 @@ public class PopularContactPanel extends UiPart<Region> {
                     if (newValue != null) {
                         logger.fine("Selection in person list panel changed to : '" + newValue + "'");
                         raise(new PopularContactPanelSelectionChangedEvent(newValue, newValue.person));
-                        UpdateListForSelectionEvent updateListForSelectionEvent =
-                                new UpdateListForSelectionEvent(newValue.person);
-                        raise(updateListForSelectionEvent);
-                        raise(new UpdatePersonListPanelSelectionEvent(updateListForSelectionEvent.getIndex()));
+                        synchronizeListsOnClick(newValue);
                     }
                 });
+    }
+
+    /**
+     * Ensures the Popular Contact List and Person List is synchronized on click of any person
+     */
+    public void synchronizeListsOnClick(PopularContactCard newValue) {
+        UpdateListForSelectionEvent updateListForSelectionEvent =
+                new UpdateListForSelectionEvent(newValue.person);
+        raise(updateListForSelectionEvent);
+        raise(new UpdatePersonListPanelSelectionEvent(updateListForSelectionEvent.getIndex()));
     }
 
     /**

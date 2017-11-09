@@ -87,6 +87,7 @@ public class ModelManagerTest {
                 new UpdatePopularityCounterForSelectionEvent(BENSON);
         modelManager.handleUpdatePopularityCounterForSelectionEvent(updatePopularityCounterForSelectionEvent);
         assertEquals(modelManager.getPopularContactList().get(0), BENSON);
+    }
 
       @Test
       public void test_indexOfGivenPerson() {

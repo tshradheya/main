@@ -50,7 +50,7 @@ public class SampleDataUtil {
                      new Address("35, Clementi, #11-31"), new Birthday("16/11/1999"), new Nickname("ali"),
                      new DisplayPicture(""), new PopularityCounter(0), getTagSet("cs1010")),
                 new Person(new Name("Rahul"), new Phone("93242829"), new Email("rahul@example.com"),
-                     new Address("Lokmanaya Nagar, 440016, Nagpur"), new Birthday("15/11/1999"), new Nickname("sumit"),
+                     new Address("Lokmanaya Nagar, 440016, Nagpur"), new Birthday("15/11/1999"), new Nickname(""),
                      new DisplayPicture(""), new PopularityCounter(0), getTagSet("cs1010", "utown")),
                 new Person(new Name("Bob"), new Phone("83292191"), new Email("bob@example.com"),
                      new Address("35, Yio Chu Kang, #11-31"), new Birthday("16/1/1999"), new Nickname(""),
@@ -59,11 +59,11 @@ public class SampleDataUtil {
                      new Address("21, Dover, 112932"), new Birthday("16/5/1999"), new Nickname(""),
                      new DisplayPicture(""), new PopularityCounter(0), getTagSet("cs1010")),
                 new Person(new Name("Akshay"), new Phone("62782292"), new Email("akshay@example.com"),
-                     new Address(" Changi, 124289"), new Birthday("4/11/2000"), new Nickname(""),
+                     new Address("Changi, 1232922"), new Birthday("4/11/2000"), new Nickname(""),
                      new DisplayPicture(""), new PopularityCounter(0),
                         getTagSet("friends", "colleagues")),
                 new Person(new Name("Rachael"), new Phone("72927739"), new Email("rachel@example.com"),
-                     new Address(" Changi, 124289"), new Birthday("4/11/2000"), new Nickname(""),
+                     new Address("Changi, 124289"), new Birthday("4/11/2000"), new Nickname(""),
                      new DisplayPicture(""), new PopularityCounter(0),
                         getTagSet("colleagues")),
                 new Person(new Name("Alex"), new Phone("83292191"), new Email("alex@example.com"),
@@ -80,7 +80,7 @@ public class SampleDataUtil {
                      new DisplayPicture(""), new PopularityCounter(0), getTagSet("nusStudentClub")),
                 new Person(new Name("Maria"), new Phone("29339282"), new Email("maria@example.com"),
                      new Address("Jurong West, 1182022"), new Birthday("10/12/1996"), new Nickname(""),
-                     new DisplayPicture(""), new PopularityCounter(0), getTagSet("nusStudentClub")),
+                     new DisplayPicture(""), new PopularityCounter(0), getTagSet("nusStudentClub"))
             };
         } catch (IllegalValueException e) {
             throw new AssertionError("sample data cannot be invalid", e);

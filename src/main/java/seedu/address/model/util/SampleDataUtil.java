@@ -16,6 +16,12 @@ import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.PopularityCounter;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
+import seedu.address.model.reminders.Date;
+import seedu.address.model.reminders.ReadOnlyUniqueReminderList;
+import seedu.address.model.reminders.Reminder;
+import seedu.address.model.reminders.Time;
+import seedu.address.model.reminders.UniqueReminderList;
+import seedu.address.model.reminders.exceptions.DuplicateReminderException;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -119,6 +125,37 @@ public class SampleDataUtil {
         }
 
         return tags;
+    }
+
+    public static Reminder[] getSampleReminders() {
+        try {
+            return new Reminder[] {
+                new Reminder("Email CS1010 Students about Midterm", new Date("15-11-2017"),
+                            new Time("16:00")),
+                new Reminder("Birthday Party Eugene", new Date("15-11-2017"),
+                            new Time("22:00")),
+                new Reminder("CS2103T Release jar", new Date("13-11-2017"),
+                            new Time("12:00")),
+                new Reminder("CS2105 Assignment Due", new Date("20-11-2017"),
+                            new Time("23:59")),
+                new Reminder("Fix Bugs of iContacts", new Date("02-12-2017"),
+                            new Time("10:00")),
+            };
+        } catch (IllegalValueException e) {
+            throw new AssertionError("sample data cannot be invalid", e);
+        }
+    }
+
+    public static ReadOnlyUniqueReminderList getSampleReminderList() {
+        try {
+            UniqueReminderList sampleAb = new UniqueReminderList();
+            for (Reminder sampleReminder : getSampleReminders()) {
+                sampleAb.add(sampleReminder);
+            }
+            return sampleAb;
+        } catch (DuplicateReminderException e) {
+            throw new AssertionError("sample data cannot contain duplicate reminders", e);
+        }
     }
 
 }

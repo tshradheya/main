@@ -15,7 +15,7 @@ public class Status {
     private static final String STATUS_FORMAT_SINGLE_MESSAGE = "Status: %1$s day left.";
     private static final String STATUS_FORMAT_MESSAGE = "Status: %1$s days left.";
     private static final String STATUS_TODAY_MESSAGE = "Event happening today!";
-    private static final String STATUS_OVERDUE = "Event has past.";
+    private static final String STATUS_OVERDUE = "Event has passed.";
 
     private static final int ONE_DAY = 1;
 

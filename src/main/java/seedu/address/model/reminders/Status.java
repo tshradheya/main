@@ -41,7 +41,8 @@ public class Status {
     /**
      * This constructor is used for testing purposes only.
      * This is because the values of {@code LocalDate.now()} and {@code LocalTime.now()} is dependent on the date and
-     * time the tests are conducted and might lead to tests failing depending on the date and time the tests are conducted.
+     * time the tests are conducted and might lead to tests failing depending on the date and time the tests
+     * are conducted.
      */
     private Status(Reminder reminder, LocalDate defaultDate, LocalTime defaultTime) {
         this.currentDate = defaultDate;

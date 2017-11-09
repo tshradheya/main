@@ -113,10 +113,10 @@ public class AddReminderCommandSystemTest extends UniqueReminderListSystemTest {
     }
 
     /**
-     * Executes the {@code AddReminderCommand} that adds {@code toAdd} to the model and verifies that the command box displays
-     * an empty string, the result display box displays the success message of executing {@code AddReminderCommand} with the
-     * details of {@code toAdd}, and the model related components equal to the current model added with {@code toAdd}.
-     * These verifications are done by
+     * Executes the {@code AddReminderCommand} that adds {@code toAdd} to the model and verifies that the command box
+     * displays an empty string, the result display box displays the success message of executing
+     * {@code AddReminderCommand} with the details of {@code toAdd}, and the model related components equal to the
+     * current model added with {@code toAdd}. These verifications are done by
      * {@code UniqueReminderListSystemTest#assertApplicationDisplaysExpected(String, String, Model)}.<br>
      * Also verifies that the command box has the default style class.
      * @see AddressBookSystemTest#assertApplicationDisplaysExpected(String, String, Model)

@@ -89,8 +89,8 @@ public class ModelManagerTest {
         assertEquals(modelManager.getPopularContactList().get(0), BENSON);
     }
 
-      @Test
-      public void test_indexOfGivenPerson() {
+    @Test
+    public void test_indexOfGivenPerson() {
         AddressBook addressBook = new AddressBookBuilder().withPerson(ALICE).withPerson(BENSON).build();
         UserPrefs userPrefs = new UserPrefs();
         UniqueReminderList uniqueReminders = getUniqueTypicalReminders();

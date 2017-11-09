@@ -1,5 +1,6 @@
 package seedu.address.model;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
@@ -15,6 +16,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import seedu.address.commons.core.index.Index;
 import seedu.address.commons.events.model.DisplayPictureChangedEvent;
 import seedu.address.commons.events.ui.LoadPersonWebpageEvent;
 import seedu.address.commons.util.FileUtil;
@@ -70,6 +72,18 @@ public class ModelManagerTest {
         ModelManager modelManager = new ModelManager();
         modelManager.showPersonWebpage(ALICE);
         assertTrue(eventsCollectorRule.eventsCollector.getMostRecent() instanceof LoadPersonWebpageEvent);
+    }
+
+    @Test
+    public void test_indexOfGivenPerson() {
+        AddressBook addressBook = new AddressBookBuilder().withPerson(ALICE).withPerson(BENSON).build();
+        UserPrefs userPrefs = new UserPrefs();
+        UniqueReminderList uniqueReminders = getUniqueTypicalReminders();
+        ModelManager modelManager = new ModelManager(addressBook, uniqueReminders, userPrefs);
+        modelManager.updateFilteredListToShowAll();
+        Index index = modelManager.getIndexOfGivenPerson(ALICE);
+        Index expectedIndex = Index.fromOneBased(1);
+        assertEquals(index.getZeroBased(), expectedIndex.getZeroBased() );
     }
     //@@author
 

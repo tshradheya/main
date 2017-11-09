@@ -379,6 +379,7 @@ public class ModelManager extends ComponentManager implements Model {
                 return Index.fromZeroBased(i);
             }
         }
+        assert false : "Should not come here in no case";
         return Index.fromZeroBased(-1);
     }
 

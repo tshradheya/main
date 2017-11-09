@@ -21,6 +21,7 @@ import javafx.stage.Stage;
 import seedu.address.TestApp;
 import seedu.address.commons.core.EventsCenter;
 import seedu.address.model.AddressBook;
+import seedu.address.model.reminders.UniqueReminderList;
 import seedu.address.testutil.TypicalPersons;
 
 /**
@@ -53,7 +54,8 @@ public abstract class AddressBookGuiTest {
         FxToolkit.setupStage((stage) -> {
             this.stage = stage;
         });
-        FxToolkit.setupApplication(() -> new TestApp(this::getInitialData, getDataFileLocation()));
+        FxToolkit.setupApplication(() -> new TestApp(this::getInitialData, UniqueReminderList::new,
+                getDataFileLocation(), getReminderDataFileLocation()));
         FxToolkit.showStage();
 
         mainWindowHandle = new MainWindowHandle(stage);
@@ -109,6 +111,13 @@ public abstract class AddressBookGuiTest {
      */
     protected String getDataFileLocation() {
         return TestApp.SAVE_LOCATION_FOR_TESTING;
+    }
+
+    /**
+     * Override this in child classes to set the reminder data file location.
+     */
+    protected String getReminderDataFileLocation() {
+        return TestApp.SAVE_LOCATION_FOR_REMINDER_TESTING;
     }
 
     @After

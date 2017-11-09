@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import seedu.address.model.reminders.ReadOnlyReminder;
-import seedu.address.model.reminders.Reminder;
 import seedu.address.model.reminders.UniqueReminderList;
 import seedu.address.storage.XmlSerializableReminders;
 
@@ -15,16 +14,16 @@ import seedu.address.storage.XmlSerializableReminders;
  */
 public class TypicalReminders {
 
-    public static final Reminder COFFEE_REMINDER = new ReminderBuilder().build();
-    public static final Reminder HOMEWORK_REMINDER = new ReminderBuilder().withReminder("Do homework")
+    public static final ReadOnlyReminder COFFEE_REMINDER = new ReminderBuilder().build();
+    public static final ReadOnlyReminder HOMEWORK_REMINDER = new ReminderBuilder().withReminder("Do homework")
                                                         .withDate("01/01/2018").withTime("07:30").build();
-    public static final Reminder DINNER_REMINDER = new ReminderBuilder().withReminder("Dinner with family")
+    public static final ReadOnlyReminder DINNER_REMINDER = new ReminderBuilder().withReminder("Dinner with family")
                                                         .withDate("25/12/2017").withTime("18:00").build();
 
     // Manually added
-    public static final Reminder MEETING_REMINDER = new ReminderBuilder().withReminder("Meet with CS2103 group")
+    public static final ReadOnlyReminder MEETING_REMINDER = new ReminderBuilder().withReminder("Meet with CS2103 group")
                                                   .withDate("09/09/2017").withTime("12:00").build();
-    public static final Reminder DENTIST_REMINDER = new ReminderBuilder().withReminder("Go for dental checkup")
+    public static final ReadOnlyReminder DENTIST_REMINDER = new ReminderBuilder().withReminder("Go for dental checkup")
             .withDate("10/10/2017").withTime("14:00").build();
 
     private TypicalReminders() {} //prevents instantiation

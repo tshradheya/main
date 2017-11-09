@@ -12,12 +12,8 @@ import static seedu.address.testutil.TypicalPersons.DANIEL;
 import static seedu.address.testutil.TypicalPersons.KEYWORD_MATCHING_MEIER;
 import static seedu.address.testutil.TypicalPersons.KEYWORD_TAG_FRIEND;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.Test;
 
-import seedu.address.commons.core.index.Index;
 import seedu.address.logic.commands.ClearCommand;
 import seedu.address.logic.commands.DeleteCommand;
 import seedu.address.logic.commands.FilterCommand;
@@ -25,7 +21,6 @@ import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.commands.RedoCommand;
 import seedu.address.logic.commands.UndoCommand;
 import seedu.address.model.Model;
-import seedu.address.model.tag.Tag;
 
 public class FilterCommandSystemTest extends AddressBookSystemTest {
 
@@ -221,6 +216,15 @@ public class FilterCommandSystemTest extends AddressBookSystemTest {
 
         /* Case: filter person with the tag not in address book -> 0 persons found */
         command = FilterCommand.COMMAND_WORD + " " + PREFIX_TAG + "cousin";
+        assertCommandSuccess(command, expectedModel);
+        assertSelectedCardUnchanged();
+
+        /* Case: find person in empty address book -> 0 persons found */
+        executeCommand(ClearCommand.COMMAND_WORD);
+        assert getModel().getAddressBook().getPersonList().size() == 0;
+        command = FindCommand.COMMAND_WORD + " " + KEYWORD_MATCHING_MEIER;
+        expectedModel = getModel();
+        ModelHelper.setFilteredList(expectedModel, DANIEL);
         assertCommandSuccess(command, expectedModel);
         assertSelectedCardUnchanged();
 

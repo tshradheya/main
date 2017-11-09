@@ -52,7 +52,7 @@ public class ImportCommandTest {
         clearCommand.setData(model, new CommandHistory(), new UndoRedoStack());
         clearCommand.executeUndoableCommand();
 
-        ImportCommand importCommand = prepareCommand( tempFolderPath + VALID_PATH + ".xml");
+        ImportCommand importCommand = prepareCommand(tempFolderPath + VALID_PATH + ".xml");
         assertCommandSuccess(importCommand, model, String.format(importCommand.MESSAGE_SUCCESS, "3", "0"), model);
 
 

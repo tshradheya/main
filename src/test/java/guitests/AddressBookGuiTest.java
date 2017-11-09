@@ -14,6 +14,7 @@ import guitests.guihandles.CommandBoxHandle;
 import guitests.guihandles.MainMenuHandle;
 import guitests.guihandles.MainWindowHandle;
 import guitests.guihandles.PersonListPanelHandle;
+import guitests.guihandles.PopularContactsPanelHandle;
 import guitests.guihandles.ResultDisplayHandle;
 import guitests.guihandles.StatusBarFooterHandle;
 import javafx.stage.Stage;
@@ -73,6 +74,10 @@ public abstract class AddressBookGuiTest {
 
     protected PersonListPanelHandle getPersonListPanel() {
         return mainWindowHandle.getPersonListPanel();
+    }
+
+    protected PopularContactsPanelHandle getPopularContactListHandle() {
+        return mainWindowHandle.getPopularContactsPanelHandle();
     }
 
     protected MainMenuHandle getMainMenu() {

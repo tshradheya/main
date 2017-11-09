@@ -2,8 +2,10 @@
 package seedu.address.ui;
 
 import static org.junit.Assert.assertEquals;
+import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
 import static seedu.address.testutil.TypicalPersons.getPopularPersons;
 import static seedu.address.ui.testutil.GuiTestAssert.assertCardDisplaysPopularPerson;
+import static seedu.address.ui.testutil.GuiTestAssert.assertPopularCardEquals;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -41,4 +43,14 @@ public class PopularContactListPanelTest extends GuiUnitTest {
         }
     }
 
+    @Test
+    public void handleJumpToListRequestEvent() {
+        popularContactsPanelHandle.select(INDEX_SECOND_PERSON.getZeroBased());
+        guiRobot.pauseForHuman();
+
+        PopularContactCardHandle expectedCard = popularContactsPanelHandle
+                .getPopularContactCardHandle(INDEX_SECOND_PERSON.getZeroBased());
+        PopularContactCardHandle selectedCard = popularContactsPanelHandle.getHandleToSelectedCard();
+        assertPopularCardEquals(expectedCard, selectedCard);
+    }
 }

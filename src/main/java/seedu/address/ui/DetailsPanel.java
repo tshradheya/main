@@ -1,7 +1,6 @@
 //@@author tshradheya
 package seedu.address.ui;
 
-import java.util.HashMap;
 import java.util.Random;
 
 import javafx.beans.binding.Bindings;
@@ -15,6 +14,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import seedu.address.model.person.ReadOnlyPerson;
+import seedu.address.ui.util.TagColor;
 
 /**
  * An UI component that displays information of a {@code Person}.
@@ -24,9 +24,10 @@ public class DetailsPanel extends UiPart<Region> {
     private static final String FXML = "DetailsPanel.fxml";
     private static final Integer IMAGE_WIDTH = 100;
     private static final Integer IMAGE_HEIGHT = 100;
-    private static String[] colors = {"red", "blue", "green", "yellow", "pink"};
-    private static HashMap<String, String> tagColors = new HashMap<String, String>();
+    private static String[] colors = {"#ff0000", "#0000ff", "#008000", "#ff00ff", "#00ffff"};
     private static Random random = new Random();
+
+
 
     /**
      * Note: Certain keywords such as "location" and "resources" are reserved keywords in JavaFX.
@@ -37,6 +38,7 @@ public class DetailsPanel extends UiPart<Region> {
      */
 
     public final ReadOnlyPerson person;
+    private TagColor tagColorObject;
 
     @FXML
     private AnchorPane anchorPane;
@@ -65,6 +67,7 @@ public class DetailsPanel extends UiPart<Region> {
     public DetailsPanel(ReadOnlyPerson person) {
         super(FXML);
         this.person = person;
+        tagColorObject = TagColor.getInstance();
         initTags(person);
         bindListeners(person);
     }
@@ -75,10 +78,10 @@ public class DetailsPanel extends UiPart<Region> {
      */
 
     private String getTagColor(String tag) {
-        if (!tagColors.containsKey(tag)) {
-            tagColors.put(tag, colors[random.nextInt(colors.length)]);
+        if (!tagColorObject.containsTag(tag)) {
+            tagColorObject.addColor(tag, colors[random.nextInt(colors.length)]);
         }
-        return tagColors.get(tag);
+        return tagColorObject.getColor(tag);
     }
 
     /**

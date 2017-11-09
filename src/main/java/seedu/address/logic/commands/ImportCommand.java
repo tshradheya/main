@@ -8,6 +8,7 @@ import java.io.IOException;
 import seedu.address.commons.exceptions.DataConversionException;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.AddressBook;
+import seedu.address.model.person.DisplayPicture;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.PopularityCounter;
 import seedu.address.model.person.ReadOnlyPerson;
@@ -52,6 +53,7 @@ public class ImportCommand extends UndoableCommand {
                 for (ReadOnlyPerson person : this.addressBook.getPersonList()) {
                     Person personToAdd = new Person(person);
                     personToAdd.setPopularityCounter(new PopularityCounter());
+                    personToAdd.setDisplayPicture(new DisplayPicture(""));
                     try {
                         model.addPerson(personToAdd);
                         numSuccess++;

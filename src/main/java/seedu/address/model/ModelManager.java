@@ -10,19 +10,24 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
 
+import com.google.common.eventbus.Subscribe;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import seedu.address.commons.core.ComponentManager;
 import seedu.address.commons.core.LogsCenter;
+import seedu.address.commons.core.index.Index;
 import seedu.address.commons.events.model.AddressBookChangedEvent;
 import seedu.address.commons.events.model.DisplayPictureChangedEvent;
 import seedu.address.commons.events.model.DisplayPictureDeleteEvent;
 import seedu.address.commons.events.model.PopularContactChangedEvent;
 import seedu.address.commons.events.model.RemindersChangedEvent;
+import seedu.address.commons.events.model.UpdateListForSelectionEvent;
 import seedu.address.commons.events.ui.LoadPersonWebpageEvent;
 import seedu.address.commons.events.ui.SendingEmailEvent;
+import seedu.address.commons.events.ui.ShowDefaultPanelEvent;
 import seedu.address.commons.events.ui.ShowLocationEvent;
 import seedu.address.model.email.Body;
 import seedu.address.model.email.Service;
@@ -333,6 +338,11 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
+    public void showDefaultPanel() {
+        raise(new ShowDefaultPanelEvent());
+    }
+
+    @Override
     public ObservableList<ReadOnlyPerson> getBirthdayPanelFilteredPersonList() {
         return FXCollections.unmodifiableObservableList(sortedFilteredPersonsForBirthdayListPanel);
     }
@@ -359,6 +369,25 @@ public class ModelManager extends ComponentManager implements Model {
     public void deleteReminder(ReadOnlyReminder target) throws ReminderNotFoundException {
         reminderList.remove(target);
         indicateRemindersChanged();
+    }
+
+    @Override
+    public Index getIndexOfGivenPerson(ReadOnlyPerson person) {
+        for (int i = 0; i < filteredPersons.size(); i++) {
+            ReadOnlyPerson readOnlyPerson = filteredPersons.get(i);
+            if (readOnlyPerson.isSameStateAs(person)) {
+                return Index.fromZeroBased(i);
+            }
+        }
+        return Index.fromZeroBased(-1);
+    }
+
+    @Override
+    @Subscribe
+    public void handleUpdateListForSelectionEvent(UpdateListForSelectionEvent updateListForSelectionEvent) {
+        updateFilteredListToShowAll();
+        Index index = getIndexOfGivenPerson(updateListForSelectionEvent.getPerson());
+        updateListForSelectionEvent.setIndex(index);
     }
 
     @Override

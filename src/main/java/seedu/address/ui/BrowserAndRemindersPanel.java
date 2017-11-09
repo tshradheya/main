@@ -29,6 +29,7 @@ import seedu.address.commons.events.ui.LoadPersonWebpageEvent;
 import seedu.address.commons.events.ui.PersonPanelSelectionChangedEvent;
 import seedu.address.commons.events.ui.PopularContactPanelSelectionChangedEvent;
 import seedu.address.commons.events.ui.SendingEmailEvent;
+import seedu.address.commons.events.ui.ShowDefaultPanelEvent;
 import seedu.address.commons.events.ui.ShowLocationEvent;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.person.Address;
@@ -307,6 +308,7 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
         toggleBrowserPanel();
     }
     //@@author
+    //@@author tshradheya
 
     @Subscribe
     private void handleShowLocationEvent(ShowLocationEvent event) {
@@ -330,6 +332,14 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
         browser.toFront();
         loadPersonPage(event.getPerson());
     }
+
+    @Subscribe
+    private void handleShowDefaultPanelEvent(ShowDefaultPanelEvent event) {
+        setUpToShowRemindersPanel();
+        currentlyInFront = Node.REMINDERS;
+        remindersPanel.toFront();
+    }
+
     //@@author
 
 }

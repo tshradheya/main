@@ -27,6 +27,7 @@ public class ViewTagCommand extends Command {
     @Override
     public CommandResult execute() {
         model.updateFilteredPersonListForViewTag(predicate);
+        model.showDefaultPanel();
         return new CommandResult(getMessageForPersonListShownSummary(model.getFilteredPersonList().size()));
     }
 

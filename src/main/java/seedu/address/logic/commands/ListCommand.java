@@ -16,6 +16,7 @@ public class ListCommand extends Command {
     @Override
     public CommandResult execute() {
         model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
+        model.showDefaultPanel();
         return new CommandResult(MESSAGE_SUCCESS);
     }
 }

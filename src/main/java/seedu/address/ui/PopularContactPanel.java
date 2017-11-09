@@ -14,7 +14,9 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.Region;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.model.PopularContactChangedEvent;
+import seedu.address.commons.events.model.UpdateListForSelectionEvent;
 import seedu.address.commons.events.ui.PopularContactPanelSelectionChangedEvent;
+import seedu.address.commons.events.ui.UpdatePersonListPanelSelectionEvent;
 import seedu.address.model.person.ReadOnlyPerson;
 
 /**
@@ -48,6 +50,10 @@ public class PopularContactPanel extends UiPart<Region> {
                     if (newValue != null) {
                         logger.fine("Selection in person list panel changed to : '" + newValue + "'");
                         raise(new PopularContactPanelSelectionChangedEvent(newValue, newValue.person));
+                        UpdateListForSelectionEvent updateListForSelectionEvent =
+                                new UpdateListForSelectionEvent(newValue.person);
+                        raise(updateListForSelectionEvent);
+                        raise(new UpdatePersonListPanelSelectionEvent(updateListForSelectionEvent.getIndex()));
                     }
                 });
     }

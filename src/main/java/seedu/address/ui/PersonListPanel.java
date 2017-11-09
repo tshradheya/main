@@ -16,6 +16,7 @@ import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.ui.JumpToListRequestEvent;
 import seedu.address.commons.events.ui.PersonPanelSelectionChangedEvent;
 import seedu.address.commons.events.ui.ShowDetailsEvent;
+import seedu.address.commons.events.ui.UpdatePersonListPanelSelectionEvent;
 import seedu.address.model.person.ReadOnlyPerson;
 
 /**
@@ -99,6 +100,11 @@ public class PersonListPanel extends UiPart<Region> {
                 setGraphic(person.getRoot());
             }
         }
+    }
+
+    @Subscribe
+    private void handleUpdatePersonListPanelSelectionEvent(UpdatePersonListPanelSelectionEvent event) {
+        scrollTo(event.getIndex().getZeroBased());
     }
 
 }

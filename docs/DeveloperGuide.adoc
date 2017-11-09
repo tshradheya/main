@@ -760,6 +760,18 @@ For every new person added into the address book, he is assigned a popularity co
 The Frequently Visited Contacts mechanism is an event-driven mechanism. However, there is no explicit command to view the top five frequently visited contacts as they are always refreshed whenever there is an change in the address book. They are always displayed on the UI below the `CommandResult` panel. The
 The event to refresh the Popular Contacts List, `PopularContactChangedEvent` is triggered whenever any of the command that increases `PopularityCounter` is execcuted.
 
+The event triggers the following method:
+
+[source, java]
+----
+public void updatePopularContactList() {
+        refreshWithPopulatingAddressBook();
+        listOfPersonsForPopularContacts.sort((o1, o2) ->
+                o2.getPopularityCounter().getCounter() - o1.getPopularityCounter().getCounter());
+
+        getOnlyTopFiveMaximum();
+    }
+----
 
 Following are the commands which will increase the `PopularityCounter` by one for the contacts viewed/searched:
 * `viewtag`
@@ -768,9 +780,63 @@ Following are the commands which will increase the `PopularityCounter` by one fo
 * `location`
 * `email`
 
-Each visit/search
+[NOTE]
+Manual selection of person through a click also increases the popularity counter of that person. This is the same action as `details` command.
 
 
+The following method is used to increate the `popularityCounter` by one:
+
+[source, java]
+----
+public ReadOnlyPerson increaseCounterByOne(ReadOnlyPerson person) {
+        person.getPopularityCounter().increasePopularityCounter();
+        return new Person(person.getName(), person.getPhone(), person.getEmail(), person.getAddress(),
+                person.getBirthday(), person.getNickname(), person.getDisplayPicture(), person.getPopularityCounter(),
+                person.getTags());
+    }
+----
+
+
+Following is the sequence diagram which shows how the event is triggered and how the saving of updated address book takes place:
+
+
+image::frequentlyVisitedSD.png[width="790"]
+_Figure TBD : Sequence diagram for frequently visited mechanism._
+
+
+
+=== Details Panel Implementation
+
+The `detail` command shows more details of the contact like address, birthday, email in addition to the details shown in the `PersonCard` of `PersonListPanel`
+
+The `DetailsPanel` is an Anchor Pane which is embedded inside `BrowserAndReminderPanel`.
+
+[NOTE]
+At any point of time, only one of the three panels(Borwser, Reminder, Details) inside `BrowserAndReminderPanel` will have the visibility set as `true` and in front of the other two panels.
+
+The code to ensure only Details Panel is displayed on execution of command is shown below:
+
+[source, java]
+----
+private void setUpToShowDetailsPanel() {
+        detailsPanel.setVisible(true);
+        remindersPanel.setVisible(false);
+        browser.setVisible(false);
+    }
+----
+
+
+The details panel also gets displayed when user manually clicks on the `PersonCard`. This is made possible by making the `SelectionChangedEvent` raise the event to show the details panel.
+The `selectionModel()` of `PersonListView` is now linked to `details` command rather than `select` command.
+
+[NOTE]
+`select` command now only scrolls to the INDEX specified whereas `details` command scrolls to and selects the person to show his details in the panel.
+
+Following is the sequence diagram which shows how the event is triggered and how the saving of updated address book takes place:
+
+
+image::frequentlyVisitedSD.png[width="790"]
+_Figure TBD : Sequence diagram for frequently visited mechanism._
 
 
 // tag::toggle[]

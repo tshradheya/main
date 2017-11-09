@@ -863,20 +863,55 @@ Cons: Users cannot interact with the reminders panel (since the browser is techn
 
 //tag::reminder[]
 === Reminder Implementation
-image::RemindersUML.png[width="790"]
-_Figure 28: UML diagram showing the implementation of Reminder._
+image::ReminderUML1.png[width="390"]
+_Figure 28: UML diagram showing the make-up of Reminder objects._
 
-The `Reminder` object represents a reminder in iContacts. It contains a `String` variable, which represents
-the actual reminder from the user, and also a `Date`, `Time` and `Status` object which represents the date, time and link:#status[status] of the reminder respectively (Refer to Figure 28). +
+The `Reminder` object represents a reminder in iContacts. It contains a `String` variable `reminder`, which represents
+the actual reminder from the user, and also a `Date`, `Time` and `Status` object which represents the date, time and link:#status[status] of the reminder respectively
+(Refer to Figure 28). As part of _defensive programming_, `Reminder` implements the `ReadOnlyReminder` interface, which only allows _read_ operations, thus
+helping to prevent inappropriate or unintended modifications to `Reminder` objects (Refer to Figure 28) during the execution of the program.
+For example, for `DeleteReminderCommand`, its `execute` method should only execute the deletion of a specified reminder, not to alter any other reminders.
+To ensure that no unintended or inappropriate alteration happens, `DeleteReminderCommand` is passed a list of `ReadOnlyReminder` instead of `Reminder`. This can
+be seen from the code snippet below:
+
+[source, java]
+----
+public class DeleteReminderCommand extends Command {
+    @Override
+    public CommandResult execute() throws CommandException {
+        List<ReadOnlyReminder> reminderListing = model.getSortedReminderList();
+
+        if (targetIndex.getZeroBased() >= reminderListing.size()) {
+            throw new CommandException(Messages.MESSAGE_INVALID_REMINDER_DISPLAYED_INDEX);
+        }
+
+        ReadOnlyReminder reminderToDelete = reminderListing.get(targetIndex.getZeroBased());
+
+        try {
+            model.deleteReminder(reminderToDelete);
+        } catch (ReminderNotFoundException rnfe) {
+            assert false : "The target reminder cannot be missing";
+        }
+
+        ... //return from method ...
+    }
+}
+----
+
+image::ReminderUML2.png[width="790"]
+_Figure 29: In-memory implementation of Reminder._
 
 In terms of how `Reminder` objects are kept in-memory during the execution of the program, `Reminder` objects are
-kept within `UniqueReminderList` (Refer to Figure 28), which assures that there are no duplicate `Reminder` objects. The `UniqueReminderList`
+kept within `UniqueReminderList` (Refer to Figure 29), which assures that there are no duplicate `Reminder` objects. The `UniqueReminderList`
 object is then kept and used by `ModelManager` to carry out commands related to reminders while the program is running. +
 
-As can be seen from Figure 28 above, as part of _defensive programming_, `Reminder` implements the `ReadOnlyReminder` interface. The `ReadOnlyReminder` interface only allows read operations, thus helping
-to prevent inappropriate modifications to `Reminder` objects. Similarly, `UniqueReminderList` implements the `ReadOnlyUniqueReminderList` interface for the same reason. +
+Similar to `Reminder`, as can be seen from Figure 29 above, `UniqueReminderList` implements the `ReadOnlyUniqueReminderList` interface to prevent
+inappropriate or unintended modifications to `UniqueReminderList` during the execution of the program. +
 
-`Reminder` objects are stored in a XML storage file in a JAXB-friendly version `XmlAdaptedReminder`. Notably, the `Status` object is not stored along with
+image::ReminderUML3.png[width="790"]
+_Figure 30: How Reminder is stored._
+
+As seen from Figure 30, `Reminder` objects are stored in a XML storage file in a JAXB-friendly version `XmlAdaptedReminder`. Notably, the `Status` object is not stored along with
 the `Reminder` object; it is instantiated and initialized with an appropriate value during runtime when the `Reminder` object is instantiated.
 When the program starts, `XmlAdaptedReminder` objects are read in as `XmlSerializableReminders` via `XmlFileStorage` and `XmlUtil`.
 This can be seen below:
@@ -925,7 +960,7 @@ public class UniqueReminderList implements Iterable<Reminder>, ReadOnlyUniqueRem
 }
 ----
 
-As can be seen from the code snippet above and in Figure 28, as part of _defensive programming_, `XmlSerializableReminders` also implements the `ReadOnlyUniqueReminderList` interface. +
+As can be seen from the code snippet above and in Figure 30, as part of _defensive programming_, `XmlSerializableReminders` also implements the `ReadOnlyUniqueReminderList` interface. +
 
 To save, the `saveReminders` method in `StorageManager` is invoked:
 
@@ -946,7 +981,7 @@ To save, the `saveReminders` method in `StorageManager` is invoked:
 ----
 
 This will then invoke the `saveReminders` method in `XmlRemindersStorage`, and go on to invoke the `saveRemindersToFile` method in `XmlFileStorage`,
-and then the `saveDataToFile` method in `XmlUtil`.
+and finally the `saveDataToFile` method in `XmlUtil`.
 
 [discrete]
 ==== Design Consideration
@@ -964,14 +999,14 @@ Cons: Violates the _Single-Responsibility Principle_.
 === Theme-changing mechanism
 
 image::themeChangingMechanism1.png[width="790"]
-_Figure 29 : Component interactions for the theme-changing mechanism_
+_Figure 31 : Component interactions for the theme-changing mechanism_
 
-The theme-changing mechanism is an event-driven mechanism. The above diagram (Refer to Figure 29) shows the high-level overview of the component interactions for the theme-changing mechanism.
+The theme-changing mechanism is an event-driven mechanism. The above diagram (Refer to Figure 31) shows the high-level overview of the component interactions for the theme-changing mechanism.
 
 image::themeChangingMechanism2.png[width="790"]
-_Figure 30 : Sequence diagram for the first part of the theme-changing mechanism_
+_Figure 32 : Sequence diagram for the first part of the theme-changing mechanism_
 
-As shown from the sequence diagram above (Refer to Figure 30), after the user entered the command `theme sky`, a new object `ThemeCommand` will be created. The `LogicManager` will then execute `ThemeCommand`, and the event `ChangeThemeRequestEvent` will be posted by `EventsCenter`. The code snippet below shows the `execute()` method of `ThemeCommand`:
+As shown from the sequence diagram above (Refer to Figure 32), after the user entered the command `theme sky`, a new object `ThemeCommand` will be created. The `LogicManager` will then execute `ThemeCommand`, and the event `ChangeThemeRequestEvent` will be posted by `EventsCenter`. The code snippet below shows the `execute()` method of `ThemeCommand`:
 
 ----
 public class ThemeCommand extends Command {
@@ -984,9 +1019,9 @@ public class ThemeCommand extends Command {
 ----
 
 image::themeChangingMechanism3.png[width="790"]
-_Figure 31 : Sequence diagram for the second part of the theme-changing mechanism_
+_Figure 33 : Sequence diagram for the second part of the theme-changing mechanism_
 
-As shown from the sequence diagram above (Refer to Figure 31), the method `handleChangeThemeEvent()` in `MainWindow` will handle the event and change the theme of the address book through the method `changeTheme()` accordingly.
+As shown from the sequence diagram above (Refer to Figure 33), the method `handleChangeThemeEvent()` in `MainWindow` will handle the event and change the theme of the address book through the method `changeTheme()` accordingly.
 // end::theme[]
 
 === Logging
@@ -1033,10 +1068,10 @@ Here are the steps to convert the project documentation files to PDF format.
 .  Follow the instructions in <<UsingGradle#rendering-asciidoc-files, UsingGradle.adoc>> to convert the AsciiDoc files in the `docs/` directory to HTML format.
 .  Go to your generated HTML files in the `build/docs` folder, right click on them and select `Open with` -> `Google Chrome`.
 .  Within Chrome, click on the `Print` option in Chrome's menu.
-.  Set the destination to `Save as PDF`, then click `Save` to save a copy of the file in PDF format. For best results, use the settings indicated in the screenshot below.
+.  Set the destination to `Save as PDF`, then click `Save` to save a copy of the file in PDF format. For best results, use the settings indicated in the screenshot below (Refer to Figure 34).
 
 image::chrome_save_as_pdf.png[width="300"]
-_Figure 32 : Saving documentation as PDF files in Chrome_
+_Figure 34 : Saving documentation as PDF files in Chrome_
 
 == Testing
 
@@ -1165,17 +1200,17 @@ Do take a look at the link:#model-component[Design: Model Component] section bef
 [TIP]
 Do take a look at the link:#ui-component[Design: UI Component] section before attempting to modify the `UI` component.
 
-. Use different colors for different tags inside person cards. For example, `friends` tags can be all in grey, and `colleagues` tags can be all in red (Refer to Figures 33 and 34).
+. Use different colors for different tags inside person cards. For example, `friends` tags can be all in grey, and `colleagues` tags can be all in red (Refer to Figures 35 and 36).
 +
 **Before**
 +
 image::getting-started-ui-tag-before.png[width="300"]
-_Figure 33: Before applying colors to tags._
+_Figure 35: Before applying colors to tags._
 +
 **After**
 +
 image::getting-started-ui-tag-after.png[width="300"]
-_Figure 34: After applying colors to tags._
+_Figure 36: After applying colors to tags._
 +
 ****
 * Hints
@@ -1185,17 +1220,17 @@ _Figure 34: After applying colors to tags._
 ** See this https://github.com/se-edu/addressbook-level4/pull/592/files[PR] for the full solution.
 ****
 
-. Modify link:{repoURL}/src/main/java/seedu/address/commons/events/ui/NewResultAvailableEvent.java[`NewResultAvailableEvent`] such that link:{repoURL}/src/main/java/seedu/address/ui/ResultDisplay.java[`ResultDisplay`] can show a different style on error (currently it shows the same regardless of errors) (Refer to Figures 35 and 36).
+. Modify link:{repoURL}/src/main/java/seedu/address/commons/events/ui/NewResultAvailableEvent.java[`NewResultAvailableEvent`] such that link:{repoURL}/src/main/java/seedu/address/ui/ResultDisplay.java[`ResultDisplay`] can show a different style on error (currently it shows the same regardless of errors) (Refer to Figures 37 and 38).
 +
 **Before**
 +
 image::getting-started-ui-result-before.png[width="200"]
-_Figure 35: Style before modification._
+_Figure 37: Style before modification._
 +
 **After**
 +
 image::getting-started-ui-result-after.png[width="200"]
-_Figure 36: Style after modification._
+_Figure 38: Style after modification._
 +
 ****
 * Hints
@@ -1207,17 +1242,17 @@ _Figure 36: Style after modification._
 ** See this https://github.com/se-edu/addressbook-level4/pull/593/files[PR] for the full solution.
 ****
 
-. Modify the link:{repoURL}/src/main/java/seedu/address/ui/StatusBarFooter.java[`StatusBarFooter`] to show the total number of people in the address book (Refer to Figures 37 and 38).
+. Modify the link:{repoURL}/src/main/java/seedu/address/ui/StatusBarFooter.java[`StatusBarFooter`] to show the total number of people in the address book (Refer to Figures 39 and 40).
 +
 **Before**
 +
 image::getting-started-ui-status-before.png[width="500"]
-_Figure 37: No values showed before modification._
+_Figure 39: No values showed before modification._
 +
 **After**
 +
 image::getting-started-ui-status-after.png[width="500"]
-_Figure 38: Number of persons showed after modification._
+_Figure 40: Number of persons showed after modification._
 +
 ****
 * Hints
@@ -1808,5 +1843,5 @@ A hosted, distributed integration service used to build and test software projec
 Status
 
 ....
-A description of the current state of the event, whether it has past, is happening now, is within three days or later.
+A description of the current state of the event, whether it has already passed, is happening now, is happening within three days or not happening anytime soon.
 ....

@@ -1,4 +1,3 @@
-//@@author chuaweiwen
 package seedu.address.model.person;
 
 import java.util.List;
@@ -8,8 +7,9 @@ import java.util.function.Predicate;
 import seedu.address.commons.util.StringUtil;
 import seedu.address.model.tag.Tag;
 
+//@@author chuaweiwen
 /**
- * Tests that a {@code ReadOnlyPerson}'s {@code Name} matches any of the keywords given.
+ * Tests that a {@code ReadOnlyPerson}'s {@code Name, @code Tag} matches all of the keywords given.
  */
 public class NameAndTagsContainsKeywordsPredicate implements Predicate<ReadOnlyPerson> {
     private final List<String> nameKeywords;

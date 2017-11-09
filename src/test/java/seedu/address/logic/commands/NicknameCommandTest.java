@@ -1,4 +1,3 @@
-//@@author chuaweiwen
 package seedu.address.logic.commands;
 
 import static org.junit.Assert.assertFalse;
@@ -29,6 +28,7 @@ import seedu.address.model.person.Person;
 import seedu.address.model.person.ReadOnlyPerson;
 import seedu.address.testutil.PersonBuilder;
 
+//@@author chuaweiwen
 public class NicknameCommandTest {
 
     private Model model = new ModelManager(getTypicalAddressBook(), getUniqueTypicalReminders(), new UserPrefs());

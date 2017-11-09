@@ -1,4 +1,3 @@
-//@@author chuaweiwen
 package seedu.address.model.person;
 
 import static org.junit.Assert.assertFalse;
@@ -12,6 +11,7 @@ import org.junit.Test;
 
 import seedu.address.testutil.PersonBuilder;
 
+//@@author chuaweiwen
 public class NameAndTagsContainsKeywordsPredicateTest {
 
     @Test

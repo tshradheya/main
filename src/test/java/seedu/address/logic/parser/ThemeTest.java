@@ -1,4 +1,3 @@
-//@@author chuaweiwen
 package seedu.address.logic.parser;
 
 import static org.junit.Assert.assertFalse;
@@ -6,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+//@@author chuaweiwen
 public class ThemeTest {
 
     @Test

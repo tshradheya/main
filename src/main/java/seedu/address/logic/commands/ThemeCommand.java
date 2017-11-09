@@ -1,4 +1,3 @@
-//@@author chuaweiwen
 package seedu.address.logic.commands;
 
 import seedu.address.commons.core.EventsCenter;
@@ -6,6 +5,7 @@ import seedu.address.commons.events.ui.ChangeThemeRequestEvent;
 import seedu.address.logic.parser.Theme;
 import seedu.address.logic.parser.ThemeList;
 
+//@@author chuaweiwen
 /**
  * Changes the theme of the address book.
  */

@@ -1,4 +1,3 @@
-//@@author chuaweiwen
 package seedu.address.logic.commands;
 
 import static junit.framework.TestCase.assertEquals;
@@ -24,6 +23,7 @@ import seedu.address.model.UserPrefs;
 import seedu.address.model.person.NameAndTagsContainsKeywordsPredicate;
 import seedu.address.model.person.ReadOnlyPerson;
 
+//@@author chuaweiwen
 public class FilterCommandTest {
 
     private Model model = new ModelManager(getTypicalAddressBook(), getUniqueTypicalReminders(), new UserPrefs());

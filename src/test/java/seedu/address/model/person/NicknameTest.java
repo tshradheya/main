@@ -1,4 +1,3 @@
-//@@author chuaweiwen
 package seedu.address.model.person;
 
 import static org.junit.Assert.assertFalse;
@@ -8,6 +7,7 @@ import static seedu.address.logic.commands.CommandTestUtil.VALID_NICKNAME_BOB;
 
 import org.junit.Test;
 
+//@@author chuaweiwen
 public class NicknameTest {
 
     @Test

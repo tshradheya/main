@@ -1,4 +1,3 @@
-//@@author chuaweiwen
 package systemtests;
 
 import static seedu.address.commons.core.Messages.MESSAGE_PERSONS_LISTED_OVERVIEW;
@@ -22,6 +21,7 @@ import seedu.address.logic.commands.RedoCommand;
 import seedu.address.logic.commands.UndoCommand;
 import seedu.address.model.Model;
 
+//@@author chuaweiwen
 public class FilterCommandSystemTest extends AddressBookSystemTest {
 
     @Test
@@ -219,7 +219,7 @@ public class FilterCommandSystemTest extends AddressBookSystemTest {
         assertCommandSuccess(command, expectedModel);
         assertSelectedCardUnchanged();
 
-        /* Case: find person in empty address book -> 0 persons found */
+        /* Case: filter person in empty address book -> 0 persons found */
         executeCommand(ClearCommand.COMMAND_WORD);
         assert getModel().getAddressBook().getPersonList().size() == 0;
         command = FindCommand.COMMAND_WORD + " " + KEYWORD_MATCHING_MEIER;

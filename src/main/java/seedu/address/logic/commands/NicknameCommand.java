@@ -1,4 +1,3 @@
-//@@author chuaweiwen
 package seedu.address.logic.commands;
 
 import static java.util.Objects.requireNonNull;
@@ -15,6 +14,7 @@ import seedu.address.model.person.ReadOnlyPerson;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
 
+//@@author chuaweiwen
 /**
  * Sets the nickname of an existing person in the address book.
  */

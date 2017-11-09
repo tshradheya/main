@@ -16,7 +16,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import seedu.address.commons.core.index.Index;
 import seedu.address.commons.events.model.DisplayPictureChangedEvent;
+import seedu.address.commons.events.model.UpdateListForSelectionEvent;
 import seedu.address.commons.events.model.UpdatePopularityCounterForSelectionEvent;
 import seedu.address.commons.events.ui.LoadPersonWebpageEvent;
 import seedu.address.commons.util.FileUtil;
@@ -85,6 +87,18 @@ public class ModelManagerTest {
                 new UpdatePopularityCounterForSelectionEvent(BENSON);
         modelManager.handleUpdatePopularityCounterForSelectionEvent(updatePopularityCounterForSelectionEvent);
         assertEquals(modelManager.getPopularContactList().get(0), BENSON);
+
+      @Test
+      public void test_indexOfGivenPerson() {
+        AddressBook addressBook = new AddressBookBuilder().withPerson(ALICE).withPerson(BENSON).build();
+        UserPrefs userPrefs = new UserPrefs();
+        UniqueReminderList uniqueReminders = getUniqueTypicalReminders();
+        ModelManager modelManager = new ModelManager(addressBook, uniqueReminders, userPrefs);
+        Index expectedIndex = Index.fromOneBased(1);
+
+        UpdateListForSelectionEvent updateListForSelectionEvent = new UpdateListForSelectionEvent(ALICE);
+        modelManager.handleUpdateListForSelectionEvent(updateListForSelectionEvent);
+        assertEquals(updateListForSelectionEvent.getIndex().getZeroBased(), expectedIndex.getZeroBased());
     }
     //@@author
 

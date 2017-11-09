@@ -1,6 +1,7 @@
 //@@author tshradheya
 package seedu.address.model.email;
 
+import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -20,5 +21,8 @@ public class ServiceTest {
         assertTrue(service.equals(service));
 
         assertFalse(service.equals(anotherService));
+
+        assertEquals(service.toString(), sameService.toString());
+        assertEquals(service.hashCode(), sameService.hashCode());
     }
 }

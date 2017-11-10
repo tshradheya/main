@@ -5,7 +5,7 @@ import seedu.address.commons.core.index.Index;
 import seedu.address.commons.events.BaseEvent;
 
 /**
- * Indicates a request to jump to the details of a person
+ * Indicates a request to jump to show the details of a person
  */
 public class ShowDetailsEvent extends BaseEvent {
 

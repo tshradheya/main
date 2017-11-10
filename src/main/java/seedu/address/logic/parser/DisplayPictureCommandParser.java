@@ -29,7 +29,8 @@ public class DisplayPictureCommandParser implements Parser<DisplayPictureCommand
         try {
             index = ParserUtil.parseIndex(splitArgs[0]);
         } catch (IllegalValueException ive) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, DisplayPictureCommand.MESSAGE_USAGE));
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                    DisplayPictureCommand.MESSAGE_USAGE));
         }
 
         String path;

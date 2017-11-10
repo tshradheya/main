@@ -6,7 +6,7 @@ package seedu.address.commons.events.model;
 import seedu.address.commons.events.BaseEvent;
 
 /**
- * Event to trigger reading and storing of image
+ * Triggers event to read and store image
  */
 public class DisplayPictureChangedEvent extends BaseEvent {
 
@@ -24,8 +24,8 @@ public class DisplayPictureChangedEvent extends BaseEvent {
         return isRead;
     }
 
-    public void setRead(boolean b) {
-        isRead = b;
+    public void setRead(boolean read) {
+        isRead = read;
     }
 
     @Override
@@ -41,7 +41,7 @@ package seedu.address.commons.events.model;
 import seedu.address.commons.events.BaseEvent;
 
 /**
- * Event to handle deleting of image
+ * Triggers event to delete image when a person is deleted
  */
 public class DisplayPictureDeleteEvent extends BaseEvent {
 
@@ -66,7 +66,7 @@ import seedu.address.commons.events.BaseEvent;
 import seedu.address.model.Model;
 
 /**
- * Event to handle change of popular contact list
+ * Indicates change of popular contact list
  */
 public class PopularContactChangedEvent extends BaseEvent {
 
@@ -169,7 +169,8 @@ import seedu.address.commons.events.BaseEvent;
 import seedu.address.model.person.ReadOnlyPerson;
 
 /**
- * Event raised on 'select' command's successful execution
+ * Indicates 'select' command's successful execution
+ * Triggers event to load person's webpage
  */
 public class LoadPersonWebpageEvent extends BaseEvent {
 
@@ -199,7 +200,7 @@ import seedu.address.model.person.ReadOnlyPerson;
 import seedu.address.ui.PersonCard;
 
 /**
- * Represents a selection change in the Person List Panel
+ * Indicates a selection change in the Person List Panel
  */
 public class PersonPanelSelectionChangedEvent extends BaseEvent {
 
@@ -235,7 +236,7 @@ import seedu.address.model.person.ReadOnlyPerson;
 import seedu.address.ui.PopularContactCard;
 
 /**
- * Represents a selection change in the Popular Contact Panel
+ * Indicates a selection change in the Popular Contact Panel
  */
 public class PopularContactPanelSelectionChangedEvent extends BaseEvent {
 
@@ -272,7 +273,8 @@ import seedu.address.model.email.Service;
 import seedu.address.model.email.Subject;
 
 /**
- * Event raised on 'email' command's successful execution
+ * Indicates 'email' command's successful execution
+ * Trigger's event to launch email draft in default browser
  */
 public class SendingEmailEvent extends BaseEvent {
 
@@ -302,7 +304,7 @@ import seedu.address.commons.core.index.Index;
 import seedu.address.commons.events.BaseEvent;
 
 /**
- * Indicates a request to jump to the details of a person
+ * Indicates a request to jump to show the details of a person
  */
 public class ShowDetailsEvent extends BaseEvent {
 
@@ -327,7 +329,8 @@ import seedu.address.commons.events.BaseEvent;
 import seedu.address.model.person.ReadOnlyPerson;
 
 /**
- * Event raised on 'location' command's successful execution
+ * Indicates 'location' command's successful execution
+ * Trigger's event to show the address of person in `BrowserPanel`
  */
 public class ShowLocationEvent extends BaseEvent {
 
@@ -354,7 +357,7 @@ import seedu.address.commons.core.index.Index;
 import seedu.address.commons.events.BaseEvent;
 
 /**
- * Updates selection of a Person Card according to index specified
+ * Indicates selection of a Person Card according to index specified and updates selection
  */
 public class UpdatePersonListPanelSelectionEvent extends BaseEvent {
 
@@ -399,7 +402,8 @@ import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
 
 /**
- * Selects a person identified using it's last displayed index from the address book.
+ * Shows details of a person identified using it's last displayed index from the address book.
+ * Shows details in `DetailPanel`
  */
 public class DetailsCommand extends Command {
 
@@ -845,15 +849,6 @@ public class ViewTagCommand extends Command {
                 && this.predicate.equals(((ViewTagCommand) other).predicate)); // state check
     }
 
-
-
-
-
-
-
-
-
-
 }
 ```
 ###### \java\seedu\address\logic\LogicManager.java
@@ -929,7 +924,8 @@ public class DisplayPictureCommandParser implements Parser<DisplayPictureCommand
         try {
             index = ParserUtil.parseIndex(splitArgs[0]);
         } catch (IllegalValueException ive) {
-            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, DisplayPictureCommand.MESSAGE_USAGE));
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
+                    DisplayPictureCommand.MESSAGE_USAGE));
         }
 
         String path;
@@ -2697,4 +2693,3 @@ public class TagColor {
       </VBox.margin></ListView>
 </VBox>
 ```
-

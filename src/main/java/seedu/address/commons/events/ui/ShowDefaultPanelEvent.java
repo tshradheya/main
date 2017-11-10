@@ -6,7 +6,7 @@ import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.BaseEvent;
 
 /**
- * Displays default panel on the right side of UI
+ * Triggers event to show default panel on the `BrowserAndReminderPanel` of UI
  */
 public class ShowDefaultPanelEvent extends BaseEvent {
 

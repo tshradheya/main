@@ -8,7 +8,7 @@ import seedu.address.commons.core.index.Index;
 import seedu.address.commons.events.BaseEvent;
 
 /**
- * Updates selection of a Person Card according to index specified
+ * Indicates selection of a Person Card according to index specified and updates selection
  */
 public class UpdatePersonListPanelSelectionEvent extends BaseEvent {
 

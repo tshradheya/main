@@ -6,7 +6,7 @@ import seedu.address.model.person.ReadOnlyPerson;
 import seedu.address.ui.PersonCard;
 
 /**
- * Represents a selection change in the Person List Panel
+ * Indicates a selection change in the Person List Panel
  */
 public class PersonPanelSelectionChangedEvent extends BaseEvent {
 

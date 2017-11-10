@@ -6,7 +6,7 @@ import seedu.address.model.person.ReadOnlyPerson;
 import seedu.address.ui.PopularContactCard;
 
 /**
- * Represents a selection change in the Popular Contact Panel
+ * Indicates a selection change in the Popular Contact Panel
  */
 public class PopularContactPanelSelectionChangedEvent extends BaseEvent {
 

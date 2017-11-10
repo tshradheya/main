@@ -324,7 +324,7 @@ public class ModelManager extends ComponentManager implements Model {
         requireNonNull(predicate);
         filteredPersons.setPredicate(predicate);
     }
-
+    //@@author tshradheya
     @Override
     public void updateFilteredPersonListForViewTag(Predicate<ReadOnlyPerson> predicate) {
         requireNonNull(predicate);
@@ -342,6 +342,7 @@ public class ModelManager extends ComponentManager implements Model {
     public void showDefaultPanel() {
         raise(new ShowDefaultPanelEvent());
     }
+    //@@author
 
     @Override
     public ObservableList<ReadOnlyPerson> getBirthdayPanelFilteredPersonList() {
@@ -371,6 +372,7 @@ public class ModelManager extends ComponentManager implements Model {
         reminderList.remove(target);
         indicateRemindersChanged();
     }
+    //@@author tshradheya
 
     @Override
     public Index getIndexOfGivenPerson(ReadOnlyPerson person) {
@@ -406,6 +408,7 @@ public class ModelManager extends ComponentManager implements Model {
 
         updatePopularContactList();
     }
+    //@@author
 
     @Override
     public boolean equals(Object obj) {

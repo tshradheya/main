@@ -46,10 +46,12 @@ public class SampleDataTest extends AddressBookGuiTest {
         Person[] expectedList = SampleDataUtil.getSamplePersons();
         assertListMatching(getPersonListPanel(), expectedList);
     }
-
+    //@@author tshradheya
     @Test
     public void reminder_dataFileDoesNotExist_loadSampleData() {
         Reminder[] expectedList = SampleDataUtil.getSampleReminders();
         assertListMatchingReminders(SampleDataUtil.getSampleReminderList(), expectedList);
     }
+    //@@author
+
 }

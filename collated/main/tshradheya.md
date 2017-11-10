@@ -86,6 +86,81 @@ public class PopularContactChangedEvent extends BaseEvent {
     }
 }
 ```
+###### \java\seedu\address\commons\events\model\UpdateListForSelectionEvent.java
+``` java
+package seedu.address.commons.events.model;
+
+import java.util.logging.Logger;
+
+import seedu.address.commons.core.LogsCenter;
+import seedu.address.commons.core.index.Index;
+import seedu.address.commons.events.BaseEvent;
+import seedu.address.commons.events.ui.ShowDefaultPanelEvent;
+import seedu.address.model.person.ReadOnlyPerson;
+
+/**
+ * Updates Person List Panel list for selection to match the Favourites Panel
+ */
+public class UpdateListForSelectionEvent extends BaseEvent {
+
+    private static final Logger logger = LogsCenter.getLogger(ShowDefaultPanelEvent.class);
+
+    private Index index;
+    private ReadOnlyPerson person;
+
+    public UpdateListForSelectionEvent(ReadOnlyPerson person) {
+        this.person = person;
+    }
+
+    public Index getIndex() {
+        return index;
+    }
+
+    public void setIndex(Index index) {
+        this.index = index;
+    }
+
+    public ReadOnlyPerson getPerson() {
+        return person;
+    }
+
+    @Override
+    public String toString() {
+        logger.info("List will get updated to show all contacts");
+        return this.getClass().getSimpleName();
+    }
+
+}
+```
+###### \java\seedu\address\commons\events\model\UpdatePopularityCounterForSelectionEvent.java
+``` java
+package seedu.address.commons.events.model;
+
+import seedu.address.commons.events.BaseEvent;
+import seedu.address.model.person.ReadOnlyPerson;
+
+/**
+ * Updates the Popularity Counter by one for the selected person
+ * Guarantees: Some person is selected in UI in person List Panel
+ */
+public class UpdatePopularityCounterForSelectionEvent extends BaseEvent {
+
+    private ReadOnlyPerson person;
+
+    public UpdatePopularityCounterForSelectionEvent(ReadOnlyPerson person) {
+        this.person = person;
+    }
+
+    public ReadOnlyPerson getPerson() {
+        return person;
+    }
+
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName();
+    }
+}
+```
 ###### \java\seedu\address\commons\events\ui\LoadPersonWebpageEvent.java
 ``` java
 package seedu.address.commons.events.ui;
@@ -268,6 +343,44 @@ public class ShowLocationEvent extends BaseEvent {
     }
 }
 ```
+###### \java\seedu\address\commons\events\ui\UpdatePersonListPanelSelectionEvent.java
+``` java
+package seedu.address.commons.events.ui;
+
+import java.util.logging.Logger;
+
+import seedu.address.commons.core.LogsCenter;
+import seedu.address.commons.core.index.Index;
+import seedu.address.commons.events.BaseEvent;
+
+/**
+ * Updates selection of a Person Card according to index specified
+ */
+public class UpdatePersonListPanelSelectionEvent extends BaseEvent {
+
+    private static final Logger logger = LogsCenter.getLogger(ShowDefaultPanelEvent.class);
+
+    private Index index;
+
+    public UpdatePersonListPanelSelectionEvent(Index index) {
+        this.index = index;
+    }
+
+    public Index getIndex() {
+        return index;
+    }
+
+    @Override
+    public String toString() {
+        logger.info("Specified index will get selected");
+        return this.getClass().getSimpleName();
+    }
+}
+```
+###### \java\seedu\address\logic\commands\ClearCommand.java
+``` java
+        model.showDefaultPanel();
+```
 ###### \java\seedu\address\logic\commands\DetailsCommand.java
 ``` java
 package seedu.address.logic.commands;
@@ -420,7 +533,6 @@ public class DisplayPictureCommand extends Command {
             } catch (PersonNotFoundException pnfe) {
                 throw new AssertionError("The target person cannot be missing");
             }
-            model.updateFilteredListToShowAll();
 
             return new CommandResult(generateSuccessMessage(editedPerson));
         }
@@ -446,7 +558,6 @@ public class DisplayPictureCommand extends Command {
         } catch (PersonNotFoundException pnfe) {
             throw new AssertionError("The target person cannot be missing");
         }
-        model.updateFilteredListToShowAll();
 
         return new CommandResult(generateSuccessMessage(editedPerson));
     }
@@ -723,6 +834,7 @@ public class ViewTagCommand extends Command {
     @Override
     public CommandResult execute() {
         model.updateFilteredPersonListForViewTag(predicate);
+        model.showDefaultPanel();
         return new CommandResult(getMessageForPersonListShownSummary(model.getFilteredPersonList().size()));
     }
 
@@ -1247,6 +1359,64 @@ public class Subject {
         return FXCollections.observableList(listOfPersonsForPopularContacts);
     }
 ```
+###### \java\seedu\address\model\ModelManager.java
+``` java
+    @Override
+    public void updateFilteredPersonListForViewTag(Predicate<ReadOnlyPerson> predicate) {
+        requireNonNull(predicate);
+        filteredPersons.setPredicate(predicate);
+
+        increaseCounterByOneForATag(filteredPersons);
+    }
+
+    @Override
+    public void updateFilteredListToShowAll() {
+        filteredPersons.setPredicate(null);
+    }
+
+    @Override
+    public void showDefaultPanel() {
+        raise(new ShowDefaultPanelEvent());
+    }
+```
+###### \java\seedu\address\model\ModelManager.java
+``` java
+
+    @Override
+    public Index getIndexOfGivenPerson(ReadOnlyPerson person) {
+        for (int i = 0; i < filteredPersons.size(); i++) {
+            ReadOnlyPerson readOnlyPerson = filteredPersons.get(i);
+            if (readOnlyPerson.isSameStateAs(person)) {
+                return Index.fromZeroBased(i);
+            }
+        }
+        assert false : "Should not come here in no case";
+        return Index.fromZeroBased(-1);
+    }
+
+    @Override
+    @Subscribe
+    public void handleUpdateListForSelectionEvent(UpdateListForSelectionEvent updateListForSelectionEvent) {
+        updateFilteredListToShowAll();
+        Index index = getIndexOfGivenPerson(updateListForSelectionEvent.getPerson());
+        updateListForSelectionEvent.setIndex(index);
+    }
+
+    @Override
+    @Subscribe
+    public void handleUpdatePopularityCounterForSelectionEvent(
+            UpdatePopularityCounterForSelectionEvent updatePopularityCounterForSelectionEvent) {
+        try {
+            updatePersonsPopularityCounterByOne(updatePopularityCounterForSelectionEvent.getPerson());
+        } catch (DuplicatePersonException dpe) {
+            assert false : "Is not possible as counter will be increased by one";
+        } catch (PersonNotFoundException pnfe) {
+            assert false : "Only existing person can be selected";
+        }
+
+        updatePopularContactList();
+    }
+```
 ###### \java\seedu\address\model\person\DisplayPicture.java
 ``` java
 package seedu.address.model.person;
@@ -1452,6 +1622,21 @@ public class PopularityCounter {
         this.addressBookPicturesPath = addressBookPicturesPath;
     }
 ```
+###### \java\seedu\address\model\util\SampleDataUtil.java
+``` java
+
+    public static ReadOnlyUniqueReminderList getSampleReminderList() {
+        try {
+            UniqueReminderList sampleReminderList = new UniqueReminderList();
+            for (Reminder sampleReminder : getSampleReminders()) {
+                sampleReminderList.add(sampleReminder);
+            }
+            return sampleReminderList;
+        } catch (DuplicateReminderException e) {
+            throw new AssertionError("sample data cannot contain duplicate reminders", e);
+        }
+    }
+```
 ###### \java\seedu\address\storage\AddressBookPictureStorage.java
 ``` java
 package seedu.address.storage;
@@ -1604,7 +1789,6 @@ public class ImageDisplayPictureStorage implements DisplayPictureStorage {
 ```
 ###### \java\seedu\address\storage\StorageManager.java
 ``` java
-
     @Override
     public void readImageFromDevice(String path, int newPath) throws IOException {
         logger.fine("Attempting to read from file: " + path);
@@ -1763,11 +1947,9 @@ public class ImageDisplayPictureStorage implements DisplayPictureStorage {
     }
 
 
-    @Subscribe
-    private void handleBrowserPanelToggleEvent(BrowserAndRemindersPanelToggleEvent event) {
-        logger.info(LogsCenter.getEventHandlingLogMessage(event));
-        toggleBrowserPanel();
-    }
+```
+###### \java\seedu\address\ui\BrowserAndRemindersPanel.java
+``` java
 
     @Subscribe
     private void handleShowLocationEvent(ShowLocationEvent event) {
@@ -1791,12 +1973,19 @@ public class ImageDisplayPictureStorage implements DisplayPictureStorage {
         browser.toFront();
         loadPersonPage(event.getPerson());
     }
+
+    @Subscribe
+    private void handleShowDefaultPanelEvent(ShowDefaultPanelEvent event) {
+        setUpToShowRemindersPanel();
+        currentlyInFront = Node.REMINDERS;
+        remindersPanel.toFront();
+    }
+
 ```
 ###### \java\seedu\address\ui\DetailsPanel.java
 ``` java
 package seedu.address.ui;
 
-import java.util.HashMap;
 import java.util.Random;
 
 import javafx.beans.binding.Bindings;
@@ -1810,6 +1999,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import seedu.address.model.person.ReadOnlyPerson;
+import seedu.address.ui.util.TagColor;
 
 /**
  * An UI component that displays information of a {@code Person}.
@@ -1819,9 +2009,10 @@ public class DetailsPanel extends UiPart<Region> {
     private static final String FXML = "DetailsPanel.fxml";
     private static final Integer IMAGE_WIDTH = 100;
     private static final Integer IMAGE_HEIGHT = 100;
-    private static String[] colors = {"red", "blue", "green", "yellow", "pink"};
-    private static HashMap<String, String> tagColors = new HashMap<String, String>();
+    private static String[] colors = {"#ff0000", "#0000ff", "#008000", "#ff00ff", "#00ffff"};
     private static Random random = new Random();
+
+
 
     /**
      * Note: Certain keywords such as "location" and "resources" are reserved keywords in JavaFX.
@@ -1832,6 +2023,7 @@ public class DetailsPanel extends UiPart<Region> {
      */
 
     public final ReadOnlyPerson person;
+    private TagColor tagColorObject;
 
     @FXML
     private AnchorPane anchorPane;
@@ -1860,6 +2052,7 @@ public class DetailsPanel extends UiPart<Region> {
     public DetailsPanel(ReadOnlyPerson person) {
         super(FXML);
         this.person = person;
+        tagColorObject = TagColor.getInstance();
         initTags(person);
         bindListeners(person);
     }
@@ -1870,10 +2063,10 @@ public class DetailsPanel extends UiPart<Region> {
      */
 
     private String getTagColor(String tag) {
-        if (!tagColors.containsKey(tag)) {
-            tagColors.put(tag, colors[random.nextInt(colors.length)]);
+        if (!tagColorObject.containsTag(tag)) {
+            tagColorObject.addColor(tag, colors[random.nextInt(colors.length)]);
         }
-        return tagColors.get(tag);
+        return tagColorObject.getColor(tag);
     }
 
     /**
@@ -1973,6 +2166,19 @@ public class DetailsPanel extends UiPart<Region> {
 ```
 ###### \java\seedu\address\ui\PersonCard.java
 ``` java
+    /**
+     * Assigns a random color to a tag if it does not exist in the HashMap
+     * returns a String containing the color
+     */
+    private String getTagColor(String tag) {
+        if (!tagColorObject.containsTag(tag)) {
+            tagColorObject.addColor(tag, colors[random.nextInt(colors.length)]);
+        }
+        return tagColorObject.getColor(tag);
+    }
+```
+###### \java\seedu\address\ui\PersonCard.java
+``` java
 
     /**
      * Assigns URL to the image depending on the path
@@ -1992,6 +2198,44 @@ public class DetailsPanel extends UiPart<Region> {
 
             displayPicture.setFill(new ImagePattern(image));
         }
+    }
+```
+###### \java\seedu\address\ui\PersonListPanel.java
+``` java
+                    if (newValue != null) {
+                        logger.fine("Selection in person list panel changed to : '" + newValue + "'");
+                        raise(new PersonPanelSelectionChangedEvent(newValue, newValue.person));
+                        raise(new UpdatePopularityCounterForSelectionEvent(newValue.person));
+```
+###### \java\seedu\address\ui\PersonListPanel.java
+``` java
+    /**
+     * Scrolls to the {@code PersonCard} at the {@code index} and don't select it
+     */
+    private void scrollToWithoutSelecting(int index) {
+        Platform.runLater(() -> {
+            personListView.scrollTo(index);
+        });
+    }
+
+    @Subscribe
+    private void handleJumpToListRequestEvent(JumpToListRequestEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event));
+        scrollToWithoutSelecting(event.targetIndex);
+    }
+
+    @Subscribe
+    private void handleShowDetailsEvent(ShowDetailsEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event));
+        scrollTo(event.targetIndex);
+    }
+```
+###### \java\seedu\address\ui\PersonListPanel.java
+``` java
+
+    @Subscribe
+    private void handleUpdatePersonListPanelSelectionEvent(UpdatePersonListPanelSelectionEvent event) {
+        scrollTo(event.getIndex().getZeroBased());
     }
 ```
 ###### \java\seedu\address\ui\PopularContactCard.java
@@ -2110,7 +2354,9 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.Region;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.model.PopularContactChangedEvent;
+import seedu.address.commons.events.model.UpdateListForSelectionEvent;
 import seedu.address.commons.events.ui.PopularContactPanelSelectionChangedEvent;
+import seedu.address.commons.events.ui.UpdatePersonListPanelSelectionEvent;
 import seedu.address.model.person.ReadOnlyPerson;
 
 /**
@@ -2144,8 +2390,19 @@ public class PopularContactPanel extends UiPart<Region> {
                     if (newValue != null) {
                         logger.fine("Selection in person list panel changed to : '" + newValue + "'");
                         raise(new PopularContactPanelSelectionChangedEvent(newValue, newValue.person));
+                        synchronizeListsOnClick(newValue);
                     }
                 });
+    }
+
+    /**
+     * Ensures the Popular Contact List and Person List is synchronized on click of any person
+     */
+    public void synchronizeListsOnClick(PopularContactCard newValue) {
+        UpdateListForSelectionEvent updateListForSelectionEvent =
+                new UpdateListForSelectionEvent(newValue.person);
+        raise(updateListForSelectionEvent);
+        raise(new UpdatePersonListPanelSelectionEvent(updateListForSelectionEvent.getIndex()));
     }
 
     /**
@@ -2173,6 +2430,85 @@ public class PopularContactPanel extends UiPart<Region> {
 }
 
 ```
+###### \java\seedu\address\ui\util\TagColor.java
+``` java
+package seedu.address.ui.util;
+
+import java.util.HashMap;
+
+
+/**
+ * Singleon Class. Stores hashmap which maps color to the tag
+ */
+public class TagColor {
+
+    private static TagColor tagColor = null;
+    private HashMap<String, String> colorsMapping = new HashMap<String, String>();
+
+
+    private TagColor() {
+
+    }
+
+    public static TagColor getInstance() {
+        if (tagColor == null) {
+            tagColor = new TagColor();
+        }
+        return tagColor;
+    }
+
+
+    public boolean containsTag(String tag) {
+        return colorsMapping.containsKey(tag);
+    }
+
+    public void addColor(String tag, String color) {
+        colorsMapping.put(tag, color);
+    }
+
+    public String getColor(String tag) {
+        return colorsMapping.get(tag);
+    }
+}
+```
+###### \resources\view\DayTheme.css
+``` css
+.details_big_label {
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-font-size: 30px;
+    -fx-font-weight: 100;
+    -fx-text-fill: gray;
+}
+
+.details_small_label {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 16px;
+    -fx-font-weight: 100;
+    -fx-text-fill: gray;
+}
+
+.details_medium_label {
+    -fx-font-family: "cursive";
+    -fx-font-size: 20px;
+    -fx-font-weight: 100;
+    -fx-text-fill: gray;
+}
+
+#detailsTag {
+    -fx-hgap: 7;
+    -fx-vgap: 3;
+}
+
+#detailsTag .label {
+    -fx-text-fill: white;
+    -fx-background-color: #3e7b91;
+    -fx-padding: 1 3 1 3;
+    -fx-border-radius: 18 18 18 18;
+    -fx-background-radius: 18 18 18 18;
+    -fx-font-size: 16;
+}
+
+```
 ###### \resources\view\DetailsPanel.fxml
 ``` fxml
 
@@ -2186,6 +2522,7 @@ public class PopularContactPanel extends UiPart<Region> {
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import de.jensd.fx.glyphs.materialdesignicons.MaterialDesignIconView?>
 <AnchorPane fx:id="anchorPane" prefHeight="200.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1">
    <children>
@@ -2201,12 +2538,12 @@ public class PopularContactPanel extends UiPart<Region> {
             </ImageView>
             <VBox prefHeight="200.0" prefWidth="549.0">
                <children>
-                  <Label fx:id="detailsName" prefHeight="50.0" prefWidth="371.0" text="Shradheya Thakre">
+                  <Label fx:id="detailsName" prefHeight="50.0" prefWidth="371.0" text="\$name" styleClass="details_big_label">
                      <font>
                         <Font name="Helvetica Bold" size="30.0" />
                      </font>
                   </Label>
-                  <Label fx:id="detailsNickname" text="\$nickname">
+                  <Label fx:id="detailsNickname" text="\$nickname" styleClass="details_small_label">
                      <font>
                         <Font name="Helvetica" size="15.0" />
                      </font>
@@ -2227,33 +2564,33 @@ public class PopularContactPanel extends UiPart<Region> {
       <VBox fx:id="secondaryCardPane" layoutY="125.0" prefHeight="242.0" prefWidth="700.0">
          <children>
             <FlowPane fx:id="detailsTag" hgap="10.0" prefHeight="54.0" prefWidth="685.0" />
-            <Label fx:id="detailsPhone" prefHeight="39.0" prefWidth="700.0" text="\$phone">
-               <graphic>
-                  <MaterialDesignIconView glyphName="PHONE" size="20" />
+            <Label fx:id="detailsPhone" prefHeight="39.0" prefWidth="700.0" text="\$phone"  styleClass="details_medium_label">
+               <graphic >
+                  <FontAwesomeIconView glyphName="PHONE" size="20" fill="green"  />
                </graphic>
                <VBox.margin>
                   <Insets bottom="20.0" />
                </VBox.margin>
             </Label>
-            <Label fx:id="detailsAddress" prefHeight="50.0" prefWidth="700.0" text="\$address">
+            <Label fx:id="detailsAddress" prefHeight="50.0" prefWidth="700.0" text="\$address" styleClass="details_medium_label">
                <graphic>
-                  <MaterialDesignIconView glyphName="MAP" size="20" />
+                  <MaterialDesignIconView glyphName="MAP" size="20" fill="blue" />
                </graphic>
                <VBox.margin>
                   <Insets bottom="20.0" />
                </VBox.margin>
             </Label>
-            <Label fx:id="detailsEmail" prefHeight="50.0" prefWidth="700.0" text="\$email">
+            <Label fx:id="detailsEmail" prefHeight="50.0" prefWidth="700.0" text="\$email" styleClass="details_medium_label">
                <graphic>
-                  <MaterialDesignIconView glyphName="GMAIL" size="20" />
+                  <FontAwesomeIconView glyphName="ENVELOPE" size="20" fill="crimson" />
                </graphic>
                <VBox.margin>
                   <Insets bottom="20.0" />
                </VBox.margin>
             </Label>
-            <Label fx:id="detailsBirthday" prefHeight="50.0" prefWidth="700.0" text="\$birthday">
+            <Label fx:id="detailsBirthday" prefHeight="50.0" prefWidth="700.0" text="\$birthday" styleClass="details_medium_label">
                <graphic>
-                  <MaterialDesignIconView glyphName="CAKE_VARIANT" size="20" />
+                  <MaterialDesignIconView glyphName="CAKE_VARIANT" size="20" fill="yellow" />
                </graphic>
             </Label>
          </children>
@@ -2264,6 +2601,50 @@ public class PopularContactPanel extends UiPart<Region> {
    </children>
 </AnchorPane>
 ```
+###### \resources\view\NightTheme.css
+``` css
+.details_big_label {
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-font-size: 30px;
+    -fx-text-fill: white;
+}
+
+.details_small_label {
+    -fx-font-family: "Segoe UI";
+    -fx-font-size: 16px;
+    -fx-text-fill: white;
+}
+
+.details_medium_label {
+    -fx-font-family: "cursive";
+    -fx-font-size: 20px;
+    -fx-text-fill: white;
+}
+
+#detailsTag {
+    -fx-hgap: 7;
+    -fx-vgap: 3;
+}
+
+#detailsTag .label {
+    -fx-text-fill: white;
+    -fx-background-color: #3e7b91;
+    -fx-padding: 1 3 1 3;
+    -fx-border-radius: 18 18 18 18;
+    -fx-background-radius: 18 18 18 18;
+    -fx-font-size: 16;
+}
+
+```
+###### \resources\view\PersonListCard.fxml
+``` fxml
+
+  <Circle fx:id="displayPicture" fill="WHITE" layoutX="150.0" layoutY="186.0" radius="35.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0">
+      <HBox.margin>
+         <Insets bottom="10.0" right="35.0" top="17.0" />
+      </HBox.margin>
+   </Circle>
+```
 ###### \resources\view\PopularContactCard.fxml
 ``` fxml
 
@@ -2273,6 +2654,7 @@ public class PopularContactPanel extends UiPart<Region> {
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <VBox id="popularContactPane" fx:id="popularContactPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="94.0" prefWidth="200.0" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Circle fx:id="popularContactDisplayPicture" fill="WHITE" layoutX="150.0" layoutY="186.0" radius="35.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="2.0">
@@ -2283,6 +2665,9 @@ public class PopularContactPanel extends UiPart<Region> {
          <children>
             <Label fx:id="rank" prefHeight="15.0" prefWidth="25.0" styleClass="cell_small_label" />
             <Label fx:id="popularContactName" styleClass="cell_small_label" text="\$name" textAlignment="CENTER">
+               <graphic>
+                  <FontAwesomeIconView glyphName="STAR" fill="gold" size="14" />
+               </graphic>
                <padding>
                   <Insets left="10.0" />
                </padding>

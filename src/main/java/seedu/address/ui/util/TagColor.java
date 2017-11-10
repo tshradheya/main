@@ -1,10 +1,11 @@
+//@@author tshradheya
 package seedu.address.ui.util;
 
 import java.util.HashMap;
 
 
 /**
- * SingleTon Class. Stores hashmap which maps color to the tag
+ * Singleon Class. Stores hashmap which maps color to the tag
  */
 public class TagColor {
 

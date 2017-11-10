@@ -145,17 +145,19 @@ public class SampleDataUtil {
             throw new AssertionError("sample data cannot be invalid", e);
         }
     }
+    //@@author tshradheya
 
     public static ReadOnlyUniqueReminderList getSampleReminderList() {
         try {
-            UniqueReminderList sampleAb = new UniqueReminderList();
+            UniqueReminderList sampleReminderList = new UniqueReminderList();
             for (Reminder sampleReminder : getSampleReminders()) {
-                sampleAb.add(sampleReminder);
+                sampleReminderList.add(sampleReminder);
             }
-            return sampleAb;
+            return sampleReminderList;
         } catch (DuplicateReminderException e) {
             throw new AssertionError("sample data cannot contain duplicate reminders", e);
         }
     }
+    //@@author
 
 }

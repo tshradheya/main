@@ -752,6 +752,99 @@ Desktop.getDesktop().browse(new URI(String.format(GMAIL_EMAIL_URL, recipients, s
 **Pros:** No dependency on other apps +
 **Cons:** Does not auto fill in the text due to older version of browser
 
+=== Frequently Visited Contacts mechanism
+
+The mechanism to show the top five most frequently visited contacts is facilitated by the `PopularityCounter` of each contact.
+For every new person added into the address book, he is assigned a popularity counter of `0`. The top five popular contacts are extracted by sorting the list based on the field `PopularityCounter` of each person. In case of same popularity counter, the person who was added before is given higher priority.
+
+The Frequently Visited Contacts mechanism is an event-driven mechanism. However, there is no explicit command to view the top five frequently visited contacts as they are always refreshed whenever there is an change in the address book. They are always displayed on the UI below the `CommandResult` panel. The
+The event to refresh the Popular Contacts List, `PopularContactChangedEvent` is triggered whenever any of the command that increases `PopularityCounter` is execcuted.
+
+The event triggers the following method:
+
+[source, java]
+----
+public void updatePopularContactList() {
+        refreshWithPopulatingAddressBook();
+        listOfPersonsForPopularContacts.sort((o1, o2) ->
+                o2.getPopularityCounter().getCounter() - o1.getPopularityCounter().getCounter());
+
+        getOnlyTopFiveMaximum();
+    }
+----
+
+Following are the commands which will increase the `PopularityCounter` by one for the contacts viewed/searched:
+
+*** `viewtag`
+*** `select`
+*** `details`
+*** `location`
+*** `email`
+
+[NOTE]
+Manual selection of person through a click also increases the popularity counter of that person. This is the same action as `details` command.
+
+
+The following method is used to increate the `popularityCounter` by one:
+
+[source, java]
+----
+public ReadOnlyPerson increaseCounterByOne(ReadOnlyPerson person) {
+        person.getPopularityCounter().increasePopularityCounter();
+        return new Person(person.getName(), person.getPhone(), person.getEmail(), person.getAddress(),
+                person.getBirthday(), person.getNickname(), person.getDisplayPicture(), person.getPopularityCounter(),
+                person.getTags());
+    }
+----
+
+
+Following is the sequence diagram which shows how the event is triggered and how the saving of updated address book takes place:
+
+
+image::frequentlyVisitedSD.PNG[width="790"]
+_Figure TBD : Sequence diagram for frequently visited mechanism._
+
+
+
+=== Details Panel Implementation
+
+The `detail` command shows more details of the contact like address, birthday, email in addition to the details shown in the `PersonCard` of `PersonListPanel`
+
+The `DetailsPanel` is an Anchor Pane which is embedded inside `BrowserAndReminderPanel`.
+
+[NOTE]
+At any point of time, only one of the three panels(Borwser, Reminder, Details) inside `BrowserAndReminderPanel` will have the visibility set as `true` and in front of the other two panels.
+
+The UML diagram below represents the UI structure for the `BrowserAndReminderPanel`:
+
+image::umlDetails.png[width="790"]
+_Figure TBD : UML Diagram for Panel._
+
+The code to ensure only Details Panel is displayed on execution of command is shown below:
+
+[source, java]
+----
+private void setUpToShowDetailsPanel() {
+        detailsPanel.setVisible(true);
+        remindersPanel.setVisible(false);
+        browser.setVisible(false);
+    }
+----
+
+
+The details panel also gets displayed when user manually clicks on the `PersonCard`. This is made possible by making the `SelectionChangedEvent` raise the event to show the details panel.
+The `selectionModel()` of `PersonListView` is now linked to `details` command rather than `select` command.
+
+[NOTE]
+`select` command now only scrolls to the INDEX specified whereas `details` command scrolls to and selects the person to show his details in the panel.
+
+Following is the wireframe for the Details Panel:
+
+image::wireframeDetailsPanel.PNG[width="600"]
+_Figure TBD : Wireframe for Details Panel._
+
+Using the `FontAwesomeFx` library, an icon is set for each label as seen in the UI.
+
 // tag::toggle[]
 === Toggling mechanism
 The toggling mechanism is an event-driven mechanism.

@@ -283,7 +283,7 @@ Returns location of the address of person at `INDEX` 2
 image::location.PNG[width="790"]
 
 
-=== Email to a group of people having a particular tag: `email` [V1.3]
+=== Emailing to a group of people having a particular tag: `email` [V1.3]
 
 Opens up the link to send email to all people of having a particular tag
 Format: email s/SERVICE to/KEYWORD sub/SUBJECT b/BODY
@@ -596,8 +596,8 @@ e.g. `deleteReminder 3`
 e.g. `edit 2 n/James Lee e/jameslee@example.com`
 * *Edit Reminders* : `editReminder INDEX [rd/REMINDER] [d/DATE] [ti/TIME]`  +
 e.g. `editReminder 2 rd/Change reminder d/01-01-2017 ti/09:00`
-* *Nickname* : `edit INDEX [NICKNAME]` +
-e.g. `add 1 Jamie`
+* *Nickname* : `nickname INDEX [NICKNAME]` +
+e.g. `nickname 1 Jamie`
 * *Find* : `find KEYWORD [MORE_KEYWORDS]` +
 e.g. `find James Jake`
 * *ViewTag* : `viewtag KEYWORD` +

@@ -118,14 +118,6 @@ public class EditCommandSystemTest extends AddressBookSystemTest {
         editedPerson = new PersonBuilder(personToEdit).withTags().build();
         assertCommandSuccess(command, index, editedPerson);
 
-        /* Case: clear birthday -> cleared */
-        index = INDEX_FIRST_PERSON;
-        /* Have to restore state */
-        executeCommand(EditCommand.COMMAND_WORD + " " + index.getOneBased() + TAG_DESC_FRIEND + TAG_DESC_HUSBAND);
-        command = EditCommand.COMMAND_WORD + " " + index.getOneBased() + " " + PREFIX_BIRTHDAY.getPrefix();
-        editedPerson = new PersonBuilder(personToEdit).withBirthday("").build();
-        assertCommandSuccess(command, index, editedPerson);
-
         /* ------------------ Performing edit operation while a filtered list is being shown ------------------------ */
 
         /* Case: filtered person list, edit index within bounds of address book and person list -> edited */
@@ -237,7 +229,7 @@ public class EditCommandSystemTest extends AddressBookSystemTest {
                     "editedPerson is a duplicate in expectedModel, or it isn't found in the model.");
         }
 
-        assertCommandSuccess(command, expectedModel,
+        assertCommandSuccessEdit(command, expectedModel,
                 String.format(EditCommand.MESSAGE_EDIT_PERSON_SUCCESS, editedPerson), expectedSelectedCardIndex);
     }
 
@@ -247,7 +239,7 @@ public class EditCommandSystemTest extends AddressBookSystemTest {
      * @see EditCommandSystemTest#assertCommandSuccess(String, Model, String, Index)
      */
     private void assertCommandSuccess(String command, Model expectedModel, String expectedResultMessage) {
-        assertCommandSuccess(command, expectedModel, expectedResultMessage, null);
+        assertCommandSuccessEdit(command, expectedModel, expectedResultMessage, null);
     }
 
     /**
@@ -275,6 +267,18 @@ public class EditCommandSystemTest extends AddressBookSystemTest {
         } else {
             assertSelectedCardUnchanged();
         }
+        assertStatusBarUnchangedExceptSyncStatus();
+    }
+
+    /**
+     * Executes command for edit and checks states of values
+     */
+    private void assertCommandSuccessEdit(String command, Model expectedModel, String expectedResultMessage,
+                                      Index expectedSelectedCardIndex) {
+        executeCommand(command);
+        expectedModel.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
+        assertApplicationDisplaysExpected("", expectedResultMessage, expectedModel);
+        assertCommandBoxShowsDefaultStyle();
         assertStatusBarUnchangedExceptSyncStatus();
     }
 

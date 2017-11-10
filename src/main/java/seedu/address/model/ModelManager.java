@@ -88,7 +88,6 @@ public class ModelManager extends ComponentManager implements Model {
                 Comparator.comparingInt(birthday -> birthday.getBirthday().getDayOfBirthday()));
         sortedReminderList = new SortedList<>(reminderList.asObservableList(),
                 Comparator.comparing(reminder -> reminder.getLocalDateTime()));
-
     }
 
     public ModelManager() {
@@ -379,8 +378,8 @@ public class ModelManager extends ComponentManager implements Model {
 
     @Override
     public Index getIndexOfGivenPerson(ReadOnlyPerson person) {
-        for (int i = 0; i < filteredPersons.size(); i++) {
-            ReadOnlyPerson readOnlyPerson = filteredPersons.get(i);
+        for (int i = 0; i < sortedfilteredPersons.size(); i++) {
+            ReadOnlyPerson readOnlyPerson = sortedfilteredPersons.get(i);
             if (readOnlyPerson.isSameStateAs(person)) {
                 return Index.fromZeroBased(i);
             }

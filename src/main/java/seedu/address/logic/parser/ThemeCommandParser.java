@@ -1,4 +1,3 @@
-//@@author chuaweiwen
 package seedu.address.logic.parser;
 
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
@@ -7,6 +6,7 @@ import static seedu.address.commons.core.Messages.MESSAGE_UNKNOWN_THEME;
 import seedu.address.logic.commands.ThemeCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 
+//@@author chuaweiwen
 /**
  * Parses input arguments and creates a new ThemeCommand object
  */

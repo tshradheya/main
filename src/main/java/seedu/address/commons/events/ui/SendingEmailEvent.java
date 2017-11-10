@@ -7,7 +7,8 @@ import seedu.address.model.email.Service;
 import seedu.address.model.email.Subject;
 
 /**
- * Event raised on 'email' command's successful execution
+ * Indicates 'email' command's successful execution
+ * Trigger's event to launch email draft in default browser
  */
 public class SendingEmailEvent extends BaseEvent {
 

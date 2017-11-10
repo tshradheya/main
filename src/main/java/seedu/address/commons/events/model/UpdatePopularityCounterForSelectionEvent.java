@@ -1,18 +1,18 @@
 //@@author tshradheya
-package seedu.address.commons.events.ui;
+package seedu.address.commons.events.model;
 
 import seedu.address.commons.events.BaseEvent;
 import seedu.address.model.person.ReadOnlyPerson;
 
 /**
- * Indicates 'select' command's successful execution
- * Triggers event to load person's webpage
+ * Updates the Popularity Counter by one for the selected person
+ * Guarantees: Some person is selected in UI in person List Panel
  */
-public class LoadPersonWebpageEvent extends BaseEvent {
+public class UpdatePopularityCounterForSelectionEvent extends BaseEvent {
 
     private ReadOnlyPerson person;
 
-    public LoadPersonWebpageEvent(ReadOnlyPerson person) {
+    public UpdatePopularityCounterForSelectionEvent(ReadOnlyPerson person) {
         this.person = person;
     }
 
@@ -24,5 +24,4 @@ public class LoadPersonWebpageEvent extends BaseEvent {
     public String toString() {
         return this.getClass().getSimpleName();
     }
-
 }

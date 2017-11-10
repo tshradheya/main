@@ -1,4 +1,3 @@
-//@@author chuaweiwen
 package seedu.address.logic.commands;
 
 import static junit.framework.TestCase.assertFalse;
@@ -11,6 +10,7 @@ import guitests.AddressBookGuiTest;
 import seedu.address.logic.parser.Theme;
 import seedu.address.logic.parser.ThemeList;
 
+//@@author chuaweiwen
 public class ThemeCommandTest extends AddressBookGuiTest {
 
     @Test

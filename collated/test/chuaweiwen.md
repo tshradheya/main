@@ -1,31 +1,6 @@
 # chuaweiwen
-###### /java/seedu/address/logic/commands/FilterCommandTest.java
+###### \java\seedu\address\logic\commands\FilterCommandTest.java
 ``` java
-package seedu.address.logic.commands;
-
-import static junit.framework.TestCase.assertEquals;
-import static seedu.address.commons.core.Messages.MESSAGE_PERSONS_LISTED_OVERVIEW;
-import static seedu.address.testutil.TypicalPersons.ALICE;
-import static seedu.address.testutil.TypicalPersons.BENSON;
-import static seedu.address.testutil.TypicalPersons.DANIEL;
-import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
-import static seedu.address.testutil.TypicalReminders.getUniqueTypicalReminders;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
-import org.junit.Test;
-
-import seedu.address.logic.CommandHistory;
-import seedu.address.logic.UndoRedoStack;
-import seedu.address.model.AddressBook;
-import seedu.address.model.Model;
-import seedu.address.model.ModelManager;
-import seedu.address.model.UserPrefs;
-import seedu.address.model.person.NameAndTagsContainsKeywordsPredicate;
-import seedu.address.model.person.ReadOnlyPerson;
-
 public class FilterCommandTest {
 
     private Model model = new ModelManager(getTypicalAddressBook(), getUniqueTypicalReminders(), new UserPrefs());
@@ -117,38 +92,8 @@ public class FilterCommandTest {
     }
 }
 ```
-###### /java/seedu/address/logic/commands/NicknameCommandTest.java
+###### \java\seedu\address\logic\commands\NicknameCommandTest.java
 ``` java
-package seedu.address.logic.commands;
-
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static seedu.address.logic.commands.CommandTestUtil.NICKNAME_AMY;
-import static seedu.address.logic.commands.CommandTestUtil.NICKNAME_BOB;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_NICKNAME_AMY;
-import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
-import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
-import static seedu.address.logic.commands.CommandTestUtil.showFirstPersonOnly;
-import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
-import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
-import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
-import static seedu.address.testutil.TypicalReminders.getUniqueTypicalReminders;
-
-import org.junit.Test;
-
-import seedu.address.commons.core.Messages;
-import seedu.address.commons.core.index.Index;
-import seedu.address.logic.CommandHistory;
-import seedu.address.logic.UndoRedoStack;
-import seedu.address.model.AddressBook;
-import seedu.address.model.Model;
-import seedu.address.model.ModelManager;
-import seedu.address.model.UserPrefs;
-import seedu.address.model.person.Nickname;
-import seedu.address.model.person.Person;
-import seedu.address.model.person.ReadOnlyPerson;
-import seedu.address.testutil.PersonBuilder;
-
 public class NicknameCommandTest {
 
     private Model model = new ModelManager(getTypicalAddressBook(), getUniqueTypicalReminders(), new UserPrefs());
@@ -284,20 +229,8 @@ public class NicknameCommandTest {
     }
 }
 ```
-###### /java/seedu/address/logic/commands/ThemeCommandTest.java
+###### \java\seedu\address\logic\commands\ThemeCommandTest.java
 ``` java
-package seedu.address.logic.commands;
-
-import static junit.framework.TestCase.assertFalse;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import org.junit.Test;
-
-import guitests.AddressBookGuiTest;
-import seedu.address.logic.parser.Theme;
-import seedu.address.logic.parser.ThemeList;
-
 public class ThemeCommandTest extends AddressBookGuiTest {
 
     @Test
@@ -338,7 +271,7 @@ public class ThemeCommandTest extends AddressBookGuiTest {
     }
 }
 ```
-###### /java/seedu/address/logic/parser/AddressBookParserTest.java
+###### \java\seedu\address\logic\parser\AddressBookParserTest.java
 ``` java
     @Test
     public void parseCommand_nickname() throws Exception {
@@ -356,7 +289,7 @@ public class ThemeCommandTest extends AddressBookGuiTest {
         assertEquals(new ThemeCommand(theme), command);
     }
 ```
-###### /java/seedu/address/logic/parser/AddressBookParserTest.java
+###### \java\seedu\address\logic\parser\AddressBookParserTest.java
 ``` java
     @Test
     public void parseCommand_filter() throws Exception {
@@ -367,22 +300,8 @@ public class ThemeCommandTest extends AddressBookGuiTest {
         assertEquals(new FilterCommand(new NameAndTagsContainsKeywordsPredicate(nameKeywords, tagKeywords)), command);
     }
 ```
-###### /java/seedu/address/logic/parser/FilterCommandParserTest.java
+###### \java\seedu\address\logic\parser\FilterCommandParserTest.java
 ``` java
-package seedu.address.logic.parser;
-
-import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
-import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import org.junit.Test;
-
-import seedu.address.logic.commands.FilterCommand;
-import seedu.address.model.person.NameAndTagsContainsKeywordsPredicate;
-
 public class FilterCommandParserTest {
 
     private FilterCommandParser parser = new FilterCommandParser();
@@ -470,20 +389,8 @@ public class FilterCommandParserTest {
 
 }
 ```
-###### /java/seedu/address/logic/parser/NicknameCommandParserTest.java
+###### \java\seedu\address\logic\parser\NicknameCommandParserTest.java
 ``` java
-package seedu.address.logic.parser;
-
-import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
-import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
-import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_PERSON;
-
-import org.junit.Test;
-
-import seedu.address.logic.commands.NicknameCommand;
-import seedu.address.model.person.Nickname;
-
 public class NicknameCommandParserTest {
 
     private NicknameCommandParser parser = new NicknameCommandParser();
@@ -528,19 +435,8 @@ public class NicknameCommandParserTest {
     }
 }
 ```
-###### /java/seedu/address/logic/parser/ThemeCommandParserTest.java
+###### \java\seedu\address\logic\parser\ThemeCommandParserTest.java
 ``` java
-package seedu.address.logic.parser;
-
-import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-import static seedu.address.commons.core.Messages.MESSAGE_UNKNOWN_THEME;
-import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
-import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
-
-import org.junit.Test;
-
-import seedu.address.logic.commands.ThemeCommand;
-
 public class ThemeCommandParserTest {
 
     private ThemeCommandParser parser = new ThemeCommandParser();
@@ -564,15 +460,8 @@ public class ThemeCommandParserTest {
     }
 }
 ```
-###### /java/seedu/address/logic/parser/ThemeTest.java
+###### \java\seedu\address\logic\parser\ThemeTest.java
 ``` java
-package seedu.address.logic.parser;
-
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import org.junit.Test;
-
 public class ThemeTest {
 
     @Test
@@ -606,21 +495,8 @@ public class ThemeTest {
     }
 }
 ```
-###### /java/seedu/address/model/person/NameAndTagsContainsKeywordsPredicateTest.java
+###### \java\seedu\address\model\person\NameAndTagsContainsKeywordsPredicateTest.java
 ``` java
-package seedu.address.model.person;
-
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import org.junit.Test;
-
-import seedu.address.testutil.PersonBuilder;
-
 public class NameAndTagsContainsKeywordsPredicateTest {
 
     @Test
@@ -752,17 +628,8 @@ public class NameAndTagsContainsKeywordsPredicateTest {
     }
 }
 ```
-###### /java/seedu/address/model/person/NicknameTest.java
+###### \java\seedu\address\model\person\NicknameTest.java
 ``` java
-package seedu.address.model.person;
-
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_NICKNAME_AMY;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_NICKNAME_BOB;
-
-import org.junit.Test;
-
 public class NicknameTest {
 
     @Test
@@ -785,6 +652,259 @@ public class NicknameTest {
 
         // same nickname -> returns true
         assertTrue(standardNickname.equals(sameNickname));
+    }
+}
+```
+###### \java\systemtests\FilterCommandSystemTest.java
+``` java
+public class FilterCommandSystemTest extends AddressBookSystemTest {
+
+    @Test
+    public void filter() {
+        /* Case: filter multiple persons with the name in address book, command with leading spaces and trailing spaces
+         * -> 2 persons found
+         */
+        String command = "   " + FilterCommand.COMMAND_WORD + " " + PREFIX_NAME + KEYWORD_MATCHING_MEIER + "   ";
+        Model expectedModel = getModel();
+        ModelHelper.setFilteredList(expectedModel, BENSON, DANIEL); // first names of Benson and Daniel are "Meier"
+        assertCommandSuccess(command, expectedModel);
+        assertSelectedCardUnchanged();
+
+        /* Case: repeat previous filter command where person list is displaying the persons we are filtering
+         * -> 2 persons found
+         */
+        command = FilterCommand.COMMAND_WORD + " " + PREFIX_NAME + KEYWORD_MATCHING_MEIER;
+        assertCommandSuccess(command, expectedModel);
+        assertSelectedCardUnchanged();
+
+        /* Case: filter multiple persons with the tags in address book,
+         * command with leading spaces and trailing spaces
+         * -> 2 persons found
+         */
+        command = "   " + FilterCommand.COMMAND_WORD + " " + PREFIX_TAG + KEYWORD_TAG_FRIEND + "   ";
+        ModelHelper.setFilteredList(expectedModel, ALICE, BENSON); // both Alice and Benson have the tag 'friend'
+        assertCommandSuccess(command, expectedModel);
+        assertSelectedCardUnchanged();
+
+        /* Case: repeat previous filter command where person list is displaying the persons we are filtering
+         * -> 2 persons found
+         */
+        command = FilterCommand.COMMAND_WORD + " " + PREFIX_TAG + KEYWORD_TAG_FRIEND;
+        assertCommandSuccess(command, expectedModel);
+        assertSelectedCardUnchanged();
+
+        /* Case: filter person where person list is not displaying the person with the name we are finding
+         * -> 1 person found
+         */
+        command = FilterCommand.COMMAND_WORD + " " + PREFIX_NAME + "Carl";
+        ModelHelper.setFilteredList(expectedModel, CARL);
+        assertCommandSuccess(command, expectedModel);
+        assertSelectedCardUnchanged();
+
+        /* Case: filter person where person list is not displaying the person with the tag we are finding
+         * -> 2 persons found
+         */
+        command = FilterCommand.COMMAND_WORD + " " + PREFIX_TAG + "friend";
+        ModelHelper.setFilteredList(expectedModel, ALICE, BENSON);
+        assertCommandSuccess(command, expectedModel);
+        assertSelectedCardUnchanged();
+
+        /* Case: filter person in address book, 2 name keywords, prefix used for each keywords
+         * -> 1 person found
+         */
+        command = FilterCommand.COMMAND_WORD + " " + PREFIX_NAME + "Benson " + PREFIX_NAME + "Meier";
+        ModelHelper.setFilteredList(expectedModel, BENSON);
+        assertCommandSuccess(command, expectedModel);
+        assertSelectedCardUnchanged();
+
+        /* Case: filter person in address book, 2 name keywords in reverse order, prefix used for each keywords
+         * -> 1 person found
+         */
+        command = FilterCommand.COMMAND_WORD + " " + PREFIX_NAME + "Meier " + PREFIX_NAME + "Benson";
+        assertCommandSuccess(command, expectedModel);
+        assertSelectedCardUnchanged();
+
+        /* Case: filter person in address book, 2 name keywords with one repeat, prefix used for each keywords
+         * -> 1 person found
+         */
+        command = FilterCommand.COMMAND_WORD + " " + PREFIX_NAME + "Benson " + PREFIX_NAME + "Meier "
+                + PREFIX_NAME + "Benson";
+        assertCommandSuccess(command, expectedModel);
+        assertSelectedCardUnchanged();
+
+        /* Case: filter person in address book, 2 name keywords, only one prefix used
+         * -> 1 person found
+         */
+        command = FilterCommand.COMMAND_WORD + " " + PREFIX_NAME + "Benson Meier";
+        assertCommandSuccess(command, expectedModel);
+        assertSelectedCardUnchanged();
+
+        /* Case: filter person in address book, 2 tag keywords, prefix used for each keywords
+         * -> 1 person found
+         */
+        command = FilterCommand.COMMAND_WORD + " " + PREFIX_TAG + "relative" + " " + PREFIX_TAG + "colleague";
+        ModelHelper.setFilteredList(expectedModel, DANIEL);
+        assertCommandSuccess(command, expectedModel);
+        assertSelectedCardUnchanged();
+
+        /* Case: filter person in address book, 2 tag keywords in reverse order, prefix used for each keywords
+         * -> 1 person found
+         */
+        command = FilterCommand.COMMAND_WORD + " " + PREFIX_TAG + "colleague " + PREFIX_TAG + "relative";
+        assertCommandSuccess(command, expectedModel);
+        assertSelectedCardUnchanged();
+
+        /* Case: filter person in address book, 2 tag keywords with one repeat, prefix used for each keywords
+         * -> 1 person found
+         */
+        command = FilterCommand.COMMAND_WORD + " " + PREFIX_TAG + "relative " + PREFIX_TAG + "colleague "
+                + PREFIX_TAG + "relative";
+        assertCommandSuccess(command, expectedModel);
+        assertSelectedCardUnchanged();
+
+        /* Case: filter person in address book, 2 tag keywords, only one prefix used
+         * -> 1 person found
+         */
+        command = FilterCommand.COMMAND_WORD + " " + PREFIX_TAG + "relative colleague";
+        assertCommandSuccess(command, expectedModel);
+        assertSelectedCardUnchanged();
+
+        /* Case: filter person in address book, 1 name keyword and 1 tag keyword
+         * -> 1 person found
+         */
+        command = FilterCommand.COMMAND_WORD + " " + PREFIX_NAME + KEYWORD_MATCHING_MEIER
+                + " " + PREFIX_TAG + "friend";
+        ModelHelper.setFilteredList(expectedModel, BENSON);
+        assertCommandSuccess(command, expectedModel);
+        assertSelectedCardUnchanged();
+
+        /* Case: filter person in address book, 1 name keyword and 1 tag keyword, different order
+         * -> 1 person found
+         */
+        command = FilterCommand.COMMAND_WORD + " " + PREFIX_TAG + "friend" + " " + PREFIX_NAME
+                + KEYWORD_MATCHING_MEIER;
+        ModelHelper.setFilteredList(expectedModel, BENSON);
+        assertCommandSuccess(command, expectedModel);
+        assertSelectedCardUnchanged();
+
+        /* Case: undo previous find command -> rejected */
+        command = UndoCommand.COMMAND_WORD;
+        String expectedResultMessage = UndoCommand.MESSAGE_FAILURE;
+        assertCommandFailure(command, expectedResultMessage);
+
+        /* Case: redo previous find command -> rejected */
+        command = RedoCommand.COMMAND_WORD;
+        expectedResultMessage = RedoCommand.MESSAGE_FAILURE;
+        assertCommandFailure(command, expectedResultMessage);
+
+        /* Case: filter same persons with the name in address book after deleting 1 of them -> 1 person found */
+        ModelHelper.setFilteredList(expectedModel, BENSON, DANIEL);
+        executeCommand(FilterCommand.COMMAND_WORD + " " + PREFIX_NAME + KEYWORD_MATCHING_MEIER);
+        executeCommand(DeleteCommand.COMMAND_WORD + " 1");
+        assert !getModel().getAddressBook().getPersonList().contains(BENSON);
+        command = FilterCommand.COMMAND_WORD + " " + PREFIX_NAME + KEYWORD_MATCHING_MEIER;
+        expectedModel = getModel();
+        ModelHelper.setFilteredList(expectedModel, DANIEL);
+        assertCommandSuccess(command, expectedModel);
+        assertSelectedCardUnchanged();
+
+        /* Case: filter person in address book, name keyword is same as name but of different case
+         * -> 1 person found
+         */
+        command = FilterCommand.COMMAND_WORD + " " + PREFIX_NAME + "MeIeR";
+        assertCommandSuccess(command, expectedModel);
+        assertSelectedCardUnchanged();
+
+        /* Case: filter person in address book, tag keyword is same as tag but of different case
+         * -> 1 person found
+         */
+        command = FilterCommand.COMMAND_WORD + " " + PREFIX_TAG + "fRiEnD";
+        ModelHelper.setFilteredList(expectedModel, ALICE);
+        assertCommandSuccess(command, expectedModel);
+        assertSelectedCardUnchanged();
+
+        /* Case: filter person in address book, name keyword is substring of name -> 0 persons found */
+        command = FilterCommand.COMMAND_WORD + " " + PREFIX_NAME + "Mei";
+        ModelHelper.setFilteredList(expectedModel);
+        assertCommandSuccess(command, expectedModel);
+        assertSelectedCardUnchanged();
+
+        /* Case: filter person in address book, name is substring of keyword -> 0 persons found */
+        command = FilterCommand.COMMAND_WORD + " " + PREFIX_NAME + "Meiers";
+        assertCommandSuccess(command, expectedModel);
+        assertSelectedCardUnchanged();
+
+        /* Case: filter person with the name not in address book -> 0 persons found */
+        command = FilterCommand.COMMAND_WORD + " " + PREFIX_NAME + "Mark";
+        assertCommandSuccess(command, expectedModel);
+        assertSelectedCardUnchanged();
+
+        /* Case: filter person in address book, tag keyword is substring of tag -> 0 persons found */
+        command = FilterCommand.COMMAND_WORD + " " + PREFIX_TAG + "frien";
+        assertCommandSuccess(command, expectedModel);
+        assertSelectedCardUnchanged();
+
+        /* Case: filter person in address book, tag is substring of tag keyword -> 0 persons found */
+        command = FilterCommand.COMMAND_WORD + " " + PREFIX_TAG + "friendz";
+        assertCommandSuccess(command, expectedModel);
+        assertSelectedCardUnchanged();
+
+        /* Case: filter person with the tag not in address book -> 0 persons found */
+        command = FilterCommand.COMMAND_WORD + " " + PREFIX_TAG + "cousin";
+        assertCommandSuccess(command, expectedModel);
+        assertSelectedCardUnchanged();
+
+        /* Case: filter person in empty address book -> 0 persons found */
+        executeCommand(ClearCommand.COMMAND_WORD);
+        assert getModel().getAddressBook().getPersonList().size() == 0;
+        command = FindCommand.COMMAND_WORD + " " + KEYWORD_MATCHING_MEIER;
+        expectedModel = getModel();
+        ModelHelper.setFilteredList(expectedModel, DANIEL);
+        assertCommandSuccess(command, expectedModel);
+        assertSelectedCardUnchanged();
+
+        /* Case: mixed case command word -> rejected */
+        command = "FiLter Meier";
+        assertCommandFailure(command, MESSAGE_UNKNOWN_COMMAND);
+    }
+
+    /**
+     * Executes {@code command} and verifies that the command box displays an empty string, the result display
+     * box displays {@code Messages#MESSAGE_PERSONS_LISTED_OVERVIEW} with the number of people in the filtered list,
+     * and the model related components equal to {@code expectedModel}.
+     * These verifications are done by
+     * {@code AddressBookSystemTest#assertApplicationDisplaysExpected(String, String, Model)}.<br>
+     * Also verifies that the status bar remains unchanged, and the command box has the default style class, and the
+     * selected card updated accordingly, depending on {@code cardStatus}.
+     * @see AddressBookSystemTest#assertApplicationDisplaysExpected(String, String, Model)
+     */
+    private void assertCommandSuccess(String command, Model expectedModel) {
+        String expectedResultMessage = String.format(
+                MESSAGE_PERSONS_LISTED_OVERVIEW, expectedModel.getFilteredPersonList().size());
+
+        executeCommand(command);
+        assertApplicationDisplaysExpected("", expectedResultMessage, expectedModel);
+        assertCommandBoxShowsDefaultStyle();
+        assertStatusBarUnchanged();
+    }
+
+    /**
+     * Executes {@code command} and verifies that the command box displays {@code command}, the result display
+     * box displays {@code expectedResultMessage} and the model related components equal to the current model.
+     * These verifications are done by
+     * {@code AddressBookSystemTest#assertApplicationDisplaysExpected(String, String, Model)}.<br>
+     * Also verifies that the browser url, selected card and status bar remain unchanged, and the command box has the
+     * error style.
+     * @see AddressBookSystemTest#assertApplicationDisplaysExpected(String, String, Model)
+     */
+    private void assertCommandFailure(String command, String expectedResultMessage) {
+        Model expectedModel = getModel();
+
+        executeCommand(command);
+        assertApplicationDisplaysExpected(command, expectedResultMessage, expectedModel);
+        assertSelectedCardUnchanged();
+        assertCommandBoxShowsErrorStyle();
+        assertStatusBarUnchanged();
     }
 }
 ```

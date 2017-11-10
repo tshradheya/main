@@ -13,6 +13,7 @@ import guitests.guihandles.PopularContactCardHandle;
 import guitests.guihandles.ReminderCardHandle;
 import guitests.guihandles.ResultDisplayHandle;
 import seedu.address.model.person.ReadOnlyPerson;
+import seedu.address.model.reminders.ReadOnlyUniqueReminderList;
 import seedu.address.model.reminders.Reminder;
 
 /**
@@ -126,6 +127,18 @@ public class GuiTestAssert {
     public static void assertListMatching(PersonListPanelHandle personListPanelHandle, List<ReadOnlyPerson> persons) {
         assertListMatching(personListPanelHandle, persons.toArray(new ReadOnlyPerson[0]));
     }
+    //@@author tshradheya
+    /**
+     * Asserts that the list in {@code uniqueReminderList} displays the details of {@code reminders} correctly and
+     * in the correct order.
+     */
+    public static void assertListMatchingReminders(ReadOnlyUniqueReminderList uniqueReminderList, Reminder... reminders) {
+        for (int i = 0; i < reminders.length; i++) {
+            assertEquals(uniqueReminderList.asObservableList().get(i), reminders[i]);
+
+        }
+    }
+    //@@author
 
     /**
      * Asserts the size of the list in {@code personListPanelHandle} equals to {@code size}.

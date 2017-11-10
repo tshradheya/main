@@ -1,4 +1,3 @@
-//@@author chuaweiwen
 package seedu.address.logic.parser;
 
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
@@ -13,6 +12,7 @@ import org.junit.Test;
 import seedu.address.logic.commands.FilterCommand;
 import seedu.address.model.person.NameAndTagsContainsKeywordsPredicate;
 
+//@@author chuaweiwen
 public class FilterCommandParserTest {
 
     private FilterCommandParser parser = new FilterCommandParser();

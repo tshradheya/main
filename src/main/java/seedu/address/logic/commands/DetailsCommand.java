@@ -15,7 +15,8 @@ import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
 
 /**
- * Selects a person identified using it's last displayed index from the address book.
+ * Shows details of a person identified using it's last displayed index from the address book.
+ * Shows details in `DetailPanel`
  */
 public class DetailsCommand extends Command {
 

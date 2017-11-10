@@ -271,6 +271,14 @@ public class PopularContactsPanelHandle extends NodeHandle<ListView<PopularConta
     }
 }
 ```
+###### \java\guitests\SampleDataTest.java
+``` java
+    @Test
+    public void reminder_dataFileDoesNotExist_loadSampleData() {
+        Reminder[] expectedList = SampleDataUtil.getSampleReminders();
+        assertListMatchingReminders(SampleDataUtil.getSampleReminderList(), expectedList);
+    }
+```
 ###### \java\seedu\address\logic\commands\DetailsCommandTest.java
 ``` java
 package seedu.address.logic.commands;
@@ -1144,6 +1152,8 @@ public class ViewTagCommandParserTest {
 package seedu.address.model.email;
 
 import static junit.framework.TestCase.assertFalse;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
@@ -1163,6 +1173,12 @@ public class BodyTest {
         assertTrue(body.equals(body));
 
         assertFalse(body.equals(anotherBody));
+
+        assertEquals(body.toString(), sameBody.toString());
+
+        assertEquals(body.hashCode(), sameBody.hashCode());
+
+        assertNotEquals(body.hashCode(), anotherBody.hashCode());
     }
 }
 ```
@@ -1170,6 +1186,7 @@ public class BodyTest {
 ``` java
 package seedu.address.model.email;
 
+import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -1189,6 +1206,9 @@ public class ServiceTest {
         assertTrue(service.equals(service));
 
         assertFalse(service.equals(anotherService));
+
+        assertEquals(service.toString(), sameService.toString());
+        assertEquals(service.hashCode(), sameService.hashCode());
     }
 }
 ```
@@ -1197,6 +1217,8 @@ public class ServiceTest {
 package seedu.address.model.email;
 
 import static junit.framework.TestCase.assertFalse;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
@@ -1216,6 +1238,14 @@ public class SubjectTest {
         assertTrue(subject.equals(subject));
 
         assertFalse(subject.equals(anotherSubject));
+
+        assertEquals(subject.toString(), sameSubject.toString());
+
+        assertEquals(subject.hashCode(), sameSubject.hashCode());
+
+        assertNotEquals(subject.hashCode(), anotherSubject.hashCode());
+
+        assertNotEquals(subject.toString(), anotherSubject.toString());
     }
 }
 ```
@@ -1234,6 +1264,32 @@ public class SubjectTest {
         ModelManager modelManager = new ModelManager();
         modelManager.showPersonWebpage(ALICE);
         assertTrue(eventsCollectorRule.eventsCollector.getMostRecent() instanceof LoadPersonWebpageEvent);
+    }
+
+    @Test
+    public void selectedPerson_counterIncreased() {
+        AddressBook addressBook = new AddressBookBuilder().withPerson(ALICE).withPerson(BENSON).build();
+        UserPrefs userPrefs = new UserPrefs();
+        UniqueReminderList uniqueReminders = getUniqueTypicalReminders();
+
+        ModelManager modelManager = new ModelManager(addressBook, uniqueReminders, userPrefs);
+        UpdatePopularityCounterForSelectionEvent updatePopularityCounterForSelectionEvent =
+                new UpdatePopularityCounterForSelectionEvent(BENSON);
+        modelManager.handleUpdatePopularityCounterForSelectionEvent(updatePopularityCounterForSelectionEvent);
+        assertEquals(modelManager.getPopularContactList().get(0), BENSON);
+    }
+
+    @Test
+    public void test_indexOfGivenPerson() {
+        AddressBook addressBook = new AddressBookBuilder().withPerson(ALICE).withPerson(BENSON).build();
+        UserPrefs userPrefs = new UserPrefs();
+        UniqueReminderList uniqueReminders = getUniqueTypicalReminders();
+        ModelManager modelManager = new ModelManager(addressBook, uniqueReminders, userPrefs);
+        Index expectedIndex = Index.fromOneBased(1);
+
+        UpdateListForSelectionEvent updateListForSelectionEvent = new UpdateListForSelectionEvent(ALICE);
+        modelManager.handleUpdateListForSelectionEvent(updateListForSelectionEvent);
+        assertEquals(updateListForSelectionEvent.getIndex().getZeroBased(), expectedIndex.getZeroBased());
     }
 ```
 ###### \java\seedu\address\model\person\DisplayPictureTest.java
@@ -1716,12 +1772,17 @@ public class PopularContactCardTest extends GuiUnitTest {
 package seedu.address.ui;
 
 import static org.junit.Assert.assertEquals;
+import static seedu.address.testutil.TypicalIndexes.INDEX_SECOND_PERSON;
 import static seedu.address.testutil.TypicalPersons.getPopularPersons;
 import static seedu.address.ui.testutil.GuiTestAssert.assertCardDisplaysPopularPerson;
+import static seedu.address.ui.testutil.GuiTestAssert.assertCardEquals;
+import static seedu.address.ui.testutil.GuiTestAssert.assertPopularCardEquals;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import guitests.guihandles.PersonCardHandle;
+import guitests.guihandles.PersonListPanelHandle;
 import guitests.guihandles.PopularContactCardHandle;
 import guitests.guihandles.PopularContactsPanelHandle;
 import javafx.collections.FXCollections;
@@ -1734,13 +1795,20 @@ public class PopularContactListPanelTest extends GuiUnitTest {
 
     private PopularContactsPanelHandle popularContactsPanelHandle;
 
+    private PersonListPanelHandle personListPanelHandle;
+
     @Before
     public void setUp() {
         PopularContactPanel popularContactPanel = new PopularContactPanel(TYPICAL_PERSONS);
+        PersonListPanel personListPanel = new PersonListPanel(TYPICAL_PERSONS);
+
         uiPartRule.setUiPart(popularContactPanel);
 
         popularContactsPanelHandle = new PopularContactsPanelHandle(getChildNode(popularContactPanel.getRoot(),
                 popularContactsPanelHandle.PERSON_LIST_VIEW_ID));
+
+        personListPanelHandle = new PersonListPanelHandle(getChildNode(personListPanel.getRoot(),
+                personListPanelHandle.PERSON_LIST_VIEW_ID));
     }
 
     @Test
@@ -1755,7 +1823,38 @@ public class PopularContactListPanelTest extends GuiUnitTest {
         }
     }
 
+    @Test
+    public void handleJumpToListRequestEvent() {
+        popularContactsPanelHandle.select(INDEX_SECOND_PERSON.getZeroBased());
+        personListPanelHandle.select(INDEX_SECOND_PERSON.getZeroBased());
+        guiRobot.pauseForHuman();
+
+        PopularContactCardHandle expectedCard = popularContactsPanelHandle
+                .getPopularContactCardHandle(INDEX_SECOND_PERSON.getZeroBased());
+        PopularContactCardHandle selectedCard = popularContactsPanelHandle.getHandleToSelectedCard();
+
+        PersonCardHandle expectedPersonCard = personListPanelHandle
+                .getPersonCardHandle(INDEX_SECOND_PERSON.getZeroBased());
+        PersonCardHandle selectedPersonCard = personListPanelHandle.getHandleToSelectedCard();
+
+        assertCardEquals(expectedPersonCard, selectedPersonCard);
+        assertPopularCardEquals(expectedCard, selectedCard);
+
+    }
 }
+```
+###### \java\seedu\address\ui\testutil\GuiTestAssert.java
+``` java
+    /**
+     * Asserts that the list in {@code uniqueReminderList} displays the details of {@code reminders} correctly and
+     * in the correct order.
+     */
+    public static void assertListMatchingReminders(ReadOnlyUniqueReminderList uniqueReminderList, Reminder... reminders) {
+        for (int i = 0; i < reminders.length; i++) {
+            assertEquals(uniqueReminderList.asObservableList().get(i), reminders[i]);
+
+        }
+    }
 ```
 ###### \java\systemtests\DetailsCommandSystemTest.java
 ``` java

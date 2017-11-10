@@ -13,6 +13,7 @@ import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.Region;
 import seedu.address.commons.core.LogsCenter;
+import seedu.address.commons.events.model.UpdatePopularityCounterForSelectionEvent;
 import seedu.address.commons.events.ui.JumpToListRequestEvent;
 import seedu.address.commons.events.ui.PersonPanelSelectionChangedEvent;
 import seedu.address.commons.events.ui.ShowDetailsEvent;
@@ -46,9 +47,13 @@ public class PersonListPanel extends UiPart<Region> {
     private void setEventHandlerForSelectionChangeEvent() {
         personListView.getSelectionModel().selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> {
+                    //@@author tshradheya
                     if (newValue != null) {
                         logger.fine("Selection in person list panel changed to : '" + newValue + "'");
                         raise(new PersonPanelSelectionChangedEvent(newValue, newValue.person));
+                        raise(new UpdatePopularityCounterForSelectionEvent(newValue.person));
+                        //@@author
+
                     }
                 });
     }
@@ -63,6 +68,7 @@ public class PersonListPanel extends UiPart<Region> {
         });
     }
 
+    //@@author tshradheya
     /**
      * Scrolls to the {@code PersonCard} at the {@code index} and don't select it
      */
@@ -83,6 +89,7 @@ public class PersonListPanel extends UiPart<Region> {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
         scrollTo(event.targetIndex);
     }
+    //@@author
 
     /**
      * Custom {@code ListCell} that displays the graphics of a {@code PersonCard}.
@@ -101,10 +108,12 @@ public class PersonListPanel extends UiPart<Region> {
             }
         }
     }
+    //@@author tshradheya
 
     @Subscribe
     private void handleUpdatePersonListPanelSelectionEvent(UpdatePersonListPanelSelectionEvent event) {
         scrollTo(event.getIndex().getZeroBased());
     }
+    //@@author
 
 }

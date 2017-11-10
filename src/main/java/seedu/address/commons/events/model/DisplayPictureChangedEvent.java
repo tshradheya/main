@@ -4,7 +4,7 @@ package seedu.address.commons.events.model;
 import seedu.address.commons.events.BaseEvent;
 
 /**
- * Event to trigger reading and storing of image
+ * Triggers event to read and store image
  */
 public class DisplayPictureChangedEvent extends BaseEvent {
 
@@ -22,8 +22,8 @@ public class DisplayPictureChangedEvent extends BaseEvent {
         return isRead;
     }
 
-    public void setRead(boolean b) {
-        isRead = b;
+    public void setRead(boolean read) {
+        isRead = read;
     }
 
     @Override

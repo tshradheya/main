@@ -1,5 +1,6 @@
 package seedu.address.model;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
@@ -15,7 +16,10 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import seedu.address.commons.core.index.Index;
 import seedu.address.commons.events.model.DisplayPictureChangedEvent;
+import seedu.address.commons.events.model.UpdateListForSelectionEvent;
+import seedu.address.commons.events.model.UpdatePopularityCounterForSelectionEvent;
 import seedu.address.commons.events.ui.LoadPersonWebpageEvent;
 import seedu.address.commons.util.FileUtil;
 import seedu.address.model.person.NameContainsKeywordsPredicate;
@@ -73,6 +77,32 @@ public class ModelManagerTest {
         ModelManager modelManager = new ModelManager();
         modelManager.showPersonWebpage(ALICE);
         assertTrue(eventsCollectorRule.eventsCollector.getMostRecent() instanceof LoadPersonWebpageEvent);
+    }
+
+    @Test
+    public void selectedPerson_counterIncreased() {
+        AddressBook addressBook = new AddressBookBuilder().withPerson(ALICE).withPerson(BENSON).build();
+        UserPrefs userPrefs = new UserPrefs();
+        UniqueReminderList uniqueReminders = getUniqueTypicalReminders();
+
+        ModelManager modelManager = new ModelManager(addressBook, uniqueReminders, userPrefs);
+        UpdatePopularityCounterForSelectionEvent updatePopularityCounterForSelectionEvent =
+                new UpdatePopularityCounterForSelectionEvent(BENSON);
+        modelManager.handleUpdatePopularityCounterForSelectionEvent(updatePopularityCounterForSelectionEvent);
+        assertEquals(modelManager.getPopularContactList().get(0), BENSON);
+    }
+
+    @Test
+    public void test_indexOfGivenPerson() {
+        AddressBook addressBook = new AddressBookBuilder().withPerson(ALICE).withPerson(BENSON).build();
+        UserPrefs userPrefs = new UserPrefs();
+        UniqueReminderList uniqueReminders = getUniqueTypicalReminders();
+        ModelManager modelManager = new ModelManager(addressBook, uniqueReminders, userPrefs);
+        Index expectedIndex = Index.fromOneBased(1);
+
+        UpdateListForSelectionEvent updateListForSelectionEvent = new UpdateListForSelectionEvent(ALICE);
+        modelManager.handleUpdateListForSelectionEvent(updateListForSelectionEvent);
+        assertEquals(updateListForSelectionEvent.getIndex().getZeroBased(), expectedIndex.getZeroBased());
     }
     //@@author
 

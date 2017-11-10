@@ -2,6 +2,8 @@
 package seedu.address.model.email;
 
 import static junit.framework.TestCase.assertFalse;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
@@ -21,5 +23,11 @@ public class BodyTest {
         assertTrue(body.equals(body));
 
         assertFalse(body.equals(anotherBody));
+
+        assertEquals(body.toString(), sameBody.toString());
+
+        assertEquals(body.hashCode(), sameBody.hashCode());
+
+        assertNotEquals(body.hashCode(), anotherBody.hashCode());
     }
 }

@@ -38,13 +38,4 @@ public class ViewTagCommand extends Command {
                 && this.predicate.equals(((ViewTagCommand) other).predicate)); // state check
     }
 
-
-
-
-
-
-
-
-
-
 }

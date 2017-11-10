@@ -1,11 +1,6 @@
 # chuaweiwen
 ###### \java\seedu\address\commons\events\ui\ChangeThemeRequestEvent.java
 ``` java
-package seedu.address.commons.events.ui;
-
-import seedu.address.commons.events.BaseEvent;
-import seedu.address.logic.parser.Theme;
-
 /**
  * Indicates a request to change the theme
  */
@@ -25,10 +20,6 @@ public class ChangeThemeRequestEvent extends BaseEvent {
 ```
 ###### \java\seedu\address\logic\commands\FilterCommand.java
 ``` java
-package seedu.address.logic.commands;
-
-import seedu.address.model.person.NameAndTagsContainsKeywordsPredicate;
-
 /**
  * Finds and lists all persons in address book whose name and/or tags contains any of the argument keywords.
  * Keyword matching is case sensitive.
@@ -65,22 +56,6 @@ public class FilterCommand extends Command {
 ```
 ###### \java\seedu\address\logic\commands\NicknameCommand.java
 ``` java
-package seedu.address.logic.commands;
-
-import static java.util.Objects.requireNonNull;
-import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
-
-import java.util.List;
-
-import seedu.address.commons.core.Messages;
-import seedu.address.commons.core.index.Index;
-import seedu.address.logic.commands.exceptions.CommandException;
-import seedu.address.model.person.Nickname;
-import seedu.address.model.person.Person;
-import seedu.address.model.person.ReadOnlyPerson;
-import seedu.address.model.person.exceptions.DuplicatePersonException;
-import seedu.address.model.person.exceptions.PersonNotFoundException;
-
 /**
  * Sets the nickname of an existing person in the address book.
  */
@@ -172,13 +147,6 @@ public class NicknameCommand extends UndoableCommand {
 ```
 ###### \java\seedu\address\logic\commands\ThemeCommand.java
 ``` java
-package seedu.address.logic.commands;
-
-import seedu.address.commons.core.EventsCenter;
-import seedu.address.commons.events.ui.ChangeThemeRequestEvent;
-import seedu.address.logic.parser.Theme;
-import seedu.address.logic.parser.ThemeList;
-
 /**
  * Changes the theme of the address book.
  */
@@ -240,22 +208,6 @@ public class ThemeCommand extends Command {
 ```
 ###### \java\seedu\address\logic\parser\FilterCommandParser.java
 ``` java
-package seedu.address.logic.parser;
-
-import static java.util.Objects.requireNonNull;
-import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Stream;
-
-import seedu.address.logic.commands.FilterCommand;
-import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.model.person.NameAndTagsContainsKeywordsPredicate;
-
 /**
  * Parses input arguments and creates a new FilterCommand object
  */
@@ -314,17 +266,6 @@ public class FilterCommandParser implements Parser<FilterCommand> {
 ```
 ###### \java\seedu\address\logic\parser\NicknameCommandParser.java
 ``` java
-package seedu.address.logic.parser;
-
-import static java.util.Objects.requireNonNull;
-import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-
-import seedu.address.commons.core.index.Index;
-import seedu.address.commons.exceptions.IllegalValueException;
-import seedu.address.logic.commands.NicknameCommand;
-import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.model.person.Nickname;
-
 /**
  * Parses input arguments and creates a new NicknameCommand object
  */
@@ -360,8 +301,6 @@ public class NicknameCommandParser implements Parser<NicknameCommand> {
 ```
 ###### \java\seedu\address\logic\parser\Theme.java
 ``` java
-package seedu.address.logic.parser;
-
 /**
  * A value used to specify the theme of the address book.
  */
@@ -407,14 +346,6 @@ public class Theme {
 ```
 ###### \java\seedu\address\logic\parser\ThemeCommandParser.java
 ``` java
-package seedu.address.logic.parser;
-
-import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-import static seedu.address.commons.core.Messages.MESSAGE_UNKNOWN_THEME;
-
-import seedu.address.logic.commands.ThemeCommand;
-import seedu.address.logic.parser.exceptions.ParseException;
-
 /**
  * Parses input arguments and creates a new ThemeCommand object
  */
@@ -448,8 +379,6 @@ public class ThemeCommandParser implements Parser<ThemeCommand> {
 ```
 ###### \java\seedu\address\logic\parser\ThemeList.java
 ``` java
-package seedu.address.logic.parser;
-
 /**
  * List of available themes
  */
@@ -477,17 +406,8 @@ public class ThemeList {
 ```
 ###### \java\seedu\address\model\person\NameAndTagsContainsKeywordsPredicate.java
 ``` java
-package seedu.address.model.person;
-
-import java.util.List;
-import java.util.Set;
-import java.util.function.Predicate;
-
-import seedu.address.commons.util.StringUtil;
-import seedu.address.model.tag.Tag;
-
 /**
- * Tests that a {@code ReadOnlyPerson}'s {@code Name} matches any of the keywords given.
+ * Tests that a {@code ReadOnlyPerson}'s {@code Name, @code Tag} matches all of the keywords given.
  */
 public class NameAndTagsContainsKeywordsPredicate implements Predicate<ReadOnlyPerson> {
     private final List<String> nameKeywords;
@@ -570,10 +490,6 @@ public class NameAndTagsContainsKeywordsPredicate implements Predicate<ReadOnlyP
 ```
 ###### \java\seedu\address\model\person\Nickname.java
 ``` java
-package seedu.address.model.person;
-
-import static java.util.Objects.requireNonNull;
-
 /**
  * Represents a Person's nickname in the address book.
  * Guarantees: immutable; is valid

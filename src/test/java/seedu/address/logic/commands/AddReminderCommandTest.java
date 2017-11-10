@@ -20,6 +20,7 @@ import com.sun.javafx.collections.ImmutableObservableList;
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.events.model.UpdateListForSelectionEvent;
+import seedu.address.commons.events.model.UpdatePopularityCounterForSelectionEvent;
 import seedu.address.logic.CommandHistory;
 import seedu.address.logic.UndoRedoStack;
 import seedu.address.logic.commands.exceptions.CommandException;
@@ -279,6 +280,12 @@ public class AddReminderCommandTest {
         public Index getIndexOfGivenPerson(ReadOnlyPerson person) {
             fail("This method should not be called");
             return Index.fromZeroBased(-1);
+        }
+
+        @Override
+        public void handleUpdatePopularityCounterForSelectionEvent(
+                UpdatePopularityCounterForSelectionEvent updatePopularityCounterForSelectionEvent) {
+            fail("This method should not be called");
         }
     }
 

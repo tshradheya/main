@@ -24,9 +24,10 @@ This app will not work with earlier versions of Java 8.
 +
 .  Download the latest `addressbook.jar` link:{repoURL}/releases[here].
 .  Copy the file to the folder you want to use as the home folder for your Address Book.
-.  Double-click the file to start the app. The GUI should appear in a few seconds.
+.  Double-click the file to start the app. The GUI should appear in a few seconds (Refer to Figure 1).
 +
 image::Ui.png[width="790"]
+_Figure 1: iContacts GUI._
 +
 .  Type the command in the command box and press kbd:[Enter] to execute it. +
 e.g. typing *`help`* and pressing kbd:[Enter] will open the help window.
@@ -69,10 +70,10 @@ Examples:
 * `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 b/21/10/1995 t/criminal`
 
 // tag::addReminder[]
-=== Adding a reminder: `addReminder`[V1.3]
+=== Adding a reminder: `addreminder` [V1.3]
 
 Adds a reminder to iContacts. +
-Format: `addReminder rd/REMINDER d/DATE ti/TIME`
+Format: `addreminder rd/REMINDER d/DATE ti/TIME`
 
 ****
 * All three parameters REMINDER, DATE and TIME must be filled. +
@@ -85,28 +86,28 @@ Format: `addReminder rd/REMINDER d/DATE ti/TIME`
 
 Examples:
 
-* `addReminder rd/Dinner with family d/10/10/2017 ti/18:00` (See Figure 1)
-* `addReminder rd/CS2105 Assignment d/26.10-2017 ti/23:59`
+* `addreminder rd/Dinner with family d/10/10/2017 ti/18:00` (Refer to Figure 2)
+* `addreminder rd/CS2105 Assignment d/26.10-2017 ti/23:59`
 
 image::ReminderPast.png[width=500]
-_Figure 1: Reminder for a dinner with family on 10/10/2017 at 18:00_
+_Figure 2: Reminder for a dinner with family on 10/10/2017 at 18:00._
 
 ****
 * The reminder cells are colored differently according to the urgency of the event. +
-* If the event has past, the reminder cell is colored in dark grey (See Figure 1). +
-* If the event is going to happen today, the reminder cell is colored in red (See Figure 2). +
-* If the event is going to happen within three days, the reminder cell is colored in yellow (See Figure 3). +
-* If the event is more than three days away, the reminder cell is colored in green. (See Figure 4).
+* If the event has passed, the reminder cell is colored in dark grey (Refer to Figure 2). +
+* If the event is going to happen today, the reminder cell is colored in red (Refer to Figure 3). +
+* If the event is going to happen within three days, the reminder cell is colored in yellow (Refer Figure 4). +
+* If the event is going to happen more than three days away, the reminder cell is colored in green (Refer to Figure 5).
 ****
 
 image::ReminderToday.png[width=500]
-_Figure 2: Event happening today._
+_Figure 3: Event happening today._
 
 image::ReminderThreeDays.png[width=500]
-_Figure 3: Event happening within three days._
+_Figure 4: Event happening within three days._
 
 image::ReminderNormal.png[width=500]
-_Figure 2: Event not happening anytime soon._
+_Figure 5: Event not happening anytime soon._
 // end::addReminder[]
 
 === Viewing details of a contact: `details`
@@ -115,28 +116,29 @@ Shows the full contact information of a person in the address book. +
 Format: `details INDEX`
 
 ****
-* Shows the full contact information of the person at the specified `INDEX`. The index refers to the index number shown in the list of reminders. The index *must be a positive integer* 1, 2, 3...
+* Shows the full contact information of the person at the specified `INDEX`.
+* The index refers to the index number shown in the list of reminders. The index *must be a positive integer* 1, 2, 3...
 ****
 
 Examples:
 
 * `details 1` +
-Show the full contact information of the person at index 1 (See Figure 1).
+Show the full contact information of the person at index 1 (Refer to Figure 6).
 
 image::details.png[width=790]
-_Figure 1: The full contact information of the person at index 1._
+_Figure 6: The full contact information of the person at index 1._
 
 === Listing all persons : `list`
 
 Shows a list of all persons in the address book. +
 Format: `list`
 
-=== Sorting all persons : `sort`[V1.1]
+=== Sorting all persons : `sort` [V1.1]
 
 Sorts and shows a list of all persons in the address book alphabetically. +
 Format: `sort`
 
-=== Exporting selected contacts : `export`[V1.2]
+=== Exporting selected contacts : `export` [V1.2]
 
 Exports selected contacts in iContacts. +
 Format: `export [r/RANGE] [p/PATH]`
@@ -184,10 +186,10 @@ Edits the name of the 2nd person to be `Betsy Crower` and clears all existing ta
 Clear the birthday of the 3rd person.
 
 // tag::editReminder[]
-=== Editing a reminder: `editReminder`[V1.4]
+=== Editing a reminder: `editreminder` [V1.4]
 
 Edits an existing reminder in iContacts. +
-Format: `editReminders INDEX [rd/REMINDER] [d/DATE] [ti/TIME]`
+Format: `editreminder INDEX [rd/REMINDER] [d/DATE] [ti/TIME]`
 
 ****
 * Edits the reminder at the specified `INDEX`. The index refers to the index number shown in the list of reminders. The index *must be a positive integer* 1, 2, 3...
@@ -197,33 +199,34 @@ Format: `editReminders INDEX [rd/REMINDER] [d/DATE] [ti/TIME]`
 
 Examples:
 
-* `editReminder 1 rd/Drink coffee` +
+* `editreminder 1 rd/Drink coffee` +
 Edits the content of the 1st reminder to be `Drink coffee`.
-* `editReminder 3 d/25/12/2017 ti/19:00` +
+* `editreminder 3 d/25/12/2017 ti/19:00` +
 Edits the date and time of the 3rd reminder to be `25/12/2017` and `19:00` respectively.
 // end::editReminder[]
 
-=== Frequently Viewed Contacts[V1.4]
+=== Frequently Viewed Contacts [V1.4]
 
-Shows the user a list of top 5 contacts which the user has viewed the most +
+Shows the user a list of top five contacts which the user has viewed the most +
 
 ****
-* The Top 5 users are decided based on these commands : `select`, `viewtag`, `email`, `location`.
+* The top five users are decided based on these commands : `select`, `viewtag`, `email`, `location`.
 * The more the user is being searched or viewed, his Popularity Counter increases making him move on the top of the Favourites
 * The list keeps automatically updating after each of the four mentioned commands are executed.
-* Any new contact will have a Popularity Counter of 0 initially.
+* Any new contacts will have a Popularity Counter of 0 initially.
 * If two people have same popularity then the person who was added earlier is shown before in the Top 5 list
 ****
 
 Examples:
 
-If the contact `Roy Balakrishnan` is `selected` once he will be on top of the list as his popularity counter is more than the rest of the contacts.
+If the contact `Roy Balakrishnan` is `selected` once, he will be moved to the top of the list as his popularity counter is more than the rest of the contacts.
 This can be seen in the image below.
 
 image::frequentlyVisited.PNG[width="790"]
+_Figure 7: `Roy Balakrishnan` is moved to the top of the list._
 
 // tag::nickname[]
-=== Adding a nickname to a person : `nickname`[V1.1]
+=== Adding a nickname to a person : `nickname` [V1.1]
 
 Adds a nickname to an existing person in the address book. +
 Format: `nickname INDEX [NICKNAME]`
@@ -242,7 +245,7 @@ Adds a nickname `Eddie` to the 1st person.
 Removes the nickname from the the 1st person.
 // end::nickname[]
 
-=== Adding Display picture for each person : `displaypic`[V1.2]
+=== Adding Display picture for each person : `displaypic` [V1.2]
 
 Adds a Display Picture to an existing person in the address book. +
 Format: `displaypic INDEX PATHOFIMAGE`
@@ -257,17 +260,18 @@ Format: `displaypic INDEX PATHOFIMAGE`
 
 Examples:
 
-* `displaypic 1 C:\Users\Admin\Desktop\Sem 3 Mods\CS2103T\mypic.jpg`
-Adds the `mypic.jpg` at the given path to the person at `INDEX` 1 as his display picture
-* `displaypic 2 `
+* `displaypic 1 C:\Users\Admin\Desktop\Sem 3 Mods\CS2103T\mypic.jpg` +
+Adds the `mypic.jpg` at the given path to the person at `INDEX` 1 as his display picture (Refer to Figure 8)
+* `displaypic 2` +
 Removes the existing display picture for the person at `INDEX` 2
 
 image::displaypic.png[width="790"]
+_Figure 8: Adds a picture to the first person._
 
-=== Displaying location to a contact's address: `location`[V1.3]
+=== Displaying location to a contact's address: `location` [V1.3]
 
-Uses Google Maps to show location of the address of the selected `INDEX`
-Format: location INDEX
+Uses Google Maps to show location of the address of the selected `INDEX` +
+Format: `location INDEX`
 
 ****
 * The location is shown in browser panel using Google Maps
@@ -278,12 +282,12 @@ Format: location INDEX
 Examples:
 
 * `location 2`
-Returns location of the address of person at `INDEX` 2
+Returns location of the address of person at `INDEX` 2 (Refer to Figure 9)
 
 image::location.PNG[width="790"]
+_Figure 9: Displays the location of the second person._
 
-
-=== Email to a group of people having a particular tag: `email` [V1.3]
+=== Emailing to a group of people having a particular tag: `email` [V1.3]
 
 Opens up the link to send email to all people of having a particular tag
 Format: email s/SERVICE to/KEYWORD sub/SUBJECT b/BODY
@@ -343,9 +347,10 @@ Examples:
 * `viewtag cs2103` +
 Returns all people who have the tag `cs2103` associated with them
 * `viewtag friends` +
-Returns `Alex` and `Bernice1 as they are having the tag `friends`
+Returns `Alex` and `Bernice1 as they are having the tag `friends` (Refer to Figure 10)
 
 image::viewtag.PNG[width="790"]
+_Figure 10: Listing all contacts with the tag `friends`._
 
 // tag::filter[]
 === Finding all people by name and associated with one or more tags: `filter`[V1.2]
@@ -398,10 +403,10 @@ Deletes the 2nd person in the address book.
 Deletes the 1st person in the results of the `find` command.
 
 // tag::deleteReminder[]
-=== Deleting a reminder: `deleteReminder`[V1.4]
+=== Deleting a reminder: `deletereminder`[V1.4]
 
 Deletes the specified reminder from iContacts. +
-Format: `deleteReminder INDEX`
+Format: `deletereminder INDEX`
 
 ****
 * Deletes the reminder at the specified `INDEX`.
@@ -411,9 +416,9 @@ Format: `deleteReminder INDEX`
 
 Examples:
 
-* `deleteReminder 1` +
+* `deletereminder 1` +
 Deletes the 1st reminder in iContacts.
-* `deleteReminder 20` +
+* `deletereminder 20` +
 Deletes the 20th reminder in iContacts.
 // end::deleteReminder[]
 
@@ -516,9 +521,10 @@ Format: `theme THEME`
 Examples:
 
 * `theme day` +
-Changes the theme to `day`.
+Changes the theme to `day` (Refer to Figure 11).
 
 image::themeDisplay.png[width="790"]
+_Figure 11: Theme changed to `day`._
 // end::theme[]
 
 === Exiting the program : `exit`
@@ -531,7 +537,7 @@ Format: `exit`
 Address book data are saved in the hard disk automatically after any command that changes the data. +
 There is no need to save manually.
 
-=== Exporting the list: `export`[V1.2]
+=== Exporting the list: `export` [V1.2]
 
 Exports the last displayed list to a specified location. +
 Format: `export [SAVE LOCATION]NAME`
@@ -549,9 +555,9 @@ Exports the last displayed list to `newData` folder as `newList.xml`.
 Saves the last displayed list to the default location as `newList.xml`.
 
 // tag::toggle[]
-=== Toggling between reminders panel and browser: `toggle`[V1.2]
+=== Toggling between reminders panel and browser: `toggle` [V1.2]
 
-Toggle between the reminders panel (See Figure 1) and the browser (See Figure 2) as needed. +
+Toggle between the reminders panel (Refer to Figure 12) and the browser (Refer to Figure 13) as needed. +
 The reminders panel would display reminders for upcoming birthdays amongst the contacts in the current month and
 also reminders that users can set for themselves. The birthday reminders and reminders are
 displayed chronologically. +
@@ -560,20 +566,20 @@ Format: `toggle`
 ****
 * Application would display the reminders panel at start up.
 * Executing the `select` command would always bring the browser to the front.
-* Toggling to the browser without first executing a `select` command would display a default background (See Figure 3).
+* Toggling to the browser without first executing a `select` command would display a default background (Refer to Figure 14).
 * Executing this `toggle` command when the application is showing the details of a contact would always bring the reminders panel to the front, and then
 alternate between the reminders panel and the browser on further execution of the `toggle` command.
 ****
 
 
 image::RemindersPanel.png[width="790"]
-_Figure 1 : The reminders panel._
+_Figure 12 : The reminders panel._
 
 image::BrowserPanel.png[width="790"]
-_Figure 2 : The browser panel._
+_Figure 13 : The browser panel._
 
 image::DefaultBackground.png[width="790"]
-_Figure 3 : The default panel._
+_Figure 14 : The default panel._
 // end::toggle[]
 
 == FAQ
@@ -585,19 +591,19 @@ _Figure 3 : The default panel._
 
 * *Add* `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [b/BIRTHDAY] [t/TAG]...` +
 e.g. `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 b/21/10/1995 t/friend t/colleague`
-* *Add Reminders* : `addReminder rd/REMINDER d/DATE ti/TIME` +
-e.g. `addReminder rd/Dinner with family d/25/12/2017 ti/18:00`
+* *Add Reminders* : `addreminder rd/REMINDER d/DATE ti/TIME` +
+e.g. `addreminder rd/Dinner with family d/25/12/2017 ti/18:00`
 * *Clear* : `clear`
 * *Delete* : `delete INDEX` +
 e.g. `delete 3`
-* *Delete Reminders* : `deleteReminder INDEX` +
-e.g. `deleteReminder 3`
+* *Delete Reminders* : `deletereminder INDEX` +
+e.g. `deletereminder 3`
 * *Edit* : `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [b/BIRTHDAY] [t/TAG]...` +
 e.g. `edit 2 n/James Lee e/jameslee@example.com`
-* *Edit Reminders* : `editReminder INDEX [rd/REMINDER] [d/DATE] [ti/TIME]`  +
-e.g. `editReminder 2 rd/Change reminder d/01-01-2017 ti/09:00`
-* *Nickname* : `edit INDEX [NICKNAME]` +
-e.g. `add 1 Jamie`
+* *Edit Reminders* : `editreminder INDEX [rd/REMINDER] [d/DATE] [ti/TIME]`  +
+e.g. `editreminder 2 rd/Change reminder d/01-01-2017 ti/09:00`
+* *Nickname* : `nickname INDEX [NICKNAME]` +
+e.g. `nickname 1 Jamie`
 * *Find* : `find KEYWORD [MORE_KEYWORDS]` +
 e.g. `find James Jake`
 * *ViewTag* : `viewtag KEYWORD` +

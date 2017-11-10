@@ -16,6 +16,12 @@ import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.PopularityCounter;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
+import seedu.address.model.reminders.Date;
+import seedu.address.model.reminders.ReadOnlyUniqueReminderList;
+import seedu.address.model.reminders.Reminder;
+import seedu.address.model.reminders.Time;
+import seedu.address.model.reminders.UniqueReminderList;
+import seedu.address.model.reminders.exceptions.DuplicateReminderException;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -45,7 +51,52 @@ public class SampleDataUtil {
                     new DisplayPicture(""), new PopularityCounter(0), getTagSet("classmates")),
                 new Person(new Name("Roy Balakrishnan"), new Phone("92624417"), new Email("royb@example.com"),
                     new Address("Blk 45 Aljunied Street 85, #11-31"), new Birthday("26/10/1995"), new Nickname(""),
-                    new DisplayPicture(""), new PopularityCounter(2), getTagSet("colleagues"))
+                    new DisplayPicture(""), new PopularityCounter(0), getTagSet("colleagues")),
+                new Person(new Name("Alice Tan"), new Phone("83292191"), new Email("alicet@example.com"),
+                     new Address("35, Clementi, #11-31"), new Birthday("16/11/1999"), new Nickname("ali"),
+                     new DisplayPicture(""), new PopularityCounter(0), getTagSet("cs1010")),
+                new Person(new Name("Rahul"), new Phone("93242829"), new Email("rahul@example.com"),
+                     new Address("Lokmanaya Nagar, 440016, Nagpur"), new Birthday("15/11/1999"), new Nickname(""),
+                     new DisplayPicture(""), new PopularityCounter(0), getTagSet("cs1010", "utown")),
+                new Person(new Name("Bob"), new Phone("83292191"), new Email("bob@example.com"),
+                     new Address("35, Yio Chu Kang, #11-31"), new Birthday("16/1/1999"), new Nickname(""),
+                     new DisplayPicture(""), new PopularityCounter(0), getTagSet("cs1010")),
+                new Person(new Name("Janice"), new Phone("92938829"), new Email("janicecool@example.com"),
+                     new Address("21, Dover, 112932"), new Birthday("16/5/1999"), new Nickname(""),
+                     new DisplayPicture(""), new PopularityCounter(0), getTagSet("cs1010")),
+                new Person(new Name("Akshay"), new Phone("62782292"), new Email("akshay@example.com"),
+                     new Address("Changi, 1232922"), new Birthday("4/11/2000"), new Nickname(""),
+                     new DisplayPicture(""), new PopularityCounter(0),
+                        getTagSet("friends", "colleagues")),
+                new Person(new Name("Rachael"), new Phone("72927739"), new Email("rachel@example.com"),
+                     new Address("Changi, 124289"), new Birthday("4/11/2000"), new Nickname(""),
+                     new DisplayPicture(""), new PopularityCounter(0),
+                        getTagSet("colleagues")),
+                new Person(new Name("Alex"), new Phone("83292191"), new Email("alex@example.com"),
+                     new Address("35, Jurong East"), new Birthday("10/2/1950"), new Nickname(""),
+                     new DisplayPicture(""), new PopularityCounter(0), getTagSet("family")),
+                new Person(new Name("Zee Leon"), new Phone("9292923"), new Email("zeeleon@example.com"),
+                     new Address("35, Mountain View, Google"), new Birthday("10/2/1950"), new Nickname(""),
+                     new DisplayPicture(""), new PopularityCounter(0), getTagSet("nusStudentClub")),
+                new Person(new Name("Yow rin"), new Phone("82929278"), new Email("yow@example.com"),
+                     new Address("Twin towers malaysia"), new Birthday("10/2/2001"), new Nickname(""),
+                     new DisplayPicture(""), new PopularityCounter(0), getTagSet("nusStudentClub")),
+                new Person(new Name("Wayne Lee"), new Phone("9287478"), new Email("lee@example.com"),
+                     new Address("Twin towers malaysia"), new Birthday("10/2/2001"), new Nickname(""),
+                     new DisplayPicture(""), new PopularityCounter(0), getTagSet("nusStudentClub")),
+                new Person(new Name("Maria"), new Phone("29339282"), new Email("maria@example.com"),
+                     new Address("Jurong West, 1182022"), new Birthday("10/12/1996"), new Nickname(""),
+                     new DisplayPicture(""), new PopularityCounter(0), getTagSet("nusStudentClub")),
+                new Person(new Name("Eugene Tan"), new Phone("92283828"), new Email("eugie@example.com"),
+                     new Address("Lentor Avenue, Singapore"), new Birthday("18/11/1996"), new Nickname(""),
+                     new DisplayPicture(""), new PopularityCounter(0), getTagSet("enemy")),
+                new Person(new Name("Nathan"), new Phone("92283828"), new Email("nath@example.com"),
+                     new Address("Bintan, Indonesia"), new Birthday("18/7/1996"), new Nickname(""),
+                     new DisplayPicture(""), new PopularityCounter(0), getTagSet("intern")),
+                new Person(new Name("Piyush"), new Phone("28728828"), new Email("piyuswag@example.com"),
+                     new Address("Toronto, Canada"), new Birthday("4/9/1996"), new Nickname(""),
+                     new DisplayPicture(""), new PopularityCounter(0), getTagSet("basketballTeam")),
+
             };
         } catch (IllegalValueException e) {
             throw new AssertionError("sample data cannot be invalid", e);
@@ -75,5 +126,38 @@ public class SampleDataUtil {
 
         return tags;
     }
+
+    public static Reminder[] getSampleReminders() {
+        try {
+            return new Reminder[] {
+                new Reminder("Email CS1010 Students about Midterm", new Date("15-11-2017"),
+                            new Time("16:00")),
+                new Reminder("Birthday Party Eugene", new Date("15-11-2017"),
+                            new Time("22:00")),
+                new Reminder("CS2103T Release jar", new Date("13-11-2017"),
+                            new Time("12:00")),
+                new Reminder("CS2105 Assignment Due", new Date("20-11-2017"),
+                            new Time("23:59")),
+                new Reminder("Fix Bugs of iContacts", new Date("02-12-2017"),
+                            new Time("10:00")),
+            };
+        } catch (IllegalValueException e) {
+            throw new AssertionError("sample data cannot be invalid", e);
+        }
+    }
+    //@@author tshradheya
+
+    public static ReadOnlyUniqueReminderList getSampleReminderList() {
+        try {
+            UniqueReminderList sampleReminderList = new UniqueReminderList();
+            for (Reminder sampleReminder : getSampleReminders()) {
+                sampleReminderList.add(sampleReminder);
+            }
+            return sampleReminderList;
+        } catch (DuplicateReminderException e) {
+            throw new AssertionError("sample data cannot contain duplicate reminders", e);
+        }
+    }
+    //@@author
 
 }

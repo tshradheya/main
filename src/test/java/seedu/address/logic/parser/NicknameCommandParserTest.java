@@ -1,4 +1,3 @@
-//@@author chuaweiwen
 package seedu.address.logic.parser;
 
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
@@ -11,6 +10,7 @@ import org.junit.Test;
 import seedu.address.logic.commands.NicknameCommand;
 import seedu.address.model.person.Nickname;
 
+//@@author chuaweiwen
 public class NicknameCommandParserTest {
 
     private NicknameCommandParser parser = new NicknameCommandParser();

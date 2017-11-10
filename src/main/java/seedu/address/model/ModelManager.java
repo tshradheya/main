@@ -25,6 +25,7 @@ import seedu.address.commons.events.model.DisplayPictureDeleteEvent;
 import seedu.address.commons.events.model.PopularContactChangedEvent;
 import seedu.address.commons.events.model.RemindersChangedEvent;
 import seedu.address.commons.events.model.UpdateListForSelectionEvent;
+import seedu.address.commons.events.model.UpdatePopularityCounterForSelectionEvent;
 import seedu.address.commons.events.ui.LoadPersonWebpageEvent;
 import seedu.address.commons.events.ui.SendingEmailEvent;
 import seedu.address.commons.events.ui.ShowDefaultPanelEvent;
@@ -330,7 +331,7 @@ public class ModelManager extends ComponentManager implements Model {
         requireNonNull(predicate);
         filteredPersons.setPredicate(predicate);
     }
-
+    //@@author tshradheya
     @Override
     public void updateFilteredPersonListForViewTag(Predicate<ReadOnlyPerson> predicate) {
         requireNonNull(predicate);
@@ -348,6 +349,7 @@ public class ModelManager extends ComponentManager implements Model {
     public void showDefaultPanel() {
         raise(new ShowDefaultPanelEvent());
     }
+    //@@author
 
     //@@author justinpoh
     @Override
@@ -380,8 +382,9 @@ public class ModelManager extends ComponentManager implements Model {
         reminderList.remove(target);
         indicateRemindersChanged();
     }
-    //@@author
 
+    //@@author
+    //@@author tshradheya
     @Override
     public Index getIndexOfGivenPerson(ReadOnlyPerson person) {
         for (int i = 0; i < filteredPersons.size(); i++) {
@@ -390,6 +393,7 @@ public class ModelManager extends ComponentManager implements Model {
                 return Index.fromZeroBased(i);
             }
         }
+        assert false : "Should not come here in no case";
         return Index.fromZeroBased(-1);
     }
 
@@ -400,6 +404,22 @@ public class ModelManager extends ComponentManager implements Model {
         Index index = getIndexOfGivenPerson(updateListForSelectionEvent.getPerson());
         updateListForSelectionEvent.setIndex(index);
     }
+
+    @Override
+    @Subscribe
+    public void handleUpdatePopularityCounterForSelectionEvent(
+            UpdatePopularityCounterForSelectionEvent updatePopularityCounterForSelectionEvent) {
+        try {
+            updatePersonsPopularityCounterByOne(updatePopularityCounterForSelectionEvent.getPerson());
+        } catch (DuplicatePersonException dpe) {
+            assert false : "Is not possible as counter will be increased by one";
+        } catch (PersonNotFoundException pnfe) {
+            assert false : "Only existing person can be selected";
+        }
+
+        updatePopularContactList();
+    }
+    //@@author
 
     @Override
     public boolean equals(Object obj) {

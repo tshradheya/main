@@ -20,7 +20,9 @@ public class ClearCommand extends UndoableCommand {
         requireNonNull(model);
         model.resetData(new AddressBook());
         model.resetReminders(new UniqueReminderList());
+        //@@author tshradheya
         model.showDefaultPanel();
+        //@@author
         return new CommandResult(MESSAGE_SUCCESS);
     }
 }

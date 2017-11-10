@@ -107,9 +107,8 @@ public class ParserUtil {
 
     /**
      * Parses popularity counter for dummy purpose
-     * @param popularityCounter
-     * @return
-     * @throws IllegalValueException
+     * @param popularityCounter represents the Popularity counter in terms of string(is actually an integer)
+     * @throws IllegalValueException if the string cannot be correctly converted to integer
      */
     public static Optional<PopularityCounter> parsePopularityCounter(Optional<String> popularityCounter)
             throws IllegalValueException {
@@ -161,7 +160,7 @@ public class ParserUtil {
      * Parses the given keyword tag into trimmed string
      * @param tag keyword given by user
      * @return trimmedTag which is trimmed for comparison purposes
-     * @throws IllegalValueException
+     * @throws IllegalValueException if the tag cannot be correctly parsed
      */
     public static String parseRecipientTag(String tag) throws IllegalValueException {
         requireNonNull(tag);

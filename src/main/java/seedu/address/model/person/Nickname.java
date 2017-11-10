@@ -1,8 +1,8 @@
-//@@author chuaweiwen
 package seedu.address.model.person;
 
 import static java.util.Objects.requireNonNull;
 
+//@@author chuaweiwen
 /**
  * Represents a Person's nickname in the address book.
  * Guarantees: immutable; is valid

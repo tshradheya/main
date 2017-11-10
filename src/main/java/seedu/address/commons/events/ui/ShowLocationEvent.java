@@ -5,7 +5,8 @@ import seedu.address.commons.events.BaseEvent;
 import seedu.address.model.person.ReadOnlyPerson;
 
 /**
- * Event raised on 'location' command's successful execution
+ * Indicates 'location' command's successful execution
+ * Trigger's event to show the address of person in `BrowserPanel`
  */
 public class ShowLocationEvent extends BaseEvent {
 

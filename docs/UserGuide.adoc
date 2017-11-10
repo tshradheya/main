@@ -600,8 +600,8 @@ e.g. `delete 3`
 e.g. `deletereminder 3`
 * *Edit* : `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [b/BIRTHDAY] [t/TAG]...` +
 e.g. `edit 2 n/James Lee e/jameslee@example.com`
-* *Edit Reminders* : `editReminder INDEX [rd/REMINDER] [d/DATE] [ti/TIME]`  +
-e.g. `editReminder 2 rd/Change reminder d/01-01-2017 ti/09:00`
+* *Edit Reminders* : `editreminder INDEX [rd/REMINDER] [d/DATE] [ti/TIME]`  +
+e.g. `editreminder 2 rd/Change reminder d/01-01-2017 ti/09:00`
 * *Nickname* : `nickname INDEX [NICKNAME]` +
 e.g. `nickname 1 Jamie`
 * *Find* : `find KEYWORD [MORE_KEYWORDS]` +

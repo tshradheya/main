@@ -1,8 +1,3 @@
-# tshradheya
-###### \java\seedu\address\commons\events\model\DisplayPictureChangedEvent.java
-``` java
-package seedu.address.commons.events.model;
-
 import seedu.address.commons.events.BaseEvent;
 
 /**
@@ -2697,3 +2692,4 @@ public class TagColor {
       </VBox.margin></ListView>
 </VBox>
 ```
+

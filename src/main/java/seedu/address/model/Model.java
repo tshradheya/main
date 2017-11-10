@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.function.Predicate;
 
 import javafx.collections.ObservableList;
+import seedu.address.commons.core.index.Index;
+import seedu.address.commons.events.model.UpdateListForSelectionEvent;
+import seedu.address.commons.events.model.UpdatePopularityCounterForSelectionEvent;
 import seedu.address.model.email.Body;
 import seedu.address.model.email.Service;
 import seedu.address.model.email.Subject;
@@ -12,6 +15,7 @@ import seedu.address.model.person.ReadOnlyPerson;
 import seedu.address.model.person.exceptions.DuplicatePersonException;
 import seedu.address.model.person.exceptions.PersonNotFoundException;
 import seedu.address.model.reminders.ReadOnlyReminder;
+import seedu.address.model.reminders.ReadOnlyUniqueReminderList;
 import seedu.address.model.reminders.UniqueReminderList;
 import seedu.address.model.reminders.exceptions.DuplicateReminderException;
 import seedu.address.model.reminders.exceptions.ReminderNotFoundException;
@@ -36,7 +40,7 @@ public interface Model {
     ObservableList<ReadOnlyReminder> getSortedReminderList();
 
     /** Returns the reminders */
-    UniqueReminderList getUniqueReminderList();
+    ReadOnlyUniqueReminderList getUniqueReminderList();
 
     /** Deletes the given person. */
     void deletePerson(ReadOnlyPerson target) throws PersonNotFoundException;
@@ -97,6 +101,8 @@ public interface Model {
 
     void updateFilteredListToShowAll();
 
+    void showDefaultPanel();
+
     /** Returns an unmodifiable view of the birthday panel filtered person list */
     ObservableList<ReadOnlyPerson> getBirthdayPanelFilteredPersonList();
 
@@ -116,5 +122,12 @@ public interface Model {
     void increaseCounterByOneForATag(List<ReadOnlyPerson> filteredPersonsForEmail);
 
     void updateFilteredPersonListForViewTag(Predicate<ReadOnlyPerson> predicate);
+
+    Index getIndexOfGivenPerson(ReadOnlyPerson person);
+
+    void handleUpdateListForSelectionEvent(UpdateListForSelectionEvent updateListForSelectionEvent);
+
+    void handleUpdatePopularityCounterForSelectionEvent(
+            UpdatePopularityCounterForSelectionEvent updatePopularityCounterForSelectionEvent);
 
 }

@@ -124,7 +124,7 @@ public class MainApp extends Application {
             if (!remindersOptional.isPresent()) {
                 logger.info("Data file not found. Will be starting with no reminders");
             }
-            initialReminders = remindersOptional.orElseGet(XmlSerializableReminders::new);
+            initialReminders = remindersOptional.orElseGet(SampleDataUtil::getSampleReminderList);
         } catch (DataConversionException e) {
             logger.warning("Data file not in the correct format. Will be starting with no reminders");
             initialReminders = new XmlSerializableReminders();

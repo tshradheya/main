@@ -81,7 +81,6 @@ public class DisplayPictureCommand extends Command {
             } catch (PersonNotFoundException pnfe) {
                 throw new AssertionError("The target person cannot be missing");
             }
-            model.updateFilteredListToShowAll();
 
             return new CommandResult(generateSuccessMessage(editedPerson));
         }
@@ -107,7 +106,6 @@ public class DisplayPictureCommand extends Command {
         } catch (PersonNotFoundException pnfe) {
             throw new AssertionError("The target person cannot be missing");
         }
-        model.updateFilteredListToShowAll();
 
         return new CommandResult(generateSuccessMessage(editedPerson));
     }

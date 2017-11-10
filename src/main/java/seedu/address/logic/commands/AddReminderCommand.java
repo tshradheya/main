@@ -17,7 +17,7 @@ import seedu.address.model.reminders.exceptions.DuplicateReminderException;
 
 public class AddReminderCommand extends Command {
 
-    public static final String COMMAND_WORD = "addReminder";
+    public static final String COMMAND_WORD = "addreminder";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a reminder.\n"
             + "Parameters: "

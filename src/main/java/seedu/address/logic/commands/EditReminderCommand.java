@@ -25,7 +25,7 @@ import seedu.address.model.reminders.exceptions.ReminderNotFoundException;
  */
 public class EditReminderCommand extends Command {
 
-    public static final String COMMAND_WORD = "editReminder";
+    public static final String COMMAND_WORD = "editreminder";
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Edits the details of the reminder identified "
             + "by the index number. "
             + "Existing values will be overwritten by the input values.\n"

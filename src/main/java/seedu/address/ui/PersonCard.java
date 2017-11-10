@@ -1,6 +1,5 @@
 package seedu.address.ui;
 
-import java.util.HashMap;
 import java.util.Random;
 
 import javafx.beans.binding.Bindings;
@@ -14,6 +13,7 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import seedu.address.MainApp;
 import seedu.address.model.person.ReadOnlyPerson;
+import seedu.address.ui.util.TagColor;
 
 
 /**
@@ -25,7 +25,6 @@ public class PersonCard extends UiPart<Region> {
     private static final Integer IMAGE_WIDTH = 100;
     private static final Integer IMAGE_HEIGHT = 100;
     private static String[] colors = {"#ff0000", "#0000ff", "#008000", "#ff00ff", "#00ffff"};
-    private static HashMap<String, String> tagColors = new HashMap<String, String>();
     private static Random random = new Random();
 
     /**
@@ -37,6 +36,8 @@ public class PersonCard extends UiPart<Region> {
      */
 
     public final ReadOnlyPerson person;
+    private TagColor tagColorObject;
+
 
     @FXML
     private HBox cardPane;
@@ -58,6 +59,7 @@ public class PersonCard extends UiPart<Region> {
         super(FXML);
         this.person = person;
         id.setText(displayedIndex + ". ");
+        tagColorObject = TagColor.getInstance();
         initTags(person);
         bindListeners(person);
     }
@@ -68,10 +70,10 @@ public class PersonCard extends UiPart<Region> {
      */
 
     private String getTagColor(String tag) {
-        if (!tagColors.containsKey(tag)) {
-            tagColors.put(tag, colors[random.nextInt(colors.length)]);
+        if (!tagColorObject.containsTag(tag)) {
+            tagColorObject.addColor(tag, colors[random.nextInt(colors.length)]);
         }
-        return tagColors.get(tag);
+        return tagColorObject.getColor(tag);
     }
 
     /**

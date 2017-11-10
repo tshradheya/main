@@ -858,7 +858,7 @@ image::togglingMechanism2.png[width="790"]
 _Figure 26 : Sequence diagram for the first part of the toggling mechanism._
 
 As seen from the sequence diagram above (Refer to Figure 26), when the user type the command for `toggle`, an instance of `ToggleCommand` would be created. +
-Upon execution by `LogicManager`, the event `BrowserAndRemindersPanelToggleEvent` would be posted by the `EventCenter`, to the `EventBus`.
+Upon execution by `LogicManager`, the event `BrowserAndRemindersPanelToggleEvent` would be posted by the `EventCenter` to the `EventBus`.
 
 [source, java]
 ----
@@ -911,7 +911,7 @@ public class BrowserAndRemindersPanel extends UIPart<Region> {
 }
 ----
 
-One important thing to note that when the `select` command is executed, the browser panel would be brought forward no matter what:
+One important thing to note is that when the `select` command is executed, the browser panel would be brought forward no matter what:
 
 [source, java]
 ----
@@ -941,9 +941,9 @@ method, the statement `browser.toFront()` and the method `setUpToShowWebBrowser`
 **Alternative 1 (current choice):** Allow users to toggle between the browser and reminders panel. +
 Pros: Can use the entire space for either the browser or reminders panel. +
 Cons: Users need to manually switch between the browser and reminders panel. +
-**Alternative 2:** Put reminders and browser side-by-side. +
+**Alternative 2:** Put reminders and browser panels side-by-side. +
 Pros: Users do not need to manually switch between the browser and reminders panel. +
-Cons: Too little space for browser and reminders. Difficult to read.
+Cons: Too little space for browser and reminders, making it difficult to read for the users.
 
 **Aspect:** Implementation of toggling mechanism. +
 **Alternative 1 (current choice):** Bring browser and reminders panel to the front as required, on top of setting their visibility suitably. +
@@ -963,7 +963,7 @@ The `Reminder` object represents a reminder in iContacts. It contains a `String`
 the actual reminder from the user, and also a `Date`, `Time` and `Status` object which represents the date, time and link:#status[status] of the reminder respectively
 (Refer to Figure 28). As part of _defensive programming_, `Reminder` implements the `ReadOnlyReminder` interface, which only allows _read_ operations, thus
 helping to prevent inappropriate or unintended modifications to `Reminder` objects (Refer to Figure 28) during the execution of the program.
-For example, for `DeleteReminderCommand`, its `execute` method should only execute the deletion of a specified reminder, not to alter any other reminders.
+For example, for `DeleteReminderCommand`, its `execute` method should only execute the deletion of a specified reminder, not to alter any reminders.
 To ensure that no unintended or inappropriate alteration happens, `DeleteReminderCommand` is passed a list of `ReadOnlyReminder` instead of `Reminder`. This can
 be seen from the code snippet below:
 

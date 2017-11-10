@@ -12,41 +12,6 @@ Last but not least, iContacts allow users to easily share contact information am
 
 *Code contributed*: [https://github.com/CS2103AUG2017-W14-B1/main/blob/master/collated/main/justinpoh.md[Functional code]] [https://github.com/CS2103AUG2017-W14-B1/main/blob/master/collated/test/justinpoh.md[Test code]]
 
-=== Enhancement Added: Toggle
-
-==== External behavior
-
----
-#Start of Extract [from: User Guide]#
-
-include::../UserGuide.adoc[tag=toggle]
-
-#End of Extract#
-
----
-
-==== Justification
-
-To make iContacts useful and appealing, it needs to be able to provide more functionality to users, and this also mean that it needs
-to be able to display more information. Without this toggling mechanism, users would have to squint their eyes as all the information
-and the browser would be squeezed together. Hence, to ensure a much more pleasant user experience, this toggling mechanism is required,
-as it allows related information to be displayed together without being squeezed. +
-
-
-However, we choose to permanently display the list of contacts as we felt that iContacts is first and foremost an address book, hence
-the list of contacts is the most important information within iContacts and thus should always be displayed.
-
-==== Implementation
-
----
-#Start of Extract [from: Developer Guide]#
-
-include::../DeveloperGuide.adoc[tag=toggle]
-
-#End of Extract#
-
----
-
 === Enhancement Added: Implemented Reminder
 
 ==== External behavior
@@ -84,6 +49,41 @@ by coloring the reminder cells differently. Using color is simple but powerful.
 #Start of Extract [from: Developer Guide]#
 
 include::../DeveloperGuide.adoc[tag=reminder]
+
+#End of Extract#
+
+---
+
+=== Enhancement Added: Toggle
+
+==== External behavior
+
+---
+#Start of Extract [from: User Guide]#
+
+include::../UserGuide.adoc[tag=toggle]
+
+#End of Extract#
+
+---
+
+==== Justification
+
+To make iContacts useful and appealing, it needs to be able to provide more functionality to users, and this also mean that it needs
+to be able to display more information. Without this toggling mechanism, users would have to squint their eyes as all the information
+and the browser would be squeezed together. Hence, to ensure a much more pleasant user experience, this toggling mechanism is required,
+as it allows related information to be displayed together in separate panels without being squeezed. +
+
+
+However, we choose to permanently display the list of contacts as we felt that iContacts is first and foremost an address book, hence
+the list of contacts is the most important information within iContacts and thus should always be displayed.
+
+==== Implementation
+
+---
+#Start of Extract [from: Developer Guide]#
+
+include::../DeveloperGuide.adoc[tag=toggle]
 
 #End of Extract#
 

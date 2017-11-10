@@ -2,7 +2,7 @@ package seedu.address.logic.parser;
 
 //@@author chuaweiwen
 /**
- * A value used to specify the theme of the address book.
+ * Represents the theme of the address book.
  */
 public class Theme {
     private final String theme;

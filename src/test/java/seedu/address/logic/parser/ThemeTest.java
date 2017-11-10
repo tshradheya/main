@@ -10,11 +10,11 @@ public class ThemeTest {
 
     @Test
     public void equals() {
-        Theme standardTheme = new Theme(ThemeList.THEME_DARK, ThemeList.THEME_DARK_PATH);
-        Theme sameTheme = new Theme(ThemeList.THEME_DARK, ThemeList.THEME_DARK_PATH);
-        Theme differentTheme = new Theme(ThemeList.THEME_SKY, ThemeList.THEME_SKY_PATH);
-        Theme themeWithDifferentName = new Theme(ThemeList.THEME_SKY, ThemeList.THEME_DARK_PATH);
-        Theme themeWithDifferentCss = new Theme(ThemeList.THEME_DARK, ThemeList.THEME_SKY_PATH);
+        Theme standardTheme = new Theme(ThemeList.THEME_NIGHT, ThemeList.THEME_NIGHT_PATH);
+        Theme sameTheme = new Theme(ThemeList.THEME_NIGHT, ThemeList.THEME_NIGHT_PATH);
+        Theme differentTheme = new Theme(ThemeList.THEME_DAY, ThemeList.THEME_DAY_PATH);
+        Theme themeWithDifferentName = new Theme(ThemeList.THEME_DAY, ThemeList.THEME_NIGHT_PATH);
+        Theme themeWithDifferentCss = new Theme(ThemeList.THEME_NIGHT, ThemeList.THEME_DAY_PATH);
 
         // same object -> returns true
         assertTrue(standardTheme.equals(standardTheme));

@@ -63,18 +63,18 @@ public class PersonCard extends UiPart<Region> {
         initTags(person);
         bindListeners(person);
     }
-
+    //@@author tshradheya
     /**
      * Assigns a random color to a tag if it does not exist in the HashMap
      * returns a String containing the color
      */
-
     private String getTagColor(String tag) {
         if (!tagColorObject.containsTag(tag)) {
             tagColorObject.addColor(tag, colors[random.nextInt(colors.length)]);
         }
         return tagColorObject.getColor(tag);
     }
+    //@@author
 
     /**
      * Binds the individual UI elements to observe their respective {@code Person} properties
@@ -115,8 +115,7 @@ public class PersonCard extends UiPart<Region> {
 
     /**
      * Initialize tags for the respective person
-     *
-     * @param person
+     * @param person whose tags have to be added and assigned color
      */
     private void initTags(ReadOnlyPerson person) {
         person.getTags().forEach(tag -> {

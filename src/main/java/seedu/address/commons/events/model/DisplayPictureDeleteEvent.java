@@ -4,7 +4,7 @@ package seedu.address.commons.events.model;
 import seedu.address.commons.events.BaseEvent;
 
 /**
- * Event to handle deleting of image
+ * Triggers event to delete image when a person is deleted
  */
 public class DisplayPictureDeleteEvent extends BaseEvent {
 

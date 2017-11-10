@@ -5,7 +5,8 @@ import seedu.address.commons.events.BaseEvent;
 import seedu.address.model.person.ReadOnlyPerson;
 
 /**
- * Event raised on 'select' command's successful execution
+ * Indicates 'select' command's successful execution
+ * Triggers event to load person's webpage
  */
 public class LoadPersonWebpageEvent extends BaseEvent {
 

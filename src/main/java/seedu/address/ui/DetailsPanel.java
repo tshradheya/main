@@ -150,8 +150,7 @@ public class DetailsPanel extends UiPart<Region> {
 
     /**
      * Initialize tags for the respective person
-     *
-     * @param person
+     * @param person whose tags have to be added and assigned color
      */
     private void initTags(ReadOnlyPerson person) {
         person.getTags().forEach(tag -> {

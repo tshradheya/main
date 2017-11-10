@@ -5,7 +5,7 @@ import seedu.address.commons.events.BaseEvent;
 import seedu.address.model.Model;
 
 /**
- * Event to handle change of popular contact list
+ * Indicates change of popular contact list
  */
 public class PopularContactChangedEvent extends BaseEvent {
 

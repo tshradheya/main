@@ -4,7 +4,7 @@ ifdef::env-github,env-browser[:outfilesuffix: .adoc]
 :stylesDir: ../stylesheets
 
 == Project: iContacts
-iContacts is an application that targets University students, aiming to help them manage their contacts and other aspects of their university life in an efficient manner.
+iContacts is an application that targets university students, aiming to help them manage their contacts and other aspects of their university life in an efficient manner.
 iContacts is a Command Line Interface (CLI) application, where most of the commands are executed by typing rather than clicking on buttons.
 Through iContacts, users would be able to store, manage and search through contact information efficiently and effectively.
 Not only that, users would be able to set display pictures for each contact, and also add reminders for upcoming events.
@@ -12,7 +12,7 @@ Last but not least, iContacts allow users to easily share contact information am
 
 *Code contributed*: [https://github.com/CS2103AUG2017-W14-B1/main/blob/master/collated/main/justinpoh.md[Functional code]] [https://github.com/CS2103AUG2017-W14-B1/main/blob/master/collated/test/justinpoh.md[Test code]]
 
-=== Enhancement Added: Implemented Reminder
+=== Enhancement Added: Reminders for upcoming events
 
 ==== External behavior
 
@@ -31,14 +31,14 @@ include::../UserGuide.adoc[tag=deleteReminder]
 
 ==== Justification
 While iContacts allow users to store, manage and search for contact information efficiently, this alone is not
-sufficient to meet the needs of University students. Students often have multiple outstanding tasks or events such as
+sufficient to meet the needs of university students. Students often have multiple outstanding tasks or events such as
 assignments or meetings. Hence, what these students need is the ability to set reminders for upcoming tasks or events.
 
 We chose to display the reminders chronologically instead of having them pop-up when the event is nearing as we feel
 that it is more user-friendly to permanently display the reminders for the users to see. Displaying the reminders permanently
 can grant users a sense of the quantity of upcoming tasks and events. Also, only reminding the users of an upcoming task or event
 when it is nearing might give the user insufficient time to prepare for it. Instead, permanently displaying the reminders
-with a countdown to the event allows user to better prepare for it.
+with a countdown to the event allow users to better prepare for it.
 
 We also recognise that there is a need to differentiate reminders based on the level of urgency. Therefore, we chose to do this
 by coloring the reminder cells differently. Using color is simple but powerful.
@@ -89,6 +89,27 @@ include::../DeveloperGuide.adoc[tag=toggle]
 
 ---
 
+=== Enhancement Proposed: Find by similar keywords
+The `find` command in iContacts currently only works for keywords with exact wording (i.e. `find Han` would not work for a contact with name `Hans`),
+although it is still case-insensitive. This might be very inconvenient for users as they might not remember the exact wording. Hence.
+the `find` command should be enhanced such that it can work with similar keywords.
+
+=== Enhancement Proposed: Dynamic command syntax validation using CommandBox border color
+Currently, iContacts only notify users of an invalid command syntax after users have typed out the whole command and pressed `Enter`.
+As the feedback to the users is very general, users might have a hard time figuring out which part of the command had an erroneous
+syntax. Therefore, this dynamic command syntax validation feature would be able to instantly feedback to users regarding the
+validity of the command they typed, by changing the color of the border of the CommandBox. There will be three colors: +
+
+* A green border means that the syntax of the command is valid.
+* A red border means that the syntax of the command is invalid.
+* A yellow border means that the syntax of the command is not wrong, but is incomplete.
+
+=== Enhancement Proposed: Integration with online address book and Cloud Storage services
+Currently, iContacts is not integrated with any existing online services such as Google Contacts or Google Cloud Platform. Users still
+have to manually export the source file to share their contacts, and this can only take place if both users uses iContacts. Furthermore,
+if the local copies of the source file are all corrupted or deleted, there are no online backup copies. Hence, there is a need
+to integrate iContacts with existing online address book and Cloud Storage services.
+
 === Other contributions
 
 * Created the current default GUI of iContacts, as well as creating the Day theme for iContacts. (Pull requests https://github.com/CS2103AUG2017-W14-B1/main/pull/195[#195])
@@ -100,7 +121,3 @@ include::../DeveloperGuide.adoc[tag=toggle]
 * Updated AboutUs.adoc. (Pull requests https://github.com/CS2103AUG2017-W14-B1/main/pull/88[#88], https://github.com/CS2103AUG2017-W14-B1/main/pull/212[#212])
 * Updated Glossary. (Pull requests https://github.com/CS2103AUG2017-W14-B1/main/pull/59[#59], https://github.com/CS2103AUG2017-W14-B1/main/pull/70[#70])
 * Updated NFR. (Pull requests https://github.com/CS2103AUG2017-W14-B1/main/pull/50[#50])
-
-== Project: PowerPointLabs
-
-{Optionally (not graded), you may include other projects in your portfolio.}

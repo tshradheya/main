@@ -235,8 +235,8 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
      * Sets up email Url for processing Email in Browser panel
      * @param service mentioned email service
      * @param recipients formed recipients string
-     * @param subject
-     * @param body
+     * @param subject of the email (optional, can be empty)
+     * @param body of the email (optional, can be empty)
      */
     private void setUpEmailUrl(String service, String recipients, String subject, String body) {
         if (service.equalsIgnoreCase(EMAIL_SERVICE_GMAIL)) {
@@ -248,9 +248,9 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
 
     /**
      * Loads page to send email through gmail
-     * @param recipients
-     * @param subject
-     * @param body
+     * @param recipients in terms of a tag ( can be only 1 tag)
+     * @param subject of the email (optional)
+     * @param body of the email (optional)
      */
     public void loadEmailUrlGmail(String recipients, String subject, String body) {
         try {
@@ -264,9 +264,9 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
 
     /**
      * Loads page to send email through outlook
-     * @param recipients
-     * @param subject
-     * @param body
+     * @param recipients in terms of a tag ( can be only 1 tag)
+     * @param subject of the email (optional, can be empty)
+     * @param body of the email( optional, can be empty)
      */
     private void loadEmailUrlOutlook(String recipients, String subject, String body) {
         try {
@@ -280,17 +280,6 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
 
     @Subscribe
     private void handlePersonPanelSelectionChangedEvent(PersonPanelSelectionChangedEvent event) {
-        logger.info(LogsCenter.getEventHandlingLogMessage(event));
-        setUpToShowDetailsPanel();
-        detailsPanel.toFront();
-        currentlyInFront = Node.DETAILS;
-        personDetails = new DetailsPanel(event.getPerson());
-        detailsPanel.getChildren().clear();
-        detailsPanel.getChildren().add(personDetails.getRoot());
-    }
-
-    @Subscribe
-    private void handlePopularContactPanelSelectionChangedEvent(PopularContactPanelSelectionChangedEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
         setUpToShowDetailsPanel();
         detailsPanel.toFront();
@@ -323,6 +312,17 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
         logger.info(LogsCenter.getEventHandlingLogMessage(event,
                 "Processing email through service of " + event.service.service));
         setUpEmailUrl(event.service.service, event.recipients, event.subject.subject, event.body.body);
+    }
+
+    @Subscribe
+    private void handlePopularContactPanelSelectionChangedEvent(PopularContactPanelSelectionChangedEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event));
+        setUpToShowDetailsPanel();
+        detailsPanel.toFront();
+        currentlyInFront = Node.DETAILS;
+        personDetails = new DetailsPanel(event.getPerson());
+        detailsPanel.getChildren().clear();
+        detailsPanel.getChildren().add(personDetails.getRoot());
     }
 
     @Subscribe

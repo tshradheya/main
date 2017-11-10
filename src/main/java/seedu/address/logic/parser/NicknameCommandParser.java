@@ -1,4 +1,3 @@
-//@@author chuaweiwen
 package seedu.address.logic.parser;
 
 import static java.util.Objects.requireNonNull;
@@ -10,6 +9,7 @@ import seedu.address.logic.commands.NicknameCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.Nickname;
 
+//@@author chuaweiwen
 /**
  * Parses input arguments and creates a new NicknameCommand object
  */

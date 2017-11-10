@@ -1,8 +1,8 @@
-//@@author chuaweiwen
 package seedu.address.logic.commands;
 
 import seedu.address.model.person.NameAndTagsContainsKeywordsPredicate;
 
+//@@author chuaweiwen
 /**
  * Finds and lists all persons in address book whose name and/or tags contains any of the argument keywords.
  * Keyword matching is case sensitive.

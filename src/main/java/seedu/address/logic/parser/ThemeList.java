@@ -1,6 +1,6 @@
-//@@author chuaweiwen
 package seedu.address.logic.parser;
 
+//@@author chuaweiwen
 /**
  * List of available themes
  */

@@ -1,4 +1,3 @@
-//@@author chuaweiwen
 package seedu.address.logic.parser;
 
 import static java.util.Objects.requireNonNull;
@@ -15,6 +14,7 @@ import seedu.address.logic.commands.FilterCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.NameAndTagsContainsKeywordsPredicate;
 
+//@@author chuaweiwen
 /**
  * Parses input arguments and creates a new FilterCommand object
  */

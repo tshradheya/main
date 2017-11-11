@@ -96,7 +96,9 @@ public class SampleDataUtil {
                 new Person(new Name("Piyush"), new Phone("28728828"), new Email("piyuswag@example.com"),
                      new Address("Toronto, Canada"), new Birthday("4/9/1996"), new Nickname(""),
                      new DisplayPicture(""), new PopularityCounter(0), getTagSet("basketballTeam")),
-
+                new Person(new Name("Maria"), new Phone("9288222"), new Email("mariaprincess@example.com"),
+                     new Address("Jurong West, 1182022"), new Birthday("10/12/1996"), new Nickname(""),
+                     new DisplayPicture(""), new PopularityCounter(0), getTagSet("friend"))
             };
         } catch (IllegalValueException e) {
             throw new AssertionError("sample data cannot be invalid", e);
@@ -130,16 +132,18 @@ public class SampleDataUtil {
     public static Reminder[] getSampleReminders() {
         try {
             return new Reminder[] {
-                new Reminder("Email CS1010 Students about Midterm", new Date("15-11-2017"),
-                            new Time("16:00")),
-                new Reminder("Birthday Party Eugene", new Date("15-11-2017"),
+                new Reminder("Email CS1010 Students about Midterm", new Date("17-11-2017"),
+                            new Time("19:00")),
+                new Reminder("Birthday Party Eugene", new Date("17-11-2017"),
                             new Time("22:00")),
-                new Reminder("CS2103T Release jar", new Date("13-11-2017"),
+                new Reminder("CS2103T Release jar", new Date("15-11-2017"),
                             new Time("12:00")),
-                new Reminder("CS2105 Assignment Due", new Date("20-11-2017"),
+                new Reminder("CS2105 Assignment Due", new Date("22-11-2017"),
                             new Time("23:59")),
-                new Reminder("Fix Bugs of iContacts", new Date("02-12-2017"),
-                            new Time("10:00")),
+                new Reminder("Survey for Product", new Date("19-11-2017"),
+                            new Time("23:59")),
+                new Reminder("Fix Bugs of iContacts", new Date("04-12-2017"),
+                            new Time("10:00"))
             };
         } catch (IllegalValueException e) {
             throw new AssertionError("sample data cannot be invalid", e);

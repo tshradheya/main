@@ -14,5 +14,11 @@ The following are the steps to load sample data:
 
 == Commands to Test
 
-=== Command 1
+=== Filter
+
+* `filter n/Alex`
+* Expected result: 2 person(s) listed!
+
+* `filter t/friends`
+* Expected result: 3 person(s) listed!
 

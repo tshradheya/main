@@ -24,7 +24,7 @@ public class BirthdayAndReminderListPanel extends UiPart<Region> {
     private static final String REMINDER_TODAY_STYLE_SHEET = DIRECTORY_PATH + "reminderToday.css";
     private static final String REMINDER_THREE_DAYS_STYLE_SHEET = DIRECTORY_PATH + "reminderWithinThreeDays.css";
     private static final String REMINDER_NORMAL_STYLE_SHEET = DIRECTORY_PATH + "reminderNormal.css";
-    private final Logger logger = LogsCenter.getLogger(PersonListPanel.class);
+    private final Logger logger = LogsCenter.getLogger(BirthdayAndReminderListPanel.class);
 
     @FXML
     private ListView<BirthdayReminderCard> birthdayListView;

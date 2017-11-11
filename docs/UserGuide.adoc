@@ -77,8 +77,7 @@ Format: `addreminder rd/REMINDER d/DATE ti/TIME`
 
 ****
 * All three parameters REMINDER, DATE and TIME must be filled. +
-* The order of the parameters cannot be changed. +
-* DATE must be in the format dd/mm/yyyy. `'-'`, `'/'` and `'.'` can be used to separate the day, month and year field of the date,
+* DATE must be in the format dd/mm/yyyy. `'-'`, `'/'` or `'.'` can be used to separate the day, month and year field of the date,
  and they need not be paired up (i.e. 24.03/2017 is acceptable as well). +
 * TIME must be in 24-hr format, with a colon separating the hour and minute values. Example: 08:00, 16:00, 23:59. +
 * REMINDER can be of any value, as long as it is not empty.
@@ -92,22 +91,30 @@ Examples:
 image::ReminderPast.png[width=500]
 _Figure 2: Reminder for a dinner with family on 10/10/2017 at 18:00._
 
+The reminder cells are colored differently according to the urgency of the event:
+
 ****
-* The reminder cells are colored differently according to the urgency of the event. +
 * If the event has passed, the reminder cell is colored in dark grey (Refer to Figure 2). +
-* If the event is going to happen today, the reminder cell is colored in red (Refer to Figure 3). +
-* If the event is going to happen within three days, the reminder cell is colored in yellow (Refer Figure 4). +
-* If the event is going to happen more than three days away, the reminder cell is colored in green (Refer to Figure 5).
+* If the event is happening today, the reminder cell is colored in red (Refer to Figure 3). +
+* If the event is happening within three days, the reminder cell is colored in yellow (Refer Figure 4). +
+* If the event is happening more than three days later, the reminder cell is colored in green (Refer to Figure 5).
 ****
 
 image::ReminderToday.png[width=500]
-_Figure 3: Event happening today._
+_Figure 3: A reminder of an event happening today._
 
 image::ReminderThreeDays.png[width=500]
-_Figure 4: Event happening within three days._
+_Figure 4: A reminder of an event happening within three days._
 
 image::ReminderNormal.png[width=500]
-_Figure 5: Event not happening anytime soon._
+_Figure 5: A reminder of an event happening more than three days later._
+
+[NOTE]
+====
+* The countdown to the event, as well as the color of the reminder cells, *are not dynamic*. A new count and update
+only takes place when the program is started up, and when an edit is made to a reminder.
+* The `undo` and `redo` commands do not work for commands that affect the reminders.
+====
 // end::addReminder[]
 
 === Viewing details of a contact: `details`
@@ -194,7 +201,7 @@ Format: `editreminder INDEX [rd/REMINDER] [d/DATE] [ti/TIME]`
 ****
 * Edits the reminder at the specified `INDEX`. The index refers to the index number shown in the list of reminders. The index *must be a positive integer* 1, 2, 3...
 * At least one of the optional fields must be provided.
-* Existing values will be updated to the input values. If the field is left empty, the original value will be used instead.
+* Existing values will be updated to the given input values. If the field is left empty, the original value will be used instead.
 ****
 
 Examples:
@@ -405,7 +412,7 @@ Deletes the 1st person in the results of the `find` command.
 // tag::deleteReminder[]
 === Deleting a reminder: `deletereminder`[V1.4]
 
-Deletes the specified reminder from iContacts. +
+Deletes a specified reminder from iContacts. +
 Format: `deletereminder INDEX`
 
 ****
@@ -557,14 +564,14 @@ Saves the last displayed list to the default location as `newList.xml`.
 // tag::toggle[]
 === Toggling between reminders panel and browser: `toggle` [V1.2]
 
-Toggle between the reminders panel (Refer to Figure 12) and the browser (Refer to Figure 13) as needed. +
+Toggle between the reminders panel (Refer to Figure 12 below) and the browser (Refer to Figure 13 below) as needed. +
 The reminders panel would display reminders for upcoming birthdays amongst the contacts in the current month and
 also reminders that users can set for themselves. The birthday reminders and reminders are
 displayed chronologically. +
 Format: `toggle`
 
 ****
-* Application would display the reminders panel at start up.
+* iContacts would display the reminders panel at start up.
 * Executing the `select` command would always bring the browser to the front.
 * Toggling to the browser without first executing a `select` command would display a default background (Refer to Figure 14).
 * Executing this `toggle` command when the application is showing the details of a contact would always bring the reminders panel to the front, and then
@@ -579,7 +586,7 @@ image::BrowserPanel.png[width="790"]
 _Figure 13 : The browser panel._
 
 image::DefaultBackground.png[width="790"]
-_Figure 14 : The default panel._
+_Figure 14 : The default background._
 // end::toggle[]
 
 == FAQ

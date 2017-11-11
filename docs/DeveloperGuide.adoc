@@ -846,7 +846,7 @@ Using the `FontAwesomeFx` library, an icon is set for each label as seen in the 
 
 // tag::toggle[]
 === Toggling mechanism
-The toggling mechanism is an event-driven mechanism.
+The toggling mechanism is an `event-driven` mechanism.
 
 image::togglingMechanism1.png[width="790]
 _Figure 25 : Component interactions for the toggling mechanism._
@@ -856,8 +856,8 @@ The above diagram (Refer to Figure 25) shows the high-level overview of the comp
 image::togglingMechanism2.png[width="790"]
 _Figure 26 : Sequence diagram for the first part of the toggling mechanism._
 
-As seen from the sequence diagram above (Refer to Figure 26), when the user type the command for `toggle`, an instance of `ToggleCommand` would be created. +
-Upon execution by `LogicManager`, the event `BrowserAndRemindersPanelToggleEvent` would be posted by the `EventCenter`, to the `EventBus`.
+As seen from the sequence diagram above (Refer to Figure 26), when the user types the command for `toggle`, an instance of `ToggleCommand` would be created. +
+Upon execution by `LogicManager`, the event `BrowserAndRemindersPanelToggleEvent` would be posted by the `EventCenter` to the `EventBus`:
 
 [source, java]
 ----
@@ -872,7 +872,7 @@ public class ToggleCommand extends Command {
 
 
 As seen from the diagram below (Refer to Figure 27), the method `handleBrowserToggleEvent()` in the `BrowserAndRemindersPanel` class in the `UI` component will then listen for the event,
-and upon receiving the event, it will invoke the method `toggleBrowserPanel` to trigger the actual toggling.
+and upon receiving the event it will invoke the method `toggleBrowserPanel` to trigger the actual toggling.
 
 image::togglingMechanism3.png[width="790"]
 _Figure 27 : Sequence diagram for the second part of the toggling mechanism._
@@ -910,7 +910,7 @@ public class BrowserAndRemindersPanel extends UIPart<Region> {
 }
 ----
 
-One important thing to note that when the `select` command is executed, the browser panel would be brought forward no matter what:
+One important thing to note is that when the `select` command is executed, the browser panel would be brought forward no matter what:
 
 [source, java]
 ----
@@ -940,9 +940,9 @@ method, the statement `browser.toFront()` and the method `setUpToShowWebBrowser`
 **Alternative 1 (current choice):** Allow users to toggle between the browser and reminders panel. +
 Pros: Can use the entire space for either the browser or reminders panel. +
 Cons: Users need to manually switch between the browser and reminders panel. +
-**Alternative 2:** Put reminders and browser side-by-side. +
+**Alternative 2:** Put reminders and browser panels side-by-side. +
 Pros: Users do not need to manually switch between the browser and reminders panel. +
-Cons: Too little space for browser and reminders. Difficult to read.
+Cons: Too little space for browser and reminders, making it difficult to read for the users.
 
 **Aspect:** Implementation of toggling mechanism. +
 **Alternative 1 (current choice):** Bring browser and reminders panel to the front as required, on top of setting their visibility suitably. +
@@ -959,10 +959,10 @@ image::ReminderUML1.png[width="390"]
 _Figure 28: UML diagram showing the make-up of Reminder objects._
 
 The `Reminder` object represents a reminder in iContacts. It contains a `String` variable `reminder`, which represents
-the actual reminder from the user, and also a `Date`, `Time` and `Status` object which represents the date, time and link:#status[status] of the reminder respectively
+the actual reminder from the user, and also a `Date`, `Time` and `Status` object, which represents the date, time and link:#status[status] of the reminder respectively
 (Refer to Figure 28). As part of _defensive programming_, `Reminder` implements the `ReadOnlyReminder` interface, which only allows _read_ operations, thus
 helping to prevent inappropriate or unintended modifications to `Reminder` objects (Refer to Figure 28) during the execution of the program.
-For example, for `DeleteReminderCommand`, its `execute` method should only execute the deletion of a specified reminder, not to alter any other reminders.
+For example, for `DeleteReminderCommand`, its `execute` method should only execute the deletion of a specified reminder, not to alter any reminders.
 To ensure that no unintended or inappropriate alteration happens, `DeleteReminderCommand` is passed a list of `ReadOnlyReminder` instead of `Reminder`. This can
 be seen from the code snippet below:
 
@@ -1059,12 +1059,12 @@ To save, the `saveReminders` method in `StorageManager` is invoked:
 [source, java]
 ----
 
-@Override
+    @Override
     public void saveReminders(ReadOnlyUniqueReminderList reminderList) throws IOException {
         saveReminders(reminderList, remindersStorage.getRemindersFilePath());
     }
 
-@Override
+    @Override
     public void saveReminders(ReadOnlyUniqueReminderList reminderList, String filePath) throws IOException {
         logger.fine("Attempting to write to data file: " + filePath);
         remindersStorage.saveReminders(reminderList, filePath);
@@ -1075,6 +1075,47 @@ To save, the `saveReminders` method in `StorageManager` is invoked:
 This will then invoke the `saveReminders` method in `XmlRemindersStorage`, and go on to invoke the `saveRemindersToFile` method in `XmlFileStorage`,
 and finally the `saveDataToFile` method in `XmlUtil`.
 
+The color of the reminder cells are decided and set during the formation of `ReminderListViewCell`. This can be seen from the
+code snippet below: +
+
+[source, java]
+----
+
+public class BirthdayAndReminderListPanel extends UiPart<Region> {
+
+    class ReminderListViewCell extends ListCell<ReminderCard> {
+
+        @Override
+        protected void updateItem(ReminderCard reminder, boolean empty) {
+            super.updateItem(reminder, empty);
+
+            if (empty || reminder == null) {
+                setGraphic(null);
+                setText(null);
+                return;
+            }
+            this.getStylesheets().clear();
+            if (reminder.isEventToday()) {
+                this.getStylesheets().add(REMINDER_TODAY_STYLE_SHEET);
+            } else if (reminder.isEventWithinThreeDays()) {
+                this.getStylesheets().add(REMINDER_THREE_DAYS_STYLE_SHEET);
+            } else if (!reminder.hasEventPassed()) {
+                this.getStylesheets().add(REMINDER_NORMAL_STYLE_SHEET);
+            }
+
+            setGraphic(reminder.getRoot());
+        }
+    }
+
+}
+
+----
+
+Depending on the status of the reminder, different styles would be set for the specific `ReminderListViewCell`.
+
+The methods `isEventToday`, `isEventWithinThreeDays` and `hasEventPassed` seen from the code snippet above originate from
+the `Status` object of each `Reminder` object, and propagated from `Status` to `Reminder` then finally to `ReminderCard`.
+
 [discrete]
 ==== Design Consideration
 **Aspect:** How to store Reminders in-memory +
@@ -1084,6 +1125,16 @@ Cons: More changes have to be made to the existing code base, making it tougher 
 **Alternative 2:** Store Reminder objects within AddressBook. +
 Pros: Easier to implement as lesser changes have to be made to the existing program. +
 Cons: Violates the _Single-Responsibility Principle_.
+
+**Aspect:** Should the undo/redo mechanism be applied to Reminder +
+**Alternative 1 (current choice):** Commands that affect Reminder objects are not undoable/redoable. +
+Pros: Users would be more aware of any changes they made to a reminder, as they are forced to
+use the `editreminder`, `addreminder` and `deletereminder` commands.
+Cons: It is less user-friendly. +
+**Alternative 2:** Commands that affect Reminder objects are undoable/redoable. +
+Pros: More user-friendly. +
+Cons: Users might get careless with changing the information of a Reminder object. This might be detrimental
+as the date and time fields of a Reminder are very important.
 //end::reminder[]
 
 

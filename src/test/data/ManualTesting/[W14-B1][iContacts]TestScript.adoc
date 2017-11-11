@@ -204,7 +204,7 @@ Expected result: Unknown theme +
                  Parameter: THEME +
                  List of available themes: day, night +
                  Example: theme day
-                 
+
 * `theme` +
 Expected result: Invalid command format! +
                  theme: Changes the theme of the address book +

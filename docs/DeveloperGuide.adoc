@@ -197,7 +197,7 @@ image::DeletePersonSdForLogic.png[width="800"]
 _Figure 8 : Interactions inside the Logic component for the `delete 1` command_
 
 ==== Model component
-The `Model` component handles the contacts in iContacts and all its stored details in data structures which provide API to create, read, update and delete the contacts. The figure below (Refer to Figure 9) shows the structure of the `Model` component.
+The `Model` component handles the contacts in the address book and all its stored details in data structures which provide API to create, read, update and delete the contacts. The figure below (Refer to Figure 9) shows the structure of the `Model` component.
 
 
 image::ModelClassDiagram.png[width="800"]

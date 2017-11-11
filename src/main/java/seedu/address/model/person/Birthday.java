@@ -109,7 +109,7 @@ public class Birthday {
     }
 
     /**
-     * Get the month of the birthday in this Birthday object.
+     * Returns the month of the birthday in this Birthday object.
      * If the birthday field is empty, return EMPTY_BIRTHDAY_FIELD_MONTH
      */
     public int getMonthOfBirthday() {
@@ -126,7 +126,7 @@ public class Birthday {
     }
 
     /**
-     * Get the day of the birthday in this Birthday object.
+     * Returns the day of the birthday in this Birthday object.
      * If the birthday field is empty, return EMPTY_BIRTHDAY_FIELD_DAY
      */
     public int getDayOfBirthday() {

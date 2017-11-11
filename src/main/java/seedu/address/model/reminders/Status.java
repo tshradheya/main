@@ -17,7 +17,10 @@ public class Status {
     private static final String STATUS_TODAY_MESSAGE = "Event happening today!";
     private static final String STATUS_OVERDUE = "Event has passed.";
 
+    private static final int THREE_DAYS = 3;
     private static final int ONE_DAY = 1;
+    private static final int ZERO_DAY = 0;
+    private static final int ZERO = 0;
 
     private final LocalDate currentDate;
     private final LocalTime currentTime;
@@ -67,12 +70,10 @@ public class Status {
     public boolean hasEventPassed() {
         final long daysUntilEvent = getDaysUntilEvent();
         final long minutesUntilEvent = getMinutesUntilEvent();
-        if (daysUntilEvent > 0) {
+        if (daysUntilEvent > ZERO_DAY) {
             return false;
-        } else if (daysUntilEvent == 0) {
-            if (minutesUntilEvent >= 0) {
-                return false;
-            }
+        } else if (daysUntilEvent == ZERO_DAY && minutesUntilEvent == ZERO) {
+            return false;
         }
         return true;
     }
@@ -94,7 +95,7 @@ public class Status {
     public boolean isEventWithinThreeDays() {
         final long daysUntilEvent = getDaysUntilEvent();
         final long minutesUntilEvent = getMinutesUntilEvent();
-        if (daysUntilEvent < 0 || daysUntilEvent > 3) {
+        if (daysUntilEvent < ZERO_DAY || daysUntilEvent > THREE_DAYS) {
             return false;
         }
         if (daysUntilEvent == 0 && minutesUntilEvent < 0) {
@@ -116,9 +117,9 @@ public class Status {
             final long daysUntilEvent = getDaysUntilEvent();
             if (daysUntilEvent == ONE_DAY) {
                 return String.format(STATUS_FORMAT_SINGLE_MESSAGE, ONE_DAY);
-            } else {
-                return String.format(STATUS_FORMAT_MESSAGE, getDaysUntilEvent());
             }
+
+            return String.format(STATUS_FORMAT_MESSAGE, getDaysUntilEvent());
         }
     }
 

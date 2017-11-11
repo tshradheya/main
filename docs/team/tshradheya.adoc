@@ -191,7 +191,7 @@ To be filled in according to CS2101
 
 ---
 
-The location command through an event-driven mechanism. The below diagram shows sequence diagram for it.
+The location command is an event-driven mechanism. The below diagram shows sequence diagram for it.
 
 image::locationSD.PNG[width="790"]
 _Figure 21 : Sequence diagram for the Location Command._

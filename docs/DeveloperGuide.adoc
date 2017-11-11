@@ -567,50 +567,77 @@ _Figure 18 : Activity diagram for UndoRedoStack_
 **Cons:** Requires dealing with commands that have already been undone: We must remember to skip these commands. Violates Single Responsibility Principle and Separation of Concerns as `HistoryManager` now needs to do two different things. +
 // end::undoredo[]
 
+
 === Display Picture mechanism
 
-The Display Picture mechanism is done by using ImageView in JavaFX which is a part of the UI Component. It is an undoable command that modifies the display picture for the specified contact. The command will inherit from `UndoableCommand`.
+The Display Picture mechanism is done by using ImageView in JavaFX which is a part of the UI Component.
 
 The `displaypic` command adds/updates the display picture for the contact specified. The image is then displayed as ImageView in PersonCard.
 The arguments of the command are `INDEX` and `PATHOFIMAGE`. The image needs to be present in the local device of the user.
 
 This command works by retrieving the image using `BufferedImage`. The command extracts the image from the specified absolute path of image e.g. `C:\Users\Admin\Desktop\My files\pic.jpg`.
-It then stores the image in the working directory's `\src\main\resources\images\` folder by giving it a unique hashcode based on user's email address.
+
+By executing the given code below, a new folder named 'pictures/' is created if it is missing. The folder is used to store the images
+
+[source,java]
+----
+
+public void createPictureStorageFolder() throws IOException {
+        requireNonNull(filePath);
+
+        logger.info("Picture folder "  + filePath + " created if missing");
+        File file  = new File(filePath);
+        FileUtil.createIfMissing(file);
+    }
+
+----
+
+It then stores the image in the folder called `/pictures/` present in the same directory as `.jar`  by giving it a unique hashcode based on user's email address.
 The reading and writing of images is done using the `ImageIO` class.
 
-The sequence diagram for adding a display picture is shown below (Refer to Figure 19): +
+The following UML diagram shows the Storage Architecture for reading and writing of image file:
+
+image::UMLStorageDisplaypic.PNG[width="300"]
+_Figure 2 : UML Diagram for the extended Storage Diagram._
+
+
+The sequence diagram for adding a display picture is shown below: +
 
 image::SDforDisplayPicture.PNG[width="800"]
-_Figure 19 : Sequence Diagram for Display Picture Command._
-
-The wireframe used to display the image for each person is shown below (Refer to Figure 20):
-
-image::WireFramePersonCard.PNG[width="500"]
-_Figure 20 : Wireframe for the UI._
+_Figure 3 : Sequence Diagram for Display Picture Command._
 
 
 The binder for refreshing the image every time the picture is updated is implemented by the following function:
+
 
 [source,java]
 ----
 public class PersonCard extends UiPart<Region> {
     private void assignImage(ReadOnlyPerson person) {
-        // ... assigning image logic ...
-        displayPicture.setImage(image);
+
+        Image image = new Image("file:" + "pictures/" + person.getDisplayPicture().getPath() + ".png",
+                            IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
+
+        displayPicture.setFill(new ImagePattern(image));
     }
 }
 ----
+
+The `Circle` shape is used for better UI/UX design and is filled with the `ImagePatten`. The wireframe used to display the image for each person is shown below:
+
+image::WireFramePersonCard.PNG[width="300"]
+_Figure 4 : Wireframe for the UI._
+
 
 The new image stored in directory is given a unique name which is formed using hashcode of the unique email address of each contact:
 
 [source,java]
 ----
-public class DisplayPictureCommand extends UndoableCommand {
+public class DisplayPictureCommand extends Command {
 
     @Override
-    public CommandResult executeUndoableCommand() throws CommandException, IOException, URISyntaxException {
-        /... executes function of ReadAndStoreImage ...
-        ReadAndStoreImage readAndStoreImage = new ReadAndStoreImage();
+    public CommandResult execute() throws CommandException, IOException {
+        /... executes function of Reading and Writing Image ...
 
         displayPicture.setPath(readAndStoreImage.execute(displayPicture.getPath(),
                             personToEdit.getEmail().hashCode())); // image name formed in this line
@@ -618,24 +645,15 @@ public class DisplayPictureCommand extends UndoableCommand {
 }
 ----
 
-==== Reasons for this type of implementation
-The command is implemented in this manner because of the following reasons:
-
-* By specifying the index, there is no ambiguity as to who should be assigned the display picture.
-* The `PATHOFIMAGE` must be an absolute path on the local device to make sure the image is referenced.
-* The image is stored in directory with a unique name to avoid conflict. Hashcode of user's email address is used to maintain uniqueness.
-* The task is done using CLI to follow project requirements.
-* The image is stored in jpg format to ensure maximum compatibility.
-
 ==== Design Considerations
 
 **Aspect:** At what stage should the image be read and stored +
-**Alternative 1 (current choice):** Invoke 'ReadAndStoreImage' from Logic component.  +
-**Pros:** We will be able to get the contact's address for unique hash code.  +
-**Cons:** Difficult for new developers to understand the sequence diagram and flow. +
-**Alternative 2:** Invoke 'ReadAndStoreImage' from Model component. +
+**Alternative 1 (current choice):** Make proper Storage Architecture for reading and writing of Image   +
+**Pros:** Follows existing Architectural Design and Software Engineering Principles like OCP  +
+**Cons:** Takes time and tougher to implement +
+**Alternative 2:** Invoke 'ReadAndStoreImage' from Logic component. +
 **Pros:** Easier for new developers to understand the sequence diagram and maintains event-driven nature. +
-**Cons:** There might be clashes in naming of two different images for large database of contacts.
+**Cons:** Bad Architectural design and doesn't follow the pre existing pattern also defies Law of Demeter
 
 ---
 
@@ -647,8 +665,9 @@ The command is implemented in this manner because of the following reasons:
 **Pros:** Easier for users to mention the correct image quickly. +
 **Cons:** Will no longer be a CLI process completely.
 
+---
 === Location mechanism
-The location command through an event-driven mechanism. The below diagram (Refer to Figure 21) shows sequence diagram for it.
+The location command is implemented in an event-driven mechanism form. The below diagram (Refer to Figure 21) shows sequence diagram for it.
 
 image::locationSD.PNG[width="790"]
 _Figure 21 : Sequence diagram for the Location Command._

@@ -20,7 +20,7 @@ iContacts is an address book application with target audience as university stud
 
 == Setting up
 
-This section will guide you on setting up the development environment.
+This section will guide you on how to set up the development environment for coding.
 
 === Prerequisites
 
@@ -90,7 +90,7 @@ Having both Travis and AppVeyor ensures your App works on both Unix-based platfo
 
 ==== Getting started with coding
 
-When you are ready to start coding, get some sense of the overall design by reading the link:#architecture[Architecture] section.
+When you are ready to start coding, get some sense of the overall design by reading the link:#architecture[Architecture] section below:
 
 == Design
 
@@ -113,7 +113,7 @@ Below is a quick overview of each component:
 ** At app launch: Initializes the components in the correct sequence, and connects them up with each other.
 ** At shut down: Shuts down the components and invokes cleanup method where necessary.
 
-* link:#common-classes[*`Commons`*] represents a collection of classes used by multiple other components. Two of those classes play important roles at the architecture level.
+* link:#common-classes[*`Commons`*] represents a collection of classes used by multiple other components. Two of those classes play important roles at the architecture level:
 
 ** `EventsCenter` : This class (written using https://github.com/google/guava/wiki/EventBusExplained[Google's Event Bus library]) is used by components to communicate with other components using events (i.e. a form of _Event Driven_ design)
 ** `LogsCenter` : This class is used by many classes to write log messages to iContacts' log file.
@@ -141,7 +141,7 @@ _Figure 2 : Class Diagram of the Logic component_
 The _Sequence Diagram_ below (Refer to Figure 3) shows how the components interact for the scenario where the user issues the command `delete 1`.
 
 image::SDforDeletePerson.png[width="800"]
-_Figure 3 : Component interactions for `delete 1` command (part 1)_
+_Figure 3 : Component interactions for `delete 1` command (Part 1)_
 
 [NOTE]
 Note how the `Model` simply raises a `AddressBookChangedEvent` when the Address Book data are changed, instead of asking the `Storage` to save the updates to the hard disk.
@@ -149,7 +149,7 @@ Note how the `Model` simply raises a `AddressBookChangedEvent` when the Address 
 The diagram below (Refer to Figure 4) shows how the `EventsCenter` reacts to that event, which eventually results in the updates being saved to the hard disk and the status bar of the UI being updated to reflect the 'Last Updated' time.
 
 image::SDforDeletePersonEventHandling.png[width="800"]
-_Figure 4 : Component interactions for `delete 1` command (part 2)_
+_Figure 4 : Component interactions for `delete 1` command (Part 2)_
 
 [NOTE]
 Note how the event is propagated through the `EventsCenter` to the `Storage` and `UI` without the `Model` having to be coupled to either of them. This is an example of how this Event-Driven approach helps us reduce direct coupling between components.
@@ -174,7 +174,7 @@ The `UI` component uses JavaFx UI framework. The layout of these `UI` parts is d
 The `UI` component
 
 * executes user commands using the `Logic` component.
-* binds itself to some data in the `Model` so that the `UI` can auto-update when data in the `Model` change.
+* binds itself to some data in the `Model` so that the `UI` can auto-update when data in the `Model` changes.
 * responds to events raised from various parts of iContacts and updates the `Ui` accordingly.
 
 ==== Logic component
@@ -189,7 +189,7 @@ _Figure 7 : Structure of Commands in the Logic component. This diagram shows fin
 *API* :
 link:{repoURL}/src/main/java/seedu/address/logic/Logic.java[`Logic.java`]
 
-The `Logic` uses the `AddressBookParser` class to parse the user command. This results in a `Command` object which is executed by the `LogicManager`. The command execution can affect the `Model` (e.g. adding a person) and/or raise events. The result of the command execution is encapsulated as a `CommandResult` object which is passed back to the `UI`.
+The `Logic` component uses the `AddressBookParser` class to parse the user command. This results in a `Command` object which is executed by the `LogicManager`. The command execution can affect the `Model` (e.g. adding a person) and/or raise events. The result of the command execution is encapsulated as a `CommandResult` object which is passed back to the `UI`.
 
 The figure below (Refer to Figure 8) shows the sequence diagram of interactions within the `Logic` component for the `execute("delete 1")` API call.
 
@@ -197,7 +197,7 @@ image::DeletePersonSdForLogic.png[width="800"]
 _Figure 8 : Interactions inside the Logic component for the `delete 1` command_
 
 ==== Model component
-The `Model` Component handles the contacts in address book and all its stored details in data structures which provides API to create, read, update and delete the contacts in the address book. The figure below (Refer to Figure 9) shows the structure of the `Model` component.
+The `Model` Component handles the contacts in address book and all its stored details in data structures which provides with the API to create, read, update and delete the contacts in the address book. The figure below (Refer to Figure 9) shows the structure of the `Model` component.
 
 
 image::ModelClassDiagram.png[width="800"]
@@ -434,14 +434,14 @@ For the `FindCommand` to work properly `nameKeywords` must be non-empty. The cod
 // tag::undoredo[]
 === Undo/Redo mechanism
 
-The undo/redo mechanism is facilitated by an `UndoRedoStack`, which resides inside `LogicManager`. It supports undoing and redoing of commands that modifies the state of the address book (e.g. `add`, `edit`). Such commands will inherit from `UndoableCommand`.
+The undo/redo mechanism is facilitated by an `UndoRedoStack`, which resides inside `LogicManager`. It supports undoing and redoing of commands that modify the state of the address book (e.g. `add`, `edit`). Such commands will inherit from `UndoableCommand`.
 
 `UndoRedoStack` only deals with `UndoableCommands`. Commands that cannot be undone will inherit from `Command` instead. The following diagram (Refer to Figure 11) shows the inheritance diagram for commands:
 
 image::LogicCommandClassDiagram.png[width="800"]
 _Figure 11 : Inheritance diagram for commands_
 
-As you can see from the diagram, `UndoableCommand` adds an extra layer between the abstract `Command` class and concrete commands that can be undone, such as the `DeleteCommand`. Note that extra tasks need to be done when executing a command in an _undoable_ way, such as saving the state of the address book before execution. `UndoableCommand` contains the high-level algorithm for those extra tasks while the child classes implements the details of how to execute the specific command. Note that this technique of putting the high-level algorithm in the parent class and lower-level steps of the algorithm in child classes is also known as the https://www.tutorialspoint.com/design_pattern/template_pattern.htm[template pattern].
+As you can see from the diagram, `UndoableCommand` adds an extra layer between the abstract `Command` class and concrete commands that can be undone, such as the `DeleteCommand`. Note that extra tasks need to be done when executing a command in an _undoable_ way, such as saving the state of the address book before execution. `UndoableCommand` contains the high-level algorithm for those extra tasks while the child classes implement the details of how to execute the specific command. Note that this technique of putting the high-level algorithm in the parent class and lower-level steps of the algorithm in child classes is also known as the https://www.tutorialspoint.com/design_pattern/template_pattern.htm[template pattern].
 
 Commands that are not undoable are implemented this way:
 [source,java]
@@ -530,20 +530,20 @@ _Figure 18 : Activity diagram for UndoRedoStack_
 **Aspect:** Implementation of `UndoableCommand` +
 **Alternative 1 (current choice):** Add a new abstract method `executeUndoableCommand()`. +
 **Pros:** We will not lose any undone/redone functionality as it is now part of the default behaviour. Classes that deal with `Command` do not have to know that `executeUndoableCommand()` exist. +
-**Cons:** Hard for new developers to understand the template pattern. +
+**Cons:** Will be hard for new developers to understand the template pattern. +
 **Alternative 2:** Just override `execute()`. +
-**Pros:** Does not involve the template pattern, easier for new developers to understand. +
+**Pros:** It will not involve the template pattern, easier for new developers to understand. +
 **Cons:** Classes that inherit from `UndoableCommand` must remember to call `super.execute()`, or lose the ability to undo/redo.
 
 ---
 
 **Aspect:** How undo & redo executes +
-**Alternative 1 (current choice):** Saves the entire address book. +
-**Pros:** Easy to implement. +
+**Alternative 1 (current choice):** Save the entire address book. +
+**Pros:** Will be easy to implement. +
 **Cons:** May have performance issues in terms of memory usage. +
 **Alternative 2:** Individual command knows how to undo/redo by itself. +
 **Pros:** Will use less memory (e.g. for `delete`, just save the person being deleted). +
-**Cons:** We must ensure that the implementation of each individual command are correct.
+**Cons:** Care should be taken to ensure that the implementation of each individual command are correct.
 
 ---
 
@@ -560,11 +560,11 @@ _Figure 18 : Activity diagram for UndoRedoStack_
 
 **Aspect:** Data structure to support the undo/redo commands +
 **Alternative 1 (current choice):** Use separate stack for undo and redo +
-**Pros:** Easy to understand for new Computer Science student undergraduates to understand, who are likely to be the new incoming developers of our project. +
+**Pros:** Will make it easy to understand for new Computer Science student undergraduates, who are likely to be the new incoming developers of our project. +
 **Cons:** Logic is duplicated twice. For example, when a new command is executed, we must remember to update both `HistoryManager` and `UndoRedoStack`. +
 **Alternative 2:** Use `HistoryManager` for undo/redo +
-**Pros:** We do not need to maintain a separate stack, and just reuse what is already in the codebase. +
-**Cons:** Requires dealing with commands that have already been undone: We must remember to skip these commands. Violates Single Responsibility Principle and Separation of Concerns as `HistoryManager` now needs to do two different things. +
+**Pros:** Won't require the need to maintain a separate stack, and just reuse what is already in the codebase. +
+**Cons:** It will require dealing with commands that have already been undone: We must remember to skip these commands. Violates Single Responsibility Principle and Separation of Concerns as `HistoryManager` now needs to do two different things. +
 // end::undoredo[]
 
 
@@ -592,7 +592,7 @@ public void createPictureStorageFolder() throws IOException {
 
 ----
 
-It then stores the image in the folder called `/pictures/` present in the same directory as `.jar`  by giving it a unique hashcode based on user's email address.
+It then stores the image in the folder called `/pictures/` present in the same directory as `.jar`  by giving it a unique hashcode based on the user's email address.
 The reading and writing of images is done using the `ImageIO` class.
 
 The following UML diagram shows the Storage Architecture for reading and writing of image file:
@@ -645,6 +645,16 @@ public class DisplayPictureCommand extends Command {
 }
 ----
 
+==== Reason for this type of implementation
+
+The command is implemented in this manner because of the following:
+
+* By specifying the index, there is no ambiguity as to who should be assigned the display picture.
+* The `PATHOFIMAGE` must be an absolute path on the local device to make sure the image is referenced.
+* The image is stored in directory with a unique name to avoid conflict. Hashcode of user's email address is used to maintain uniqueness.
+* The task is done using CLI to follow project requirements.
+* The image is stored in jpg format to ensure maximum compatibility.
+
 ==== Design Considerations
 
 **Aspect:** At what stage should the image be read and stored +
@@ -677,7 +687,7 @@ The execution of command raises an event `ShowLocationEvent`. This causes the `B
 image::locationAD.PNG[width="790"]
 _Figure 22 : Sequence diagram for the Location Command._
 
-Following is the code written to ensure the GUI set up for the command.
+Following is the code written to ensure the GUI set up for the command:
 
 [source, java]
 ----
@@ -690,7 +700,7 @@ private void setUpToShowLocation() {
 }
 ----
 
-The URL for denoting the specified person's address in Google Maps is set up through the following code
+The URL for denoting the specified person's address in Google Maps is set up through the following code:
 
 [source, java]
 ----
@@ -1239,7 +1249,7 @@ _Figure 34 : Saving documentation as PDF files in Chrome_
 
 === Running Tests
 
-There are three ways to run tests.
+There are three ways to run tests:
 
 [TIP]
 The most reliable way to run tests is the 3rd one. The first two methods might fail some GUI tests due to platform/resolution-specific idiosyncrasies.
@@ -1567,11 +1577,11 @@ This application is targeted towards University students, aiming to meet their n
 
 *  User Profile
 
-**  University Student
-**  Student part of many CCA clubs and committees
-**  Student taking role of Teaching Assistant/Tutor
-**  Student who is interning and has colleagues
-**  Student having close friends and family
+**  University Students
+**  Students part of many CCA clubs and committees
+**  Students taking role of Teaching Assistant/Tutor
+**  Students who is interning and has colleagues
+**  Students having close friends and family
 
 [appendix]
 == User Stories
@@ -1605,7 +1615,7 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* * *` |user |search for contacts with just the first few characters of their name |find contacts if I'm unable to remember the spelling of the name
 
-|`* * *` |forgetful user |I want to add nicknames for people |so that I can easily search for them
+|`* * *` |forgetful user |add nicknames for people |easily search for them
 
 |`* * *` |new user |see usage instructions |refer to instructions when I forget how to use the App
 
@@ -1623,9 +1633,9 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* *` |regular user |see frequently used contacts instantly |locate them more easily
 
-|`* *` |user |I want to be able to add link:#display-picture[Display Picture] for my contacts |so that I can easily identify them
+|`* *` |user |be able to add link:#display-picture[Display Picture] for my contacts |easily identify them
 
-|`* *` |student who doesn't use his laptop everywhere |view my address book online |so that I can view it without the device running the software
+|`* *` |student who doesn't use his laptop everywhere |view my address book online |view it without the device running the software
 
 |`* *` |member of a team |send email to a group of persons with one command |easily send email to a group of persons
 
@@ -1663,9 +1673,9 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`*` |organized student |auto sort the list whenever I add a person |avoid using the sort command with every single additions
 
-|`*` |busy student with many commitments |I should be able to create meeting reminders with my link:#contacts[contacts] |so that I don't forget whom should I be meeting at what time
+|`*` |busy student with many commitments |be able to create meeting reminders with my link:#contacts[contacts] |prevent myself from forgetting whom should I be meeting at what time
 
-|`*` |user |have a secured address book |only I have access to my address book
+|`*` |user |have a secured address book |have access to my address book
 |=======================================================================
 
 [appendix]

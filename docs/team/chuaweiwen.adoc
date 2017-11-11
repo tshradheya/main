@@ -95,6 +95,11 @@ include::../DeveloperGuide.adoc[tag=theme]
 * Users will be able to perform an even more precise search using more fields as constraints (e.g. nickname, birthday).
 * Users will also able to perform search for keywords that are incomplete (e.g. filtering `Ben` will also match `Benson`).
 
+=== Enhancement Proposed: Enhance the command `theme` to allow customised theme
+
+* Users will be able to customise the theme of their choice.
+* Users will be able to import their own CSS file to update the theme.
+
 === Enhancement Proposed: Add a new command `listtag`
 
 * Users will be able to list all tags that the users have used when adding or editing the contacts.

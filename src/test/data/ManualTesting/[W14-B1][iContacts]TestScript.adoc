@@ -71,35 +71,35 @@ No contacts will be displayed because there are no contacts having the name `fri
 
 * `filter` +
 Expected result: Invalid command format! +
-                 filter: Finds all persons whose names and tags containany of the specified keywords and displays them as a list with index numbers. +
+                 filter: Filters all persons whose names and tags contain all of the specified keywords and displays them as a list with index numbers. +
                  Parameters: [n/NAME] [t/TAG]... +
                  Note: At least one of the parameters must be specified. +
                  Example: filter n/Alex t/friends
 
 * `filter Alex` +
 Expected result: Invalid command format! +
-                 filter: Finds all persons whose names and tags containany of the specified keywords and displays them as a list with index numbers. +
+                 filter: Filters all persons whose names and tags contain all of the specified keywords and displays them as a list with index numbers. +
                  Parameters: [n/NAME] [t/TAG]... +
                  Note: At least one of the parameters must be specified. +
                  Example: filter n/Alex t/friends
 
 * `filter n/` +
 Expected result: Invalid command format! +
-                 filter: Finds all persons whose names and tags containany of the specified keywords and displays them as a list with index numbers. +
+                 filter: Filters all persons whose names and tags contain all of the specified keywords and displays them as a list with index numbers. +
                  Parameters: [n/NAME] [t/TAG]... +
                  Note: At least one of the parameters must be specified. +
                  Example: filter n/Alex t/friends
 
 * `filter t/` +
 Expected result: Invalid command format! +
-                 filter: Finds all persons whose names and tags containany of the specified keywords and displays them as a list with index numbers. +
+                 filter: Filters all persons whose names and tags contain all of the specified keywords and displays them as a list with index numbers. +
                  Parameters: [n/NAME] [t/TAG]... +
                  Note: At least one of the parameters must be specified. +
                  Example: filter n/Alex t/friends
 
 * `filter n/Alex t/` +
 Expected result: Invalid command format! +
-                 filter: Finds all persons whose names and tags containany of the specified keywords and displays them as a list with index numbers. +
+                 filter: Filters all persons whose names and tags contain all of the specified keywords and displays them as a list with index numbers. +
                  Parameters: [n/NAME] [t/TAG]... +
                  Note: At least one of the parameters must be specified. +
                  Example: filter n/Alex t/friends

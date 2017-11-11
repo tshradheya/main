@@ -11,7 +11,7 @@ public class FilterCommand extends Command {
 
     public static final String COMMAND_WORD = "filter";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Filters all persons whose names and tags contain"
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Filters all persons whose names and tags contain "
             + "all of the specified keywords and displays them as a list with index numbers.\n"
             + "Parameters: [n/NAME] [t/TAG]...\n"
             + "Note: At least one of the parameters must be specified.\n"

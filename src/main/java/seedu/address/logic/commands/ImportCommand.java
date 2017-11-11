@@ -55,6 +55,8 @@ public class ImportCommand extends UndoableCommand {
                     personToAdd.setPopularityCounter(new PopularityCounter());
                     personToAdd.setDisplayPicture(new DisplayPicture(""));
                     try {
+                        model.clearSelection();
+                        model.showDefaultPanel();
                         model.addPerson(personToAdd);
                         numSuccess++;
                     } catch (DuplicatePersonException e) {

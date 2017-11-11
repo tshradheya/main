@@ -290,6 +290,11 @@ public class AddCommandTest {
             fail("This method should not be called");
         }
 
+        @Override
+        public void clearSelection() {
+            fail("This method should not be called");
+        }
+
     }
 
     /**

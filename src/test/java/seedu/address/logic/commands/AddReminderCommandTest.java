@@ -287,6 +287,11 @@ public class AddReminderCommandTest {
                 UpdatePopularityCounterForSelectionEvent updatePopularityCounterForSelectionEvent) {
             fail("This method should not be called");
         }
+
+        @Override
+        public void clearSelection() {
+            fail("This method should not be called");
+        }
     }
 
     /**

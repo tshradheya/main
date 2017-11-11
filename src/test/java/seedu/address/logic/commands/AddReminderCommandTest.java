@@ -21,7 +21,6 @@ import javafx.collections.ObservableList;
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.events.model.UpdateListForSelectionEvent;
 import seedu.address.commons.events.model.UpdatePopularityCounterForSelectionEvent;
-import seedu.address.commons.events.ui.ClearSelectionEvent;
 import seedu.address.logic.CommandHistory;
 import seedu.address.logic.UndoRedoStack;
 import seedu.address.logic.commands.exceptions.CommandException;

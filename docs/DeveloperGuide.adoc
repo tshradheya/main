@@ -1076,6 +1076,8 @@ To save, the `saveReminders` method in `StorageManager` is invoked:
 This will then invoke the `saveReminders` method in `XmlRemindersStorage`, and go on to invoke the `saveRemindersToFile` method in `XmlFileStorage`,
 and finally the `saveDataToFile` method in `XmlUtil`.
 
+
+
 [discrete]
 ==== Design Consideration
 **Aspect:** How to store Reminders in-memory +
@@ -1085,6 +1087,16 @@ Cons: More changes have to be made to the existing code base, making it tougher 
 **Alternative 2:** Store Reminder objects within AddressBook. +
 Pros: Easier to implement as lesser changes have to be made to the existing program. +
 Cons: Violates the _Single-Responsibility Principle_.
+
+**Aspect** Should the undo/redo mechanism be applied to Reminder +
+**Alternative 1 (current choice):** Commands that affect Reminder objects are not undoable/redoable. +
+Pros: Users would be more aware of any changes they made to a reminder, as they are forced to
+use the `editreminder`, `addreminder` and `deletereminder` commands.
+Cons: It is less user-friendly. +
+**Alternative 2:** Commands that affect Reminder objects are undoable/redoable. +
+Pros: More user-friendly. +
+Cons: Users might get careless with changing the information of a Reminder object. This might be detrimental
+as the date and time field of a Reminder are very important.
 //end::reminder[]
 
 

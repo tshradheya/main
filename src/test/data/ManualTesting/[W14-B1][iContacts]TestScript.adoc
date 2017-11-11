@@ -62,7 +62,8 @@ To note: +
 * If the event is happening within three days, the reminder cell is colored in yellow. +
 * If the event is happening more than three days later, the reminder cell is colored in green. +
 * The countdown to the date and time of the event, as well as the coloring of the reminder cell, *is not dynamic*. Both of these
-are relative to the date and time the program is started up.
+are relative to the date and time the program is started up. +
+* The `undo` and `redo` commands do not apply to reminders.
 ****
 
 Cases:

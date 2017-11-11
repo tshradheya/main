@@ -1,5 +1,7 @@
 = iContacts - Test Script
 :sectnums:
+:imagesDir: images
+
 
 == Introduction
 This document explains the steps to perform manual testing, and how to load the sample data.
@@ -14,6 +16,46 @@ The following are the steps to load sample data:
 
 == Commands to Test
 
+
+=== Frequently Visited Contacts
+
+Following are the commands which will increase the `PopularityCounter` by one for the contacts viewed/searched:
+
+*** `viewtag`
+*** `select`
+*** `details`
+*** `location`
+*** `email`
+
+[NOTE]
+Manual selection of person through a click also increases the popularity counter of that person. This is the same action as `details` command.
+
+
+[NOTE]
+To closely notice the changes, please reset the data by deleting the `addressbook.xml` and allowing our application to generate default contacts each with zero popularity( or replacing by sampledata file given). Initially everyone has zero popularity and ones added earlier in addressbook will be ranked higher in Frequently Visited List
+
+Order of Events:
+
+image::initialPC.PNG[width="400"]
+
+. Initially you should see the above list in Popular contact
+
+. `details 10` +
+Index 10's popularity counter increased. +
+Janice come on the #1 position
+
+. `viewtag friends` +
+Everyone with tag `friends` gets counter increased. +
+Akshay comes on #4 position
+
+
+. `list` +
+`select 1` +
+Charlotte's counter increases +
+Charlotte's comes on #4 position before Akshay even though they have the same counter since, Charlotte was added before Akshay in address book
+
+You can try other commands to see the updation of Popular Contact List.
+
 === Filter
 Command usage:
 `filter [n/NAME] [t/TAG]`
@@ -23,4 +65,166 @@ Expected result: 2 person(s) listed!
 
 * `filter t/friends` +
 Expected result: 3 person(s) listed!
+
+
+=== Display Picture
+Command usage:
+`displaypic INDEX PATHOFIMAGE`
+
+Note:  +
+
+* The `PATHOFIMAGE` refers to the path of the image existing in local device.
+* Copy the path of image from your local device. Make sure the image is correct.
+* The picture on local device can be deleted after executing the command.
+
+Cases:
+
+. `displaypic 1 C:\Users\Admin\Desktop\My Files\mypic.jpg` +
+Expected result: Added Display Picture to Person: Alex Yeoh Phone: 87438807 Email: alexyeoh@example.com Address: Blk 30 Geylang Street 29, #06-40 Birthday: 21-10-1995 Nickname: Albert Tags: [friends]
+
+* The person with index 1 will be assigned the image.
+
+. `displaypic 23 C:\Users\Admin\Desktop\My Files\mypic.jpg` +
+Expected result: The person index provided is invalid
+
+. `displaypic 1` +
+Expected result: Removed Display Picture from Person: Alex Yeoh Phone: 87438807 Email: alexyeoh@example.com Address: Blk 30 Geylang Street 29, #06-40 Birthday: 21-10-1995 Nickname: Albert Tags: [friends]
+
+* The person with index 1 will have his display picture removed and it will show the default display picture
+
+
+. `displaypic C:\Users\Admin\Desktop\My Files\mypic.jpg` +
+Expected result: Invalid command format!
+                 displaypic: Adds/Updates the profile picture of a person identified by the index number used in the last person listing. Existing Display picture will be updated by the image referenced in the input path.
+                 Parameters: INDEX (must be a positive integer) dp/[PATH]
+                 Example: displaypic 2 C:\Users\Admin\Desktop\pic.jpg
+
+. `displaypic 3 hucddv/sfsdd.svd` +
+Expected result: This specified path cannot be read. Please check it's validity and try again
+
+image::ImageException.PNG[width="400"]
+
+
+=== Location Command
+Command usage:
+`location INDEX`
+
+Note:  +
+
+* Loads location of person in Browser Panel using GoogleMaps.
+* It does not check for validity of Address and let's google maps handle that case
+
+
+Cases:
+
+. `location 1` +
+Expected result: Location of Bernice Yu: Blk 30 Lorong 3 Serangoon Gardens, #07-18
+
+. `location 22` +
+Expected result: The person index provided is invalid
+
+. `location` +
+Expected result: Invalid command format!
+                 location: Displays  the location of specified person. Parameters: INDEX (must be a positive integer)
+                 Example: location 1
+
+
+
+=== Email Command
+Command usage:
+`email s/SERVICE to/TAG [sub/SUBJECT] [body/BODY]`
+
+Note:  +
+
+* The prefix body/ and sub/ are optional.
+* The TAG can only be one single keyword.
+* The SERVICE can only be `gmail` or `outlook`.
+
+
+Cases:
+
+. `email s/outlook to/friends sub/hey body/bye` +
+Expected result: Email .
+
+. `email s/gmail to/nonexistingtag ` +
+Expected result: Email not sent. Please enter a valid tag and correct service
+
+. `email s/outlook to/friends` +
+Expected result: Email .
+
+. `email s/gmail` +
+Expected result:Invalid command format!
+                email:  people in the Address Book.
+                The 'service' field is compulsory
+                The 'to' field can take tag and it only supports one parameter.
+                Parameters: s/SERVICE to/TAG sub/SUBJECT body/BODY
+                Example: email s/gmail to/cs2103 sub/Meeting body/On Monday
+
+. `email s/outlook to/friends` +
+Expected result: Email .
+
+. `email s/incorrectService to/friends ` +
+Expected result: Email not sent. Please enter a valid tag and correct service
+
+
+=== ViewTag Command
+Command usage:
+`viewtag TAG`
+
+Note:  +
+
+* It only supports one TAG
+* It searches in entire address book rather than current shown list
+
+Cases:
+
+. `viewtag friends` +
+Expected result: 3 persons listed!
+
+. `viewtag nothing` +
+Expected result: 0 persons listed!
+
+. `viewtag` +
+Expected result: Invalid command format!
+                 viewtag: Finds all persons who are associated with the tag in the specified keywords (case-sensitive) and displays them as a list with index numbers.
+                 Parameters: KEYWORD
+                 Example: viewtag cs2103
+
+
+=== Details Command
+Command usage:
+`details INDEX`
+
+Note:  +
+
+* Shows details of the person in Details Panel depending on the INDEX specified in currently shown list.
+
+Cases:
+
+. `details 1` +
+Expected result: Showing Details: 1
+
+. `details 22` +
+Expected result: The person index provided is invalid
+
+. `details` +
+Expected result: Invalid command format!
+                 details: Shows details the person identified by the index number used in the last person listing.
+                 Parameters: INDEX (must be a positive integer)
+                 Example: details 1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

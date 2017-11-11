@@ -130,4 +130,5 @@ public interface Model {
     void handleUpdatePopularityCounterForSelectionEvent(
             UpdatePopularityCounterForSelectionEvent updatePopularityCounterForSelectionEvent);
 
+    void clearSelection();
 }

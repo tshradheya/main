@@ -141,7 +141,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     @Override
     public synchronized void deletePerson(ReadOnlyPerson target) throws PersonNotFoundException {
-        raise(new ClearSelectionEvent());
+        clearSelection();
         addressBook.removePerson(target);
         raise(new SelectFirstAfterDeleteEvent());
         raise(new DisplayPictureDeleteEvent(target.getDisplayPicture().getPath()));
@@ -430,6 +430,11 @@ public class ModelManager extends ComponentManager implements Model {
         return addressBook.equals(other.addressBook)
                 && filteredPersons.equals(other.filteredPersons)
                 && reminderList.equals(other.reminderList);
+    }
+
+    @Override
+    public void clearSelection() {
+        raise(new ClearSelectionEvent());
     }
 
 }

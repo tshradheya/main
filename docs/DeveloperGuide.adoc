@@ -847,7 +847,7 @@ Using the `FontAwesomeFx` library, an icon is set for each label as seen in the 
 
 // tag::toggle[]
 === Toggling mechanism
-The toggling mechanism is an event-driven mechanism.
+The toggling mechanism is an `event-driven` mechanism.
 
 image::togglingMechanism1.png[width="790]
 _Figure 25 : Component interactions for the toggling mechanism._
@@ -857,8 +857,8 @@ The above diagram (Refer to Figure 25) shows the high-level overview of the comp
 image::togglingMechanism2.png[width="790"]
 _Figure 26 : Sequence diagram for the first part of the toggling mechanism._
 
-As seen from the sequence diagram above (Refer to Figure 26), when the user type the command for `toggle`, an instance of `ToggleCommand` would be created. +
-Upon execution by `LogicManager`, the event `BrowserAndRemindersPanelToggleEvent` would be posted by the `EventCenter` to the `EventBus`.
+As seen from the sequence diagram above (Refer to Figure 26), when the user types the command for `toggle`, an instance of `ToggleCommand` would be created. +
+Upon execution by `LogicManager`, the event `BrowserAndRemindersPanelToggleEvent` would be posted by the `EventCenter` to the `EventBus`:
 
 [source, java]
 ----
@@ -873,7 +873,7 @@ public class ToggleCommand extends Command {
 
 
 As seen from the diagram below (Refer to Figure 27), the method `handleBrowserToggleEvent()` in the `BrowserAndRemindersPanel` class in the `UI` component will then listen for the event,
-and upon receiving the event, it will invoke the method `toggleBrowserPanel` to trigger the actual toggling.
+and upon receiving the event it will invoke the method `toggleBrowserPanel` to trigger the actual toggling.
 
 image::togglingMechanism3.png[width="790"]
 _Figure 27 : Sequence diagram for the second part of the toggling mechanism._
@@ -1114,7 +1114,7 @@ public class BirthdayAndReminderListPanel extends UiPart<Region> {
 
 Depending on the status of the reminder, different styles would be set for the specific `ReminderListViewCell`.
 
-The methods `isEventToday`, `isEventWithinThreeDays` and `hasEventPassed` seen from the code snippet above originates from
+The methods `isEventToday`, `isEventWithinThreeDays` and `hasEventPassed` seen from the code snippet above originate from
 the `Status` object of each `Reminder` object, and propagated from `Status` to `Reminder` then finally to `ReminderCard`.
 
 [discrete]
@@ -1127,7 +1127,7 @@ Cons: More changes have to be made to the existing code base, making it tougher 
 Pros: Easier to implement as lesser changes have to be made to the existing program. +
 Cons: Violates the _Single-Responsibility Principle_.
 
-**Aspect** Should the undo/redo mechanism be applied to Reminder +
+**Aspect:** Should the undo/redo mechanism be applied to Reminder +
 **Alternative 1 (current choice):** Commands that affect Reminder objects are not undoable/redoable. +
 Pros: Users would be more aware of any changes they made to a reminder, as they are forced to
 use the `editreminder`, `addreminder` and `deletereminder` commands.

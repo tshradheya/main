@@ -73,7 +73,7 @@ include::../UserGuide.adoc[tag=toggle]
 
 ==== Justification
 
-To make iContacts useful and appealing, it needs to be able to provide more functionality to users, and this also mean that it needs
+To make iContacts useful and appealing, it needs to be able to provide more functionality to users, and this also means that it needs
 to be able to display more information. Without this toggling mechanism, users would have to squint their eyes as all the information
 and the browser would be squeezed together. Hence, to ensure a much more pleasant user experience, this toggling mechanism is required,
 as it allows related information to be displayed together in separate panels without being squeezed. +
@@ -95,11 +95,11 @@ include::../DeveloperGuide.adoc[tag=toggle]
 
 === Enhancement Proposed: Find by similar keywords
 The `find` command in iContacts currently only works for keywords with exact wording (i.e. `find Han` would not work for a contact with name `Hans`),
-although it is still case-insensitive. This might be very inconvenient for users as they might not remember the exact wording. Hence.
+although it is still case-insensitive. This might be very inconvenient for users, as they might not remember the exact wording. Hence,
 the `find` command should be enhanced such that it can work with similar keywords.
 
 === Enhancement Proposed: Dynamic command syntax validation using CommandBox border color
-Currently, iContacts only notify users of an invalid command syntax after users have typed out the whole command and pressed `Enter`.
+Currently, iContacts only notify users of invalid command syntax after users have typed out the whole command and pressed `Enter`.
 As the feedback to the users is very general, users might have a hard time figuring out which part of the command had an erroneous
 syntax. Therefore, this dynamic command syntax validation feature would be able to instantly feedback to users regarding the
 validity of the command they typed, by changing the color of the border of the CommandBox. There will be three colors: +
@@ -110,7 +110,7 @@ validity of the command they typed, by changing the color of the border of the C
 
 === Enhancement Proposed: Integration with online address book and Cloud Storage services
 Currently, iContacts is not integrated with any existing online services such as Google Contacts or Google Cloud Platform. Users still
-have to manually export the source file to share their contacts, and this can only take place if both users uses iContacts. Furthermore,
+have to manually export the source file to share their contacts, and this can only take place if both users use iContacts. Furthermore,
 if the local copies of the source file are all corrupted or deleted, there are no online backup copies. Hence, there is a need
 to integrate iContacts with existing online address book and Cloud Storage services.
 

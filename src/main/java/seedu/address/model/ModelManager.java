@@ -26,7 +26,9 @@ import seedu.address.commons.events.model.PopularContactChangedEvent;
 import seedu.address.commons.events.model.RemindersChangedEvent;
 import seedu.address.commons.events.model.UpdateListForSelectionEvent;
 import seedu.address.commons.events.model.UpdatePopularityCounterForSelectionEvent;
+import seedu.address.commons.events.ui.ClearSelectionEvent;
 import seedu.address.commons.events.ui.LoadPersonWebpageEvent;
+import seedu.address.commons.events.ui.SelectFirstAfterDeleteEvent;
 import seedu.address.commons.events.ui.SendingEmailEvent;
 import seedu.address.commons.events.ui.ShowDefaultPanelEvent;
 import seedu.address.commons.events.ui.ShowLocationEvent;
@@ -87,7 +89,6 @@ public class ModelManager extends ComponentManager implements Model {
                 Comparator.comparingInt(birthday -> birthday.getBirthday().getDayOfBirthday()));
         sortedReminderList = new SortedList<>(reminderList.asObservableList(),
                 Comparator.comparing(reminder -> reminder.getLocalDateTime()));
-
     }
 
     public ModelManager() {
@@ -140,7 +141,9 @@ public class ModelManager extends ComponentManager implements Model {
 
     @Override
     public synchronized void deletePerson(ReadOnlyPerson target) throws PersonNotFoundException {
+        raise(new ClearSelectionEvent());
         addressBook.removePerson(target);
+        raise(new SelectFirstAfterDeleteEvent());
         raise(new DisplayPictureDeleteEvent(target.getDisplayPicture().getPath()));
         indicateAddressBookChanged();
         indicatePopularContactsChangedPossibility();
@@ -376,8 +379,8 @@ public class ModelManager extends ComponentManager implements Model {
 
     @Override
     public Index getIndexOfGivenPerson(ReadOnlyPerson person) {
-        for (int i = 0; i < filteredPersons.size(); i++) {
-            ReadOnlyPerson readOnlyPerson = filteredPersons.get(i);
+        for (int i = 0; i < sortedfilteredPersons.size(); i++) {
+            ReadOnlyPerson readOnlyPerson = sortedfilteredPersons.get(i);
             if (readOnlyPerson.isSameStateAs(person)) {
                 return Index.fromZeroBased(i);
             }
@@ -403,7 +406,7 @@ public class ModelManager extends ComponentManager implements Model {
         } catch (DuplicatePersonException dpe) {
             assert false : "Is not possible as counter will be increased by one";
         } catch (PersonNotFoundException pnfe) {
-            assert false : "Only existing person can be selected";
+            logger.info("Only possible when a person is deleted from a list containing single item");
         }
 
         updatePopularContactList();

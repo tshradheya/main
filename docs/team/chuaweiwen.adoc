@@ -108,7 +108,7 @@ include::../DeveloperGuide.adoc[tag=theme]
 === Enhancement Proposed: Merge the command `nickname` to the command `add` and `edit`
 
 * Users will be able to add, edit or remove the nickname of contact through the `add` and `edit` command.
-* Since the nickname is just another field for the contact, it would make sense to add and edit the nickname using the `add` and `edit` command respectively without the `nickname` command.
+* Since the nickname is just another field for the contact, it would make much more sense to add and edit the nickname using the `add` and `edit` command respectively without the `nickname` command.
 
 === Other contributions
 

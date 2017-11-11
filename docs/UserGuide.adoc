@@ -14,6 +14,17 @@ endif::[]
 
 By: `Team SE-EDU`      Since: `Jun 2016`      Licence: `MIT`
 
+
+== Introduction
+
+iContacts is a Command Line Interface (CLI) application that helps you manage your contacts easily. You can use iContacts to add, edit and delete contacts. It has an easy-to-use search function to find specific contacts quickly. It also provides reminders for upcoming birthdays of contacts within the application, and allows you to create your own reminders for upcoming events.
+It is designed for university students to effectively manage their university life by using one single app through which they can manage reminders, details of contacts, email and maps.
+
+== About
+
+This User Guide aims to help you get started with iContacts. It explains the features of iContacts in detail, and will teach you how to use it effectively and efficiently. You can understand this User Guide without having any technical knowledge.
+
+
 == Quick Start
 
 .  Ensure you have Java version `1.8.0_60` or later installed in your Computer.
@@ -70,7 +81,7 @@ Examples:
 * `add n/Betsy Crowe t/friend e/betsycrowe@example.com a/Newgate Prison p/1234567 b/21/10/1995 t/criminal`
 
 // tag::addReminder[]
-=== Adding a reminder: `addreminder` [V1.3]
+=== Adding a reminder: `addreminder`
 
 Adds a reminder to iContacts. +
 Format: `addreminder rd/REMINDER d/DATE ti/TIME`
@@ -140,12 +151,12 @@ _Figure 6: The full contact information of the person at index 1._
 Shows a list of all persons in the address book. +
 Format: `list`
 
-=== Sorting all persons : `sort` [V1.1]
+=== Sorting all persons : `sort`
 
 Sorts and shows a list of all persons in the address book alphabetically. +
 Format: `sort`
 
-=== Exporting selected contacts : `export` [V1.2]
+=== Exporting selected contacts : `export`
 
 Exports selected contacts in iContacts. +
 Format: `export [r/RANGE] [p/PATH]`
@@ -193,7 +204,7 @@ Edits the name of the 2nd person to be `Betsy Crower` and clears all existing ta
 Clear the birthday of the 3rd person.
 
 // tag::editReminder[]
-=== Editing a reminder: `editreminder` [V1.4]
+=== Editing a reminder: `editreminder`
 
 Edits an existing reminder in iContacts. +
 Format: `editreminder INDEX [rd/REMINDER] [d/DATE] [ti/TIME]`
@@ -212,9 +223,10 @@ Edits the content of the 1st reminder to be `Drink coffee`.
 Edits the date and time of the 3rd reminder to be `25/12/2017` and `19:00` respectively.
 // end::editReminder[]
 
-=== Frequently Viewed Contacts [V1.4]
+=== Frequently Viewed Contacts
 
 Shows the user a list of top five contacts which the user has viewed the most +
+
 
 ****
 * The top five users are decided based on these commands : `select`, `viewtag`, `email`, `location`.
@@ -222,18 +234,25 @@ Shows the user a list of top five contacts which the user has viewed the most +
 * The list keeps automatically updating after each of the four mentioned commands are executed.
 * Any new contacts will have a Popularity Counter of 0 initially.
 * If two people have same popularity then the person who was added earlier is shown before in the Top 5 list
+* The following commands increase the popularity counter of the person viewed/searched:
+** `select`
+** `details`
+** `viewtag`
+** `email`
+** `location`
 ****
 
 Examples:
 
 If the contact `Roy Balakrishnan` is `selected` once, he will be moved to the top of the list as his popularity counter is more than the rest of the contacts.
-This can be seen in the image below.
+This can be seen in the image below:
 
 image::frequentlyVisited.PNG[width="790"]
 _Figure 7: `Roy Balakrishnan` is moved to the top of the list._
 
+
 // tag::nickname[]
-=== Adding a nickname to a person : `nickname` [V1.1]
+=== Adding a nickname to a person : `nickname`
 
 Adds a nickname to an existing person in the address book. +
 Format: `nickname INDEX [NICKNAME]`
@@ -252,10 +271,10 @@ Adds a nickname `Eddie` to the 1st person.
 Removes the nickname from the the 1st person.
 // end::nickname[]
 
-=== Adding Display picture for each person : `displaypic` [V1.2]
+=== Adding Display picture for each person : `displaypic`
 
 Adds a Display Picture to an existing person in the address book. +
-Format: `displaypic INDEX PATHOFIMAGE`
+Format: `displaypic INDEX [PATHOFIMAGE]`
 
 ****
 * The picture at the path address will be added to the person at the specified `INDEX` of current list
@@ -263,6 +282,7 @@ Format: `displaypic INDEX PATHOFIMAGE`
 * Existing picture will be updated to with the new input path
 * Picture can be removed by leaving the PATHOFIMAGE empty
 * The image should be on the local computer and the PATHOFIMAGE must be valid
+* If no image is given then the default picture will be shown
 ****
 
 Examples:
@@ -275,7 +295,7 @@ Removes the existing display picture for the person at `INDEX` 2
 image::displaypic.png[width="790"]
 _Figure 8: Adds a picture to the first person._
 
-=== Displaying location to a contact's address: `location` [V1.3]
+=== Displaying location to a contact's address: `location`
 
 Uses Google Maps to show location of the address of the selected `INDEX` +
 Format: `location INDEX`
@@ -284,6 +304,7 @@ Format: `location INDEX`
 * The location is shown in browser panel using Google Maps
 * The current location is the location of device from where the command is executed
 * The command is only valid for INDEX which have an valid address
+* The application let's Google Maps handle the case when invalid address is specified for a person
 ****
 
 Examples:
@@ -294,15 +315,15 @@ Returns location of the address of person at `INDEX` 2 (Refer to Figure 9)
 image::location.PNG[width="790"]
 _Figure 9: Displays the location of the second person._
 
-=== Emailing to a group of people having a particular tag: `email` [V1.3]
+=== Emailing to a group of people having a particular tag: `email`
 
-Opens up the link to send email to all people of having a particular tag
-Format: email s/SERVICE to/KEYWORD sub/SUBJECT b/BODY
+Opens up the link to send email to all people of having a particular tag. A drafter email with subject, body and recipients is opened in default browser +
+Format: `email s/SERVICE to/KEYWORD [sub/SUBJECT] [b/BODY]`
 
 ****
 * The `KEYWORD` should be a tag which has atleast 1 person associated with it
 * The `SERVICE` supported are only `gmail` and `outlook`
-* The `SUBJECT` and `BODY` prefix are optional and can be not mentioned
+* The `SUBJECT` and `BODY` prefix are optional and can be skipped
 * The email drafting will open up in the default browser of your local device
 * The command will add all people with the `KEYWORD` tag as the recepeints, subject as `SUBJECT` and body as `BODY`
 ****
@@ -336,7 +357,7 @@ Returns `john` and `John Doe`
 Returns any person having names `Betsy`, `Tim`, or `John`
 
 
-=== Finding all people associated with a particular Tag: `viewtag`[V1.1]
+=== Finding all people associated with a particular Tag: `viewtag`
 
 Finds all people who have the tag given in the keyword. +
 Format: `viewtag KEYWORD`
@@ -360,7 +381,7 @@ image::viewtag.PNG[width="790"]
 _Figure 10: Listing all contacts with the tag `friends`._
 
 // tag::filter[]
-=== Finding all people by name and associated with one or more tags: `filter`[V1.2]
+=== Finding all people by name and associated with one or more tags: `filter`
 
 Finds persons whose names and/or tag(s) contain any of the given keywords. +
 Format: `filter [n/NAME] [t/TAG]`
@@ -410,7 +431,7 @@ Deletes the 2nd person in the address book.
 Deletes the 1st person in the results of the `find` command.
 
 // tag::deleteReminder[]
-=== Deleting a reminder: `deletereminder`[V1.4]
+=== Deleting a reminder: `deletereminder`
 
 Deletes a specified reminder from iContacts. +
 Format: `deletereminder INDEX`
@@ -515,7 +536,7 @@ Clears all entries from the address book. +
 Format: `clear`
 
 // tag::theme[]
-=== Changing the theme : `theme` [Since V1.3]
+=== Changing the theme : `theme`
 
 Changes the theme of the address book to a specific theme. +
 Format: `theme THEME`
@@ -544,7 +565,7 @@ Format: `exit`
 Address book data are saved in the hard disk automatically after any command that changes the data. +
 There is no need to save manually.
 
-=== Exporting the list: `export` [V1.2]
+=== Exporting the list: `export`
 
 Exports the last displayed list to a specified location. +
 Format: `export [SAVE LOCATION]NAME`
@@ -562,7 +583,7 @@ Exports the last displayed list to `newData` folder as `newList.xml`.
 Saves the last displayed list to the default location as `newList.xml`.
 
 // tag::toggle[]
-=== Toggling between reminders panel and browser: `toggle` [V1.2]
+=== Toggling between reminders panel and browser: `toggle`
 
 Toggle between the reminders panel (Refer to Figure 12 below) and the browser (Refer to Figure 13 below) as needed. +
 The reminders panel would display reminders for upcoming birthdays amongst the contacts in the current month and
@@ -615,8 +636,10 @@ e.g. `nickname 1 Jamie`
 e.g. `find James Jake`
 * *ViewTag* : `viewtag KEYWORD` +
 e.g. `viewtag enemy`
-* *Display Picture* : `displaypic INDEX PATHOFIMAGE` +
+* *Display Picture* : `displaypic INDEX [PATHOFIMAGE]` +
 e.g. `displaypic 2 C:\Users\Admin\Desktop\Sem 3 Mods\CS2103T\mypic.jpg`
+* *Email Command* : `email s/SERVICE to/TAG [sub/SUBJECT] [body/BODY]` +
+e.g. `email s/gmail to/cs2103 sub/Submission body/Monday Deadline`
 * *Filter* : `filter [n/NAME] [t/TAG]` +
 e.g. `filter n/John t/friends`
 * *List* : `list`
@@ -624,6 +647,10 @@ e.g. `filter n/John t/friends`
 * *Help* : `help`
 * *Select* : `select INDEX` +
 e.g.`select 2`
+* *Details* : `details INDEX` +
+e.g.`details 2`
+* *Location* : `location INDEX` +
+e.g.`location 2`
 * *History* : `history`
 * *Undo* : `undo`
 * *Redo* : `redo`
@@ -655,11 +682,11 @@ Returns all persons with name matching `Dickson` (case-insensitive) *and* tag ma
 * `search t/friend t/NUS t/Computing` +
 Returns all persons having tags `friend`, `NUS`, and `Computing` (all case-insensitive).
 
-=== listThemes command +
+=== List Themes command +
 Users will be able to switch to different color themes. They will be able to choose from a list of themes. +
 This allows users to better customise their address book.
 
-==== listTheme +
+==== List Theme +
 Format: `listTheme` +
 A window will pop up displaying the list of available themes. Users need only take note of the theme name of the theme they are interested in for the next step.
 
@@ -687,5 +714,5 @@ This way, users would have a backup copy of their contacts. Users would also be 
 
 
 
-=== Color coded commands for easy viewing*
-=== Import data file*
+=== Color coded commands for easy viewing
+=== Import data file

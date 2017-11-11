@@ -20,11 +20,11 @@ public class EmailCommand extends Command {
 
     public static final String COMMAND_WORD = "email";
     public static final String MESSAGE_EMAIL_SENT = "Email .";
-    public static final String MESSAGE_NOT_SENT = "Please enter a valid name/tag with a valid Email ID.";
+    public static final String MESSAGE_NOT_SENT = "Email not sent. Please enter a valid tag and correct service ";
     public static final String EMAIL_SERVICE_GMAIL = "gmail";
     public static final String EMAIL_SERVICE_OUTLOOK = "outlook";
     public static final String MESSAGE_USAGE = COMMAND_WORD + ":  people in the Address Book.\n"
-            + "The 'to' field is compulsory\n"
+            + "The 'service' field is compulsory\n"
             + "The 'to' field can take tag and it only supports one parameter.\n"
             + "Parameters: "
             + PREFIX_EMAIL_SERVICE + "SERVICE "
@@ -32,8 +32,8 @@ public class EmailCommand extends Command {
             + PREFIX_EMAIL_SUBJECT + "SUBJECT "
             + PREFIX_EMAIL_BODY + "BODY \n"
             + "Example: " + COMMAND_WORD + " "
-            + PREFIX_EMAIL_SERVICE + "gmail"
-            + PREFIX_EMAIL_TO + "cs2103"
+            + PREFIX_EMAIL_SERVICE + "gmail "
+            + PREFIX_EMAIL_TO + "cs2103 "
             + PREFIX_EMAIL_SUBJECT + "Meeting "
             + PREFIX_EMAIL_BODY + "On Monday ";
 

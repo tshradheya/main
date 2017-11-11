@@ -4,7 +4,9 @@ ifdef::env-github,env-browser[:outfilesuffix: .adoc]
 :stylesDir: ../stylesheets
 
 == Project: iContacts
-iContacts is an address book application with target audience as university students for managing contacts. The user interacts with it using a CLI, and it has a GUI created with JavaFX. It is written in Java, and has about 8 kLoC.
+iContacts is an address book application with target audience as university students for managing contacts. The user interacts with it using a CLI, and it has a GUI created with JavaFX. It is written in Java, and has about 8 kLoC. iContacts allow users to manage reminders, keep track of upcoming contacts' birthday, as well as share the contact list using the application's import and export mechanism.
+
+This portfolio showcases the features and enhancements I have contributed to iContacts, lists my enhancement proposal for the upcoming features, and also includes other contributions I have made.
 
 *Code contributed*: [link:../../collated/main/chuaweiwen.md[Functional code]] [link:../../collated/test/chuaweiwen.md[Test code]]
 
@@ -23,7 +25,7 @@ include::../UserGuide.adoc[tag=nickname]
 
 ==== Justification
 
-* Users may want to add an additional name field without changing the actual name field so as to keep the list neater.
+* Users may want to add nickname to contacts in order to identify them easily, especially if the users have many contacts.
 * The nickname serves as an additional field that can be searched using the `find` command.
 
 ---
@@ -43,8 +45,10 @@ include::../UserGuide.adoc[tag=filter]
 
 ==== Justification
 
-* Users may want to define a more precise search.
-* The `filter` command filters name and tags as they are most likely to be used as constraints in the search.
+* Users may need a more precise search.
+* The current `find` command lists the contacts that match any of the keywords (i.e. an `OR` search).
+* The `filter` command is much more restrictive as it lists the contacts that match all the keywords (i.e. an `AND` search).
+* The name and tags are used as the field for the filter command as they are most likely to be used as constraints in the search.
 
 ==== Implementation
 
@@ -72,7 +76,7 @@ include::../UserGuide.adoc[tag=theme]
 
 ==== Justification
 
-* Users will have more choice in setting the theme of iContacts.
+* Users can have more choice in setting the theme of iContacts.
 * Users may find it easier to use iContacts if they are working on their preferred theme.
 
 ==== Implementation
@@ -85,6 +89,26 @@ include::../DeveloperGuide.adoc[tag=theme]
 #End of Extract#
 
 ---
+
+=== Enhancement Proposed: Enhance the command `filter`
+
+* Users will be able to perform an even more precise search using more fields as constraints (e.g. nickname, birthday).
+* Users will also able to perform search for keywords that are incomplete (e.g. filtering `Ben` will also match `Benson`).
+
+=== Enhancement Proposed: Enhance the command `theme` to allow customised theme
+
+* Users will be able to customise the theme of their choice.
+* Users will be able to import their own CSS file to update the theme.
+
+=== Enhancement Proposed: Add a new command `listtag`
+
+* Users will be able to list all tags they have used when adding or editing the contacts.
+* This allow the users to keep track of all the tags used.
+
+=== Enhancement Proposed: Merge the command `nickname` to the command `add` and `edit`
+
+* Users will be able to add, edit or remove the nickname of contact through the `add` and `edit` command.
+* Since the nickname is just another field for the contact, it would be better to add and edit the nickname using the `add` and `edit` command respectively without the `nickname` command.
 
 === Other contributions
 

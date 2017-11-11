@@ -5,7 +5,6 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_PATH;
 
 import java.io.IOException;
 
-import seedu.address.commons.events.ui.ClearSelectionEvent;
 import seedu.address.commons.exceptions.DataConversionException;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.AddressBook;

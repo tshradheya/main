@@ -163,6 +163,16 @@ public abstract class AddressBookSystemTest {
     }
 
     /**
+     * @<code> assertApplicationDisplaysExpected(</code> for Edit Command Test
+     */
+    protected void assertApplicationDisplaysExpectedForEdit(String expectedCommandInput, String expectedResultMessage,
+                                                     Model expectedModel) {
+        assertEquals(expectedCommandInput, getCommandBox().getInput());
+        assertEquals(expectedResultMessage, getResultDisplay().getText());
+        assertListMatching(getPersonListPanel(), expectedModel.getFilteredPersonList());
+    }
+
+    /**
      * Calls {@code BrowserAndRemindersPanelHandle},
      * {@code PersonListPanelHandle} and {@code StatusBarFooterHandle} to remember their current state.
      */

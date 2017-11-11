@@ -960,7 +960,7 @@ image::ReminderUML1.png[width="390"]
 _Figure 28: UML diagram showing the make-up of Reminder objects._
 
 The `Reminder` object represents a reminder in iContacts. It contains a `String` variable `reminder`, which represents
-the actual reminder from the user, and also a `Date`, `Time` and `Status` object which represents the date, time and link:#status[status] of the reminder respectively
+the actual reminder from the user, and also a `Date`, `Time` and `Status` object, which represents the date, time and link:#status[status] of the reminder respectively
 (Refer to Figure 28). As part of _defensive programming_, `Reminder` implements the `ReadOnlyReminder` interface, which only allows _read_ operations, thus
 helping to prevent inappropriate or unintended modifications to `Reminder` objects (Refer to Figure 28) during the execution of the program.
 For example, for `DeleteReminderCommand`, its `execute` method should only execute the deletion of a specified reminder, not to alter any reminders.

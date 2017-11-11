@@ -77,7 +77,7 @@ Format: `addreminder rd/REMINDER d/DATE ti/TIME`
 
 ****
 * All three parameters REMINDER, DATE and TIME must be filled. +
-* DATE must be in the format dd/mm/yyyy. `'-'`, `'/'` and `'.'` can be used to separate the day, month and year field of the date,
+* DATE must be in the format dd/mm/yyyy. `'-'`, `'/'` or `'.'` can be used to separate the day, month and year field of the date,
  and they need not be paired up (i.e. 24.03/2017 is acceptable as well). +
 * TIME must be in 24-hr format, with a colon separating the hour and minute values. Example: 08:00, 16:00, 23:59. +
 * REMINDER can be of any value, as long as it is not empty.
@@ -91,8 +91,9 @@ Examples:
 image::ReminderPast.png[width=500]
 _Figure 2: Reminder for a dinner with family on 10/10/2017 at 18:00._
 
+The reminder cells are colored differently according to the urgency of the event:
+
 ****
-* The reminder cells are colored differently according to the urgency of the event. +
 * If the event has passed, the reminder cell is colored in dark grey (Refer to Figure 2). +
 * If the event is happening today, the reminder cell is colored in red (Refer to Figure 3). +
 * If the event is happening within three days, the reminder cell is colored in yellow (Refer Figure 4). +
@@ -404,7 +405,7 @@ Deletes the 1st person in the results of the `find` command.
 // tag::deleteReminder[]
 === Deleting a reminder: `deletereminder`[V1.4]
 
-Deletes the specified reminder from iContacts. +
+Deletes a specified reminder from iContacts. +
 Format: `deletereminder INDEX`
 
 ****

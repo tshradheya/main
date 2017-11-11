@@ -57,7 +57,7 @@ Expected result: 2 persons listed! +
 * `filter n/alex t/friends` +
 Expected result: 1 persons listed! +
 +
-`Alex Yeoh` will be displayed because the contact has a name containing `Alex` and has the tag `friends`.
+`Alex Yeoh` will be displayed because the contact has a name containing `alex` and has the tag `friends`.
 
 * `filter t/friends n/alex` +
 Expected result: 1 persons listed! +

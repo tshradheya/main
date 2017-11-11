@@ -162,10 +162,215 @@ Expected result: Unknown theme +
                  Parameter: THEME +
                  List of available themes: day, night +
                  Example: theme day
-
+                 
 * `theme` +
 Expected result: Invalid command format! +
                  theme: Changes the theme of the address book +
                  Parameter: THEME +
                  List of available themes: day, night +
                  Example: theme day
+
+=== Toggle
+Command usage: `toggle`
+
+Toggles between the reminders panel and browser panel. Something to take note of is that if iContacts is currently
+displaying the details panel, `toggle` would then bring out the reminders panel first, before alternating between
+the reminders panel and browser panel.
+
+Cases:
+
+. `toggle` and iContacts is currently displaying the reminders panel. +
+Expected result: Toggle successful. +
+iContacts would now display the browser panel.
+
+. `toggle` and iContacts is currently displaying the browser panel. +
+Expected result: Toggle successful. +
+iContacts would now display the reminders panel.
+
+. `toggle` and iContacts is currently displaying the details panel. +
+Expected result: Toggle successful. +
+iContacts would now display the reminders panel.
+
+=== Adding a reminder
+*Please make sure to reload the sample reminder data before conducting the tests below to have accurate expected results.*
+
+Command usage: `addreminder rd/REMINDER d/DATE ti/TIME`
+
+To note: +
+****
+* All three parameters REMINDER, DATE and TIME must be filled. +
+* DATE must be in the format dd/mm/yyyy. `'-'`, `'/'` and `'.'` can be used to separate the day, month and year field of the date,
+ and they need not be paired up (i.e. 24.03/2017 is acceptable as well). The range of allowable dates is from 1900 to 2099. +
+* TIME must be in 24-hr format, with a colon separating the hour and minute values. Example: 08:00, 16:00, 23:59. +
+* REMINDER can be of any value, as long as it is not empty.
+* If the event has passed, the reminder cell is colored in dark grey. +
+* If the event is happening today, the reminder cell is colored in red. +
+* If the event is happening within three days, the reminder cell is colored in yellow. +
+* If the event is happening more than three days later, the reminder cell is colored in green. +
+* The countdown to the date and time of the event, as well as the coloring of the reminder cell, *is not dynamic*. Both of these
+are relative to the date and time the program is started up. +
+* The `undo` and `redo` commands do not apply to reminders.
+****
+
+Cases:
+
+. `addreminder rd/Unique Reminder d/01-02-2017 ti/08:00` +
+Expected result: New reminder added! +
+A new reminder would be added to the reminder list.
+
+. `addreminder rd/Unique Reminder d/01-02-2017 ti/08:00` +
+*As the reminder is exactly the same reminder as above, there will be an issue of duplicate reminders.* +
+Expected result: This reminder already exists!
+
+. `addreminder rd/ d/12/12/2000 ti/09:00` +
+Expected result: +
+Invalid command format! +
+addreminder: Adds a reminder. +
+Parameters: rd/REMINDER d/DATE ti/TIME +
+REMINDER must be non-empty. DATE must be in the format dd-mm-yyyy, dd/mm/yyyy or dd.mm.yyyy, and must be a valid date. TIME is in 24-hour format. +
+Example: addreminder rd/Dinner with Family d/22-11-2017 ti/1700
+
+. `addreminder rd/Valid reminder 1 d/29/2/2017 ti/18:00` +
+*This `addreminder` command includes an invalid leap day.* +
+Expected result: +
+Date must be valid, and in the following format: +
+'.', '-' and '/' can be used to separate the day, month and year fields, and need not be used in pairs (i.e. 21.10/1995 works as well). +
+Day field: 1 - 31. +
+Month field: 1-12. +
+Year field: 1900 - 2099. +
+Example: 21/10/1995, 21-05-1996, 8.10.1987, 01/12-1995, 01.01-1990
+
+. `addreminder rd/Valid reminder 1 d/31/11/2017 ti/18:00` +
+*This `addreminder` command includes an invalid day field for the specified month field.* +
+Expected result: +
+Date must be valid, and in the following format: +
+'.', '-' and '/' can be used to separate the day, month and year fields, and need not be used in pairs (i.e. 21.10/1995 works as well). +
+Day field: 1 - 31. +
+Month field: 1-12. +
+Year field: 1900 - 2099. +
+Example: 21/10/1995, 21-05-1996, 8.10.1987, 01/12-1995, 01.01-1990
+
+. `addreminder rd/Valid reminder 1 d/01-01-2017 ti/24:00` +
+*This `addreminder` command contains a time that is invalid in 24-hr format.* +
+Expected result: +
+Time must be in 24-hour format, with a colon separating the hour and minute fields. +
+Example: 09:00, 23:59, 17:56
+
+. `addreminder rd/Valid reminder 1 d/01-01-2017 ti/0800` +
+*This `addreminder` command contains a time field not separated by a colon `:`.* +
+Expected result: +
+Time must be in 24-hour format, with a colon separating the hour and minute fields. +
+Example: 09:00, 23:59, 17:56
+
+. Any `addreminder` command that does not contain all three fields. +
+Expected result: +
+Invalid command format! +
+addreminder: Adds a reminder. +
+Parameters: rd/REMINDER d/DATE ti/TIME +
+REMINDER must be non-empty. DATE must be in the format dd-mm-yyyy, dd/mm/yyyy or dd.mm.yyyy, and must be a valid date. TIME is in 24-hour format. +
+Example: addreminder rd/Dinner with Family d/22-11-2017 ti/1700
+
+=== Deleting a reminder
+*Please make sure to reload the sample reminder data before conducting the tests below to have accurate expected results.*
+
+Command usage: `deletereminder INDEX` +
+
+****
+* Deletes the reminder at the specified `INDEX`.
+* The index refers to the index number shown in the list of reminders.
+* The index *must be a positive integer* 1, 2, 3, ...
+****
+
+. `deletereminder 1` +
+Expected result: +
+Deleted reminder: CS2103T Release jar +
+15-11-2017 +
+12:00
+
+. `deletereminder 0` +
+Expected result: +
+Invalid command format! +
+deletereminder: Deletes the reminder identified by the index number used in the reminder listing. +
+Parameters: INDEX (must be a positive integer) +
+Example: deletereminder 1
+
+. `deletereminder 7` +
+Expected result: +
+The reminder index provided is invalid.
+
+=== Editing a reminder
+*Please make sure to reload the sample reminder data before conducting the tests below to have accurate expected results.*
+
+Command usage: `editreminder [rd/REMINDER] [d/DATE] [ti/TIME]`
+
+****
+* Edits the reminder at the specified `INDEX`. The index refers to the index number shown in the list of reminders. The index *must be a positive integer* 1, 2, 3...
+* At least one of the optional fields must be provided.
+* Existing values will be updated to the input values. If the field is left empty, the original value will be used instead.
+****
+
+Cases:
+
+. `editreminder 1 rd/New reminder 1 d/01/01/2017 ti/08:00` +
+Expected result: +
+Edited Reminder: New reminder 1 +
+01-01-2017 +
+08:00
+
+. `editreminder 0 rd/New reminder 2 d/02/02/2017 ti/10:00` +
+Expected result: +
+Invalid command format! +
+editreminder: Edits the details of the reminder identified by the index number. Existing values will be overwritten by the input values. +
+Parameters: INDEX (must be a positive integer) [rd/REMINDER (cannot be empty)][d/DATE][ti/TIME] +
+Example: editreminder 1 rd/Changed reminder
+
+. `editreminder 10 rd/New reminder 3 d/03/03/2017 ti/11:00` +
+Expected result: +
+The reminder index provided is invalid.
+
+. `editreminder 1 rd/ d/03/03/2017 ti/11:00` +
+Expected result: +
+Invalid command format! +
+Reminder can be of any value, and cannot be empty.
+
+. `editreminder 1 rd/New reminder 4 d/29/2/2017 ti/18:00` +
+*This `editreminder` command includes an invalid leap day.* +
+Expected result: +
+Date must be valid, and in the following format: +
+'.', '-' and '/' can be used to separate the day, month and year fields, and need not be used in pairs (i.e. 21.10/1995 works as well). +
+Day field: 1 - 31. +
+Month field: 1-12. +
+Year field: 1900 - 2099. +
+Example: 21/10/1995, 21-05-1996, 8.10.1987, 01/12-1995, 01.01-1990
+
+. `editreminder 1 rd/New reminder 5 d/31/11/2017 ti/18:00` +
+*This `editreminder` command includes an invalid day field for the specified month field.* +
+Expected result: +
+Date must be valid, and in the following format: +
+'.', '-' and '/' can be used to separate the day, month and year fields, and need not be used in pairs (i.e. 21.10/1995 works as well). +
+Day field: 1 - 31. +
+Month field: 1-12. +
+Year field: 1900 - 2099. +
+Example: 21/10/1995, 21-05-1996, 8.10.1987, 01/12-1995, 01.01-1990
+
+. `editreminder 1 rd/New reminder 6 d/30/11/2017 ti/24:00` +
+*This `editreminder` command contains a time that is invalid in 24-hr format.* +
+Expected result: +
+Time must be in 24-hour format, with a colon separating the hour and minute fields. +
+Example: 09:00, 23:59, 17:56
+
+. `editreminder 1 rd/New reminder 7 d/01-01-2017 ti/0800` +
+*This `editreminder` command contains a time field not separated by a colon `:`.* +
+Expected result: +
+Time must be in 24-hour format, with a colon separating the hour and minute fields. +
+Example: 09:00, 23:59, 17:56
+
+. `editreminder 1` +
+*This `editreminder` command did not specify a single field to edit.* +
+Expected result: +
+At least one field to edit must be provided.
+
+. `editreminder 1 rd/Fix Bugs of iContacts d/04-12-2017 ti/10:00` +
+*This `editreminder` command edits a reminder such that it becomes identical to another reminder, resulting in duplicate reminders.* +
+Expected result: +
+This reminder already exists in iContacts.

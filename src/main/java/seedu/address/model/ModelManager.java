@@ -406,7 +406,7 @@ public class ModelManager extends ComponentManager implements Model {
         } catch (DuplicatePersonException dpe) {
             assert false : "Is not possible as counter will be increased by one";
         } catch (PersonNotFoundException pnfe) {
-            assert false : "Only existing person can be selected";
+            pnfe.printStackTrace();
         }
 
         updatePopularContactList();

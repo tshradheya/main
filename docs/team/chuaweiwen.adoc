@@ -6,7 +6,7 @@ ifdef::env-github,env-browser[:outfilesuffix: .adoc]
 == Project: iContacts
 iContacts is an address book application with target audience as university students for managing contacts. The user interacts with it using a CLI, and it has a GUI created with JavaFX. It is written in Java, and has about 8 kLoC. iContacts allow users to manage reminders, keep track of upcoming contacts' birthday, as well as share the contact list using the application's import and export mechanism.
 
-This portfolio showcases the features and enhancements I have contributed to iContacts, lists the enhancement proposed for the upcoming features, and also includes other contributions I have made.
+This portfolio showcases the features and enhancements I have contributed to iContacts, lists my enhancement proposal for the upcoming features, and also includes other contributions I have made.
 
 *Code contributed*: [link:../../collated/main/chuaweiwen.md[Functional code]] [link:../../collated/test/chuaweiwen.md[Test code]]
 

@@ -4,15 +4,15 @@ import seedu.address.model.person.NameAndTagsContainsKeywordsPredicate;
 
 //@@author chuaweiwen
 /**
- * Finds and lists all persons in address book whose name and/or tags contains any of the argument keywords.
- * Keyword matching is case sensitive.
+ * Finds and lists all persons in address book whose name and/or tags contains all of the argument keywords.
+ * Keyword matching is not case sensitive.
  */
 public class FilterCommand extends Command {
 
     public static final String COMMAND_WORD = "filter";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all persons whose names and tags contain"
-            + "any of the specified keywords and displays them as a list with index numbers.\n"
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Filters all persons whose names and tags contain "
+            + "all of the specified keywords and displays them as a list with index numbers.\n"
             + "Parameters: [n/NAME] [t/TAG]...\n"
             + "Note: At least one of the parameters must be specified.\n"
             + "Example: " + COMMAND_WORD + " n/Alex t/friends";

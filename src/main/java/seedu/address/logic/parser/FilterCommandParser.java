@@ -23,7 +23,7 @@ public class FilterCommandParser implements Parser<FilterCommand> {
     /**
      * Parses the given {@code String} of arguments in the context of the FilterCommand
      * and returns an FilterCommand object for execution.
-     * @throws ParseException if the user input does not conform the expected format
+     * @throws ParseException if the user input does not conform to the expected format
      */
     public FilterCommand parse(String args) throws ParseException {
         requireNonNull(args);
@@ -46,6 +46,7 @@ public class FilterCommandParser implements Parser<FilterCommand> {
             nameKeywordsList = Arrays.asList(getKeywordsFromList(unprocessedNames, regex));
         }
 
+        // Extracting tags
         if (!argMultimap.getAllValues(PREFIX_TAG).isEmpty()) {
             List<String> unprocessedTags = argMultimap.getAllValues(PREFIX_TAG);
             tagsKeywordsList = Arrays.asList(getKeywordsFromList(unprocessedTags, regex));

@@ -250,14 +250,14 @@ public class NameAndTagsContainsKeywordsPredicate {
 
 The method `test(ReadOnlyPerson person)` iterates through the `nameKeywords` and the `tagKeywords` to find a match of every `person` from the address book.
 
-Below is an extract of the method `test(ReadOnlyPerson person)`. The tags of each person are retrieved by the `getTags()` method. This method iterates through the `tagKeywords` and counts the number of matches against the `tagsOfPerson`. If the count is equal to the size of the `tagKeywords`, this means all the keywords in the `tagKeywords` matches. The `tagFound` will then be set to `true`.
+Below is an extract of the method `test(ReadOnlyPerson person)`. The tags of each person are retrieved by the `getTags()` method. This method iterates through the `tagKeywords` and counts the number of matches against the `tagsOfPerson`. If the count is equal to the size of the `tagKeywords`, this means all the keywords in the `tagKeywords` match. The `hasTag` will then be set to `true`.
 
 [source,java]
 ----
 public class NameAndTagsContainsKeywordsPredicate {
     @Override
     public boolean test(ReadOnlyPerson person) {
-        boolean tagFound = false;
+        boolean hasTag = false;
 
         int numTagKeywords = tagKeywords.size();
         int tagsMatchedCount = 0;
@@ -266,20 +266,19 @@ public class NameAndTagsContainsKeywordsPredicate {
         }
 
         if (tagsMatchedCount == numTagKeywords) {
-            tagFound = true;
+            hasTag = true;
         }
-    }
 }
 ----
 
-Below is an extract of the same method for name. Each keywords in the `nameKeywords` will be compared against the name list retrieved from the `getName()` method of the `Person` class. If all matches, the `nameFound` will be set to `true`.
+Below is an extract of the same method for name. Each keywords in the `nameKeywords` will be compared against the name list retrieved from the `getName()` method of the `Person` class. If all the keywords match, the `hasName` will be set to `true`.
 
 [source,java]
 ----
 public class NameAndTagsContainsKeywordsPredicate {
     @Override
     public boolean test(ReadOnlyPerson person) {
-        boolean nameFound = false;
+        boolean hasName = false;
             if (!nameKeywords.isEmpty()) {
                 nameFound = nameKeywords.stream().allMatch(nameKeywords -> StringUtil
                 .containsWordIgnoreCase(person.getName().fullName, nameKeywords));

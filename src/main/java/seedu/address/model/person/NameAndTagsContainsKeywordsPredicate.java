@@ -22,7 +22,7 @@ public class NameAndTagsContainsKeywordsPredicate implements Predicate<ReadOnlyP
 
     @Override
     public boolean test(ReadOnlyPerson person) {
-        boolean tagFound = false;
+        boolean hasTag = false;
 
         int numTagKeywords = tagKeywords.size();
         int tagsMatchedCount = 0;
@@ -31,24 +31,24 @@ public class NameAndTagsContainsKeywordsPredicate implements Predicate<ReadOnlyP
         }
 
         if (tagsMatchedCount == numTagKeywords) {
-            tagFound = true;
+            hasTag = true;
         }
 
-        boolean nameFound = false;
+        boolean hasName = false;
         if (!nameKeywords.isEmpty()) {
-            nameFound = nameKeywords.stream().allMatch(nameKeywords -> StringUtil
+            hasName = nameKeywords.stream().allMatch(nameKeywords -> StringUtil
                     .containsWordIgnoreCase(person.getName().fullName, nameKeywords));
         }
 
         if (nameKeywords.isEmpty() && tagKeywords.isEmpty()) {
             throw new AssertionError("Either name or tag must be non-empty");
         } else if (nameKeywords.isEmpty()) {
-            return tagFound;
+            return hasTag;
         } else if (tagKeywords.isEmpty()) {
-            return nameFound;
+            return hasName;
         }
 
-        return nameFound && tagFound;
+        return hasName && hasTag;
     }
 
     /**
@@ -58,7 +58,7 @@ public class NameAndTagsContainsKeywordsPredicate implements Predicate<ReadOnlyP
         int tagsMatchedCount = 0;
 
         for (String keywords : tagKeywords) {
-            if (hasTag(keywords, person)) {
+            if (containsTag(keywords, person)) {
                 tagsMatchedCount++;
             }
         }
@@ -68,7 +68,7 @@ public class NameAndTagsContainsKeywordsPredicate implements Predicate<ReadOnlyP
     /**
      * Returns true if the person's tag can be found in the keywords. Otherwise returns false.
      */
-    public boolean hasTag(String keywords, ReadOnlyPerson person) {
+    public boolean containsTag(String keywords, ReadOnlyPerson person) {
         Set<Tag> tagsOfPerson = person.getTags();
         for (Tag tag : tagsOfPerson) {
             if (tag.tagName.equalsIgnoreCase(keywords)) {

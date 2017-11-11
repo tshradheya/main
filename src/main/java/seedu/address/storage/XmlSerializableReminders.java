@@ -46,9 +46,7 @@ public class XmlSerializableReminders implements ReadOnlyUniqueReminderList {
             try {
                 return p.toModelType();
             } catch (IllegalValueException e) {
-                e.printStackTrace();
-                //TODO: better error handling
-                return null;
+                throw new AssertionError("Data file is corrupted!");
             }
         }).collect(Collectors.toCollection(FXCollections::observableArrayList));
         return FXCollections.unmodifiableObservableList(reminders);

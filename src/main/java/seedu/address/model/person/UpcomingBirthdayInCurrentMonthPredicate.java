@@ -5,7 +5,7 @@ import java.util.function.Predicate;
 
 //@@author justinpoh
 /**
- * Tests that a {@code ReadOnlyPerson}'s birthday is within this month and have not past.
+ * Tests that a {@code ReadOnlyPerson}'s birthday is within this month and have not passed.
  * If a {@code ReadOnlyPerson} does not have a birthday recorded, return false.
  */
 public class UpcomingBirthdayInCurrentMonthPredicate implements Predicate<ReadOnlyPerson> {

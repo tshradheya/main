@@ -118,7 +118,7 @@ public class UniqueReminderList implements Iterable<Reminder>, ReadOnlyUniqueRem
     }
 
     /**
-     * Returns the list as an unmodiafiable {@code ObservableList}.
+     * Returns the list as an unmodifiable {@code ObservableList}.
      */
     public ObservableList<ReadOnlyReminder> asObservableList() {
         return FXCollections.unmodifiableObservableList(mappedList);

@@ -1076,7 +1076,43 @@ To save, the `saveReminders` method in `StorageManager` is invoked:
 This will then invoke the `saveReminders` method in `XmlRemindersStorage`, and go on to invoke the `saveRemindersToFile` method in `XmlFileStorage`,
 and finally the `saveDataToFile` method in `XmlUtil`.
 
+The color of the reminder cells are decided and set during the formation of `ReminderListViewCell`. This can be seen from the
+code snippet below: +
 
+[source, java]
+----
+
+public class BirthdayAndReminderListPanel extends UiPart<Region> {
+
+    class ReminderListViewCell extends ListCell<ReminderCard> {
+
+        @Override
+        protected void updateItem(ReminderCard reminder, boolean empty) {
+            super.updateItem(reminder, empty);
+
+            if (empty || reminder == null) {
+                setGraphic(null);
+                setText(null);
+                return;
+            }
+            this.getStylesheets().clear();
+            if (reminder.isEventToday()) {
+                this.getStylesheets().add(REMINDER_TODAY_STYLE_SHEET);
+            } else if (reminder.isEventWithinThreeDays()) {
+                this.getStylesheets().add(REMINDER_THREE_DAYS_STYLE_SHEET);
+            } else if (!reminder.hasEventPast()) {
+                this.getStylesheets().add(REMINDER_NORMAL_STYLE_SHEET);
+            }
+
+            setGraphic(reminder.getRoot());
+        }
+    }
+
+}
+
+----
+
+Depending on the status of the reminder, different styles would be set for the specific `ReminderListViewCell`.
 
 [discrete]
 ==== Design Consideration

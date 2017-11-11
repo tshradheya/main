@@ -15,12 +15,153 @@ The following are the steps to load sample data:
 == Commands to Test
 
 === Filter
-Command usage:
-`filter [n/NAME] [t/TAG]`
+Command usage: `filter [n/NAME] [t/TAG]`
 
-* `filter n/Alex` +
-Expected result: 2 person(s) listed!
+* `filter n/alex` +
+Expected result: 2 persons listed! +
++
+`Alex Yeoh` and `Alex` will be displayed
+
+* `filter n/alex n/yeoh` +
+Expected result: 1 persons listed! +
++
+`Alex Yeoh` will be displayed.
+
+* `filter n/alex yeoh` +
+Expected result: 1 persons listed! +
++
+`Alex Yeoh` will be displayed.
+
+* `filter n/yeoh alex` +
+Expected result: 1 persons listed! +
++
+`Alex Yeoh` will be displayed. The order of the name does not matter.
 
 * `filter t/friends` +
-Expected result: 3 person(s) listed!
+Expected result: 3 persons listed! +
++
+`Alex Yeoh`, `Bernice Yu` and `Akshay` having the tag `friends` will be displayed.
 
+* `filter t/friends t/colleagues` +
+Expected result: 2 persons listed! +
++
+`Bernice Yu` and `Akshay` having both tags `colleagues` and `friends` will be displayed.
+
+* `filter t/friends colleagues` +
+Expected result: 2 persons listed! +
++
+`Bernice Yu` and `Akshay` having both tags `colleagues` and `friends` will be displayed.
+
+* `filter n/alex t/friends` +
+Expected result: 1 persons listed! +
++
+`Alex Yeoh` will be displayed because the contact has a name containing `Alex` and has the tag `friends`.
+
+* `filter t/friends n/alex` +
+Expected result: 1 persons listed! +
++
+`Alex Yeoh` will be displayed. The ordering does not matter.
+
+* `filter n/friends` +
+Expected result: 0 persons listed! +
++
+No contacts will be displayed because there are no contacts having the name `friends`.
+
+* `filter` +
+Expected result: Invalid command format! +
+                 filter: Finds all persons whose names and tags containany of the specified keywords and displays them as a list with index numbers. +
+                 Parameters: [n/NAME] [t/TAG]... +
+                 Note: At least one of the parameters must be specified. +
+                 Example: filter n/Alex t/friends
+
+* `filter Alex` +
+Expected result: Invalid command format! +
+                 filter: Finds all persons whose names and tags containany of the specified keywords and displays them as a list with index numbers. +
+                 Parameters: [n/NAME] [t/TAG]... +
+                 Note: At least one of the parameters must be specified. +
+                 Example: filter n/Alex t/friends
+
+* `filter n/` +
+Expected result: Invalid command format! +
+                 filter: Finds all persons whose names and tags containany of the specified keywords and displays them as a list with index numbers. +
+                 Parameters: [n/NAME] [t/TAG]... +
+                 Note: At least one of the parameters must be specified. +
+                 Example: filter n/Alex t/friends
+
+* `filter t/` +
+Expected result: Invalid command format! +
+                 filter: Finds all persons whose names and tags containany of the specified keywords and displays them as a list with index numbers. +
+                 Parameters: [n/NAME] [t/TAG]... +
+                 Note: At least one of the parameters must be specified. +
+                 Example: filter n/Alex t/friends
+
+* `filter n/Alex t/` +
+Expected result: Invalid command format! +
+                 filter: Finds all persons whose names and tags containany of the specified keywords and displays them as a list with index numbers. +
+                 Parameters: [n/NAME] [t/TAG]... +
+                 Note: At least one of the parameters must be specified. +
+                 Example: filter n/Alex t/friends
+
+=== Nickname
+Command usage: `nickname INDEX [NICKNAME]`
+
+* `list` +
+`nickname 1 Alexandra` +
+Expected result: Nickname successfully set to Person: Alex Yeoh Phone: 87438807 Email: alexyeoh@example.com Address: Blk 30 Geylang Street 29, #06-40 Birthday: 21-10-1995 Nickname: Alexandra Tags: [friends] +
++
+The nickname `Alexandra` will be displayed next to the contact.
+
+* `nickname 1 Alexandra` +
+Expected result: Nickname remains unchanged for Person: Alex Yeoh Phone: 87438807 Email: alexyeoh@example.com Address: Blk 30 Geylang Street 29, #06-40 Birthday: 21-10-1995 Nickname: Alexandra Tags: [friends]
+
+* `nickname 1` +
+Expected result: Nickname successfully removed from Person: Alex Yeoh Phone: 87438807 Email: alexyeoh@example.com Address: Blk 30 Geylang Street 29, #06-40 Birthday: 21-10-1995 Nickname:  Tags: [friends] +
++
+The nickname from the contact will be removed.
+
+
+* To test the command works on a filtered list: +
+`find alex` +
+`nickname 2 Alan` +
+Expected result: Nickname successfully set to Person: Alex Phone: 83292191 Email: alex@example.com Address: 35, Jurong East Birthday: 10-2-1950 Nickname: Alan Tags: [family] +
++
+The nickname `Alan` will be displayed next to the contact.
+
+* `nickname` +
+Expected result: Invalid command format!
+                 nickname: Sets the nickname to the person identified by the index number used in the last person listing. Existing values will be overwritten by the input values.
+                 Parameters: INDEX (must be a positive integer) [NICKNAME]
+                 Example: nickname 1 Adam
+
+* `nickname 0` +
+Expected result: Invalid command format!
+                 nickname: Sets the nickname to the person identified by the index number used in the last person listing. Existing values will be overwritten by the input values.
+                 Parameters: INDEX (must be a positive integer) [NICKNAME]
+                 Example: nickname 1 Adam
+
+* `nickname 22` +
+Expected result: The person index provided is invalid +
++
+Note: This result will be displayed only if there are 21 or less contacts on the current displayed list.
+
+=== Theme
+Command usage: `theme THEME`
+
+* `theme day` +
+Expected result: Successfully set theme: day +
++
+The theme will be changed to `day`.
+
+* `theme blue` +
+Expected result: Unknown theme +
+                 theme: Changes the theme of the address book +
+                 Parameter: THEME +
+                 List of available themes: day, night +
+                 Example: theme day
+
+* `theme` +
+Expected result: Invalid command format! +
+                 theme: Changes the theme of the address book +
+                 Parameter: THEME +
+                 List of available themes: day, night +
+                 Example: theme day

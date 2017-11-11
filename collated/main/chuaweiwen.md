@@ -21,15 +21,15 @@ public class ChangeThemeRequestEvent extends BaseEvent {
 ###### \java\seedu\address\logic\commands\FilterCommand.java
 ``` java
 /**
- * Finds and lists all persons in address book whose name and/or tags contains any of the argument keywords.
- * Keyword matching is case sensitive.
+ * Finds and lists all persons in address book whose name and/or tags contains all of the argument keywords.
+ * Keyword matching is not case sensitive.
  */
 public class FilterCommand extends Command {
 
     public static final String COMMAND_WORD = "filter";
 
-    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all persons whose names and tags contain"
-            + "any of the specified keywords and displays them as a list with index numbers.\n"
+    public static final String MESSAGE_USAGE = COMMAND_WORD + ": Filters all persons whose names and tags contain"
+            + "all of the specified keywords and displays them as a list with index numbers.\n"
             + "Parameters: [n/NAME] [t/TAG]...\n"
             + "Note: At least one of the parameters must be specified.\n"
             + "Example: " + COMMAND_WORD + " n/Alex t/friends";
@@ -43,6 +43,7 @@ public class FilterCommand extends Command {
     @Override
     public CommandResult execute() {
         model.updateFilteredPersonList(predicate);
+        model.showDefaultPanel();
         return new CommandResult(getMessageForPersonListShownSummary(model.getFilteredPersonList().size()));
     }
 
@@ -216,7 +217,7 @@ public class FilterCommandParser implements Parser<FilterCommand> {
     /**
      * Parses the given {@code String} of arguments in the context of the FilterCommand
      * and returns an FilterCommand object for execution.
-     * @throws ParseException if the user input does not conform the expected format
+     * @throws ParseException if the user input does not conform to the expected format
      */
     public FilterCommand parse(String args) throws ParseException {
         requireNonNull(args);
@@ -239,6 +240,7 @@ public class FilterCommandParser implements Parser<FilterCommand> {
             nameKeywordsList = Arrays.asList(getKeywordsFromList(unprocessedNames, regex));
         }
 
+        // Extracting tags
         if (!argMultimap.getAllValues(PREFIX_TAG).isEmpty()) {
             List<String> unprocessedTags = argMultimap.getAllValues(PREFIX_TAG);
             tagsKeywordsList = Arrays.asList(getKeywordsFromList(unprocessedTags, regex));
@@ -302,7 +304,7 @@ public class NicknameCommandParser implements Parser<NicknameCommand> {
 ###### \java\seedu\address\logic\parser\Theme.java
 ``` java
 /**
- * A value used to specify the theme of the address book.
+ * Represents the theme of the address book.
  */
 public class Theme {
     private final String theme;
@@ -354,7 +356,7 @@ public class ThemeCommandParser implements Parser<ThemeCommand> {
     /**
      * Parses the given {@code String} of arguments in the context of the ThemeCommand
      * and returns an ThemeCommand object for execution.
-     * @throws ParseException if the user input does not conform the expected format
+     * @throws ParseException if the user input does not conform to the expected format
      */
     public ThemeCommand parse(String args) throws ParseException {
         String trimmedArgs = args.trim();
@@ -380,20 +382,16 @@ public class ThemeCommandParser implements Parser<ThemeCommand> {
 ###### \java\seedu\address\logic\parser\ThemeList.java
 ``` java
 /**
- * List of available themes
+ * Contains a list of names and file paths of available themes
  */
 public class ThemeList {
     public static final String DEFAULT_PATH = "view/";
 
-    public static final String THEME_DARK = "dark";
     public static final String THEME_DAY = "day";
     public static final String THEME_NIGHT = "night";
-    public static final String THEME_SKY = "sky";
 
-    public static final String THEME_DARK_PATH = DEFAULT_PATH + "DarkTheme.css";
     public static final String THEME_DAY_PATH = DEFAULT_PATH + "DayTheme.css";
     public static final String THEME_NIGHT_PATH = DEFAULT_PATH + "NightTheme.css";
-    public static final String THEME_SKY_PATH = DEFAULT_PATH + "SkyTheme.css";
 }
 ```
 ###### \java\seedu\address\MainApp.java
@@ -420,7 +418,7 @@ public class NameAndTagsContainsKeywordsPredicate implements Predicate<ReadOnlyP
 
     @Override
     public boolean test(ReadOnlyPerson person) {
-        boolean tagFound = false;
+        boolean hasTag = false;
 
         int numTagKeywords = tagKeywords.size();
         int tagsMatchedCount = 0;
@@ -429,24 +427,24 @@ public class NameAndTagsContainsKeywordsPredicate implements Predicate<ReadOnlyP
         }
 
         if (tagsMatchedCount == numTagKeywords) {
-            tagFound = true;
+            hasTag = true;
         }
 
-        boolean nameFound = false;
+        boolean hasName = false;
         if (!nameKeywords.isEmpty()) {
-            nameFound = nameKeywords.stream().allMatch(nameKeywords -> StringUtil
+            hasName = nameKeywords.stream().allMatch(nameKeywords -> StringUtil
                     .containsWordIgnoreCase(person.getName().fullName, nameKeywords));
         }
 
         if (nameKeywords.isEmpty() && tagKeywords.isEmpty()) {
             throw new AssertionError("Either name or tag must be non-empty");
         } else if (nameKeywords.isEmpty()) {
-            return tagFound;
+            return hasTag;
         } else if (tagKeywords.isEmpty()) {
-            return nameFound;
+            return hasName;
         }
 
-        return nameFound && tagFound;
+        return hasName && hasTag;
     }
 
     /**
@@ -456,7 +454,7 @@ public class NameAndTagsContainsKeywordsPredicate implements Predicate<ReadOnlyP
         int tagsMatchedCount = 0;
 
         for (String keywords : tagKeywords) {
-            if (hasTag(keywords, person)) {
+            if (containsTag(keywords, person)) {
                 tagsMatchedCount++;
             }
         }
@@ -466,7 +464,7 @@ public class NameAndTagsContainsKeywordsPredicate implements Predicate<ReadOnlyP
     /**
      * Returns true if the person's tag can be found in the keywords. Otherwise returns false.
      */
-    public boolean hasTag(String keywords, ReadOnlyPerson person) {
+    public boolean containsTag(String keywords, ReadOnlyPerson person) {
         Set<Tag> tagsOfPerson = person.getTags();
         for (Tag tag : tagsOfPerson) {
             if (tag.tagName.equalsIgnoreCase(keywords)) {

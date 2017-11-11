@@ -115,7 +115,7 @@ Below is a quick overview of each component:
 
 * link:#common-classes[*`Commons`*] represents a collection of classes used by multiple other components. Two of those classes play important roles at the architecture level.
 
-** `EventsCenter` : This class (written using https://github.com/google/guava/wiki/EventBusExplained[Google's Event Bus library]) is used by components to communicate with other components using events (i.e. a form of _Event Driven_ design)
+** `EventsCenter` : This class (written using https://github.com/google/guava/wiki/EventBusExplained[Google's Event Bus library]) is used by the components to communicate with other components using events (i.e. a form of _Event Driven_ design)
 ** `LogsCenter` : This class is used by many classes to write log messages to iContacts' log file.
 
 * The rest of iContacts consists of four components:
@@ -173,9 +173,9 @@ The `UI` component uses JavaFx UI framework. The layout of these `UI` parts is d
 
 The `UI` component
 
-* executes user commands using the `Logic` component.
-* binds itself to some data in the `Model` so that the `UI` can auto-update when data in the `Model` change.
-* responds to events raised from various parts of iContacts and updates the `Ui` accordingly.
+* executes the user commands using the `Logic` component.
+* binds itself to some data in the `Model` so that the `UI` can auto-update when the data in the `Model` change.
+* responds to events raised from various parts of iContacts and updates the `UI` accordingly.
 
 ==== Logic component
 The `Logic` component deals with how each command and its parser would be executed in an event-driven design. The figures below (Refer to Figures 6, 7) shows the structure of the `Logic` component.
@@ -197,7 +197,7 @@ image::DeletePersonSdForLogic.png[width="800"]
 _Figure 8 : Interactions inside the Logic component for the `delete 1` command_
 
 ==== Model component
-The `Model` Component handles the contacts in address book and all its stored details in data structures which provides API to create, read, update and delete the contacts in the address book. The figure below (Refer to Figure 9) shows the structure of the `Model` component.
+The `Model` component handles the contacts in iContacts and all its stored details in data structures which provide API to create, read, update and delete the contacts. The figure below (Refer to Figure 9) shows the structure of the `Model` component.
 
 
 image::ModelClassDiagram.png[width="800"]
@@ -209,11 +209,11 @@ The `Model` component
 
 * stores a `UserPref` object that represents the user's preferences.
 * stores the address book data.
-* exposes an unmodifiable `ObservableList<ReadOnlyPerson>` that can be 'observed' e.g. the UI can be bound to this list so that the UI automatically updates when the data in the list change.
-* does not depend on any of the other three components.
+* exposes an unmodifiable `ObservableList<ReadOnlyPerson>` that can be 'observed' e.g. the `UI` can be bound to this list so that the `UI` automatically updates when the data in the list change.
+* does not depend on any of the other three components (`UI`, `Logic` and `Storage`).
 
 ==== Storage component
-The `Storage` component handles the storage of all data of address book in the local device. The figure below (Refer to Figure 10) shows the structure of Storage component.
+The `Storage` component handles the storage of all data of the address book in the local device. The figure below (Refer to Figure 10) shows the structure of the Storage component.
 
 image::StorageClassDiagram.png[width="800"]
 _Figure 10 : Structure of the Storage component_
@@ -223,7 +223,7 @@ _Figure 10 : Structure of the Storage component_
 The `Storage` component
 
 * can save `UserPref` objects in json format and read it back.
-* can save the Address Book data in xml format and read it back.
+* can save the address book data in xml format and read it back.
 
 === Common classes
 

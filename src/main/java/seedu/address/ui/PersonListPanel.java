@@ -17,6 +17,7 @@ import seedu.address.commons.events.model.UpdatePopularityCounterForSelectionEve
 import seedu.address.commons.events.ui.ClearSelectionEvent;
 import seedu.address.commons.events.ui.JumpToListRequestEvent;
 import seedu.address.commons.events.ui.PersonPanelSelectionChangedEvent;
+import seedu.address.commons.events.ui.SelectFirstAfterDeleteEvent;
 import seedu.address.commons.events.ui.ShowDetailsEvent;
 import seedu.address.commons.events.ui.UpdatePersonListPanelSelectionEvent;
 import seedu.address.model.person.ReadOnlyPerson;
@@ -119,6 +120,11 @@ public class PersonListPanel extends UiPart<Region> {
     @Subscribe
     private void handleClearSelection(ClearSelectionEvent event) {
         personListView.getSelectionModel().clearSelection();
+    }
+
+    @Subscribe
+    private void handleSelectFirstAfterDeleteEvent(SelectFirstAfterDeleteEvent event) {
+        personListView.getSelectionModel().selectFirst();
     }
     //@@author
 

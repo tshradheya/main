@@ -28,6 +28,7 @@ import seedu.address.commons.events.model.UpdateListForSelectionEvent;
 import seedu.address.commons.events.model.UpdatePopularityCounterForSelectionEvent;
 import seedu.address.commons.events.ui.ClearSelectionEvent;
 import seedu.address.commons.events.ui.LoadPersonWebpageEvent;
+import seedu.address.commons.events.ui.SelectFirstAfterDeleteEvent;
 import seedu.address.commons.events.ui.SendingEmailEvent;
 import seedu.address.commons.events.ui.ShowDefaultPanelEvent;
 import seedu.address.commons.events.ui.ShowLocationEvent;
@@ -142,11 +143,11 @@ public class ModelManager extends ComponentManager implements Model {
     public synchronized void deletePerson(ReadOnlyPerson target) throws PersonNotFoundException {
         raise(new ClearSelectionEvent());
         addressBook.removePerson(target);
+        raise(new SelectFirstAfterDeleteEvent());
         raise(new DisplayPictureDeleteEvent(target.getDisplayPicture().getPath()));
         indicateAddressBookChanged();
         indicatePopularContactsChangedPossibility();
         updatePopularContactList();
-        System.out.println(filteredPersons.size());
     }
 
     @Override

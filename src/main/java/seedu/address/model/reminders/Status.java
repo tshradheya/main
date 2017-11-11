@@ -72,7 +72,7 @@ public class Status {
         final long minutesUntilEvent = getMinutesUntilEvent();
         if (daysUntilEvent > ZERO_DAY) {
             return false;
-        } else if (daysUntilEvent == ZERO_DAY && minutesUntilEvent == ZERO) {
+        } else if (daysUntilEvent == ZERO_DAY && minutesUntilEvent >= ZERO) {
             return false;
         }
         return true;

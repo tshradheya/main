@@ -102,7 +102,7 @@ include::../DeveloperGuide.adoc[tag=theme]
 
 === Enhancement Proposed: Add a new command `listtag`
 
-* Users will be able to list all tags that the users have used when adding or editing the contacts.
+* Users will be able to list all tags they have used when adding or editing the contacts.
 * This allow the users to keep track of all the tags used.
 
 === Enhancement Proposed: Merge the command `nickname` to the command `add` and `edit`

@@ -108,6 +108,13 @@ _Figure 4: A reminder of an event happening within three days._
 
 image::ReminderNormal.png[width=500]
 _Figure 5: A reminder of an event happening more than three days later._
+
+[NOTE]
+====
+* The countdown to the event, as well as the color of the reminder cells, *are not dynamic*. A new count and update
+only takes place when the program is started up, and when an edit is made to a reminder.
+* The `undo` and `redo` commands do not work for commands that affect the reminders.
+====
 // end::addReminder[]
 
 === Viewing details of a contact: `details`

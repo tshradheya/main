@@ -8,7 +8,11 @@ iContacts is an application that targets university students, aiming to help the
 iContacts is a Command Line Interface (CLI) application, where most of the commands are executed by typing rather than clicking on buttons.
 Through iContacts, users would be able to store, manage and search through contact information efficiently and effectively.
 Not only that, users would be able to set display pictures for each contact, and also add reminders for upcoming events.
-Last but not least, iContacts allow users to easily share contact information amongst each other via its import and export mechanisms.
+Last but not least, iContacts allow users to easily share contact information amongst each other via its import and export mechanisms. +
+
+This portfolio is to collate my contributions towards the developing of iContacts. It also showcases the software programming
+knowledge I have learned during the course of CS2103T, as well as how I utilized this knowledge and applied it onto a real-world
+project. This portfolio also contains some suggested enhancements to be developed for iContacts in the future.
 
 *Code contributed*: [https://github.com/CS2103AUG2017-W14-B1/main/blob/master/collated/main/justinpoh.md[Functional code]] [https://github.com/CS2103AUG2017-W14-B1/main/blob/master/collated/test/justinpoh.md[Test code]]
 

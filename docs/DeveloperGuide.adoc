@@ -1060,12 +1060,12 @@ To save, the `saveReminders` method in `StorageManager` is invoked:
 [source, java]
 ----
 
-@Override
+    @Override
     public void saveReminders(ReadOnlyUniqueReminderList reminderList) throws IOException {
         saveReminders(reminderList, remindersStorage.getRemindersFilePath());
     }
 
-@Override
+    @Override
     public void saveReminders(ReadOnlyUniqueReminderList reminderList, String filePath) throws IOException {
         logger.fine("Attempting to write to data file: " + filePath);
         remindersStorage.saveReminders(reminderList, filePath);
@@ -1100,7 +1100,7 @@ public class BirthdayAndReminderListPanel extends UiPart<Region> {
                 this.getStylesheets().add(REMINDER_TODAY_STYLE_SHEET);
             } else if (reminder.isEventWithinThreeDays()) {
                 this.getStylesheets().add(REMINDER_THREE_DAYS_STYLE_SHEET);
-            } else if (!reminder.hasEventPast()) {
+            } else if (!reminder.hasEventPassed()) {
                 this.getStylesheets().add(REMINDER_NORMAL_STYLE_SHEET);
             }
 
@@ -1113,6 +1113,9 @@ public class BirthdayAndReminderListPanel extends UiPart<Region> {
 ----
 
 Depending on the status of the reminder, different styles would be set for the specific `ReminderListViewCell`.
+
+The methods `isEventToday`, `isEventWithinThreeDays` and `hasEventPassed` seen from the code snippet above originates from
+the `Status` object of each `Reminder` object, and propagated from `Status` to `Reminder` then finally to `ReminderCard`.
 
 [discrete]
 ==== Design Consideration
@@ -1132,7 +1135,7 @@ Cons: It is less user-friendly. +
 **Alternative 2:** Commands that affect Reminder objects are undoable/redoable. +
 Pros: More user-friendly. +
 Cons: Users might get careless with changing the information of a Reminder object. This might be detrimental
-as the date and time field of a Reminder are very important.
+as the date and time fields of a Reminder are very important.
 //end::reminder[]
 
 

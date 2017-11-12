@@ -604,7 +604,6 @@ This command works by retrieving the image using `BufferedImage`. The command ex
 It then stores the image in the folder called `/pictures/` present in the same directory as `.jar`  by giving it a unique hashcode based on the user's email address.
 The reading and writing of images is done using the `ImageIO` class.
 
-The following UML diagram shows the classes that r
 
 An event handler is used to notify the `UI` and `Storage` component of the changes made in image and it's name.
 
@@ -754,6 +753,11 @@ public String loadPersonLocation(String address) {
 
 The email command lets the user compose an email in default browser with filled in data like recipients, subject and body.
 
+The email command has various fields to denote the Recipients, Subject, Body and Service. Than relation between them can be shown through the UML diagram below:
+
+image::emailUML.PNG[width="790"]
+_Figure 23 : Sequence diagram for the Email Command._
+
 [NOTE]
 The recipients are all contacts belonging to a particular tag.
 [NOTE]
@@ -802,10 +806,15 @@ Desktop.getDesktop().browse(new URI(String.format(GMAIL_EMAIL_URL, recipients, s
 // tag::fvc[]
 === Frequently Visited Contacts mechanism
 
+This feature brings in a new UI element which is a list of maximum size 5 called `PopularContactList` and each list showing the name, popularity rank and display picture in a `PopularContactCard`.
+These way these UI elements are added is shown in the following diagram:
 
+image::umlfvc.PNG[width="790"]
+_Figure TBD : Class Digram of UI with Popular Contact Panel._
 
 The mechanism to show the top five most frequently visited contacts is facilitated by the `PopularityCounter` of each contact.
 For every new person added into the address book, he is assigned a popularity counter of `0`. The top five popular contacts are extracted by sorting the list based on the field `PopularityCounter` of each person. In case of same popularity counter, the person who was added before is given higher priority.
+
 
 [NOTE]
 This feature is not implemented as a command.The list gets refreshed whenever the popularity counter is supposed to change.
@@ -948,6 +957,12 @@ Cons: Looks very cluttered and has poor User Interface design
 
 // tag::viewtag[]
 === View tag mechanism
+
+The command is added into the logic following the given class diagram:
+
+image::umlLogic.PNG[width="790"]
+_Figure TBD : Class Diagram of Logic._
+
 The `viewtag` command works by setting predicate to the `Observable filteredlist`.
 
 Only one keyword is allowed for the command and it shows all people with thr given tag.

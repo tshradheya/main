@@ -148,8 +148,7 @@ public class ModelManager extends ComponentManager implements Model {
         addressBook.removePerson(target);
         if (sortedfilteredPersons.isEmpty()) {
             showDefaultPanel();
-        }
-        else {
+        } else {
             raise(new SelectFirstAfterDeleteEvent());
         }
         indicateAddressBookChanged();

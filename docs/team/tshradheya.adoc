@@ -5,8 +5,7 @@ ifdef::env-github,env-browser[:outfilesuffix: .adoc]
 
 == Project: iContacts
 
-iContacts is an address book application with target audience as university students for managing contacts and other aspects of their university life in an efficient manner. iContacts is an Command Line Interface(CLI) application where most commands are executed by typing. Through this application, a student can manage his contacts by saving various details like their Display Picture, Birthday, Address and lot more. The user can also add reminders to keep track of deadlines and view location and send emails to his contacts.
-The purpose of this portfolio is to convey to the reader on how to use the various features, the style in which the features are implemented and their architectural design.
+iContacts is an address book application that helps you manage your contacts easily. The application has a GUI but most of the interactions happen using a CLI (Command Line Interface). The application was made by keeping the target audience as university students and its features help a student effectively manage their university life. You can use iContacts to add, edit and delete contacts. It can store various details about the contact which can help students in emailing, finding their location and identifying them by their display picture. It has an easy-to-use search function to find specific contacts quickly. It also provides reminders for upcoming birthdays of contacts within the application, and allows you to create your own reminders for upcoming events.
 
 *Code contributed*: [https://github.com/CS2103AUG2017-W14-B1/main/blob/master/collated/main/tshradheya.md[Functional code]] [https://github.com/CS2103AUG2017-W14-B1/main/blob/master/collated/test/tshradheya.md[Test code]]
 
@@ -15,332 +14,233 @@ The purpose of this portfolio is to convey to the reader on how to use the vario
 ==== External behavior
 
 ---
+#Start of Extract [from: User Guide]#
 
-==== Adding Display picture for each person : `displaypic`
+include::../UserGuide.adoc[tag=displaypic]
 
-Adds a Display Picture to an existing person in the address book. +
-Format: `displaypic INDEX PATHOFIMAGE`
-
-****
-* The picture at the path address will be added to the person at the specified `INDEX` of currently shown list
-* The person can have either 0 or 1 display picture
-* Existing picture will be updated to with the new input path
-* Picture can be removed by leaving the PATHOFIMAGE empty
-* The picture is also deleted when the person is deleted using the `delete` command
-* The image should be on the local computer and the `PATHOFIMAGE` specified must be valid
-****
-
-Examples:
-
-* `displaypic 1 C:\Users\Admin\Desktop\Sem 3 Mods\CS2103T\mypic.jpg`
-Adds the `mypic.jpg` at the given path to the person at `INDEX` 1 as his display picture(See figure 1)
-* `displaypic 3 `
-Removes the existing display picture for the person at `INDEX` 3
-
-image::displaypic.png[width="790"]
-_Figure 1 : Display Picture for contacts_
+#End of Extract#
 
 ---
 
-
 ==== Justification
 
-
-The command is implemented in this manner because of the following:
-
-* By specifying the index, there is no ambiguity as to who should be assigned the display picture.
-* The `PATHOFIMAGE` must be an absolute path on the local device to make sure the image is referenced.
-* The image is stored in directory with a unique name to avoid conflict. Hashcode of user's email address is used to maintain uniqueness.
-* The task is done using CLI to follow project requirements.
-* The image is stored in jpg format to ensure maximum compatibility.
+The Display picture command is used to add a personal factor to the iContacts application. By adding a personalised display picture for each contact, the user can identify their various contacts uniquely especially when you have multiple contacts having the same name.
+The Display picture also adds a visual appeal to the product giving a better User Interface (UI) design and make the product more appealing to the university students.
 
 
 ==== Implementation
 
 ---
+#Start of Extract [from: Developer Guide]#
 
-The Display Picture mechanism is done by using ImageView in JavaFX which is a part of the UI Component.
+include::../DeveloperGuide.adoc[tag=displaypic]
 
-The `displaypic` command adds/updates the display picture for the contact specified. The image is then displayed as ImageView in PersonCard.
-The arguments of the command are `INDEX` and `PATHOFIMAGE`. The image needs to be present in the local device of the user.
-
-This command works by retrieving the image using `BufferedImage`. The command extracts the image from the specified absolute path of image e.g. `C:\Users\Admin\Desktop\My files\pic.jpg`.
-
-By executing the given code below, a new folder named 'pictures/' is created if it is missing. The folder is used to store the images
-
-[source,java]
-----
-
-public void createPictureStorageFolder() throws IOException {
-        requireNonNull(filePath);
-
-        logger.info("Picture folder "  + filePath + " created if missing");
-        File file  = new File(filePath);
-        FileUtil.createIfMissing(file);
-    }
-
-----
-
-It then stores the image in the folder called `/pictures/` present in the same directory as `.jar`  by giving it a unique hashcode based on user's email address.
-The reading and writing of images is done using the `ImageIO` class.
-
-The following UML diagram shows the Storage Architecture for reading and writing of image file:
-
-image::UMLStorageDisplaypic.PNG[width="300"]
-_Figure 2 : UML Diagram for the extended Storage Diagram._
-
-
-The sequence diagram for adding a display picture is shown below: +
-
-image::SDforDisplayPicture.PNG[width="800"]
-_Figure 3 : Sequence Diagram for Display Picture Command._
-
-
-The binder for refreshing the image every time the picture is updated is implemented by the following function:
-
-
-[source,java]
-----
-public class PersonCard extends UiPart<Region> {
-    private void assignImage(ReadOnlyPerson person) {
-
-        Image image = new Image("file:" + "pictures/" + person.getDisplayPicture().getPath() + ".png",
-                            IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
-
-        displayPicture.setFill(new ImagePattern(image));
-    }
-}
-----
-
-The `Circle` shape is used for better UI/UX design and is filled with the `ImagePatten`. The wireframe used to display the image for each person is shown below:
-
-image::WireFramePersonCard.PNG[width="300"]
-_Figure 4 : Wireframe for the UI._
-
-
-The new image stored in directory is given a unique name which is formed using hashcode of the unique email address of each contact:
-
-[source,java]
-----
-public class DisplayPictureCommand extends Command {
-
-    @Override
-    public CommandResult execute() throws CommandException, IOException {
-        /... executes function of Reading and Writing Image ...
-
-        displayPicture.setPath(readAndStoreImage.execute(displayPicture.getPath(),
-                            personToEdit.getEmail().hashCode())); // image name formed in this line
-    }
-}
-----
-
-===== Design Considerations
-
-**Aspect:** At what stage should the image be read and stored +
-**Alternative 1 (current choice):** Make proper Storage Architecture for reading and writing of Image   +
-**Pros:** Follows existing Architectural Design and Software Engineering Principles like OCP  +
-**Cons:** Takes time and tougher to implement +
-**Alternative 2:** Invoke 'ReadAndStoreImage' from Logic component. +
-**Pros:** Easier for new developers to understand the sequence diagram and maintains event-driven nature. +
-**Cons:** Bad Architectural design and doesn't follow the pre existing pattern also defies Law of Demeter
+#End of Extract#
 
 ---
 
-**Aspect:** How should the image be taken from user +
-**Alternative 1 (current choice):** User has to enter the absolute path of image by checking his local device.   +
-**Pros:** Complete CLI process  +
-**Cons:** Might be problematic for user to copy and paste and might result in error of path giving fail command. +
-**Alternative 2:** Pop up a `FileChooser` after command is entered. +
-**Pros:** Easier for users to mention the correct image quickly. +
-**Cons:** Will no longer be a CLI process completely.
 
----
-
-=== Enhancement Added: Display Location of an contact
+=== Enhancement Added: Location Command
 
 ==== External behavior
 
 ---
+#Start of Extract [from: User Guide]#
 
-==== Displaying location to a contact's address: `location`
+include::../UserGuide.adoc[tag=location]
 
-Uses Google Maps to show location of the address of the selected `INDEX`
-Format: location INDEX
-
-****
-* The location is shown in browser panel using Google Maps
-* The current location is the location of device from where the command is executed
-* The command is only valid for INDEX which have an valid address
-****
-
-Examples:
-
-* `location 2`
-Returns location of the address of person at `INDEX` 2
-
-image::directon.PNG[width="790"]
+#End of Extract#
 
 ---
 
-
 ==== Justification
 
-To be filled in according to CS2101
+Google Maps are often used by students to know the exact location of the destination. The command makes it easier for users to find location of a contact’s address and find directions to their place.
+The exact location can be obtained by just typing the command, which is a lot more user friendly than having to search for the location in Google Maps by typing the entire address.
 
 ==== Implementation
 
 ---
+#Start of Extract [from: Developer Guide]#
 
-The location command is an event-driven mechanism. The below diagram shows sequence diagram for it.
+include::../DeveloperGuide.adoc[tag=location]
 
-image::locationSD.PNG[width="790"]
-_Figure 21 : Sequence diagram for the Location Command._
-
-The execution of command raises an event `ShowLocationEvent`. This causes the `BrowserAndReminderPanel` to switch to Node `Browser` irrespective of current state of the application. The activity diagram for such a case is shown below:
-
-image::locationAD.PNG[width="790"]
-_Figure 22 : Sequence diagram for the Location Command._
-
-Following is the code written to ensure the GUI set up for the command.
-
-[source, java]
-----
-private void setUpToShowLocation() {
-    if (currentlyInFront == Node.REMINDERS) {
-        browser.toFront();
-        currentlyInFront = Node.BROWSER;
-        raise(new TurnLabelsOffEvent());
-    }
-}
-----
-
-The URL for denoting the specified person's address in Google Maps is set up through the following code
-
-[source, java]
-----
-public String loadPersonLocation(String address) {
-
-        String[] splitAddressByWords = address.split("\\s");
-
-        String keywordsOfUrl = "";
-
-        for (String word: splitAddressByWords) {
-            keywordsOfUrl += word;
-            keywordsOfUrl += "+";
-        }
-
-        loadPage(GOOGLE_MAPS_URL + keywordsOfUrl);
-}
-----
-
-
-==== Design Considerations
-
-**Aspect:** What to use to show the location +
-**Alternative 1 (current choice):** Show using google maps url in BrowserPanel  +
-**Pros:** We will be able to get the location easily with accuracy +
-**Cons:** Limited functionality of URL +
-**Alternative 2:** Google Maps API +
-**Pros:**  Allows more functionality +
-**Cons:** Uses more resources for the exact same feature and doesn't utilise pre existing browser properly
+#End of Extract#
 
 ---
 
 
-=== Enhancement Added: Email to a group of contacts
+=== Enhancement Added: Email Command
 
 ==== External behavior
 
 ---
-==== Email to a group of people having a particular tag: `email` [V1.3]
+#Start of Extract [from: User Guide]#
 
-Opens up the link to send email to all people of having a particular tag
-Format: email s/SERVICE to/KEYWORD sub/SUBJECT b/BODY
+include::../UserGuide.adoc[tag=email]
 
-****
-* The `KEYWORD` should be a tag which has atleast 1 person associated with it
-* The `SERVICE` supported are only `gmail` and `outlook`
-* The `SUBJECT` and `BODY` prefix are optional and can be not mentioned
-* The email drafting will open up in the default browser of your local device
-* The command will add all people with the `KEYWORD` tag as the recepeints, subject as `SUBJECT` and body as `BODY`
-****
-
-Examples:
-
-* `email s/gmail to/cs2103 sub/Meeting body/Morning 10 am `
-Allows to send email after drafting message to everyone with the tag `cs2103` in the default browser
-
+#End of Extract#
 
 ---
 
-
 ==== Justification
 
-To be filled in according to CS2101
+Email is highly used by university students. Usually the student has to go to the mailing website, individually type in the email id to all those people whom the user wants to email.
+This has been made easier through the `email` command. A user can simply email all contacts with a particular tag for e.g. `cs2103teammates` and get the drafted email with Subject and Body in the default browser.
+
+This saves the user from all the typing and copy pasting of email id's from various places just to draft a simple email.
 
 ==== Implementation
 
 ---
+#Start of Extract [from: Developer Guide]#
 
-==== Emailing mechanism
+include::../DeveloperGuide.adoc[tag=email]
 
-The email command lets the user compose an email in default browser with filled in data like recipients, subject and body.
-
-[NOTE]
-The recipients are all contacts belonging to a particular tag.
-[NOTE]
-The only two services offered are `gmail` and `outlook` as our target users are students.
-
-The email command through an event driven mechanism. The below diagram shows sequence diagram for it.
-
-image::emailSD.PNG[width="790"]
-_Figure 23 : Sequence diagram for the Email Command._
-
-The given command is parsed to know the `Service` , `tag` to which email has to be sent, `Subject` and `Body`.
-
-The parsing takes place in the following manner:
-
-image::ParserSDEmail.PNG[width="790"]
-_Figure 24 : Sequence diagram for parsing the Email Command._
-
-
-The execution of command raises an event `SendingEmailEvent`.
-
-The URL for composing the mail set up through the following code
-
-[source, java]
-----
-public static final String GMAIL_EMAIL_URL =
-            "https://mail.google.com/mail/?view=cm&fs=1&tf=1&source=mailto&to=%1$s&su=%2$s&body=%3$s";
-
-public static final String OUTLOOK_EMAIL_URL =
-            "https://outlook.office.com/?path=/mail/action/compose&to=%1$s&subject=%2$s&body=%3$s";
-
-Desktop.getDesktop().browse(new URI(String.format(GMAIL_EMAIL_URL, recipients, subject, body)));
-----
-
-==== Design Considerations
-
-**Aspect:** Where to compose the mail +
-**Alternative 1 (current choice):** Opens the default browser of Desktop  +
-**Pros:** The browser has user already signed up and browser supports the url +
-**Cons:** Depending on third party apps +
-**Alternative 2:** Open in `BrowserPanel` +
-**Pros:** No dependency on other apps +
-**Cons:** Does not auto fill in the text due to older version of browser
+#End of Extract#
 
 ---
 
-=== Enhancement Proposed: Add command `remark`
 
-{Explain similar to the Undo/Redo feature above.}
+=== Enhancement Added: Frequently Visited Contacts
+
+==== External behavior
+
+---
+#Start of Extract [from: User Guide]#
+
+include::../UserGuide.adoc[tag=fvc]
+
+#End of Extract#
+
+---
+
+==== Justification
+
+Through the frequently viewed contacts list of top 5 popular contacts, the user can easily view their details by selecting them rather than having to type commands and search for them.
+
+It also provides a better user experience as the user can see the people he has frequenlty visited and are his favourites on top of the list.
+
+
+==== Implementation
+
+---
+#Start of Extract [from: Developer Guide]#
+
+include::../DeveloperGuide.adoc[tag=fvc]
+
+#End of Extract#
+
+---
+
+
+
+=== Enhancement Added: Details Panel
+
+==== External behavior
+
+---
+#Start of Extract [from: User Guide]#
+
+include::../UserGuide.adoc[tag=details]
+
+#End of Extract#
+
+---
+
+==== Justification
+
+This command was made to improve the UI for better user experience. Now the user can only see important details in the person card and can use this command to view more details in better design.
+
+The `details` command also works by manual selection which gives more freedom to user when viewing details of a particular user.
+
+
+==== Implementation
+
+---
+#Start of Extract [from: Developer Guide]#
+
+include::../DeveloperGuide.adoc[tag=details]
+
+#End of Extract#
+
+---
+
+=== Enhancement Added: Viewtag  Command
+
+==== External behavior
+
+---
+#Start of Extract [from: User Guide]#
+
+include::../UserGuide.adoc[tag=viewtag]
+
+#End of Extract#
+
+---
+
+==== Justification
+
+
+Tags can be considered as groups by user. This feature is mainly implemented to enhance usage of other commands. +
+For e.g. in `export` command to export all contacts having a particular tag, user will have to use `viewtag cs2103team` and then use range as `all` for the `export` command than having to type the index of each of them.
+
+It only supports one keyword as `filter` command was made as an stronger search command for `find` and `viewtag`.
+
+==== Implementation
+
+---
+#Start of Extract [from: Developer Guide]#
+
+include::../DeveloperGuide.adoc[tag=viewtag]
+
+#End of Extract#
+
+---
+
+=== Enhancement Proposed: Saving Data on Server
+
+==== External Behaviour
+
+This feature will make sure the data of contacts and reminders is stored in the servers online. The data files and images are stored in the cloud and cannot be directly changed by opening them on your device.
+
+This will be automatically done once the user registers in the application.
+The files are encrypted using the SHA algorithm to prevent it from being read by others. This ensures that your data is secure and there is no privacy law violation.
+
+
+
+==== Justification
+
+This feature will make the product more personalised as the user will have to register to use this application.
+
+Moreover, the user can now access his data from any device as it is stored on cloud storage. The data cannot be directly manipulated since it is in clound and hence the application won't crash as data will never be corrupted.
+
+==== Implementation
+
+A login feature will be first implemented to identify user's uniquely.
+
+Through the following use case diagram, signing up of user will allow data to be stored on cloud which can downloaded anytime for backup purposes.
+
+
+image::usecase.PNG[width="600"]
+_Figure 1 : Use case Diagram._
 
 === Other contributions
 
 * Managed all Issues and Milestone by managing the project and assigning work
-* Managed merging of all PR's and handling of Merge Conflicts
 * Wrote additional tests to increase coverage from 88% to 91%
+* Took the role of Team Leader to make important decisions regarding development of product.
+* Managed GitHub effectively to keep track of issues, merging Pull requests by resolving conflicts and keeping track of deadlines so that the weekly releases are made on time with a working product.
+* Fixed various bugs in the product including some bugs which existed previously in the product [Pull Request #231] [Pull Request #216].
+* Added several Use Cases for features in Developed Guide [Pull Request #57].
+* Improved User Interface design by adding Details Panel [Pull Request #197].
+* Added Frequently Visited Contact List [Pull Request #167].
+* Implemented Email Feature [Pull Request #140].
+* Helped teammate fix bugs in his feature [Pull Request #236].
+* Contributed in User Guide and Developer Guide to enhance its language [Pull Request #239].
 
-== Project: NUSEvents
+== Project: NUSEvents Android Application
 
-{Optionally (not graded), you may include other projects in your portfolio.}
+Students coming into university want to experience an enriching and diverse campus life. One of the most integral parts of a campus life is the host of events taking place around the campus. We want to bring forth an application, called NUSEvents by means of which members of the NUS family will be able to view the various events going around the campus on a day to day basis. Now there will be no need to worry about searching websites, scrolling through emails and pages on Facebook to know what events are being organized by various faculties and clubs. This will be convenient for all students and members of the various faculties as it will enable them to indicate their interest in the events that they want to attend.
+
+Students will get easy access to the list of activities that will take place, thus making sure that they are notified of all important events which otherwise could have gone unnoticed. For a university like NUS, which is rated to have the best campus life, NUSEvents application will bring to you all that you need to know about the various happenings in NUS and improve the campus life experience of students. Hence it will ensure an enjoyable and fulfilling campus life for the members of the NUS family.

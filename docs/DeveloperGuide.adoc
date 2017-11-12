@@ -568,6 +568,7 @@ _Figure 18 : Activity diagram for UndoRedoStack_
 // end::undoredo[]
 
 
+// tag::displaypic[]
 === Display Picture mechanism
 
 The `displaypic` command adds/updates the display picture for the contact specified. The image is then displayed as `ImageView` in `PersonCard` and `DetailsPanel`.
@@ -685,6 +686,11 @@ The command is implemented in this manner because of the following:
 **Cons:** It will no longer be a complete CLI process.
 
 ---
+
+// end::displaypic[]
+
+// tag::location[]
+
 === Location mechanism
 The location command is implemented in the form of an event-driven mechanism . The diagram below (Refer to Figure 21) shows the sequence diagram for it.
 
@@ -731,7 +737,7 @@ public String loadPersonLocation(String address) {
 
 
 [discrete]
-==== Design Considerations
+==== Design Consideration
 
 **Aspect:** What to use to show the location +
 **Alternative 1 (current choice):** Show using google maps url in BrowserPanel  +
@@ -741,7 +747,9 @@ public String loadPersonLocation(String address) {
 **Pros:**  It will provide more functionality. +
 **Cons:** It could cause more resources to be used for the exact same feature and wouldn’t utilise pre-existing browser properly.
 
+// end::location[]
 
+// tag::email[]
 === Email mechanism
 
 The email command lets the user compose an email in default browser with filled in data like recipients, subject and body.
@@ -779,7 +787,7 @@ Desktop.getDesktop().browse(new URI(String.format(GMAIL_EMAIL_URL, recipients, s
 ----
 
 [discrete]
-==== Design Considerations
+==== Design Consideration
 
 **Aspect:** Where to compose the mail +
 **Alternative 1 (current choice):** Opens the default browser of Desktop  +
@@ -789,6 +797,9 @@ Desktop.getDesktop().browse(new URI(String.format(GMAIL_EMAIL_URL, recipients, s
 **Pros:** No dependency on other apps +
 **Cons:** Does not auto fill in the text due to older version of browser
 
+// end::email[]
+
+// tag::fvc[]
 === Frequently Visited Contacts mechanism
 
 
@@ -826,7 +837,7 @@ Following are the commands which will increase the `PopularityCounter` by one fo
 On execution of any of the following command, an extra event is raised which updates the popular contact list after updating the popularity counter of the contact.
 The sequence diagram for the extra event is shown below for `select` command:
 
-image::selectFrequentlyVisited.PNG[width="790"]
+image::selectFreuentlyVisited.PNG[width="790"]
 _Figure TBD : Sequence diagram for frequently visited mechanism for `select` command._
 
 
@@ -864,9 +875,9 @@ _Figure TBD : Sequence diagram for frequently visited mechanism._
 **Alternative 2:** Execute command to refresh list of popular contacts +
 **Pros:** Reduces regular refresh of list +
 **Cons:** Will have to keep track of command history to see the list of commands executed before previous execution of favourites command
+// end::fvc[]
 
-
-
+// tag::details[]
 === Details Panel Implementation
 
 The `detail` command shows more details of the contact like address, birthday, email in addition to the details shown in the `PersonCard` of `PersonListPanel`
@@ -921,6 +932,7 @@ public static TagColor getInstance() {
     }
 ----
 
+
 ==== Design Consideration
 
 **Aspect:** How to improve UI +
@@ -932,6 +944,42 @@ Pros: Reduces effort of selection of contact to see extra details +
 Cons: Looks very cluttered and has poor User Interface design
 
 
+//end::details[]
+
+// tag::viewtag[]
+=== View tag mechanism
+The `viewtag` command works by setting predicate to the `Observable filteredlist`.
+
+Only one keyword is allowed for the command and it shows all people with thr given tag.
+
+The method `test(ReadOnlyPerson person)` iterates through the `tagKeywords` to find a match of every `person` from the address book.
+
+There is use of streams and lambda[Java 8 features] to make the code more readable as shown below:
+
+[source, java]
+----
+public boolean test(ReadOnlyPerson person) {
+        Set<Tag> tagsOfPerson = person.getTags();
+
+        return tagsOfPerson.stream()
+                .anyMatch(tagMatches -> tagMatches.getTagName().equalsIgnoreCase(keyword));
+
+    }
+----
+
+
+[discrete]
+==== Design Consideration
+
+**Aspect:** How to filter the list +
+**Alternative 1 (current choice):** Use of Lambda and Stream  +
+**Pros:**  Code is more readable +
+**Cons:** Sometimes takes more time to process than normal loops +
+**Alternative 2:** Loops and Conditions +
+**Pros:**  Known to be faster than Streams at times +
+**Cons:** Harder to avoid arrow headed violation of coding style.
+
+// end::viewtag[]
 
 
 // tag::toggle[]

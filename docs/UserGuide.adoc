@@ -180,6 +180,7 @@ only takes place when the program is started up, and when an edit is made to a r
 ====
 // end::addReminder[]
 
+//tag::details[]
 === Viewing details of a contact: `details`
 
 Shows the full contact information of a person in the address book. +
@@ -197,6 +198,7 @@ Show the full contact information of the person at index 1 (Refer to Figure 6).
 
 image::details.png[width=790]
 _Figure 6: The full contact information of the person at index 1._
+//end::details[]
 
 === Listing all persons : `list`
 
@@ -275,6 +277,7 @@ Edits the content of the 1st reminder to be `Drink coffee`.
 Edits the date and time of the 3rd reminder to be `25/12/2017` and `19:00` respectively.
 // end::editReminder[]
 
+// tag::fvc[]
 === Frequently Viewed Contacts
 
 Shows the user a list of top five contacts which the user has viewed the most +
@@ -301,7 +304,7 @@ This can be seen in the image below:
 
 image::frequentlyVisited.PNG[width="790"]
 _Figure 7: `Roy Balakrishnan` is moved to the top of the list._
-
+//end::fvc[]
 
 // tag::nickname[]
 === Adding a nickname to a person : `nickname`
@@ -323,6 +326,8 @@ Adds a nickname `Eddie` to the 1st person.
 Removes the nickname from the the 1st person.
 // end::nickname[]
 
+// tag::displaypic[]
+
 === Adding Display picture for each person : `displaypic`
 
 Adds a Display Picture to an existing person in the address book. +
@@ -333,7 +338,7 @@ Format: `displaypic INDEX [PATHOFIMAGE]`
 * The person can have either 0 or 1 display picture
 * Existing picture will be updated to with the new input path
 * Picture can be removed by leaving the PATHOFIMAGE empty
-* The image should be on the local computer and the PATHOFIMAGE must be valid
+* The image should be on the local computer and the PATHOFIMAGE must be valid although it can bedeleted from local device after command is executed
 * If no image is given then the default picture will be shown
 ****
 
@@ -346,6 +351,10 @@ Removes the existing display picture for the person at `INDEX` 2
 
 image::displaypic.png[width="790"]
 _Figure 8: Adds a picture to the first person._
+
+// end::displaypic[]
+
+// tag::location[]
 
 === Displaying location to a contact's address: `location`
 
@@ -367,6 +376,10 @@ Returns location of the address of person at `INDEX` 2 (Refer to Figure 9)
 image::location.PNG[width="790"]
 _Figure 9: Displays the location of the second person._
 
+// end::location[]
+
+// tag::email[]
+
 === Emailing to a group of people having a particular tag: `email`
 
 Opens up the link to send email to all people of having a particular tag. A drafter email with subject, body and recipients is opened in default browser +
@@ -386,6 +399,8 @@ Examples:
 Allows to send email after drafting message to everyone with the tag `cs2103` in the default browser
 
 //image::email.PNG[width="790"]
+
+// end::email[]
 
 
 === Locating persons by name: `find`
@@ -408,7 +423,7 @@ Returns `john` and `John Doe`
 * `find Betsy Tim John` +
 Returns any person having names `Betsy`, `Tim`, or `John`
 
-
+// tag::viewtag[]
 === Finding all people associated with a particular Tag: `viewtag`
 
 Finds all people who have the tag given in the keyword. +
@@ -431,6 +446,7 @@ Returns `Alex` and `Bernice1 as they are having the tag `friends` (Refer to Figu
 
 image::viewtag.PNG[width="790"]
 _Figure 10: Listing all contacts with the tag `friends`._
+//end::viewtag[]
 
 // tag::filter[]
 === Finding all people by name and associated with one or more tags: `filter`

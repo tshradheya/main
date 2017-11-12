@@ -53,13 +53,10 @@ public class BirthdayReminderCard extends UiPart<Region> {
      * Initiates the appropriate icon depending on {@code person}'s birthday.
      */
     private void initIcon() {
-        if (person.getBirthday().isBirthdayToday()) {
+        if (person.getBirthday().isBirthdayToday() || person.getBirthday().isBirthdayTomorrow()) {
             icon.setVisible(true);
-        } else if (person.getBirthday().isBirthdayTomorrow()) {
-            icon.setVisible(true);
-        } else {
-            icon.setVisible(false);
         }
+        icon.setVisible(false);
     }
 
     @Override

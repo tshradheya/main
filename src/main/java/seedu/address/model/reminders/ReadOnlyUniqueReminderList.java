@@ -10,7 +10,7 @@ public interface ReadOnlyUniqueReminderList {
 
     /**
      * Returns an unmodifiable view of the reminders list.
-     * This list will not contain any duplicate persons.
+     * This list will not contain any duplicate reminders.
      */
     ObservableList<ReadOnlyReminder> asObservableList();
 }

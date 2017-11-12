@@ -659,21 +659,21 @@ The command is implemented in this manner because of the following:
 
 **Aspect:** At what stage should the image be read and stored +
 **Alternative 1 (current choice):** Make proper Storage Architecture for reading and writing of Image   +
-**Pros:** Follows existing Architectural Design and Software Engineering Principles like OCP  +
-**Cons:** Takes time and tougher to implement +
+**Pros:** It will follow the existing Architectural Design and Software Engineering Principles like OCP.  +
+**Cons:** It will take more time and will be tougher to implement. +
 **Alternative 2:** Invoke 'ReadAndStoreImage' from Logic component. +
-**Pros:** Easier for new developers to understand the sequence diagram and maintains event-driven nature. +
-**Cons:** Bad Architectural design and doesn't follow the pre existing pattern also defies Law of Demeter
+**Pros:** : It will make it easier for new developers to understand the sequence diagram and maintains event-driven nature. +
+**Cons:** It will cause bad architectural design and won’t follow the pre-existing pattern and moreover will defy the Law of Demeter.
 
 ---
 
 **Aspect:** How should the image be taken from user +
 **Alternative 1 (current choice):** User has to enter the absolute path of image by checking his local device.   +
-**Pros:** Complete CLI process  +
-**Cons:** Might be problematic for user to copy and paste and might result in error of path giving fail command. +
+**Pros:** It will be a complete CLI process.  +
+**Cons:** It might be problematic for user to copy and paste and might result in error of path giving fail command. +
 **Alternative 2:** Pop up a `FileChooser` after command is entered. +
-**Pros:** Easier for users to mention the correct image quickly. +
-**Cons:** Will no longer be a CLI process completely.
+**Pros:** It will be easier for users to mention the correct image quickly. +
+**Cons:** It will no longer be a complete CLI process.
 
 ---
 === Location mechanism
@@ -725,11 +725,11 @@ public String loadPersonLocation(String address) {
 
 **Aspect:** What to use to show the location +
 **Alternative 1 (current choice):** Show using google maps url in BrowserPanel  +
-**Pros:** We will be able to get the location easily with accuracy +
-**Cons:** Limited functionality of URL +
+**Pros:** We will be able to get the location easily with accuracy. +
+**Cons:** It could cause problem due to limited functionality of URL. +
 **Alternative 2:** Google Maps API +
-**Pros:**  Allows more functionality +
-**Cons:** Uses more resources for the exact same feature and doesn't utilise pre existing browser properly
+**Pros:**  It will provide more functionality. +
+**Cons:** It could cause more resources to be used for the exact same feature and wouldn’t utilise pre-existing browser properly.
 
 
 === Email mechanism

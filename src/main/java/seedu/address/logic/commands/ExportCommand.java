@@ -35,7 +35,7 @@ public class ExportCommand extends Command {
 
     public static final String MESSAGE_ARGUMENTS = "Range: %1$s, Path: %2$s";
 
-    public static final String MESSAGE_EXPORT_FAIL = "Export Failed";
+    public static final String MESSAGE_EXPORT_FAIL = "Export Failed Invalid RANGE or PATH";
     public static final String MESSAGE_EXPORT_SUCCESS = "Export Successful";
 
     private final String range;
@@ -62,9 +62,18 @@ public class ExportCommand extends Command {
             for (int i = 0; i < multipleRange.length; i++) {
                 if (multipleRange[i].contains("-")) {
                     String[] rangeToExport = multipleRange[i].split("-");
-                    exportRange(Integer.parseInt(rangeToExport[0]), Integer.parseInt(rangeToExport[1]));
+                    try {
+                        exportRange(Integer.parseInt(rangeToExport[0]), Integer.parseInt(rangeToExport[1]));
+                    } catch (NumberFormatException e) {
+                        throw new CommandException(MESSAGE_EXPORT_FAIL);
+                    }
+
                 } else {
-                    exportSpecific(Integer.parseInt(multipleRange[i]));
+                    try {
+                        exportSpecific(Integer.parseInt(multipleRange[i]));
+                    } catch (NumberFormatException e) {
+                        throw new CommandException(MESSAGE_EXPORT_FAIL);
+                    }
                 }
             }
         }
@@ -73,7 +82,7 @@ public class ExportCommand extends Command {
             AddressBookStorage storage = new XmlAddressBookStorage(path + ".xml");
             storage.saveAddressBook(exportBook);
         } catch (IOException ioe) {
-            return new CommandResult(MESSAGE_EXPORT_FAIL);
+            throw new CommandException(MESSAGE_EXPORT_FAIL);
         }
         return new CommandResult(MESSAGE_EXPORT_SUCCESS);
     }
@@ -100,7 +109,7 @@ public class ExportCommand extends Command {
         try {
             exportBook.setPersons(lastShownList);
         } catch (DuplicatePersonException e) {
-            e.printStackTrace();
+            assert false : "export file should not have duplicate persons";
         }
     }
 
@@ -110,12 +119,12 @@ public class ExportCommand extends Command {
     private void exportSpecific(int index) throws CommandException {
         List<ReadOnlyPerson> lastShownList = model.getFilteredPersonList();
         try {
-            if (index >= lastShownList.size()) {
+            if (index > lastShownList.size()) {
                 throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
             }
             exportBook.addPerson(lastShownList.get(index - 1));
         } catch (DuplicatePersonException e) {
-            e.printStackTrace();
+            assert false : "export file should not have duplicate persons";
         }
     }
 
@@ -129,7 +138,7 @@ public class ExportCommand extends Command {
                 exportBook.addPerson(lastShownList.get(i));
             }
         } catch (DuplicatePersonException e) {
-            e.printStackTrace();
+            assert false : "export file should not have duplicate persons";
         }
     }
 

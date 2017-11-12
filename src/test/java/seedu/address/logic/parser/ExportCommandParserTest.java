@@ -16,7 +16,7 @@ public class ExportCommandParserTest {
     private ExportCommandParser parser = new ExportCommandParser();
 
     @Test
-    public void parse_indexSpecified_failure() throws Exception {
+    public void parse_export_success() throws Exception {
 
         String userInput = " " + PREFIX_RANGE + RANGE_ALL + " " + PREFIX_PATH + PATH_EXPORT;
         ExportCommand expectedCommand = new ExportCommand(RANGE_ALL, PATH_EXPORT);

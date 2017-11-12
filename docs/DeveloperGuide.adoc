@@ -16,7 +16,13 @@ By: `Team SE-EDU`      Since: `Jun 2016`      Licence: `MIT`
 
 == Introduction
 
-iContacts is an address book application with target audience as university students for managing contacts. This guide provides information for developers who wish to join our team as either developer or tester, and is intended to get you to understand the internal designs of the application, so that you will be able to work with the application quickly. The guide explains the design, implementation of noteworthy features, and the testing methods used in iContacts.
+iContacts is an address book application whose target audience is university students. iContacts aim to help
+students manage their contacts effectively and efficiently, as well as providing many other features
+such as setting reminders, tagging of contacts, emailing and more.
+This guide provides information for those who wish to join our team as either a developer or tester,
+and is intended to help you quickly understand the internal design of the application so that you will be able to
+understand how this application work. The guide also explains in detail the implementation of noteworthy features,
+as well as the testing methods used in developing iContacts.
 
 == Setting up
 
@@ -115,7 +121,7 @@ Below is a quick overview of each component:
 
 * link:#common-classes[*`Commons`*] represents a collection of classes used by multiple other components. Two of those classes play important roles at the architecture level:
 
-** `EventsCenter` : This class (written using https://github.com/google/guava/wiki/EventBusExplained[Google's Event Bus library]) is used by the components to communicate with other components using events (i.e. a form of _Event Driven_ design)
+** `EventsCenter` : This class (written using https://github.com/google/guava/wiki/EventBusExplained[Google's Event Bus library]) is used by the components to communicate with other components using events (i.e. a form of _Event Driven_ design).
 ** `LogsCenter` : This class is used by many classes to write log messages to iContacts' log file.
 
 * The rest of iContacts consists of four components:
@@ -130,7 +136,7 @@ Each of the four components
 *** defines its _API_ in an `interface` with the same name as the Component.
 *** exposes its functionality using a `{Component Name}Manager` class.
 
-For example, the `Logic` component (Refer to Figure 2) defines its API in the `Logic.java` interface and exposes its functionality using the `LogicManager.java` class.
+For example, the `Logic` component (Refer to Figure 2) defines its _API_ in the `Logic.java` interface and exposes its functionality using the `LogicManager.java` class.
 
 image::LogicClassDiagram.png[width="800"]
 _Figure 2 : Class Diagram of the Logic component_
@@ -144,7 +150,7 @@ image::SDforDeletePerson.png[width="800"]
 _Figure 3 : Component interactions for `delete 1` command (Part 1)_
 
 [NOTE]
-Note how the `Model` simply raises a `AddressBookChangedEvent` when the Address Book data are changed, instead of asking the `Storage` to save the updates to the hard disk.
+Note how the `Model` simply raises an `AddressBookChangedEvent` when the address book data are changed, instead of asking the `Storage` to save the updates to the hard disk.
 
 The diagram below (Refer to Figure 4) shows how the `EventsCenter` reacts to that event, which eventually results in the updates being saved to the hard disk and the status bar of the UI being updated to reflect the 'Last Updated' time.
 
@@ -152,7 +158,7 @@ image::SDforDeletePersonEventHandling.png[width="800"]
 _Figure 4 : Component interactions for `delete 1` command (Part 2)_
 
 [NOTE]
-Note how the event is propagated through the `EventsCenter` to the `Storage` and `UI` without the `Model` having to be coupled to either of them. This is an example of how this Event-Driven approach helps us reduce direct coupling between components.
+Note how the event is propagated through the `EventsCenter` to the `Storage` and `UI` without the `Model` having to be coupled to either of them. This is an example of how this _Event-Driven_ approach helps us reduce direct coupling between components.
 
 === Components
 
@@ -160,12 +166,12 @@ This section explains the `UI`, `Logic`, `Model` and `Storage` component used in
 
 ==== UI component
 
-The `UI` component provides with the API of Graphical User Interface. The figure below (Refer to Figure 5) shows the structure of the `UI` component.
+The `UI` component provides  the _API_ of Graphical User Interface. The figure below (Refer to Figure 5) shows the structure of the `UI` component.
 
 image::UiClassDiagram.png[width="800"]
 _Figure 5 : Structure of the UI component_
 
-*API* : link:{repoURL}/src/main/java/seedu/address/ui/Ui.java[`Ui.java`]
+*_API_* : link:{repoURL}/src/main/java/seedu/address/ui/Ui.java[`Ui.java`]
 
 The `UI` consists of a `MainWindow` that is made up of parts e.g.`CommandBox`, `ResultDisplay`, `PersonListPanel`, `StatusBarFooter`, `BrowserPanel` etc. All of these, including the `MainWindow`, inherit from the abstract `UiPart` class.
 
@@ -186,23 +192,23 @@ _Figure 6 : Structure of the Logic component_
 image::LogicCommandClassDiagram.png[width="800"]
 _Figure 7 : Structure of Commands in the Logic component. This diagram shows finer details concerning `XYZCommand` and `Command` in Figure 6_
 
-*API* :
+*_API_* :
 link:{repoURL}/src/main/java/seedu/address/logic/Logic.java[`Logic.java`]
 
 The `Logic` component uses the `AddressBookParser` class to parse the user command. This results in a `Command` object which is executed by the `LogicManager`. The command execution can affect the `Model` (e.g. adding a person) and/or raise events. The result of the command execution is encapsulated as a `CommandResult` object which is passed back to the `UI`.
 
-The figure below (Refer to Figure 8) shows the sequence diagram of interactions within the `Logic` component for the `execute("delete 1")` API call.
+The figure below (Refer to Figure 8) shows the sequence diagram of interactions within the `Logic` component for the `execute("delete 1")` _API_ call.
 
 image::DeletePersonSdForLogic.png[width="800"]
 _Figure 8 : Interactions inside the Logic component for the `delete 1` command_
 
 ==== Model component
-The `Model` component handles the contacts in the address book and all its stored details in data structures which provide API to create, read, update and delete the contacts. The figure below (Refer to Figure 9) shows the structure of the `Model` component.
+The `Model` component handles the contacts in the address book and all its stored details in data structures which provide _APIs_ to create, read, update and delete the contacts. The figure below (Refer to Figure 9) shows the structure of the `Model` component.
 
 image::ModelClassDiagram.png[width="800"]
 _Figure 9 : Structure of the Model component_
 
-*API* : link:{repoURL}/src/main/java/seedu/address/model/Model.java[`Model.java`]
+*_API_* : link:{repoURL}/src/main/java/seedu/address/model/Model.java[`Model.java`]
 
 The `Model` component
 
@@ -217,12 +223,13 @@ The `Storage` component handles the storage of all data of the address book in t
 image::StorageClassDiagram.png[width="800"]
 _Figure 10 : Structure of the Storage component_
 
-*API* : link:{repoURL}/src/main/java/seedu/address/storage/Storage.java[`Storage.java`]
+*_API_* : link:{repoURL}/src/main/java/seedu/address/storage/Storage.java[`Storage.java`]
 
 The `Storage` component
 
 * can save `UserPref` objects in json format and read it back.
 * can save the address book data in xml format and read it back.
+* can save the reminder data in xml format and read it back.
 
 === Common classes
 
@@ -513,7 +520,7 @@ The following sequence diagram (Refer to Figure 15) shows how the undo operation
 image::UndoRedoSequenceDiagram.png[width="800"]
 _Figure 15 : Sequence diagram of the undo operation_
 
-The redo does the exact opposite (pops from `redoStack`, push to `undoStack`, and restores the address book to the state after the command is executed).
+The redo operation does the exact opposite (pops from `redoStack`, push to `undoStack`, and restores the address book to the state after the command is executed).
 
 [NOTE]
 If the `redoStack` is empty, then there are no other commands left to be redone, and an `Exception` will be thrown when popping the `redoStack`.
@@ -916,7 +923,7 @@ image::togglingMechanism3.png[width="790"]
 _Figure 27 : Sequence diagram for the second part of the toggling mechanism._
 
 The `BrowserAndRemindersPanel` class has a variable `currentlyInFront` keeping track of which panel (browser or reminders) is currently being shown.
-`toggleBrowserPanel` would then use the `currentlyInFront` variable to toggle to the correct panel, and then update `currentlyInFront` appropriately:
+`toggleBrowserPanel` would then use the `currentlyInFront` variable to toggle to and show the correct panel, and then update `currentlyInFront` appropriately:
 
 [source, java]
 ----
@@ -972,6 +979,7 @@ public class BrowserAndRemindersPanel extends UIPart<Region> {
 The `LoadPersonWebpageEvent` is posted whenever the `select` command is executed. Within the `handleLoadPersonPageEvent`
 method, the statement `browser.toFront()` and the method `setUpToShowWebBrowser` would then bring the browser panel to the front no matter what, and also make it visible.
 
+[discrete]
 ==== Design Considerations
 
 **Aspect:** Usage of browser area +
@@ -1152,27 +1160,27 @@ public class BirthdayAndReminderListPanel extends UiPart<Region> {
 Depending on the status of the reminder, different styles would be set for the specific `ReminderListViewCell`.
 
 The methods `isEventToday`, `isEventWithinThreeDays` and `hasEventPassed` seen from the code snippet above originate from
-the `Status` object of each `Reminder` object, and propagated from `Status` to `Reminder` then finally to `ReminderCard`.
+the `Status` object of each `Reminder` object and propagated from `Status` to `Reminder` then finally to `ReminderCard`.
 
 [discrete]
 ==== Design Consideration
-**Aspect:** How to store Reminders in-memory +
-**Alternative 1 (current choice):** Store Reminder objects in UniqueReminderList, independent of AddressBook. +
+**Aspect:** How to store `Reminder` in-memory +
+**Alternative 1 (current choice):** Store `Reminder` objects in `UniqueReminderList`, independent of `AddressBook`. +
 Pros: Follows the _Single-Responsibility Principle_, because a reminder should not be an address book's responsibility. +
 Cons: More changes have to be made to the existing code base, making it tougher to implement. +
-**Alternative 2:** Store Reminder objects within AddressBook. +
-Pros: Easier to implement as lesser changes have to be made to the existing program. +
+**Alternative 2:** Store `Reminder` objects within `AddressBook`. +
+Pros: Easier to implement as lesser changes have to be made to the existing code base. +
 Cons: Violates the _Single-Responsibility Principle_.
 
-**Aspect:** Should the undo/redo mechanism be applied to Reminder +
-**Alternative 1 (current choice):** Commands that affect Reminder objects are not undoable/redoable. +
+**Aspect:** Should the undo/redo mechanism be applied to `Reminder` +
+**Alternative 1 (current choice):** Commands that affect `Reminder` objects are not undoable/redoable. +
 Pros: Users would be more aware of any changes they made to a reminder, as they are forced to
 use the `editreminder`, `addreminder` and `deletereminder` commands.
 Cons: It is less user-friendly. +
-**Alternative 2:** Commands that affect Reminder objects are undoable/redoable. +
+**Alternative 2:** Commands that affect `Reminder` objects are undoable/redoable. +
 Pros: More user-friendly. +
-Cons: Users might get careless with changing the information of a Reminder object. This might be detrimental
-as the date and time fields of a Reminder are very important.
+Cons: Users might get careless with changing the information of a `Reminder` object. This might be detrimental
+as the date and time fields of a `Reminder` are very important.
 //end::reminder[]
 
 
@@ -1601,10 +1609,10 @@ This application is targeted towards University students, aiming to meet their n
 *  User Profile
 
 **  University Students
-**  Students part of many CCA clubs and committees
-**  Students taking role of Teaching Assistant/Tutor
-**  Students who is interning and has colleagues
-**  Students having close friends and family
+**  Students who are part of many CCA clubs and committees
+**  Students taking on the role of Teaching Assistant/Tutor
+**  Students who are interning and have colleagues
+**  Students who have close friends and family
 
 [appendix]
 == User Stories

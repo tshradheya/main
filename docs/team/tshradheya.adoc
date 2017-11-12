@@ -227,20 +227,24 @@ _Figure 1 : Use case Diagram._
 
 === Other contributions
 
-* Managed all Issues and Milestone by managing the project and assigning work
-* Wrote additional tests to increase coverage from 88% to 91%
+* Managed all Issues and Milestone by managing the project and assigning work.
+* Wrote additional tests to increase coverage to 91%
 * Took the role of Team Leader to make important decisions regarding development of product.
 * Managed GitHub effectively to keep track of issues, merging Pull requests by resolving conflicts and keeping track of deadlines so that the weekly releases are made on time with a working product.
-* Fixed various bugs in the product including some bugs which existed previously in the product [Pull Request #231] [Pull Request #216].
-* Added several Use Cases for features in Developed Guide [Pull Request #57].
-* Improved User Interface design by adding Details Panel [Pull Request #197].
-* Added Frequently Visited Contact List [Pull Request #167].
-* Implemented Email Feature [Pull Request #140].
-* Helped teammate fix bugs in his feature [Pull Request #236].
-* Contributed in User Guide and Developer Guide to enhance its language [Pull Request #239].
+* Fixed various(5+) bugs in the product including some bugs which existed previously in the product link:https://github.com/CS2103AUG2017-W14-B1/main/pull/231[`Pull Request #231`] link:https://github.com/CS2103AUG2017-W14-B1/main/pull/216[`Pull Request #216`].
+* Added several Use Cases for features in Developed Guide link:https://github.com/CS2103AUG2017-W14-B1/main/pull/57[`Pull Request #57`].
+* Improved User Interface design by adding Details Panel link:https://github.com/CS2103AUG2017-W14-B1/main/pull/197[`Pull Request #197`].
+* Added Frequently Visited Contact List link:https://github.com/CS2103AUG2017-W14-B1/main/pull/167[`Pull Request #167`].
+* Implemented Email Feature link:https://github.com/CS2103AUG2017-W14-B1/main/pull/140[`Pull Request #140`].
+* Helped teammate fix bugs in his feature link:https://github.com/CS2103AUG2017-W14-B1/main/pull/236[`Pull Request #236`].
+* Contributed in User Guide and Developer Guide to enhance its language link:https://github.com/CS2103AUG2017-W14-B1/main/pull/239[`Pull Request #239`].
+* Helped several people on the forum with their technical difficulties.
+* Found 4 bugs during acceptance testing link:https://github.com/CS2103AUG2017-T17-B4/main/issues?utf8=%E2%9C%93&q=is%3Aissue%20author%3Atshradheya%20[`Issues Created`]
 
 == Project: NUSEvents Android Application
 
 Students coming into university want to experience an enriching and diverse campus life. One of the most integral parts of a campus life is the host of events taking place around the campus. We want to bring forth an application, called NUSEvents by means of which members of the NUS family will be able to view the various events going around the campus on a day to day basis. Now there will be no need to worry about searching websites, scrolling through emails and pages on Facebook to know what events are being organized by various faculties and clubs. This will be convenient for all students and members of the various faculties as it will enable them to indicate their interest in the events that they want to attend.
 
 Students will get easy access to the list of activities that will take place, thus making sure that they are notified of all important events which otherwise could have gone unnoticed. For a university like NUS, which is rated to have the best campus life, NUSEvents application will bring to you all that you need to know about the various happenings in NUS and improve the campus life experience of students. Hence it will ensure an enjoyable and fulfilling campus life for the members of the NUS family.
+
+link:https://github.com/NUSEvents/NusEvents[`Link to GitHub Repository`]

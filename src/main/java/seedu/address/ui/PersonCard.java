@@ -103,7 +103,7 @@ public class PersonCard extends UiPart<Region> {
             Image image = new Image("file:" + "pictures/" + person.getDisplayPicture().getPath() + ".png",
                     IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
 
-            // Defensive programming. To take care of image corruption
+            // Defensive programming to take care of image corruption
             File file = new File("pictures/" + person.getDisplayPicture().getPath() + ".png");
             if (!file.exists()) {
                 image = new Image(MainApp.class.getResourceAsStream("/images/defaulddp.png"),

@@ -1132,7 +1132,7 @@ As shown from the sequence diagram above (Refer to Figure 33), the method `handl
 **Alternative 1 (current choice):** Using `ChangeEventRequestEvent` that allow `MainWindow` to handle the event to change the theme of iContacts. +
 **Pros:** `ThemeCommand` can be more efficient since it does not directly change the theme. +
 **Cons:** New developers may find it difficult to understand the event-driven nature of the application. +
-**Alternative 2:** Allow `ThemeCommand` to set the theme directly by allowing it to access the `MainWindow`. +
+**Alternative 2:** Allow `ThemeCommand` to set the theme directly by allowing it to access `MainWindow`. +
 **Pros:** Easier for new developers to understand. +
 **Cons:** Violates the architectural style as `ThemeCommand` is in the `Logic` component that should not be able to access the `UI` component where `MainWindow` is.
 // end::theme[]

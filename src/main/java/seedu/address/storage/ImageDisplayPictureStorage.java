@@ -36,6 +36,7 @@ public class ImageDisplayPictureStorage implements DisplayPictureStorage {
         String uniquePath = null;
 
         try {
+            logger.info(" Image read from path " + imagePath);
             fileToRead = new File(imagePath);
             image = new BufferedImage(963, 640, BufferedImage.TYPE_INT_ARGB);
             image = ImageIO.read(fileToRead);
@@ -44,6 +45,7 @@ public class ImageDisplayPictureStorage implements DisplayPictureStorage {
 
             saveImageInDirectory(image, uniquePath);
         } catch (IOException ioe) {
+            logger.info("Image not read properly");
             throw new ImageException(String.format(MESSAGE_INVALID_IMAGE,
                     DisplayPictureCommand.MESSAGE_IMAGE_PATH_FAIL));
 
@@ -57,26 +59,14 @@ public class ImageDisplayPictureStorage implements DisplayPictureStorage {
     public void saveImageInDirectory(BufferedImage image, String uniquePath) throws IOException {
         File fileToWrite = null;
         try {
+            logger.info("image is being stored in directory ");
             fileToWrite = new File("pictures/" + uniquePath + ".png");
             ImageIO.write(image, "png", fileToWrite);
         } catch (IOException ioe) {
+            logger.info("Image not saved properly");
             throw  new ImageException(String.format(MESSAGE_INVALID_IMAGE,
                     DisplayPictureCommand.MESSAGE_IMAGE_PATH_FAIL));
         }
-    }
-
-    /**
-     * Deletes image from /pictures/ directory
-     * @param filepath of image to be deleted
-     */
-    public void deleteImageFromDirectory(String  filepath) {
-        if (filepath.equalsIgnoreCase("")) {
-            logger.info("image not present so cannot be deleted");
-        }
-        File file = new File("pictures/" + filepath + ".png");
-
-        logger.info(filepath + "deleted during exit");
-        file.deleteOnExit();
     }
 
 }

@@ -2,6 +2,7 @@
 package seedu.address.ui;
 
 import java.io.File;
+import java.util.logging.Logger;
 
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
@@ -12,6 +13,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import seedu.address.MainApp;
+import seedu.address.commons.core.LogsCenter;
 import seedu.address.model.person.ReadOnlyPerson;
 
 /**
@@ -19,6 +21,7 @@ import seedu.address.model.person.ReadOnlyPerson;
  */
 public class PopularContactCard extends UiPart<Region> {
 
+    private static final Logger logger = LogsCenter.getLogger(PersonCard.class);
     private static final String FXML = "PopularContactCard.fxml";
     private static final Integer IMAGE_WIDTH = 70;
     private static final Integer IMAGE_HEIGHT = 70;
@@ -70,7 +73,11 @@ public class PopularContactCard extends UiPart<Region> {
 
             // To take care of image deleted manually
             File file = new File("pictures/" + person.getDisplayPicture().getPath() + ".png");
+
+            //Defensive programming
             if (!file.exists()) {
+                logger.info("Corrupted image. Loading default image now");
+
                 image = new Image(MainApp.class.getResourceAsStream("/images/defaulddp.png"),
                         IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
             }

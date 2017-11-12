@@ -21,7 +21,6 @@ import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.events.model.AddressBookChangedEvent;
 import seedu.address.commons.events.model.DisplayPictureChangedEvent;
-import seedu.address.commons.events.model.DisplayPictureDeleteEvent;
 import seedu.address.commons.events.model.PopularContactChangedEvent;
 import seedu.address.commons.events.model.RemindersChangedEvent;
 import seedu.address.commons.events.model.UpdateListForSelectionEvent;
@@ -148,7 +147,6 @@ public class ModelManager extends ComponentManager implements Model {
         clearSelection();
         addressBook.removePerson(target);
         raise(new SelectFirstAfterDeleteEvent());
-        raise(new DisplayPictureDeleteEvent(target.getDisplayPicture().getPath()));
         indicateAddressBookChanged();
         indicatePopularContactsChangedPossibility();
         updatePopularContactList();

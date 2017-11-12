@@ -94,7 +94,7 @@ public class PersonCard extends UiPart<Region> {
     //@@author tshradheya
 
     /**
-     * Assigns URL to the image depending on the path
+     * Assigns image pattern to the shape to display image
      */
     private void assignImage(ReadOnlyPerson person) {
 
@@ -103,7 +103,7 @@ public class PersonCard extends UiPart<Region> {
             Image image = new Image("file:" + "pictures/" + person.getDisplayPicture().getPath() + ".png",
                     IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
 
-            // To take care of image deleted manually
+            // Defensive programming. To take care of image corruption
             File file = new File("pictures/" + person.getDisplayPicture().getPath() + ".png");
             if (!file.exists()) {
                 image = new Image(MainApp.class.getResourceAsStream("/images/defaulddp.png"),

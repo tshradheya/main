@@ -289,6 +289,16 @@ public class NameAndTagsContainsKeywordsPredicate {
 
 For the `FilterCommand` to work properly, either the `nameKeywords` or the `tagKeywords` must be non-empty.
 
+[discrete]
+==== Design Considerations
+
+**Aspect:** Command with different search logic +
+**Alternative 1 (current choice):** Create a separate command to search for contacts that match all keywords. +
+**Pros:** Implementation can be easy as the logic is similar to the `FindCommand`. +
+**Cons:** May not make sense to have separate commands to search for contacts. +
+**Alternative 2:** Modify the `FindCommand` to allow users the option to search contacts that either match any keywords or match all keywords. +
+**Pros:** Lesser command for the users to remember when searching for contacts. +
+**Cons:** Implementation can be more complicated as there is a need to address both OR search and AND search on the same command.
 // end::filter[]
 
 // tag::export[]

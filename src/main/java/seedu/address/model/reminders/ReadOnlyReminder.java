@@ -20,7 +20,7 @@ public interface ReadOnlyReminder {
     LocalDateTime getLocalDateTime();
     boolean isEventToday();
     boolean isEventWithinThreeDays();
-    boolean hasEventPast();
+    boolean hasEventPassed();
 
     /**
      * Returns true if both have the same state. (interfaces cannot override .equals)

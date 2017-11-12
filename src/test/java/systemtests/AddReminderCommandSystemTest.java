@@ -40,7 +40,7 @@ public class AddReminderCommandSystemTest extends UniqueReminderListSystemTest {
     public void addreminder() throws Exception {
         Model model = getModel();
 
-        /* Case: add a reminder to a non-empty address book, command with leading spaces and trailing spaces
+        /* Case: add a reminder, command with leading spaces and trailing spaces
          * -> added
          */
         ReadOnlyReminder toAdd = COFFEE_REMINDER;
@@ -60,14 +60,14 @@ public class AddReminderCommandSystemTest extends UniqueReminderListSystemTest {
                 + REMINDER_DESC_TIME_COFFEE;
         assertCommandSuccess(command, toAdd);
 
-        /* Case: add a reminder with all fields same as another reminder in the address book except date -> added */
+        /* Case: add a reminder with all fields same as another reminder in the reminder list except date -> added */
         toAdd = new ReminderBuilder().withReminder(VALID_REMINDER_COFFEE).withDate(VALID_REMINDER_DATE_ASSIGNMENT)
                 .withTime(VALID_REMINDER_TIME_COFFEE).build();
         command = AddReminderCommand.COMMAND_WORD + REMINDER_DESC_COFFEE + REMINDER_DESC_DATE_ASSIGNMENT
                 + REMINDER_DESC_TIME_COFFEE;
         assertCommandSuccess(command, toAdd);
 
-        /* Case: add a reminder with all fields same as another reminder in the address book except time -> added */
+        /* Case: add a reminder with all fields same as another reminder in the reminder list except time -> added */
         toAdd = new ReminderBuilder().withReminder(VALID_REMINDER_COFFEE).withDate(VALID_REMINDER_DATE_COFFEE)
                 .withTime(VALID_REMINDER_TIME_ASSIGNMENT).build();
         command = AddReminderCommand.COMMAND_WORD + REMINDER_DESC_COFFEE + REMINDER_DESC_DATE_COFFEE

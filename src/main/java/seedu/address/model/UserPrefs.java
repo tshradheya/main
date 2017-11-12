@@ -37,11 +37,11 @@ public class UserPrefs {
     public String getRemindersFilePath() {
         return remindersFilePath;
     }
-    //@@author
 
     public void setRemindersFilePath(String remindersFilePath) {
         this.remindersFilePath = remindersFilePath;
     }
+    //@@author
 
     public String getAddressBookFilePath() {
         return addressBookFilePath;

@@ -46,7 +46,7 @@ _Figure 1 : Display Picture for contacts_
 ==== Justification
 
 
-The command is implemented in this manner because of the following reasons:
+The command is implemented in this manner because of the following:
 
 * By specifying the index, there is no ambiguity as to who should be assigned the display picture.
 * The `PATHOFIMAGE` must be an absolute path on the local device to make sure the image is referenced.
@@ -191,7 +191,7 @@ To be filled in according to CS2101
 
 ---
 
-The location command through an event-driven mechanism. The below diagram shows sequence diagram for it.
+The location command is an event-driven mechanism. The below diagram shows sequence diagram for it.
 
 image::locationSD.PNG[width="790"]
 _Figure 21 : Sequence diagram for the Location Command._

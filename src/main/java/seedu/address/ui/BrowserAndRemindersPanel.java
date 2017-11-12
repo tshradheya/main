@@ -157,7 +157,7 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
 
     //@@author justinpoh
     /**
-     * Check which child is currently at the front, and do the appropriate toggling between the children nodes.
+     * Check which child is currently at the front, and perform the appropriate toggling between the children nodes.
      */
     private void toggleBrowserPanel() {
         switch(currentlyInFront) {

@@ -53,6 +53,7 @@ import seedu.address.testutil.PersonUtil;
 public class EditCommandSystemTest extends AddressBookSystemTest {
 
 
+    //@@author justinpoh
     @Test
     public void editTestClearingBirthday() throws Exception {
         Model model = getModel();
@@ -68,6 +69,7 @@ public class EditCommandSystemTest extends AddressBookSystemTest {
         Person editedPerson = new PersonBuilder(personToEdit).withBirthday("").build();
         assertCommandSuccess(command, index, editedPerson);
     }
+    //@@author
 
     @Test
     public void edit() throws Exception {

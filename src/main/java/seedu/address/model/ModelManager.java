@@ -103,11 +103,13 @@ public class ModelManager extends ComponentManager implements Model {
         updatePopularContactList();
     }
 
+    //@@author justinpoh
     @Override
     public void resetReminders(UniqueReminderList newReminders) {
         reminderList.setReminders(newReminders);
         indicateRemindersChanged();
     }
+    //@@author
 
     @Override
     public ReadOnlyAddressBook getAddressBook() {
@@ -134,14 +136,16 @@ public class ModelManager extends ComponentManager implements Model {
     }
     //@@author
 
+    //@author justinpoh
     /** Raises an event to indicate the reminders have changed */
     private void indicateRemindersChanged() {
         raise(new RemindersChangedEvent(reminderList));
     }
+    //@@author
 
     @Override
     public synchronized void deletePerson(ReadOnlyPerson target) throws PersonNotFoundException {
-        raise(new ClearSelectionEvent());
+        clearSelection();
         addressBook.removePerson(target);
         raise(new SelectFirstAfterDeleteEvent());
         raise(new DisplayPictureDeleteEvent(target.getDisplayPicture().getPath()));
@@ -172,6 +176,7 @@ public class ModelManager extends ComponentManager implements Model {
     }
     //@@author
 
+    //@@author justinpoh
     @Override
     public void updateReminder(ReadOnlyReminder target, ReadOnlyReminder editedReminder)
             throws DuplicateReminderException, ReminderNotFoundException {
@@ -180,6 +185,8 @@ public class ModelManager extends ComponentManager implements Model {
         reminderList.setReminder(target, editedReminder);
         indicateRemindersChanged();
     }
+    //@@author
+
     //@@author tshradheya
 
     @Override
@@ -347,13 +354,16 @@ public class ModelManager extends ComponentManager implements Model {
     }
     //@@author
 
+    //@@author justinpoh
     @Override
     public ObservableList<ReadOnlyPerson> getBirthdayPanelFilteredPersonList() {
         return FXCollections.unmodifiableObservableList(sortedFilteredPersonsForBirthdayListPanel);
     }
+    //@@author
 
     //=========== UniqueReminderList Accessors =================================================================
 
+    //@@author justinpoh
     @Override
     public ObservableList<ReadOnlyReminder> getSortedReminderList() {
         return sortedReminderList;
@@ -375,8 +385,9 @@ public class ModelManager extends ComponentManager implements Model {
         reminderList.remove(target);
         indicateRemindersChanged();
     }
-    //@@author tshradheya
 
+    //@@author
+    //@@author tshradheya
     @Override
     public Index getIndexOfGivenPerson(ReadOnlyPerson person) {
         for (int i = 0; i < sortedfilteredPersons.size(); i++) {
@@ -430,6 +441,11 @@ public class ModelManager extends ComponentManager implements Model {
         return addressBook.equals(other.addressBook)
                 && filteredPersons.equals(other.filteredPersons)
                 && reminderList.equals(other.reminderList);
+    }
+
+    @Override
+    public void clearSelection() {
+        raise(new ClearSelectionEvent());
     }
 
 }

@@ -15,7 +15,7 @@ import seedu.address.model.reminders.ReadOnlyUniqueReminderList;
 
 //@@author justinpoh
 /**
- * A class to access reminder data stored as an xml file.
+ * A class to access reminder data stored as an xml file on the hard disk.
  */
 
 public class XmlRemindersStorage implements RemindersStorage {

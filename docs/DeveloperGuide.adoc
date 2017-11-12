@@ -20,7 +20,7 @@ iContacts is an address book application with target audience as university stud
 
 == Setting up
 
-This section will guide you on setting up the development environment.
+This section will guide you on how to set up the development environment for coding.
 
 === Prerequisites
 
@@ -90,7 +90,7 @@ Having both Travis and AppVeyor ensures your App works on both Unix-based platfo
 
 ==== Getting started with coding
 
-When you are ready to start coding, get some sense of the overall design by reading the link:#architecture[Architecture] section.
+When you are ready to start coding, get some sense of the overall design by reading the link:#architecture[Architecture] section below:
 
 == Design
 
@@ -113,7 +113,7 @@ Below is a quick overview of each component:
 ** At app launch: Initializes the components in the correct sequence, and connects them up with each other.
 ** At shut down: Shuts down the components and invokes cleanup method where necessary.
 
-* link:#common-classes[*`Commons`*] represents a collection of classes used by multiple other components. Two of those classes play important roles at the architecture level.
+* link:#common-classes[*`Commons`*] represents a collection of classes used by multiple other components. Two of those classes play important roles at the architecture level:
 
 ** `EventsCenter` : This class (written using https://github.com/google/guava/wiki/EventBusExplained[Google's Event Bus library]) is used by the components to communicate with other components using events (i.e. a form of _Event Driven_ design)
 ** `LogsCenter` : This class is used by many classes to write log messages to iContacts' log file.
@@ -141,7 +141,7 @@ _Figure 2 : Class Diagram of the Logic component_
 The _Sequence Diagram_ below (Refer to Figure 3) shows how the components interact for the scenario where the user issues the command `delete 1`.
 
 image::SDforDeletePerson.png[width="800"]
-_Figure 3 : Component interactions for `delete 1` command (part 1)_
+_Figure 3 : Component interactions for `delete 1` command (Part 1)_
 
 [NOTE]
 Note how the `Model` simply raises a `AddressBookChangedEvent` when the Address Book data are changed, instead of asking the `Storage` to save the updates to the hard disk.
@@ -149,7 +149,7 @@ Note how the `Model` simply raises a `AddressBookChangedEvent` when the Address 
 The diagram below (Refer to Figure 4) shows how the `EventsCenter` reacts to that event, which eventually results in the updates being saved to the hard disk and the status bar of the UI being updated to reflect the 'Last Updated' time.
 
 image::SDforDeletePersonEventHandling.png[width="800"]
-_Figure 4 : Component interactions for `delete 1` command (part 2)_
+_Figure 4 : Component interactions for `delete 1` command (Part 2)_
 
 [NOTE]
 Note how the event is propagated through the `EventsCenter` to the `Storage` and `UI` without the `Model` having to be coupled to either of them. This is an example of how this Event-Driven approach helps us reduce direct coupling between components.
@@ -174,7 +174,7 @@ The `UI` component uses JavaFx UI framework. The layout of these `UI` parts is d
 The `UI` component
 
 * executes the user commands using the `Logic` component.
-* binds itself to some data in the `Model` so that the `UI` can auto-update when the data in the `Model` change.
+* binds itself to some data in the `Model` so that the `UI` can auto-update when the data in the `Model` changes.
 * responds to events raised from various parts of iContacts and updates the `UI` accordingly.
 
 ==== Logic component
@@ -189,7 +189,7 @@ _Figure 7 : Structure of Commands in the Logic component. This diagram shows fin
 *API* :
 link:{repoURL}/src/main/java/seedu/address/logic/Logic.java[`Logic.java`]
 
-The `Logic` uses the `AddressBookParser` class to parse the user command. This results in a `Command` object which is executed by the `LogicManager`. The command execution can affect the `Model` (e.g. adding a person) and/or raise events. The result of the command execution is encapsulated as a `CommandResult` object which is passed back to the `UI`.
+The `Logic` component uses the `AddressBookParser` class to parse the user command. This results in a `Command` object which is executed by the `LogicManager`. The command execution can affect the `Model` (e.g. adding a person) and/or raise events. The result of the command execution is encapsulated as a `CommandResult` object which is passed back to the `UI`.
 
 The figure below (Refer to Figure 8) shows the sequence diagram of interactions within the `Logic` component for the `execute("delete 1")` API call.
 
@@ -198,7 +198,6 @@ _Figure 8 : Interactions inside the Logic component for the `delete 1` command_
 
 ==== Model component
 The `Model` component handles the contacts in the address book and all its stored details in data structures which provide API to create, read, update and delete the contacts. The figure below (Refer to Figure 9) shows the structure of the `Model` component.
-
 
 image::ModelClassDiagram.png[width="800"]
 _Figure 9 : Structure of the Model component_
@@ -444,14 +443,14 @@ For the `FindCommand` to work properly `nameKeywords` must be non-empty. The cod
 // tag::undoredo[]
 === Undo/Redo mechanism
 
-The undo/redo mechanism is facilitated by an `UndoRedoStack`, which resides inside `LogicManager`. It supports undoing and redoing of commands that modifies the state of the address book (e.g. `add`, `edit`). Such commands will inherit from `UndoableCommand`.
+The undo/redo mechanism is facilitated by an `UndoRedoStack`, which resides inside `LogicManager`. It supports undoing and redoing of commands that modify the state of the address book (e.g. `add`, `edit`). Such commands will inherit from `UndoableCommand`.
 
 `UndoRedoStack` only deals with `UndoableCommands`. Commands that cannot be undone will inherit from `Command` instead. The following diagram (Refer to Figure 11) shows the inheritance diagram for commands:
 
 image::LogicCommandClassDiagram.png[width="800"]
 _Figure 11 : Inheritance diagram for commands_
 
-As you can see from the diagram, `UndoableCommand` adds an extra layer between the abstract `Command` class and concrete commands that can be undone, such as the `DeleteCommand`. Note that extra tasks need to be done when executing a command in an _undoable_ way, such as saving the state of the address book before execution. `UndoableCommand` contains the high-level algorithm for those extra tasks while the child classes implements the details of how to execute the specific command. Note that this technique of putting the high-level algorithm in the parent class and lower-level steps of the algorithm in child classes is also known as the https://www.tutorialspoint.com/design_pattern/template_pattern.htm[template pattern].
+As you can see from the diagram, `UndoableCommand` adds an extra layer between the abstract `Command` class and concrete commands that can be undone, such as the `DeleteCommand`. Note that extra tasks need to be done when executing a command in an _undoable_ way, such as saving the state of the address book before execution. `UndoableCommand` contains the high-level algorithm for those extra tasks while the child classes implement the details of how to execute the specific command. Note that this technique of putting the high-level algorithm in the parent class and lower-level steps of the algorithm in child classes is also known as the https://www.tutorialspoint.com/design_pattern/template_pattern.htm[template pattern].
 
 Commands that are not undoable are implemented this way:
 [source,java]
@@ -540,20 +539,20 @@ _Figure 18 : Activity diagram for UndoRedoStack_
 **Aspect:** Implementation of `UndoableCommand` +
 **Alternative 1 (current choice):** Add a new abstract method `executeUndoableCommand()`. +
 **Pros:** We will not lose any undone/redone functionality as it is now part of the default behaviour. Classes that deal with `Command` do not have to know that `executeUndoableCommand()` exist. +
-**Cons:** Hard for new developers to understand the template pattern. +
+**Cons:** Will be hard for new developers to understand the template pattern. +
 **Alternative 2:** Just override `execute()`. +
-**Pros:** Does not involve the template pattern, easier for new developers to understand. +
+**Pros:** It will not involve the template pattern, easier for new developers to understand. +
 **Cons:** Classes that inherit from `UndoableCommand` must remember to call `super.execute()`, or lose the ability to undo/redo.
 
 ---
 
 **Aspect:** How undo & redo executes +
-**Alternative 1 (current choice):** Saves the entire address book. +
-**Pros:** Easy to implement. +
+**Alternative 1 (current choice):** Save the entire address book. +
+**Pros:** Will be easy to implement. +
 **Cons:** May have performance issues in terms of memory usage. +
 **Alternative 2:** Individual command knows how to undo/redo by itself. +
 **Pros:** Will use less memory (e.g. for `delete`, just save the person being deleted). +
-**Cons:** We must ensure that the implementation of each individual command are correct.
+**Cons:** Care should be taken to ensure that the implementation of each individual command are correct.
 
 ---
 
@@ -570,57 +569,84 @@ _Figure 18 : Activity diagram for UndoRedoStack_
 
 **Aspect:** Data structure to support the undo/redo commands +
 **Alternative 1 (current choice):** Use separate stack for undo and redo +
-**Pros:** Easy to understand for new Computer Science student undergraduates to understand, who are likely to be the new incoming developers of our project. +
+**Pros:** Will make it easy to understand for new Computer Science student undergraduates, who are likely to be the new incoming developers of our project. +
 **Cons:** Logic is duplicated twice. For example, when a new command is executed, we must remember to update both `HistoryManager` and `UndoRedoStack`. +
 **Alternative 2:** Use `HistoryManager` for undo/redo +
-**Pros:** We do not need to maintain a separate stack, and just reuse what is already in the codebase. +
-**Cons:** Requires dealing with commands that have already been undone: We must remember to skip these commands. Violates Single Responsibility Principle and Separation of Concerns as `HistoryManager` now needs to do two different things. +
+**Pros:** Won't require the need to maintain a separate stack, and just reuse what is already in the codebase. +
+**Cons:** It will require dealing with commands that have already been undone: We must remember to skip these commands. Violates Single Responsibility Principle and Separation of Concerns as `HistoryManager` now needs to do two different things. +
 // end::undoredo[]
+
 
 === Display Picture mechanism
 
-The Display Picture mechanism is done by using ImageView in JavaFX which is a part of the UI Component. It is an undoable command that modifies the display picture for the specified contact. The command will inherit from `UndoableCommand`.
+The Display Picture mechanism is done by using ImageView in JavaFX which is a part of the UI Component.
 
 The `displaypic` command adds/updates the display picture for the contact specified. The image is then displayed as ImageView in PersonCard.
 The arguments of the command are `INDEX` and `PATHOFIMAGE`. The image needs to be present in the local device of the user.
 
 This command works by retrieving the image using `BufferedImage`. The command extracts the image from the specified absolute path of image e.g. `C:\Users\Admin\Desktop\My files\pic.jpg`.
-It then stores the image in the working directory's `\src\main\resources\images\` folder by giving it a unique hashcode based on user's email address.
+
+By executing the given code below, a new folder named 'pictures/' is created if it is missing. The folder is used to store the images
+
+[source,java]
+----
+
+public void createPictureStorageFolder() throws IOException {
+        requireNonNull(filePath);
+
+        logger.info("Picture folder "  + filePath + " created if missing");
+        File file  = new File(filePath);
+        FileUtil.createIfMissing(file);
+    }
+
+----
+
+It then stores the image in the folder called `/pictures/` present in the same directory as `.jar`  by giving it a unique hashcode based on the user's email address.
 The reading and writing of images is done using the `ImageIO` class.
 
-The sequence diagram for adding a display picture is shown below (Refer to Figure 19): +
+The following UML diagram shows the Storage Architecture for reading and writing of image file:
+
+image::UMLStorageDisplaypic.PNG[width="300"]
+_Figure 2 : UML Diagram for the extended Storage Diagram._
+
+
+The sequence diagram for adding a display picture is shown below: +
 
 image::SDforDisplayPicture.PNG[width="800"]
-_Figure 19 : Sequence Diagram for Display Picture Command._
-
-The wireframe used to display the image for each person is shown below (Refer to Figure 20):
-
-image::WireFramePersonCard.PNG[width="500"]
-_Figure 20 : Wireframe for the UI._
+_Figure 3 : Sequence Diagram for Display Picture Command._
 
 
 The binder for refreshing the image every time the picture is updated is implemented by the following function:
+
 
 [source,java]
 ----
 public class PersonCard extends UiPart<Region> {
     private void assignImage(ReadOnlyPerson person) {
-        // ... assigning image logic ...
-        displayPicture.setImage(image);
+
+        Image image = new Image("file:" + "pictures/" + person.getDisplayPicture().getPath() + ".png",
+                            IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
+
+        displayPicture.setFill(new ImagePattern(image));
     }
 }
 ----
+
+The `Circle` shape is used for better UI/UX design and is filled with the `ImagePatten`. The wireframe used to display the image for each person is shown below:
+
+image::WireFramePersonCard.PNG[width="300"]
+_Figure 4 : Wireframe for the UI._
+
 
 The new image stored in directory is given a unique name which is formed using hashcode of the unique email address of each contact:
 
 [source,java]
 ----
-public class DisplayPictureCommand extends UndoableCommand {
+public class DisplayPictureCommand extends Command {
 
     @Override
-    public CommandResult executeUndoableCommand() throws CommandException, IOException, URISyntaxException {
-        /... executes function of ReadAndStoreImage ...
-        ReadAndStoreImage readAndStoreImage = new ReadAndStoreImage();
+    public CommandResult execute() throws CommandException, IOException {
+        /... executes function of Reading and Writing Image ...
 
         displayPicture.setPath(readAndStoreImage.execute(displayPicture.getPath(),
                             personToEdit.getEmail().hashCode())); // image name formed in this line
@@ -628,8 +654,9 @@ public class DisplayPictureCommand extends UndoableCommand {
 }
 ----
 
-==== Reasons for this type of implementation
-The command is implemented in this manner because of the following reasons:
+==== Reason for this type of implementation
+
+The command is implemented in this manner because of the following:
 
 * By specifying the index, there is no ambiguity as to who should be assigned the display picture.
 * The `PATHOFIMAGE` must be an absolute path on the local device to make sure the image is referenced.
@@ -640,25 +667,26 @@ The command is implemented in this manner because of the following reasons:
 ==== Design Considerations
 
 **Aspect:** At what stage should the image be read and stored +
-**Alternative 1 (current choice):** Invoke 'ReadAndStoreImage' from Logic component.  +
-**Pros:** We will be able to get the contact's address for unique hash code.  +
-**Cons:** Difficult for new developers to understand the sequence diagram and flow. +
-**Alternative 2:** Invoke 'ReadAndStoreImage' from Model component. +
-**Pros:** Easier for new developers to understand the sequence diagram and maintains event-driven nature. +
-**Cons:** There might be clashes in naming of two different images for large database of contacts.
+**Alternative 1 (current choice):** Make proper Storage Architecture for reading and writing of Image   +
+**Pros:** It will follow the existing Architectural Design and Software Engineering Principles like OCP.  +
+**Cons:** It will take more time and will be tougher to implement. +
+**Alternative 2:** Invoke 'ReadAndStoreImage' from Logic component. +
+**Pros:** : It will make it easier for new developers to understand the sequence diagram and maintains event-driven nature. +
+**Cons:** It will cause bad architectural design and won’t follow the pre-existing pattern and moreover will defy the Law of Demeter.
 
 ---
 
 **Aspect:** How should the image be taken from user +
 **Alternative 1 (current choice):** User has to enter the absolute path of image by checking his local device.   +
-**Pros:** Complete CLI process  +
-**Cons:** Might be problematic for user to copy and paste and might result in error of path giving fail command. +
+**Pros:** It will be a complete CLI process.  +
+**Cons:** It might be problematic for user to copy and paste and might result in error of path giving fail command. +
 **Alternative 2:** Pop up a `FileChooser` after command is entered. +
-**Pros:** Easier for users to mention the correct image quickly. +
-**Cons:** Will no longer be a CLI process completely.
+**Pros:** It will be easier for users to mention the correct image quickly. +
+**Cons:** It will no longer be a complete CLI process.
 
+---
 === Location mechanism
-The location command through an event-driven mechanism. The below diagram (Refer to Figure 21) shows sequence diagram for it.
+The location command is implemented in an event-driven mechanism form. The below diagram (Refer to Figure 21) shows sequence diagram for it.
 
 image::locationSD.PNG[width="790"]
 _Figure 21 : Sequence diagram for the Location Command._
@@ -668,7 +696,7 @@ The execution of command raises an event `ShowLocationEvent`. This causes the `B
 image::locationAD.PNG[width="790"]
 _Figure 22 : Sequence diagram for the Location Command._
 
-Following is the code written to ensure the GUI set up for the command.
+Following is the code written to ensure the GUI set up for the command:
 
 [source, java]
 ----
@@ -681,7 +709,7 @@ private void setUpToShowLocation() {
 }
 ----
 
-The URL for denoting the specified person's address in Google Maps is set up through the following code
+The URL for denoting the specified person's address in Google Maps is set up through the following code:
 
 [source, java]
 ----
@@ -706,11 +734,11 @@ public String loadPersonLocation(String address) {
 
 **Aspect:** What to use to show the location +
 **Alternative 1 (current choice):** Show using google maps url in BrowserPanel  +
-**Pros:** We will be able to get the location easily with accuracy +
-**Cons:** Limited functionality of URL +
+**Pros:** We will be able to get the location easily with accuracy. +
+**Cons:** It could cause problem due to limited functionality of URL. +
 **Alternative 2:** Google Maps API +
-**Pros:**  Allows more functionality +
-**Cons:** Uses more resources for the exact same feature and doesn't utilise pre existing browser properly
+**Pros:**  It will provide more functionality. +
+**Cons:** It could cause more resources to be used for the exact same feature and wouldn’t utilise pre-existing browser properly.
 
 
 === Email mechanism
@@ -856,7 +884,7 @@ Using the `FontAwesomeFx` library, an icon is set for each label as seen in the 
 
 // tag::toggle[]
 === Toggling mechanism
-The toggling mechanism is an event-driven mechanism.
+The toggling mechanism is an `event-driven` mechanism.
 
 image::togglingMechanism1.png[width="790]
 _Figure 25 : Component interactions for the toggling mechanism._
@@ -866,8 +894,8 @@ The above diagram (Refer to Figure 25) shows the high-level overview of the comp
 image::togglingMechanism2.png[width="790"]
 _Figure 26 : Sequence diagram for the first part of the toggling mechanism._
 
-As seen from the sequence diagram above (Refer to Figure 26), when the user type the command for `toggle`, an instance of `ToggleCommand` would be created. +
-Upon execution by `LogicManager`, the event `BrowserAndRemindersPanelToggleEvent` would be posted by the `EventCenter`, to the `EventBus`.
+As seen from the sequence diagram above (Refer to Figure 26), when the user types the command for `toggle`, an instance of `ToggleCommand` would be created. +
+Upon execution by `LogicManager`, the event `BrowserAndRemindersPanelToggleEvent` would be posted by the `EventCenter` to the `EventBus`:
 
 [source, java]
 ----
@@ -882,7 +910,7 @@ public class ToggleCommand extends Command {
 
 
 As seen from the diagram below (Refer to Figure 27), the method `handleBrowserToggleEvent()` in the `BrowserAndRemindersPanel` class in the `UI` component will then listen for the event,
-and upon receiving the event, it will invoke the method `toggleBrowserPanel` to trigger the actual toggling.
+and upon receiving the event it will invoke the method `toggleBrowserPanel` to trigger the actual toggling.
 
 image::togglingMechanism3.png[width="790"]
 _Figure 27 : Sequence diagram for the second part of the toggling mechanism._
@@ -920,7 +948,7 @@ public class BrowserAndRemindersPanel extends UIPart<Region> {
 }
 ----
 
-One important thing to note that when the `select` command is executed, the browser panel would be brought forward no matter what:
+One important thing to note is that when the `select` command is executed, the browser panel would be brought forward no matter what:
 
 [source, java]
 ----
@@ -950,9 +978,9 @@ method, the statement `browser.toFront()` and the method `setUpToShowWebBrowser`
 **Alternative 1 (current choice):** Allow users to toggle between the browser and reminders panel. +
 Pros: Can use the entire space for either the browser or reminders panel. +
 Cons: Users need to manually switch between the browser and reminders panel. +
-**Alternative 2:** Put reminders and browser side-by-side. +
+**Alternative 2:** Put reminders and browser panels side-by-side. +
 Pros: Users do not need to manually switch between the browser and reminders panel. +
-Cons: Too little space for browser and reminders. Difficult to read.
+Cons: Too little space for browser and reminders, making it difficult to read for the users.
 
 **Aspect:** Implementation of toggling mechanism. +
 **Alternative 1 (current choice):** Bring browser and reminders panel to the front as required, on top of setting their visibility suitably. +
@@ -969,10 +997,10 @@ image::ReminderUML1.png[width="390"]
 _Figure 28: UML diagram showing the make-up of Reminder objects._
 
 The `Reminder` object represents a reminder in iContacts. It contains a `String` variable `reminder`, which represents
-the actual reminder from the user, and also a `Date`, `Time` and `Status` object which represents the date, time and link:#status[status] of the reminder respectively
+the actual reminder from the user, and also a `Date`, `Time` and `Status` object, which represents the date, time and link:#status[status] of the reminder respectively
 (Refer to Figure 28). As part of _defensive programming_, `Reminder` implements the `ReadOnlyReminder` interface, which only allows _read_ operations, thus
 helping to prevent inappropriate or unintended modifications to `Reminder` objects (Refer to Figure 28) during the execution of the program.
-For example, for `DeleteReminderCommand`, its `execute` method should only execute the deletion of a specified reminder, not to alter any other reminders.
+For example, for `DeleteReminderCommand`, its `execute` method should only execute the deletion of a specified reminder, not to alter any reminders.
 To ensure that no unintended or inappropriate alteration happens, `DeleteReminderCommand` is passed a list of `ReadOnlyReminder` instead of `Reminder`. This can
 be seen from the code snippet below:
 
@@ -1069,12 +1097,12 @@ To save, the `saveReminders` method in `StorageManager` is invoked:
 [source, java]
 ----
 
-@Override
+    @Override
     public void saveReminders(ReadOnlyUniqueReminderList reminderList) throws IOException {
         saveReminders(reminderList, remindersStorage.getRemindersFilePath());
     }
 
-@Override
+    @Override
     public void saveReminders(ReadOnlyUniqueReminderList reminderList, String filePath) throws IOException {
         logger.fine("Attempting to write to data file: " + filePath);
         remindersStorage.saveReminders(reminderList, filePath);
@@ -1085,6 +1113,47 @@ To save, the `saveReminders` method in `StorageManager` is invoked:
 This will then invoke the `saveReminders` method in `XmlRemindersStorage`, and go on to invoke the `saveRemindersToFile` method in `XmlFileStorage`,
 and finally the `saveDataToFile` method in `XmlUtil`.
 
+The color of the reminder cells are decided and set during the formation of `ReminderListViewCell`. This can be seen from the
+code snippet below: +
+
+[source, java]
+----
+
+public class BirthdayAndReminderListPanel extends UiPart<Region> {
+
+    class ReminderListViewCell extends ListCell<ReminderCard> {
+
+        @Override
+        protected void updateItem(ReminderCard reminder, boolean empty) {
+            super.updateItem(reminder, empty);
+
+            if (empty || reminder == null) {
+                setGraphic(null);
+                setText(null);
+                return;
+            }
+            this.getStylesheets().clear();
+            if (reminder.isEventToday()) {
+                this.getStylesheets().add(REMINDER_TODAY_STYLE_SHEET);
+            } else if (reminder.isEventWithinThreeDays()) {
+                this.getStylesheets().add(REMINDER_THREE_DAYS_STYLE_SHEET);
+            } else if (!reminder.hasEventPassed()) {
+                this.getStylesheets().add(REMINDER_NORMAL_STYLE_SHEET);
+            }
+
+            setGraphic(reminder.getRoot());
+        }
+    }
+
+}
+
+----
+
+Depending on the status of the reminder, different styles would be set for the specific `ReminderListViewCell`.
+
+The methods `isEventToday`, `isEventWithinThreeDays` and `hasEventPassed` seen from the code snippet above originate from
+the `Status` object of each `Reminder` object, and propagated from `Status` to `Reminder` then finally to `ReminderCard`.
+
 [discrete]
 ==== Design Consideration
 **Aspect:** How to store Reminders in-memory +
@@ -1094,6 +1163,16 @@ Cons: More changes have to be made to the existing code base, making it tougher 
 **Alternative 2:** Store Reminder objects within AddressBook. +
 Pros: Easier to implement as lesser changes have to be made to the existing program. +
 Cons: Violates the _Single-Responsibility Principle_.
+
+**Aspect:** Should the undo/redo mechanism be applied to Reminder +
+**Alternative 1 (current choice):** Commands that affect Reminder objects are not undoable/redoable. +
+Pros: Users would be more aware of any changes they made to a reminder, as they are forced to
+use the `editreminder`, `addreminder` and `deletereminder` commands.
+Cons: It is less user-friendly. +
+**Alternative 2:** Commands that affect Reminder objects are undoable/redoable. +
+Pros: More user-friendly. +
+Cons: Users might get careless with changing the information of a Reminder object. This might be detrimental
+as the date and time fields of a Reminder are very important.
 //end::reminder[]
 
 
@@ -1192,7 +1271,7 @@ _Figure 34 : Saving documentation as PDF files in Chrome_
 
 === Running Tests
 
-There are three ways to run tests.
+There are three ways to run tests:
 
 [TIP]
 The most reliable way to run tests is the 3rd one. The first two methods might fail some GUI tests due to platform/resolution-specific idiosyncrasies.
@@ -1521,11 +1600,11 @@ This application is targeted towards University students, aiming to meet their n
 
 *  User Profile
 
-**  University Student
-**  Student part of many CCA clubs and committees
-**  Student taking role of Teaching Assistant/Tutor
-**  Student who is interning and has colleagues
-**  Student having close friends and family
+**  University Students
+**  Students part of many CCA clubs and committees
+**  Students taking role of Teaching Assistant/Tutor
+**  Students who is interning and has colleagues
+**  Students having close friends and family
 
 [appendix]
 == User Stories
@@ -1559,7 +1638,7 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* * *` |user |search for contacts with just the first few characters of their name |find contacts if I'm unable to remember the spelling of the name
 
-|`* * *` |forgetful user |I want to add nicknames for people |so that I can easily search for them
+|`* * *` |forgetful user |add nicknames for people |easily search for them
 
 |`* * *` |new user |see usage instructions |refer to instructions when I forget how to use the App
 
@@ -1577,9 +1656,9 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`* *` |regular user |see frequently used contacts instantly |locate them more easily
 
-|`* *` |user |I want to be able to add link:#display-picture[Display Picture] for my contacts |so that I can easily identify them
+|`* *` |user |be able to add link:#display-picture[Display Picture] for my contacts |easily identify them
 
-|`* *` |student who doesn't use his laptop everywhere |view my address book online |so that I can view it without the device running the software
+|`* *` |student who doesn't use his laptop everywhere |view my address book online |view it without the device running the software
 
 |`* *` |member of a team |send email to a group of persons with one command |easily send email to a group of persons
 
@@ -1617,9 +1696,9 @@ Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (un
 
 |`*` |organized student |auto sort the list whenever I add a person |avoid using the sort command with every single additions
 
-|`*` |busy student with many commitments |I should be able to create meeting reminders with my link:#contacts[contacts] |so that I don't forget whom should I be meeting at what time
+|`*` |busy student with many commitments |be able to create meeting reminders with my link:#contacts[contacts] |prevent myself from forgetting whom should I be meeting at what time
 
-|`*` |user |have a secured address book |only I have access to my address book
+|`*` |user |have a secured address book |have access to my address book
 |=======================================================================
 
 [appendix]

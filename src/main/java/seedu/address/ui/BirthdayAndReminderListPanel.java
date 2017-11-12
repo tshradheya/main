@@ -15,7 +15,8 @@ import seedu.address.model.reminders.ReadOnlyReminder;
 
 //@@author justinpoh
 /**
- * Panel containing the list of persons with birthday in the current month.
+ * Panel containing a list of persons with birthday in the current month,
+ * and a list of reminders.
  */
 public class BirthdayAndReminderListPanel extends UiPart<Region> {
     private static final String FXML = "BirthdayAndReminderListPanel.fxml";
@@ -23,7 +24,7 @@ public class BirthdayAndReminderListPanel extends UiPart<Region> {
     private static final String REMINDER_TODAY_STYLE_SHEET = DIRECTORY_PATH + "reminderToday.css";
     private static final String REMINDER_THREE_DAYS_STYLE_SHEET = DIRECTORY_PATH + "reminderWithinThreeDays.css";
     private static final String REMINDER_NORMAL_STYLE_SHEET = DIRECTORY_PATH + "reminderNormal.css";
-    private final Logger logger = LogsCenter.getLogger(PersonListPanel.class);
+    private final Logger logger = LogsCenter.getLogger(BirthdayAndReminderListPanel.class);
 
     @FXML
     private ListView<BirthdayReminderCard> birthdayListView;
@@ -91,7 +92,7 @@ public class BirthdayAndReminderListPanel extends UiPart<Region> {
                 this.getStylesheets().add(REMINDER_TODAY_STYLE_SHEET);
             } else if (reminder.isEventWithinThreeDays()) {
                 this.getStylesheets().add(REMINDER_THREE_DAYS_STYLE_SHEET);
-            } else if (!reminder.hasEventPast()) {
+            } else if (!reminder.hasEventPassed()) {
                 this.getStylesheets().add(REMINDER_NORMAL_STYLE_SHEET);
             }
 

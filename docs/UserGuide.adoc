@@ -17,12 +17,12 @@ By: `Team SE-EDU`      Since: `Jun 2016`      Licence: `MIT`
 
 == Introduction
 
-iContacts is a Command Line Interface (CLI) application that helps you manage your contacts easily. You can use iContacts to add, edit and delete contacts. It has an easy-to-use search function to find specific contacts quickly. It also provides reminders for upcoming birthdays of contacts within the application, and allows you to create your own reminders for upcoming events.
-It is designed for university students to effectively manage their university life by using one single app through which they can manage reminders, details of contacts, email and maps.
+iContacts is a Command Line Interface (CLI) application that helps you manage your contacts easily. You can use iContacts to add, edit and delete contacts. It has an easy-to-use search function to find specific contacts quickly. It also provides reminders for upcoming birthdays of contacts within the application and allows you to create your own reminders for upcoming events.
+It is designed for university students to effectively manage their university life by using one single app through which they can manage reminders, details of contacts, email, and maps.
 
 == About
 
-This User Guide aims to help you get started with iContacts. It explains the features of iContacts in detail, and will teach you how to use it effectively and efficiently. You can understand this User Guide without having any technical knowledge.
+This User Guide aims to help you get started with iContacts. It explains the features of iContacts in detail, and will teach you how to use it effectively and efficiently. You will be able to understand this User Guide without the need to have any technical knowledge.
 
 
 == Quick Start
@@ -72,8 +72,10 @@ Adds a person to the address book +
 Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [b/BIRTHDAY] [t/TAG]...`
 
 [TIP]
-A person can have no birthday entry, or at most 1
-A person can have any number of tags (including 0)
+====
+* A person can have no birthday entry, or at most 1.
+* A person can have any number of tags (including 0).
+====
 
 Examples:
 
@@ -89,7 +91,7 @@ Format: `addreminder rd/REMINDER d/DATE ti/TIME`
 ****
 * All three parameters REMINDER, DATE and TIME must be filled. +
 * DATE must be in the format dd/mm/yyyy. `'-'`, `'/'` or `'.'` can be used to separate the day, month and year field of the date,
- and they need not be paired up (i.e. 24.03/2017 is acceptable as well). +
+ and they need not be paired up (i.e. 24.03/2017 is acceptable as well). Only values from 1900 to 2099 are allowed for the year field. +
 * TIME must be in 24-hr format, with a colon separating the hour and minute values. Example: 08:00, 16:00, 23:59. +
 * REMINDER can be of any value, as long as it is not empty.
 ****

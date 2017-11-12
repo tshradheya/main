@@ -54,7 +54,7 @@ public class EditReminderDescriptorBuilder {
     }
 
     /**
-     * Sets the {@code Date} of the {@code EditReminderDescriptor} that we are building.
+     * Sets the {@code Time} of the {@code EditReminderDescriptor} that we are building.
      */
     public EditReminderDescriptorBuilder withTime(String time) {
         try {

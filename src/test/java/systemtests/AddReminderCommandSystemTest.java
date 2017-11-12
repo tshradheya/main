@@ -119,7 +119,7 @@ public class AddReminderCommandSystemTest extends UniqueReminderListSystemTest {
      * current model added with {@code toAdd}. These verifications are done by
      * {@code UniqueReminderListSystemTest#assertApplicationDisplaysExpected(String, String, Model)}.<br>
      * Also verifies that the command box has the default style class.
-     * @see AddressBookSystemTest#assertApplicationDisplaysExpected(String, String, Model)
+     * @see UniqueReminderListSystemTest#assertApplicationDisplaysExpected(String, String, Model)
      */
     private void assertCommandSuccess(ReadOnlyReminder toAdd) {
         assertCommandSuccess(ReminderUtil.getAddReminderCommand(toAdd), toAdd);

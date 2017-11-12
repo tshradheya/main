@@ -84,6 +84,10 @@ public class DetailsPanel extends UiPart<Region> {
      */
 
     private String getTagColor(String tag) {
+        //Defensive coding
+        if (tagColorObject == null) {
+            assert false : "Impossible as it is an singleton class and one object already created by PersonCard";
+        }
         if (!tagColorObject.containsTag(tag)) {
             tagColorObject.addColor(tag, colors[random.nextInt(colors.length)]);
         }

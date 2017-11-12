@@ -79,13 +79,7 @@ public class DisplayPictureCommand extends Command {
                     personToEdit.getAddress(), personToEdit.getBirthday(), personToEdit.getNickname(),
                     displayPicture, personToEdit.getPopularityCounter(), personToEdit.getTags());
 
-            try {
-                model.updatePerson(personToEdit, editedPerson);
-            } catch (DuplicatePersonException dpe) {
-                throw new CommandException(MESSAGE_DUPLICATE_PERSON);
-            } catch (PersonNotFoundException pnfe) {
-                throw new AssertionError("The target person cannot be missing");
-            }
+            updatePersonWithDisplayPicturePath(personToEdit, editedPerson);
 
             return new CommandResult(generateSuccessMessage(editedPerson));
         }
@@ -104,20 +98,13 @@ public class DisplayPictureCommand extends Command {
                 personToEdit.getAddress(), personToEdit.getBirthday(), personToEdit.getNickname(),
                 displayPicture, personToEdit.getPopularityCounter(), personToEdit.getTags());
 
-        try {
-            model.updatePerson(personToEdit, editedPerson);
-        } catch (DuplicatePersonException dpe) {
-            throw new CommandException(MESSAGE_DUPLICATE_PERSON);
-        } catch (PersonNotFoundException pnfe) {
-            assert false : "The target person cannot be missing";
-        }
-
+        updatePersonWithDisplayPicturePath(personToEdit, editedPerson);
         return new CommandResult(generateSuccessMessage(editedPerson));
     }
 
     /**
      * Generates failure message
-     * @return String
+     * @return String wih failure message
      */
     private String generateFailureMessage() {
         return MESSAGE_IMAGE_PATH_FAIL;
@@ -126,13 +113,30 @@ public class DisplayPictureCommand extends Command {
     /**
      * Generates success message
      * @param personToEdit is checked
-     * @return String
+     * @return String with success message
      */
     private String generateSuccessMessage(ReadOnlyPerson personToEdit) {
         if (!displayPicture.getPath().isEmpty()) {
             return String.format(MESSAGE_ADD_DISPLAYPICTURE_SUCCESS, personToEdit);
         } else {
             return String.format(MESSAGE_DELETE_DISPLAYPICTURE_SUCCESS, personToEdit);
+        }
+    }
+
+    /**
+     * Updates person in address book with new displaypicture path
+     * @param personToEdit who has to be assigned display picture path
+     * @param editedPerson person assigned display picture path
+     * @throws CommandException when duplicate person found
+     */
+    private void updatePersonWithDisplayPicturePath(ReadOnlyPerson personToEdit,
+                                                    Person editedPerson) throws CommandException {
+        try {
+            model.updatePerson(personToEdit, editedPerson);
+        } catch (DuplicatePersonException dpe) {
+            throw new CommandException(MESSAGE_DUPLICATE_PERSON);
+        } catch (PersonNotFoundException pnfe) {
+            assert false : "The target person cannot be missing";
         }
     }
 

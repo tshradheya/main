@@ -99,6 +99,7 @@ public class DisplayPictureCommand extends Command {
                 displayPicture, personToEdit.getPopularityCounter(), personToEdit.getTags());
 
         updatePersonWithDisplayPicturePath(personToEdit, editedPerson);
+
         return new CommandResult(generateSuccessMessage(editedPerson));
     }
 

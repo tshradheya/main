@@ -146,7 +146,12 @@ public class ModelManager extends ComponentManager implements Model {
     public synchronized void deletePerson(ReadOnlyPerson target) throws PersonNotFoundException {
         clearSelection();
         addressBook.removePerson(target);
-        raise(new SelectFirstAfterDeleteEvent());
+        if (sortedfilteredPersons.isEmpty()) {
+            showDefaultPanel();
+        }
+        else {
+            raise(new SelectFirstAfterDeleteEvent());
+        }
         indicateAddressBookChanged();
         indicatePopularContactsChangedPossibility();
         updatePopularContactList();
@@ -280,6 +285,7 @@ public class ModelManager extends ComponentManager implements Model {
      */
     @Override
     public void updatePopularContactList() {
+        logger.info("Popular List getting Refreshed");
         refreshWithPopulatingAddressBook();
         listOfPersonsForPopularContacts.sort((o1, o2) ->
                 o2.getPopularityCounter().getCounter() - o1.getPopularityCounter().getCounter());
@@ -348,6 +354,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     @Override
     public void showDefaultPanel() {
+        logger.info("Default panel will be shown on right on refresh");
         raise(new ShowDefaultPanelEvent());
     }
     //@@author

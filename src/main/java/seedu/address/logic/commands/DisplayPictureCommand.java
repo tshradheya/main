@@ -40,7 +40,7 @@ public class DisplayPictureCommand extends Command {
 
     public static final String MESSAGE_IMAGE_PATH_FAIL =
             "This specified path cannot be read. Please check it's validity and try again";
-
+    private static final String EMPTY_STRING = "";
 
     private Index index;
     private DisplayPicture displayPicture;
@@ -65,22 +65,21 @@ public class DisplayPictureCommand extends Command {
             throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
         }
 
+        //Defensive coding
+        if (displayPicture.getPath() == null) {
+            assert false : "Should never be null";
+        }
+
         ReadOnlyPerson personToEdit = lastShownList.get(index.getZeroBased());
 
-        if (displayPicture.getPath().equalsIgnoreCase("")) {
-            displayPicture.setPath("");
+        if (displayPicture.getPath().equalsIgnoreCase(EMPTY_STRING)) {
+            displayPicture.setPath(EMPTY_STRING);
 
             Person editedPerson = new Person(personToEdit.getName(), personToEdit.getPhone(), personToEdit.getEmail(),
                     personToEdit.getAddress(), personToEdit.getBirthday(), personToEdit.getNickname(),
                     displayPicture, personToEdit.getPopularityCounter(), personToEdit.getTags());
 
-            try {
-                model.updatePerson(personToEdit, editedPerson);
-            } catch (DuplicatePersonException dpe) {
-                throw new CommandException(MESSAGE_DUPLICATE_PERSON);
-            } catch (PersonNotFoundException pnfe) {
-                throw new AssertionError("The target person cannot be missing");
-            }
+            updatePersonWithDisplayPicturePath(personToEdit, editedPerson);
 
             return new CommandResult(generateSuccessMessage(editedPerson));
         }
@@ -99,20 +98,14 @@ public class DisplayPictureCommand extends Command {
                 personToEdit.getAddress(), personToEdit.getBirthday(), personToEdit.getNickname(),
                 displayPicture, personToEdit.getPopularityCounter(), personToEdit.getTags());
 
-        try {
-            model.updatePerson(personToEdit, editedPerson);
-        } catch (DuplicatePersonException dpe) {
-            throw new CommandException(MESSAGE_DUPLICATE_PERSON);
-        } catch (PersonNotFoundException pnfe) {
-            throw new AssertionError("The target person cannot be missing");
-        }
+        updatePersonWithDisplayPicturePath(personToEdit, editedPerson);
 
         return new CommandResult(generateSuccessMessage(editedPerson));
     }
 
     /**
      * Generates failure message
-     * @return String
+     * @return String wih failure message
      */
     private String generateFailureMessage() {
         return MESSAGE_IMAGE_PATH_FAIL;
@@ -121,13 +114,30 @@ public class DisplayPictureCommand extends Command {
     /**
      * Generates success message
      * @param personToEdit is checked
-     * @return String
+     * @return String with success message
      */
     private String generateSuccessMessage(ReadOnlyPerson personToEdit) {
         if (!displayPicture.getPath().isEmpty()) {
             return String.format(MESSAGE_ADD_DISPLAYPICTURE_SUCCESS, personToEdit);
         } else {
             return String.format(MESSAGE_DELETE_DISPLAYPICTURE_SUCCESS, personToEdit);
+        }
+    }
+
+    /**
+     * Updates person in address book with new displaypicture path
+     * @param personToEdit who has to be assigned display picture path
+     * @param editedPerson person assigned display picture path
+     * @throws CommandException when duplicate person found
+     */
+    private void updatePersonWithDisplayPicturePath(ReadOnlyPerson personToEdit,
+                                                    Person editedPerson) throws CommandException {
+        try {
+            model.updatePerson(personToEdit, editedPerson);
+        } catch (DuplicatePersonException dpe) {
+            throw new CommandException(MESSAGE_DUPLICATE_PERSON);
+        } catch (PersonNotFoundException pnfe) {
+            assert false : "The target person cannot be missing";
         }
     }
 

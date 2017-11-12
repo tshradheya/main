@@ -5,7 +5,8 @@ import java.util.HashMap;
 
 
 /**
- * Singleon Class. Stores hashmap which maps color to the tag
+ * Singleton Class
+ * Stores hashmap which maps color to the tag
  */
 public class TagColor {
 

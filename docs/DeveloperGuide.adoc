@@ -10,7 +10,7 @@ ifdef::env-github[]
 :note-caption: :information_source:
 endif::[]
 ifdef::env-github,env-browser[:outfilesuffix: .adoc]
-:repoURL: https://github.com/se-edu/addressbook-level4/tree/master
+:repoURL: https://github.com/CS2103AUG2017-W14-B1/main/tree/master
 
 By: `Team SE-EDU`      Since: `Jun 2016`      Licence: `MIT`
 
@@ -584,16 +584,15 @@ _Figure 18 : Activity diagram for UndoRedoStack_
 // end::undoredo[]
 
 
+// tag::displaypic[]
 === Display Picture mechanism
 
-The Display Picture mechanism is done by using ImageView in JavaFX which is a part of the UI Component.
-
-The `displaypic` command adds/updates the display picture for the contact specified. The image is then displayed as ImageView in PersonCard.
+The `displaypic` command adds/updates the display picture for the contact specified. The image is then displayed as `ImageView` in `PersonCard` and `DetailsPanel`.
 The arguments of the command are `INDEX` and `PATHOFIMAGE`. The image needs to be present in the local device of the user.
 
-This command works by retrieving the image using `BufferedImage`. The command extracts the image from the specified absolute path of image e.g. `C:\Users\Admin\Desktop\My files\pic.jpg`.
+The Display Picture command is implemented in a way so that the image is read from the user specified path and then stored in iContacts directory so that the image is never lost.
 
-By executing the given code below, a new folder named 'pictures/' is created if it is missing. The folder is used to store the images
+By executing the given code below, a new folder named 'pictures/' is created if it is missing. The folder is used to store the images.
 
 [source,java]
 ----
@@ -608,14 +607,21 @@ public void createPictureStorageFolder() throws IOException {
 
 ----
 
-It then stores the image in the folder called `/pictures/` present in the same directory as `.jar`  by giving it a unique hashcode based on the user's email address.
-The reading and writing of images is done using the `ImageIO` class.
+Since the command has function of reading and writing of image, the Storage architectural style was used and extended for Display pictures.
 
 The following UML diagram shows the Storage Architecture for reading and writing of image file:
 
 image::UMLStorageDisplaypic.PNG[width="300"]
-_Figure 2 : UML Diagram for the extended Storage Diagram._
+_Figure 2 : UML Diagram for the extended Storage Component._
 
+
+This command works by retrieving the image using `BufferedImage`. The command extracts the image from the specified absolute path of image e.g. `C:\Users\Admin\Desktop\My files\pic.jpg`
+
+It then stores the image in the folder called `/pictures/` present in the same directory as `.jar`  by giving it a unique hashcode based on the user's email address.
+The reading and writing of images is done using the `ImageIO` class.
+
+
+An event handler is used to notify the `UI` and `Storage` component of the changes made in image and it's name.
 
 The sequence diagram for adding a display picture is shown below: +
 
@@ -639,6 +645,7 @@ public class PersonCard extends UiPart<Region> {
 }
 ----
 
+The Display Picture mechanism is done by using `ImageView`/`ImagePattern` in JavaFX which is a part of the UI Component.
 The `Circle` shape is used for better UI/UX design and is filled with the `ImagePatten`. The wireframe used to display the image for each person is shown below:
 
 image::WireFramePersonCard.PNG[width="300"]
@@ -669,7 +676,9 @@ The command is implemented in this manner because of the following:
 * The `PATHOFIMAGE` must be an absolute path on the local device to make sure the image is referenced.
 * The image is stored in directory with a unique name to avoid conflict. Hashcode of user's email address is used to maintain uniqueness.
 * The task is done using CLI to follow project requirements.
-* The image is stored in jpg format to ensure maximum compatibility.
+* The image is stored in png format to ensure maximum compatibility.
+* In case of image corruption/deletion, care is taken to avoid hanging of UI and display the default image. This is done by checking `file.exists()`.
+
 
 ==== Design Considerations
 
@@ -692,13 +701,19 @@ The command is implemented in this manner because of the following:
 **Cons:** It will no longer be a complete CLI process.
 
 ---
+
+// end::displaypic[]
+
+// tag::location[]
+
 === Location mechanism
-The location command is implemented in an event-driven mechanism form. The below diagram (Refer to Figure 21) shows sequence diagram for it.
+The location command is implemented in the form of an event-driven mechanism . The diagram below (Refer to Figure 21) shows the sequence diagram for it.
 
 image::locationSD.PNG[width="790"]
 _Figure 21 : Sequence diagram for the Location Command._
 
-The execution of command raises an event `ShowLocationEvent`. This causes the `BrowserAndReminderPanel` to switch to Node `Browser` irrespective of current state of the application. The activity diagram for such a case is shown below (Refer to Figure 22):
+The execution of command raises an event `ShowLocationEvent`. This causes the `BrowserAndReminderPanel` to switch to Node `Browser` irrespective of current state of the application.
+The activity diagram for such a case is shown below (Refer to Figure 22):
 
 image::locationAD.PNG[width="790"]
 _Figure 22 : Sequence diagram for the Location Command._
@@ -709,9 +724,9 @@ Following is the code written to ensure the GUI set up for the command:
 ----
 private void setUpToShowLocation() {
     if (currentlyInFront == Node.REMINDERS) {
+        setUpToShowBrowser();
         browser.toFront();
         currentlyInFront = Node.BROWSER;
-        raise(new TurnLabelsOffEvent());
     }
 }
 ----
@@ -737,7 +752,7 @@ public String loadPersonLocation(String address) {
 
 
 [discrete]
-==== Design Considerations
+==== Design Consideration
 
 **Aspect:** What to use to show the location +
 **Alternative 1 (current choice):** Show using google maps url in BrowserPanel  +
@@ -747,30 +762,36 @@ public String loadPersonLocation(String address) {
 **Pros:**  It will provide more functionality. +
 **Cons:** It could cause more resources to be used for the exact same feature and wouldn’t utilise pre-existing browser properly.
 
+// end::location[]
 
+// tag::email[]
 === Email mechanism
 
 The email command lets the user compose an email in default browser with filled in data like recipients, subject and body.
+
+The email command has various fields to denote the Recipients, Subject, Body and Service. Than relation between them can be shown through the UML diagram below:
+
+image::emailUML.PNG[width="790"]
+_Figure 23 : Sequence diagram for the Email Command._
 
 [NOTE]
 The recipients are all contacts belonging to a particular tag.
 [NOTE]
 The only two services offered are `gmail` and `outlook` as our target users are students.
 
-The email command through an event driven mechanism. The below diagram (Refer to Figure 23) shows sequence diagram for it.
+The email command happens through an event driven mechanism. The below diagram (Refer to Figure 23) shows sequence diagram for it.
+The execution of command raises an event `SendingEmailEvent`.
 
 image::emailSD.PNG[width="790"]
 _Figure 23 : Sequence diagram for the Email Command._
 
-The given command is parsed to know the `Service` , `tag` to which email has to be sent, `Subject` and `Body`.
+The command is parsed to know the `Service` , `Tag` to which email has to be sent, `Subject` and `Body`.
 
 The parsing takes place in the following manner (Refer to Figure 24):
 
 image::ParserSDEmail.PNG[width="790"]
 _Figure 24 : Sequence diagram for parsing the Email Command._
 
-
-The execution of command raises an event `SendingEmailEvent`.
 
 The URL for composing the mail set up through the following code
 
@@ -786,7 +807,7 @@ Desktop.getDesktop().browse(new URI(String.format(GMAIL_EMAIL_URL, recipients, s
 ----
 
 [discrete]
-==== Design Considerations
+==== Design Consideration
 
 **Aspect:** Where to compose the mail +
 **Alternative 1 (current choice):** Opens the default browser of Desktop  +
@@ -796,10 +817,23 @@ Desktop.getDesktop().browse(new URI(String.format(GMAIL_EMAIL_URL, recipients, s
 **Pros:** No dependency on other apps +
 **Cons:** Does not auto fill in the text due to older version of browser
 
+// end::email[]
+
+// tag::fvc[]
 === Frequently Visited Contacts mechanism
+
+This feature brings in a new UI element which is a list of maximum size 5 called `PopularContactList` and each list showing the name, popularity rank and display picture in a `PopularContactCard`.
+These way these UI elements are added is shown in the following diagram:
+
+image::umlfvc.PNG[width="790"]
+_Figure TBD : Class Digram of UI with Popular Contact Panel._
 
 The mechanism to show the top five most frequently visited contacts is facilitated by the `PopularityCounter` of each contact.
 For every new person added into the address book, he is assigned a popularity counter of `0`. The top five popular contacts are extracted by sorting the list based on the field `PopularityCounter` of each person. In case of same popularity counter, the person who was added before is given higher priority.
+
+
+[NOTE]
+This feature is not implemented as a command.The list gets refreshed whenever the popularity counter is supposed to change.
 
 The Frequently Visited Contacts mechanism is an event-driven mechanism. However, there is no explicit command to view the top five frequently visited contacts as they are always refreshed whenever there is an change in the address book. They are always displayed on the UI below the `CommandResult` panel. The
 The event to refresh the Popular Contacts List, `PopularContactChangedEvent` is triggered whenever any of the command that increases `PopularityCounter` is execcuted.
@@ -821,9 +855,16 @@ Following are the commands which will increase the `PopularityCounter` by one fo
 
 *** `viewtag`
 *** `select`
-*** `details`
+*** `details` [special case when counter increases by 2 as it is a stronger indicator of who could be a frequently visited contact]
 *** `location`
 *** `email`
+
+On execution of any of the following command, an extra event is raised which updates the popular contact list after updating the popularity counter of the contact.
+The sequence diagram for the extra event is shown below for `select` command:
+
+image::selectFreuentlyVisited.PNG[width="790"]
+_Figure TBD : Sequence diagram for frequently visited mechanism for `select` command._
+
 
 [NOTE]
 Manual selection of person through a click also increases the popularity counter of that person. This is the same action as `details` command.
@@ -835,6 +876,7 @@ The following method is used to increate the `popularityCounter` by one:
 ----
 public ReadOnlyPerson increaseCounterByOne(ReadOnlyPerson person) {
         person.getPopularityCounter().increasePopularityCounter();
+
         return new Person(person.getName(), person.getPhone(), person.getEmail(), person.getAddress(),
                 person.getBirthday(), person.getNickname(), person.getDisplayPicture(), person.getPopularityCounter(),
                 person.getTags());
@@ -849,7 +891,18 @@ image::frequentlyVisitedSD.PNG[width="790"]
 _Figure TBD : Sequence diagram for frequently visited mechanism._
 
 
+==== Design Considerations
 
+**Aspect:** How to implement the feature +
+**Alternative 1 (current choice):** Make the list get refreshed every time one of the command which changes popularity is executed   +
+**Pros:** Becomes a dynamic feature such that user can see favourite contacts at any time +
+**Cons:** Makes application slightly slower as more execution of code for those commands +
+**Alternative 2:** Execute command to refresh list of popular contacts +
+**Pros:** Reduces regular refresh of list +
+**Cons:** Will have to keep track of command history to see the list of commands executed before previous execution of favourites command
+// end::fvc[]
+
+// tag::details[]
 === Details Panel Implementation
 
 The `detail` command shows more details of the contact like address, birthday, email in addition to the details shown in the `PersonCard` of `PersonListPanel`
@@ -887,7 +940,78 @@ Following is the wireframe for the Details Panel:
 image::wireframeDetailsPanel.PNG[width="600"]
 _Figure TBD : Wireframe for Details Panel._
 
-Using the `FontAwesomeFx` library, an icon is set for each label as seen in the UI.
+Using the `FontAwesomeFx` library, an icon is set for each label to make the UI look appealing as seen in the UI above(Refer to figure TBD).
+
+The solution to showing the same colour for a tag in `DetailsPanel` and `PersonCard` was resolved by having a *Singleton Class* `TagColor`.
+
+The following code inside the class ensured that the class acted as an global class and since only one instance was created, it made the tag color's constant for each tag.
+
+
+[source, java]
+----
+public static TagColor getInstance() {
+        if (tagColor == null) {
+            tagColor = new TagColor();
+        }
+        return tagColor;
+    }
+----
+
+
+==== Design Consideration
+
+**Aspect:** How to improve UI +
+**Alternative 1 (current choice):** Show the extra details of contact after they are selected +
+Pros: Allows more contacts to be shown in the list as they information there is reduced +
+Cons: User needs to manually select the user to see more details of that person +
+**Alternative 2:** Show all detail of person in the `PersonCard` +
+Pros: Reduces effort of selection of contact to see extra details +
+Cons: Looks very cluttered and has poor User Interface design
+
+
+//end::details[]
+
+// tag::viewtag[]
+=== View tag mechanism
+
+The command is added into the logic following the given class diagram:
+
+image::umlLogic.PNG[width="790"]
+_Figure TBD : Class Diagram of Logic._
+
+The `viewtag` command works by setting predicate to the `Observable filteredlist`.
+
+Only one keyword is allowed for the command and it shows all people with thr given tag.
+
+The method `test(ReadOnlyPerson person)` iterates through the `tagKeywords` to find a match of every `person` from the address book.
+
+There is use of streams and lambda[Java 8 features] to make the code more readable as shown below:
+
+[source, java]
+----
+public boolean test(ReadOnlyPerson person) {
+        Set<Tag> tagsOfPerson = person.getTags();
+
+        return tagsOfPerson.stream()
+                .anyMatch(tagMatches -> tagMatches.getTagName().equalsIgnoreCase(keyword));
+
+    }
+----
+
+
+[discrete]
+==== Design Consideration
+
+**Aspect:** How to filter the list +
+**Alternative 1 (current choice):** Use of Lambda and Stream  +
+**Pros:**  Code is more readable +
+**Cons:** Sometimes takes more time to process than normal loops +
+**Alternative 2:** Loops and Conditions +
+**Pros:**  Known to be faster than Streams at times +
+**Cons:** Harder to avoid arrow headed violation of coding style.
+
+// end::viewtag[]
+
 
 // tag::toggle[]
 === Toggling mechanism

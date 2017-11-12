@@ -10,7 +10,7 @@ ifdef::env-github[]
 :tip-caption: :bulb:
 :note-caption: :information_source:
 endif::[]
-:repoURL: https://github.com/se-edu/addressbook-level4
+:repoURL: https://github.com/CS2103AUG2017-W14-B1/main/
 
 By: `Team SE-EDU`      Since: `Jun 2016`      Licence: `MIT`
 
@@ -19,6 +19,19 @@ By: `Team SE-EDU`      Since: `Jun 2016`      Licence: `MIT`
 
 iContacts is a Command Line Interface (CLI) application that helps you manage your contacts easily. You can use iContacts to add, edit and delete contacts. It has an easy-to-use search function to find specific contacts quickly. It also provides reminders for upcoming birthdays of contacts within the application and allows you to create your own reminders for upcoming events.
 It is designed for university students to effectively manage their university life by using one single app through which they can manage reminders, details of contacts, email, and maps.
+
+== Who should use our application
+
+This application is targeted towards University students, aiming to meet their needs throughout their university life, and hopefully beyond. University students meet many people in the university, such as project group members, tutors, lecturers, friends and other connections. Nowadays it is important for students to build connections with other people, as connections may also help students for their future career after graduation. Since the students meet a lot of people, they may not be able to remember all the information about the people they met. Therefore, iContacts aims to help students to store and manage their contacts easily.
+Not only that, a student can also keep in track of the deadlines through the reminders features. They will also be able to easily share their contacts with other people just by typing a simple command. Hence, through iContacts university students can make their university life easier to manage with all the various features.
+
+*  User Profile
+
+**  University Students
+**  Students part of many CCA clubs and committees
+**  Students taking role of Teaching Assistant/Tutor
+**  Students who is interning and has colleagues
+**  Students having close friends and family
 
 == About
 
@@ -50,6 +63,45 @@ e.g. typing *`help`* and pressing kbd:[Enter] will open the help window.
 * *`exit`* : exits the app
 
 .  Refer to the link:#features[Features] section below for details of each command.
+
+
+== The User Interface of iContacts
+
+=== The Three Lists
+
+* Contacts List +
++
+It allows user to see the list of off contacts, and refer to them while adding, deleting or updating any contact. The list of contacts can be changed by searching, filtering and sorting the contacts.
+In the list one can view the most unique details about the contact, like their name, personalised nickname, tags and phone number.
+
+* Birthdays List +
++
+With this list right on the home screen it will be impossible to forget the birthday of your contacts. This list shows the birthday of all contacts in this month and a special icon for those whose birthday is today or tomorrow.
+
+* Reminder List +
++
+Find all your reminders in sorted manner here. The ones with `Red` indicate the due date is today, `Yellow` having due date in 3 days and `Green` for the rest. The passed events have no colour.
+
+
+=== The Two Panels
+
+* Browser Panel +
++
+It allows you to see the webpage of a contact or the location in Google maps.
+
+* Details Panel +
++
+View more details of a contact by selecting him in this panel. It shows other details like, email, birthday and address.
+
+=== The One Command Box +
+
+This is where the Magic happens, type in the command and get instant results for the various commands in result box.
+
+== Why iContacts?
+
+* Convenient
+* Fast
+* One stop place to manage all university related activities
 
 == Features
 
@@ -130,6 +182,7 @@ only takes place when the program is started up, and when an edit is made to a r
 ====
 // end::addReminder[]
 
+//tag::details[]
 === Viewing details of a contact: `details`
 
 Shows the full contact information of a person in the address book. +
@@ -147,6 +200,7 @@ Show the full contact information of the person at index 1 (Refer to Figure 6).
 
 image::details.png[width=790]
 _Figure 6: The full contact information of the person at index 1._
+//end::details[]
 
 === Listing all persons : `list`
 
@@ -225,6 +279,7 @@ Edits the content of the 1st reminder to be `Drink coffee`.
 Edits the date and time of the 3rd reminder to be `25/12/2017` and `19:00` respectively.
 // end::editReminder[]
 
+// tag::fvc[]
 === Frequently Viewed Contacts
 
 Shows the user a list of top five contacts which the user has viewed the most +
@@ -238,7 +293,7 @@ Shows the user a list of top five contacts which the user has viewed the most +
 * If two people have same popularity then the person who was added earlier is shown before in the Top 5 list
 * The following commands increase the popularity counter of the person viewed/searched:
 ** `select`
-** `details`
+** `details` [special case when counter increases by 2 as it is a stronger indicator of who could be a frequently visited contact]
 ** `viewtag`
 ** `email`
 ** `location`
@@ -251,7 +306,7 @@ This can be seen in the image below:
 
 image::frequentlyVisited.PNG[width="790"]
 _Figure 7: `Roy Balakrishnan` is moved to the top of the list._
-
+//end::fvc[]
 
 // tag::nickname[]
 === Adding a nickname to a person : `nickname`
@@ -273,6 +328,8 @@ Adds a nickname `Eddie` to the 1st person.
 Removes the nickname from the the 1st person.
 // end::nickname[]
 
+// tag::displaypic[]
+
 === Adding Display picture for each person : `displaypic`
 
 Adds a Display Picture to an existing person in the address book. +
@@ -283,7 +340,7 @@ Format: `displaypic INDEX [PATHOFIMAGE]`
 * The person can have either 0 or 1 display picture
 * Existing picture will be updated to with the new input path
 * Picture can be removed by leaving the PATHOFIMAGE empty
-* The image should be on the local computer and the PATHOFIMAGE must be valid
+* The image should be on the local computer and the PATHOFIMAGE must be valid although it can bedeleted from local device after command is executed
 * If no image is given then the default picture will be shown
 ****
 
@@ -296,6 +353,10 @@ Removes the existing display picture for the person at `INDEX` 2
 
 image::displaypic.png[width="790"]
 _Figure 8: Adds a picture to the first person._
+
+// end::displaypic[]
+
+// tag::location[]
 
 === Displaying location to a contact's address: `location`
 
@@ -317,6 +378,10 @@ Returns location of the address of person at `INDEX` 2 (Refer to Figure 9)
 image::location.PNG[width="790"]
 _Figure 9: Displays the location of the second person._
 
+// end::location[]
+
+// tag::email[]
+
 === Emailing to a group of people having a particular tag: `email`
 
 Opens up the link to send email to all people of having a particular tag. A drafter email with subject, body and recipients is opened in default browser +
@@ -336,6 +401,8 @@ Examples:
 Allows to send email after drafting message to everyone with the tag `cs2103` in the default browser
 
 //image::email.PNG[width="790"]
+
+// end::email[]
 
 
 === Locating persons by name: `find`
@@ -358,7 +425,7 @@ Returns `john` and `John Doe`
 * `find Betsy Tim John` +
 Returns any person having names `Betsy`, `Tim`, or `John`
 
-
+// tag::viewtag[]
 === Finding all people associated with a particular Tag: `viewtag`
 
 Finds all people who have the tag given in the keyword. +
@@ -381,6 +448,7 @@ Returns `Alex` and `Bernice1 as they are having the tag `friends` (Refer to Figu
 
 image::viewtag.PNG[width="790"]
 _Figure 10: Listing all contacts with the tag `friends`._
+//end::viewtag[]
 
 // tag::filter[]
 === Finding all people by name and associated with one or more tags: `filter`
@@ -661,7 +729,7 @@ e.g.`location 2`
 e.g. `theme day`
 
 
-== Since V1.3
+== Coming in V2.0
 
 === Search Command +
 Users will be able to search for persons fulfilling *all* keywords provided by the users. +
@@ -715,6 +783,15 @@ would be synchronized with the copy within the Cloud service. +
 This way, users would have a backup copy of their contacts. Users would also be able to access their contacts from other devices, bringing about portability.
 
 
+=== Enhance UI
 
-=== Color coded commands for easy viewing
-=== Import data file
+The current User Interface (UI) doesn’t seem visually appealing to the user, which is why I plan to improve the design of the product. I aim to make it in the form of a chatbot where each command typed is a message sent by us and the result of command is the message sent by the product to us.
+This will make the user feel more connected to the product as it adds a personal touch where user feels like he is interacting directly with a person. This enhancement will be perfectly suitable for the target audience which is the university students as they will be more comfortable using an application which works similar to a messaging platform.
+
+
+=== Flexibility in Commands
+
+Currently, iContacts is limited in terms of the command keyword that needs to be typed in for executing a command. For e.g. in order to view the location of a contact the `LOCATION` keyword needs to be used and using any other keyword instead of that will cause failure of the command.
+
+To make the product more user friendly and provide more flexibility to the user, I aim to integrate the Natural Language Processing(NLP) library which will allow the successful execution of the command even when keywords similar to `LOCATION` are typed, for e.g. `MAP`, `DIRECTION`, `LOCATE`.
+

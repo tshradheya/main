@@ -183,12 +183,14 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
     //@@author
     //@@author tshradheya
     private void setUpToShowRemindersPanel() {
+        logger.info("Reminders Panel visible");
         detailsPanel.setVisible(false);
         remindersPanel.setVisible(true);
         browser.setVisible(false);
     }
 
     private void setUpToShowDetailsPanel() {
+        logger.info("Details Panel visible");
         detailsPanel.setVisible(true);
         remindersPanel.setVisible(false);
         browser.setVisible(false);
@@ -207,6 +209,7 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
      * Set's up the UI to bring browser to front
      */
     private void setUpToShowWebBrowser() {
+        logger.info("Browser Panel visible");
         browser.setVisible(true);
         detailsPanel.setVisible(false);
         remindersPanel.setVisible(false);
@@ -256,9 +259,9 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
         try {
             Desktop.getDesktop().browse(new URI(String.format(GMAIL_EMAIL_URL, recipients, subject, body)));
         } catch (URISyntaxException urise) {
-            urise.printStackTrace();
+            assert false : "As long as google doesn't change its links this should not happen";
         } catch (IOException ioe) {
-            ioe.printStackTrace();
+            assert false : "As long as google doesn't change its links this should not happen";
         }
     }
 
@@ -272,9 +275,9 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
         try {
             Desktop.getDesktop().browse(new URI(String.format(OUTLOOK_EMAIL_URL, recipients, subject, body)));
         } catch (URISyntaxException urise) {
-            urise.printStackTrace();
+            assert false : "As long as outlook doesn't change its links this should not happen";
         } catch (IOException ioe) {
-            ioe.printStackTrace();
+            assert false : "As long as outlook doesn't change its links this should not happen";
         }
     }
 

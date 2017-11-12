@@ -91,7 +91,7 @@ Format: `addreminder rd/REMINDER d/DATE ti/TIME`
 ****
 * All three parameters REMINDER, DATE and TIME must be filled. +
 * DATE must be in the format dd/mm/yyyy. `'-'`, `'/'` or `'.'` can be used to separate the day, month and year field of the date,
- and they need not be paired up (i.e. 24.03/2017 is acceptable as well). +
+ and they need not be paired up (i.e. 24.03/2017 is acceptable as well). Only values from 1900 to 2099 are allowed for the year field. +
 * TIME must be in 24-hr format, with a colon separating the hour and minute values. Example: 08:00, 16:00, 23:59. +
 * REMINDER can be of any value, as long as it is not empty.
 ****

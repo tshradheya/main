@@ -1,6 +1,8 @@
 //@@author tshradheya
 package seedu.address.ui;
 
+import java.io.File;
+
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -65,6 +67,13 @@ public class PopularContactCard extends UiPart<Region> {
 
             Image image = new Image("file:" + "pictures/" + person.getDisplayPicture().getPath() + ".png",
                     IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
+
+            // To take care of image deleted manually
+            File file = new File("pictures/" + person.getDisplayPicture().getPath() + ".png");
+            if (!file.exists()) {
+                image = new Image(MainApp.class.getResourceAsStream("/images/defaulddp.png"),
+                        IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
+            }
 
             popularContactDisplayPicture.setFill(new ImagePattern(image));
 

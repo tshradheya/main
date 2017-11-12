@@ -1,6 +1,7 @@
 //@@author tshradheya
 package seedu.address.ui;
 
+import java.io.File;
 import java.util.Random;
 
 import javafx.beans.binding.Bindings;
@@ -13,6 +14,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import seedu.address.MainApp;
 import seedu.address.model.person.ReadOnlyPerson;
 import seedu.address.ui.util.TagColor;
 
@@ -111,6 +113,13 @@ public class DetailsPanel extends UiPart<Region> {
 
             Image image = new Image("file:" + "pictures/" + person.getDisplayPicture().getPath() + ".png",
                     IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
+
+            // To take care of image deleted manually
+            File file = new File("pictures/" + person.getDisplayPicture().getPath() + ".png");
+            if (!file.exists()) {
+                image = new Image(MainApp.class.getResourceAsStream("/images/defaulddp.png"),
+                        IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
+            }
 
             centerImage();
             detailsDisplayPicture.setImage(image);

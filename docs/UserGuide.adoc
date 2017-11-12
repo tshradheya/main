@@ -288,7 +288,7 @@ Shows the user a list of top five contacts which the user has viewed the most +
 * If two people have same popularity then the person who was added earlier is shown before in the Top 5 list
 * The following commands increase the popularity counter of the person viewed/searched:
 ** `select`
-** `details`
+** `details` [special case when counter increases by 2 as it is a stronger indicator of who could be a frequently visited contact]
 ** `viewtag`
 ** `email`
 ** `location`

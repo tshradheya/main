@@ -791,8 +791,13 @@ Desktop.getDesktop().browse(new URI(String.format(GMAIL_EMAIL_URL, recipients, s
 
 === Frequently Visited Contacts mechanism
 
+
+
 The mechanism to show the top five most frequently visited contacts is facilitated by the `PopularityCounter` of each contact.
 For every new person added into the address book, he is assigned a popularity counter of `0`. The top five popular contacts are extracted by sorting the list based on the field `PopularityCounter` of each person. In case of same popularity counter, the person who was added before is given higher priority.
+
+[NOTE]
+This feature is not implemented as a command.The list gets refreshed whenever the popularity counter is supposed to change.
 
 The Frequently Visited Contacts mechanism is an event-driven mechanism. However, there is no explicit command to view the top five frequently visited contacts as they are always refreshed whenever there is an change in the address book. They are always displayed on the UI below the `CommandResult` panel. The
 The event to refresh the Popular Contacts List, `PopularContactChangedEvent` is triggered whenever any of the command that increases `PopularityCounter` is execcuted.
@@ -850,6 +855,17 @@ image::frequentlyVisitedSD.PNG[width="790"]
 _Figure TBD : Sequence diagram for frequently visited mechanism._
 
 
+==== Design Considerations
+
+**Aspect:** How to implement the feature +
+**Alternative 1 (current choice):** Make the list get refreshed every time one of the command which changes popularity is executed   +
+**Pros:** Becomes a dynamic feature such that user can see favourite contacts at any time +
+**Cons:** Makes application slightly slower as more execution of code for those commands +
+**Alternative 2:** Execute command to refresh list of popular contacts +
+**Pros:** Reduces regular refresh of list +
+**Cons:** Will have to keep track of command history to see the list of commands executed before previous execution of favourites command
+
+
 
 === Details Panel Implementation
 
@@ -889,6 +905,34 @@ image::wireframeDetailsPanel.PNG[width="600"]
 _Figure TBD : Wireframe for Details Panel._
 
 Using the `FontAwesomeFx` library, an icon is set for each label to make the UI look appealing as seen in the UI above(Refer to figure TBD).
+
+The solution to showing the same colour for a tag in `DetailsPanel` and `PersonCard` was resolved by having a *Singleton Class* `TagColor`.
+
+The following code inside the class ensured that the class acted as an global class and since only one instance was created, it made the tag color's constant for each tag.
+
+
+[source, java]
+----
+public static TagColor getInstance() {
+        if (tagColor == null) {
+            tagColor = new TagColor();
+        }
+        return tagColor;
+    }
+----
+
+==== Design Consideration
+
+**Aspect:** How to improve UI +
+**Alternative 1 (current choice):** Show the extra details of contact after they are selected +
+Pros: Allows more contacts to be shown in the list as they information there is reduced +
+Cons: User needs to manually select the user to see more details of that person +
+**Alternative 2:** Show all detail of person in the `PersonCard` +
+Pros: Reduces effort of selection of contact to see extra details +
+Cons: Looks very cluttered and has poor User Interface design
+
+
+
 
 // tag::toggle[]
 === Toggling mechanism

@@ -20,6 +20,19 @@ By: `Team SE-EDU`      Since: `Jun 2016`      Licence: `MIT`
 iContacts is a Command Line Interface (CLI) application that helps you manage your contacts easily. You can use iContacts to add, edit and delete contacts. It has an easy-to-use search function to find specific contacts quickly. It also provides reminders for upcoming birthdays of contacts within the application, and allows you to create your own reminders for upcoming events.
 It is designed for university students to effectively manage their university life by using one single app through which they can manage reminders, details of contacts, email and maps.
 
+== Who should use our application
+
+This application is targeted towards University students, aiming to meet their needs throughout their university life, and hopefully beyond. University students meet many people in the university, such as project group members, tutors, lecturers, friends and other connections. Nowadays it is important for students to build connections with other people, as connections may also help students for their future career after graduation. Since the students meet a lot of people, they may not be able to remember all the information about the people they met. Therefore, iContacts aims to help students to store and manage their contacts easily.
+Not only that, a student can also keep in track of the deadlines through the reminders features. They will also be able to easily share their contacts with other people just by typing a simple command. Hence, through iContacts university students can make their university life easier to manage with all the various features.
+
+*  User Profile
+
+**  University Students
+**  Students part of many CCA clubs and committees
+**  Students taking role of Teaching Assistant/Tutor
+**  Students who is interning and has colleagues
+**  Students having close friends and family
+
 == About
 
 This User Guide aims to help you get started with iContacts. It explains the features of iContacts in detail, and will teach you how to use it effectively and efficiently. You can understand this User Guide without having any technical knowledge.
@@ -50,6 +63,45 @@ e.g. typing *`help`* and pressing kbd:[Enter] will open the help window.
 * *`exit`* : exits the app
 
 .  Refer to the link:#features[Features] section below for details of each command.
+
+
+== The User Interface of iContacts
+
+=== The Three Lists
+
+* Contacts List +
++
+It allows user to see the list of off contacts, and refer to them while adding, deleting or updating any contact. The list of contacts can be changed by searching, filtering and sorting the contacts.
+In the list one can view the most unique details about the contact, like their name, personalised nickname, tags and phone number.
+
+* Birthdays List +
++
+With this list right on the home screen it will be impossible to forget the birthday of your contacts. This list shows the birthday of all contacts in this month and a special icon for those whose birthday is today or tomorrow.
+
+* Reminder List +
++
+Find all your reminders in sorted manner here. The ones with `Red` indicate the due date is today, `Yellow` having due date in 3 days and `Green` for the rest. The passed events have no colour.
+
+
+=== The Two Panels
+
+* Browser Panel +
++
+It allows you to see the webpage of a contact or the location in Google maps.
+
+* Details Panel +
++
+View more details of a contact by selecting him in this panel. It shows other details like, email, birthday and address.
+
+=== The One Command Box +
+
+This is where the Magic happens, type in the command and get instant results for the various commands in result box.
+
+== Why iContacts?
+
+* Convenient
+* Fast
+* One stop place to manage all university related activities
 
 == Features
 

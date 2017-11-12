@@ -570,14 +570,12 @@ _Figure 18 : Activity diagram for UndoRedoStack_
 
 === Display Picture mechanism
 
-The Display Picture mechanism is done by using ImageView in JavaFX which is a part of the UI Component.
-
-The `displaypic` command adds/updates the display picture for the contact specified. The image is then displayed as ImageView in PersonCard.
+The `displaypic` command adds/updates the display picture for the contact specified. The image is then displayed as `ImageView` in `PersonCard` and `DetailsPanel`.
 The arguments of the command are `INDEX` and `PATHOFIMAGE`. The image needs to be present in the local device of the user.
 
-This command works by retrieving the image using `BufferedImage`. The command extracts the image from the specified absolute path of image e.g. `C:\Users\Admin\Desktop\My files\pic.jpg`.
+The Display Picture command is implemented in a way so that the image is read from the user specified path and then stored in iContacts directory so that the image is never lost.
 
-By executing the given code below, a new folder named 'pictures/' is created if it is missing. The folder is used to store the images
+By executing the given code below, a new folder named 'pictures/' is created if it is missing. The folder is used to store the images.
 
 [source,java]
 ----
@@ -592,14 +590,22 @@ public void createPictureStorageFolder() throws IOException {
 
 ----
 
-It then stores the image in the folder called `/pictures/` present in the same directory as `.jar`  by giving it a unique hashcode based on the user's email address.
-The reading and writing of images is done using the `ImageIO` class.
+Since the command has function of reading and writing of image, the Storage architectural style was used and extended for Display pictures.
 
 The following UML diagram shows the Storage Architecture for reading and writing of image file:
 
 image::UMLStorageDisplaypic.PNG[width="300"]
-_Figure 2 : UML Diagram for the extended Storage Diagram._
+_Figure 2 : UML Diagram for the extended Storage Component._
 
+
+This command works by retrieving the image using `BufferedImage`. The command extracts the image from the specified absolute path of image e.g. `C:\Users\Admin\Desktop\My files\pic.jpg`
+
+It then stores the image in the folder called `/pictures/` present in the same directory as `.jar`  by giving it a unique hashcode based on the user's email address.
+The reading and writing of images is done using the `ImageIO` class.
+
+The following UML diagram shows the classes that r
+
+An event handler is used to notify the `UI` and `Storage` component of the changes made in image and it's name.
 
 The sequence diagram for adding a display picture is shown below: +
 
@@ -623,6 +629,7 @@ public class PersonCard extends UiPart<Region> {
 }
 ----
 
+The Display Picture mechanism is done by using `ImageView`/`ImagePattern` in JavaFX which is a part of the UI Component.
 The `Circle` shape is used for better UI/UX design and is filled with the `ImagePatten`. The wireframe used to display the image for each person is shown below:
 
 image::WireFramePersonCard.PNG[width="300"]
@@ -653,7 +660,9 @@ The command is implemented in this manner because of the following:
 * The `PATHOFIMAGE` must be an absolute path on the local device to make sure the image is referenced.
 * The image is stored in directory with a unique name to avoid conflict. Hashcode of user's email address is used to maintain uniqueness.
 * The task is done using CLI to follow project requirements.
-* The image is stored in jpg format to ensure maximum compatibility.
+* The image is stored in png format to ensure maximum compatibility.
+* In case of image corruption/deletion, care is taken to avoid hanging of UI and display the default image. This is done by checking `file.exists()`.
+
 
 ==== Design Considerations
 
@@ -677,12 +686,13 @@ The command is implemented in this manner because of the following:
 
 ---
 === Location mechanism
-The location command is implemented in an event-driven mechanism form. The below diagram (Refer to Figure 21) shows sequence diagram for it.
+The location command is implemented in the form of an event-driven mechanism . The diagram below (Refer to Figure 21) shows the sequence diagram for it.
 
 image::locationSD.PNG[width="790"]
 _Figure 21 : Sequence diagram for the Location Command._
 
-The execution of command raises an event `ShowLocationEvent`. This causes the `BrowserAndReminderPanel` to switch to Node `Browser` irrespective of current state of the application. The activity diagram for such a case is shown below (Refer to Figure 22):
+The execution of command raises an event `ShowLocationEvent`. This causes the `BrowserAndReminderPanel` to switch to Node `Browser` irrespective of current state of the application.
+The activity diagram for such a case is shown below (Refer to Figure 22):
 
 image::locationAD.PNG[width="790"]
 _Figure 22 : Sequence diagram for the Location Command._
@@ -693,9 +703,9 @@ Following is the code written to ensure the GUI set up for the command:
 ----
 private void setUpToShowLocation() {
     if (currentlyInFront == Node.REMINDERS) {
+        setUpToShowBrowser();
         browser.toFront();
         currentlyInFront = Node.BROWSER;
-        raise(new TurnLabelsOffEvent());
     }
 }
 ----
@@ -741,20 +751,19 @@ The recipients are all contacts belonging to a particular tag.
 [NOTE]
 The only two services offered are `gmail` and `outlook` as our target users are students.
 
-The email command through an event driven mechanism. The below diagram (Refer to Figure 23) shows sequence diagram for it.
+The email command happens through an event driven mechanism. The below diagram (Refer to Figure 23) shows sequence diagram for it.
+The execution of command raises an event `SendingEmailEvent`.
 
 image::emailSD.PNG[width="790"]
 _Figure 23 : Sequence diagram for the Email Command._
 
-The given command is parsed to know the `Service` , `tag` to which email has to be sent, `Subject` and `Body`.
+The command is parsed to know the `Service` , `Tag` to which email has to be sent, `Subject` and `Body`.
 
 The parsing takes place in the following manner (Refer to Figure 24):
 
 image::ParserSDEmail.PNG[width="790"]
 _Figure 24 : Sequence diagram for parsing the Email Command._
 
-
-The execution of command raises an event `SendingEmailEvent`.
 
 The URL for composing the mail set up through the following code
 
@@ -805,9 +814,16 @@ Following are the commands which will increase the `PopularityCounter` by one fo
 
 *** `viewtag`
 *** `select`
-*** `details`
+*** `details` [special case when counter increases by 2 as it is a stronger indicator of who could be a frequently visited contact]
 *** `location`
 *** `email`
+
+On execution of any of the following command, an extra event is raised which updates the popular contact list after updating the popularity counter of the contact.
+The sequence diagram for the extra event is shown below for `select` command:
+
+image::selectFrequentlyVisited.PNG[width="790"]
+_Figure TBD : Sequence diagram for frequently visited mechanism for `select` command._
+
 
 [NOTE]
 Manual selection of person through a click also increases the popularity counter of that person. This is the same action as `details` command.
@@ -819,6 +835,7 @@ The following method is used to increate the `popularityCounter` by one:
 ----
 public ReadOnlyPerson increaseCounterByOne(ReadOnlyPerson person) {
         person.getPopularityCounter().increasePopularityCounter();
+
         return new Person(person.getName(), person.getPhone(), person.getEmail(), person.getAddress(),
                 person.getBirthday(), person.getNickname(), person.getDisplayPicture(), person.getPopularityCounter(),
                 person.getTags());
@@ -871,7 +888,7 @@ Following is the wireframe for the Details Panel:
 image::wireframeDetailsPanel.PNG[width="600"]
 _Figure TBD : Wireframe for Details Panel._
 
-Using the `FontAwesomeFx` library, an icon is set for each label as seen in the UI.
+Using the `FontAwesomeFx` library, an icon is set for each label to make the UI look appealing as seen in the UI above(Refer to figure TBD).
 
 // tag::toggle[]
 === Toggling mechanism

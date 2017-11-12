@@ -711,7 +711,7 @@ e.g.`location 2`
 e.g. `theme day`
 
 
-== Since V1.3
+== Coming in V2.0
 
 === Search Command +
 Users will be able to search for persons fulfilling *all* keywords provided by the users. +
@@ -765,6 +765,15 @@ would be synchronized with the copy within the Cloud service. +
 This way, users would have a backup copy of their contacts. Users would also be able to access their contacts from other devices, bringing about portability.
 
 
+=== Enhance UI
 
-=== Color coded commands for easy viewing
-=== Import data file
+The current User Interface (UI) doesn’t seem visually appealing to the user, which is why I plan to improve the design of the product. I aim to make it in the form of a chatbot where each command typed is a message sent by us and the result of command is the message sent by the product to us.
+This will make the user feel more connected to the product as it adds a personal touch where user feels like he is interacting directly with a person. This enhancement will be perfectly suitable for the target audience which is the university students as they will be more comfortable using an application which works similar to a messaging platform.
+
+
+=== Flexibility in Commands
+
+Currently, iContacts is limited in terms of the command keyword that needs to be typed in for executing a command. For e.g. in order to view the location of a contact the `LOCATION` keyword needs to be used and using any other keyword instead of that will cause failure of the command.
+
+To make the product more user friendly and provide more flexibility to the user, I aim to integrate the Natural Language Processing(NLP) library which will allow the successful execution of the command even when keywords similar to `LOCATION` are typed, for e.g. `MAP`, `DIRECTION`, `LOCATE`.
+

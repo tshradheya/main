@@ -3,6 +3,7 @@
     -fx-background-color: derive(#383838, -40%);
     background-color: #383838; /* Used in the default.html file */
 }
+/* @@author */
 
 .label {
     -fx-font-size: 15pt;
@@ -77,6 +78,7 @@
     -fx-background-color: -fx-focus-color;
 }
 
+/* @@author justinpoh */
 .split-pane:horizontal .split-pane-divider {
     -fx-background-color: derive(#383838, -40%);
     -fx-border-color: derive(#383838, -40%);
@@ -168,11 +170,17 @@
     -fx-font-size: 13pt;
     -fx-text-fill: white;
 }
+/* @@author */
 
 .result-display .label {
     -fx-text-fill: black !important;
 }
 
+/*
+ * Dark scrollbar skin
+ * Author: Farrukh Obaid
+ * https://farrukhobaid.wordpress.com/2013/01/16/dark-scrollbar-skin-for-javafx/
+ */
 .scroll-bar:vertical .thumb,
 .scroll-bar:horizontal .thumb {
     -fx-background-color: rgb(211,211,211);
@@ -234,6 +242,7 @@
     -fx-text-fill: white;
 }
 
+/* @@author justinpoh */
 .grid-pane {
     -fx-background-color: derive(#383838, -40%);
     -fx-border-color: derive(#383838, -40%);
@@ -243,6 +252,7 @@
 .grid-pane .anchor-pane {
     -fx-background-color: derive(#383838, -40%);
 }
+/* @@author */
 
 .context-menu {
     -fx-background-color: derive(#1d1d1d, 50%);
@@ -252,9 +262,11 @@
     -fx-text-fill: white;
 }
 
+/* @@author justinpoh */
 .menu-bar {
     -fx-background-color: derive(#383838, -40%);
 }
+/* @@author */
 
 .menu-bar .label {
     -fx-font-size: 14pt;
@@ -366,6 +378,7 @@
     -fx-effect: innershadow(gaussian, black, 10, 0, 0, 0);
 }
 
+/* @@author justinpoh */
 #resultDisplay .content {
     -fx-background-color: derive(#383838, -40%);
     -fx-background-radius: 0;
@@ -404,6 +417,8 @@
 .error {
     -fx-text-fill: #d06651 !important; /* The error class should always override the default text-fill style */
 }
+/* @@author */
+
 /* @@author tshradheya */
 .details_big_label {
     -fx-font-family: "Segoe UI Semibold";

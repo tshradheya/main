@@ -239,7 +239,7 @@ _Figure 1 : Use case Diagram._
 * Helped teammate fix bugs in his feature link:https://github.com/CS2103AUG2017-W14-B1/main/pull/236[`Pull Request #236`].
 * Contributed in User Guide and Developer Guide to enhance its language link:https://github.com/CS2103AUG2017-W14-B1/main/pull/239[`Pull Request #239`].
 * Helped several people on the forum with their technical difficulties.
-* Found 4 bugs during acceptance testing link:https://github.com/CS2103AUG2017-T17-B4/main/issues?utf8=%E2%9C%93&q=is%3Aissue%20author%3Atshradheya%20[`Issues Created`]
+* Found 6 bugs during acceptance testing link:https://github.com/CS2103AUG2017-T17-B4/main/issues?utf8=%E2%9C%93&q=is%3Aissue%20author%3Atshradheya%20[`Issues Created`]
 
 == Project: NUSEvents Android Application
 

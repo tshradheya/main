@@ -17,8 +17,8 @@ public class Date {
             + " and in the following format:\n"
             + "'.', '-' and '/' can be used to separate the day, month and year fields,"
             + " and need not be used in pairs (i.e. 21.10/1995 works as well).\n"
-            + "Day field: 1 - 31 (allows leading zeroes).\n"
-            + "Month field: 1-12 (allows leading zeroes).\n"
+            + "Day field: 1 - 31.\n"
+            + "Month field: 1-12.\n"
             + "Year field: 1900 - 2099.\n"
             + "Example: 21/10/1995, 21-05-1996, 8.10.1987, 01/12-1995, 01.01-1990";
 

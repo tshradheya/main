@@ -7,6 +7,9 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL_SERVICE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL_SUBJECT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL_TO;
 
+import java.util.logging.Logger;
+
+import seedu.address.commons.core.LogsCenter;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.email.Body;
 import seedu.address.model.email.Service;
@@ -37,6 +40,7 @@ public class EmailCommand extends Command {
             + PREFIX_EMAIL_SUBJECT + "Meeting "
             + PREFIX_EMAIL_BODY + "On Monday ";
 
+    private static final Logger logger = LogsCenter.getLogger(EmailCommand.class);
     private PersonContainsTagPredicate predicate;
     private Subject subject;
     private Body body;
@@ -86,7 +90,7 @@ public class EmailCommand extends Command {
             String emailTo = model.createEmailRecipients(predicate);
             processEmail(emailTo);
         } catch (ParseException e) {
-            e.printStackTrace();
+            logger.info("Wrong service or tag");
             return new CommandResult(MESSAGE_NOT_SENT);
         }
         return new CommandResult(MESSAGE_EMAIL_SENT);

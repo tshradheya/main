@@ -25,6 +25,10 @@ public class PopularContactCard extends UiPart<Region> {
     private static final String FXML = "PopularContactCard.fxml";
     private static final Integer IMAGE_WIDTH = 70;
     private static final Integer IMAGE_HEIGHT = 70;
+    private static final String DIRECTORY_SAVING_PATH = "pictures/";
+    private static final String DEFAULT_IMAGE_PATH = "/images/defaulddp.png";
+    private static final String EMPTY_STRING = "";
+    private static final String IMAGE_EXTENSION = ".png";
 
     /**
      * Note: Certain keywords such as "location" and "resources" are reserved keywords in JavaFX.
@@ -66,26 +70,26 @@ public class PopularContactCard extends UiPart<Region> {
      */
     private void assignImage(ReadOnlyPerson person) {
 
-        if (!person.getDisplayPicture().getPath().equals("")) {
+        if (!person.getDisplayPicture().getPath().equals(EMPTY_STRING)) {
 
-            Image image = new Image("file:" + "pictures/" + person.getDisplayPicture().getPath() + ".png",
-                    IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
+            Image image = new Image("file:" + DIRECTORY_SAVING_PATH + person.getDisplayPicture().getPath()
+                    + IMAGE_EXTENSION, IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
 
             // To take care of image deleted manually
-            File file = new File("pictures/" + person.getDisplayPicture().getPath() + ".png");
+            File file = new File(DIRECTORY_SAVING_PATH + person.getDisplayPicture().getPath() + IMAGE_EXTENSION);
 
             //Defensive programming
             if (!file.exists()) {
                 logger.info("Corrupted image. Loading default image now");
 
-                image = new Image(MainApp.class.getResourceAsStream("/images/defaulddp.png"),
+                image = new Image(MainApp.class.getResourceAsStream(DEFAULT_IMAGE_PATH),
                         IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
             }
 
             popularContactDisplayPicture.setFill(new ImagePattern(image));
 
         } else {
-            Image image = new Image(MainApp.class.getResourceAsStream("/images/defaulddp.png"),
+            Image image = new Image(MainApp.class.getResourceAsStream(DEFAULT_IMAGE_PATH),
                     IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
 
             popularContactDisplayPicture.setFill(new ImagePattern(image));

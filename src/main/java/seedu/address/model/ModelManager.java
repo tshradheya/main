@@ -242,7 +242,7 @@ public class ModelManager extends ComponentManager implements Model {
             try {
                 this.updatePersonsPopularityCounterByOne(person);
             } catch (DuplicatePersonException dpe) {
-                assert false : "Duplicate";
+                assert false : "Duplicate is not possible";
             } catch (PersonNotFoundException pnfe) {
                 throw new AssertionError("The target person cannot be missing");
             }
@@ -394,7 +394,7 @@ public class ModelManager extends ComponentManager implements Model {
                 return Index.fromZeroBased(i);
             }
         }
-        assert false : "Should not come here in no case";
+        assert false : "Should not come here in any case";
         return Index.fromZeroBased(-1);
     }
 
@@ -443,6 +443,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     @Override
     public void clearSelection() {
+        logger.info("Clears selection of person in list");
         raise(new ClearSelectionEvent());
     }
 

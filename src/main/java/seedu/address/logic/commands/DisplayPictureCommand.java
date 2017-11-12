@@ -40,7 +40,7 @@ public class DisplayPictureCommand extends Command {
 
     public static final String MESSAGE_IMAGE_PATH_FAIL =
             "This specified path cannot be read. Please check it's validity and try again";
-
+    private static final String EMPTY_STRING = "";
 
     private Index index;
     private DisplayPicture displayPicture;
@@ -65,10 +65,15 @@ public class DisplayPictureCommand extends Command {
             throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
         }
 
+        //Defensive coding
+        if (displayPicture.getPath() == null) {
+            assert false : "Should never be null";
+        }
+
         ReadOnlyPerson personToEdit = lastShownList.get(index.getZeroBased());
 
-        if (displayPicture.getPath().equalsIgnoreCase("")) {
-            displayPicture.setPath("");
+        if (displayPicture.getPath().equalsIgnoreCase(EMPTY_STRING)) {
+            displayPicture.setPath(EMPTY_STRING);
 
             Person editedPerson = new Person(personToEdit.getName(), personToEdit.getPhone(), personToEdit.getEmail(),
                     personToEdit.getAddress(), personToEdit.getBirthday(), personToEdit.getNickname(),
@@ -104,7 +109,7 @@ public class DisplayPictureCommand extends Command {
         } catch (DuplicatePersonException dpe) {
             throw new CommandException(MESSAGE_DUPLICATE_PERSON);
         } catch (PersonNotFoundException pnfe) {
-            throw new AssertionError("The target person cannot be missing");
+            assert false : "The target person cannot be missing";
         }
 
         return new CommandResult(generateSuccessMessage(editedPerson));

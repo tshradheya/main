@@ -37,6 +37,8 @@ The following are the steps to load sample data:
 
 [NOTE]
 For path mentioned in below command get the absolute path from your device and try the commands.
+E.g. `C:\Users\Admin\Desktop\My Files\mypic.jpg` (For Windows) +
+E.g. `/Users/jpoh/Desktop/CS2103T/mypic.jpg` (On Mac)
 
 == Commands to Test
 

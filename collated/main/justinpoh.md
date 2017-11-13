@@ -1,7 +1,7 @@
 # justinpoh
-###### /java/seedu/address/commons/events/model/RemindersChangedEvent.java
+###### \java\seedu\address\commons\events\model\RemindersChangedEvent.java
 ``` java
-/** Indicates the reminders have changed*/
+/** Indicates the reminders in the model have changed. */
 public class RemindersChangedEvent extends BaseEvent {
     public final UniqueReminderList reminderList;
 
@@ -15,7 +15,7 @@ public class RemindersChangedEvent extends BaseEvent {
     }
 }
 ```
-###### /java/seedu/address/commons/events/ui/BrowserAndRemindersPanelToggleEvent.java
+###### \java\seedu\address\commons\events\ui\BrowserAndRemindersPanelToggleEvent.java
 ``` java
 /**
  * Represents a toggling between the browser and reminders panels.
@@ -29,7 +29,7 @@ public class BrowserAndRemindersPanelToggleEvent extends BaseEvent {
     }
 }
 ```
-###### /java/seedu/address/logic/commands/AddReminderCommand.java
+###### \java\seedu\address\logic\commands\AddReminderCommand.java
 ``` java
 /**
  *  Adds a reminder to the program.
@@ -37,31 +37,27 @@ public class BrowserAndRemindersPanelToggleEvent extends BaseEvent {
 
 public class AddReminderCommand extends Command {
 
-    public static final String COMMAND_WORD = "addReminder";
+    public static final String COMMAND_WORD = "addreminder";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a reminder.\n"
             + "Parameters: "
             + PREFIX_REMINDER + "REMINDER "
             + PREFIX_DATE + "DATE "
             + PREFIX_TIME + "TIME\n"
-            + "REMINDER must be non-empty. DATE must be in the format dd-mm-yyyy, dd/mm/yyyy or dd.mm.yyyy, "
-            + "and must be a valid date. TIME is in 24-hour format.\n"
             + "Example: " + COMMAND_WORD + " "
             + PREFIX_REMINDER + "Dinner with Family "
             + PREFIX_DATE + "22-11-2017 "
             + PREFIX_TIME + "1700\n";
 
-    public static final String MESSAGE_SUCCESS = "New reminder added!";
-    public static final String MESSAGE_DUPLICATE_REMINDER = "This reminder already exists!";
+    public static final String MESSAGE_SUCCESS = "New reminder added.";
+    public static final String MESSAGE_DUPLICATE_REMINDER = "This reminder already exists in iContacts.";
 
     private Reminder toAdd;
 
     /**
-     * Creates an AddReminderCommand to add the specified {@code Reminder}
+     * Creates an AddReminderCommand to add the specified {@code ReadOnlyReminder}
      */
     public AddReminderCommand(ReadOnlyReminder toAdd) {
-        requireNonNull(toAdd);
-
         this.toAdd = new Reminder(toAdd);
     }
 
@@ -84,21 +80,21 @@ public class AddReminderCommand extends Command {
     }
 }
 ```
-###### /java/seedu/address/logic/commands/DeleteReminderCommand.java
+###### \java\seedu\address\logic\commands\DeleteReminderCommand.java
 ``` java
 /**
  * Deletes a reminder identified using it's index.
  */
 public class DeleteReminderCommand extends Command {
 
-    public static final String COMMAND_WORD = "deleteReminder";
+    public static final String COMMAND_WORD = "deletereminder";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Deletes the reminder identified by the index number used in the reminder listing.\n"
-            + "Parameters: INDEX (must be a positive integer)\n"
-            + "Example: " + COMMAND_WORD + " 1";
+            + "Parameters: INDEX (must be a positive integer).\n"
+            + "Example: " + COMMAND_WORD + " 1.";
 
-    public static final String MESSAGE_DELETE_REMINDER_SUCCESS = "Deleted reminder: %1$s";
+    public static final String MESSAGE_DELETE_REMINDER_SUCCESS = "Deleted reminder: %1$s.";
 
     private final Index targetIndex;
 
@@ -119,7 +115,7 @@ public class DeleteReminderCommand extends Command {
         try {
             model.deleteReminder(reminderToDelete);
         } catch (ReminderNotFoundException rnfe) {
-            assert false : "The target reminder cannot be missing";
+            assert false : "The target reminder cannot be missing.";
         }
 
         return new CommandResult(String.format(MESSAGE_DELETE_REMINDER_SUCCESS, reminderToDelete.toString()));
@@ -133,26 +129,27 @@ public class DeleteReminderCommand extends Command {
     }
 }
 ```
-###### /java/seedu/address/logic/commands/EditReminderCommand.java
+###### \java\seedu\address\logic\commands\EditReminderCommand.java
 ``` java
 /**
- * Edits the details of an existing reminder in the application.
+ * Edits the details of an existing reminder in iContacts.
  */
 public class EditReminderCommand extends Command {
 
-    public static final String COMMAND_WORD = "editReminder";
+    public static final String COMMAND_WORD = "editreminder";
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Edits the details of the reminder identified "
             + "by the index number. "
             + "Existing values will be overwritten by the input values.\n"
             + "Parameters: INDEX (must be a positive integer) "
-            + "[" + PREFIX_REMINDER + "REMINDER (cannot be empty)]"
+            + "[" + PREFIX_REMINDER + "REMINDER]"
             + "[" + PREFIX_DATE + "DATE]"
             + "[" + PREFIX_TIME + "TIME]\n"
+            + "Additionally, if REMINDER is edited, the new value must contain at least one character.\n"
             + "Example: " + COMMAND_WORD + " 1 "
             + PREFIX_REMINDER + "Changed reminder";
 
 
-    public static final String MESSAGE_EDIT_REMINDER_SUCCESS = "Edited Reminder: %1$s";
+    public static final String MESSAGE_EDIT_REMINDER_SUCCESS = "Edited Reminder: %1$s.";
     public static final String MESSAGE_NOT_EDITED = "At least one field to edit must be provided.";
     public static final String MESSAGE_DUPLICATE_REMINDER = "This reminder already exists in iContacts.";
 
@@ -298,7 +295,7 @@ public class EditReminderCommand extends Command {
     }
 }
 ```
-###### /java/seedu/address/logic/commands/ToggleCommand.java
+###### \java\seedu\address\logic\commands\ToggleCommand.java
 ``` java
 /**
  * Toggles between the browser and reminders.
@@ -318,7 +315,7 @@ public class ToggleCommand extends Command {
 
 }
 ```
-###### /java/seedu/address/logic/parser/AddReminderCommandParser.java
+###### \java\seedu\address\logic\parser\AddReminderCommandParser.java
 ``` java
     /**
      * Parses the given {@code String} of arguments in the context of the AddReminderCommand
@@ -351,7 +348,7 @@ public class ToggleCommand extends Command {
         }
     }
 ```
-###### /java/seedu/address/logic/parser/DeleteReminderCommandParser.java
+###### \java\seedu\address\logic\parser\DeleteReminderCommandParser.java
 ``` java
 /**
  * Parses input arguments and create a new DeleteReminderCommand object.
@@ -360,8 +357,8 @@ public class DeleteReminderCommandParser implements Parser<DeleteReminderCommand
 
     /**
      * Parses the given {@code String} of arguments in the context of the DeleteReminderCommand
-     * and returns an DeleteCommand object for execution.
-     * @throws ParseException if the user input does not conform the expected format
+     * and returns an DeleteReminderCommand object for execution.
+     * @throws ParseException if the user input does not conform to the expected format
      */
     public DeleteReminderCommand parse(String args) throws ParseException {
         try {
@@ -374,7 +371,7 @@ public class DeleteReminderCommandParser implements Parser<DeleteReminderCommand
     }
 }
 ```
-###### /java/seedu/address/logic/parser/EditReminderCommandParser.java
+###### \java\seedu\address\logic\parser\EditReminderCommandParser.java
 ``` java
 /**
  * Parses input arguments and creates a new EditReminderCommand object
@@ -385,7 +382,7 @@ public class EditReminderCommandParser implements Parser<EditReminderCommand> {
     /**
      * Parses the given {@code String} of arguments in the context of the EditReminderCommand
      * and returns an EditReminderCommand object for execution.
-     * @throws ParseException if the user input does not conform the expected format
+     * @throws ParseException if the user input does not conform to the expected format
      */
     public EditReminderCommand parse(String args) throws ParseException {
         requireNonNull(args);
@@ -427,7 +424,58 @@ public class EditReminderCommandParser implements Parser<EditReminderCommand> {
     }
 }
 ```
-###### /java/seedu/address/model/person/Birthday.java
+###### \java\seedu\address\model\ModelManager.java
+``` java
+    @Override
+    public void resetReminders(UniqueReminderList newReminders) {
+        reminderList.setReminders(newReminders);
+        indicateRemindersChanged();
+    }
+```
+###### \java\seedu\address\model\ModelManager.java
+``` java
+    @Override
+    public void updateReminder(ReadOnlyReminder target, ReadOnlyReminder editedReminder)
+            throws DuplicateReminderException, ReminderNotFoundException {
+        requireAllNonNull(target, editedReminder);
+
+        reminderList.setReminder(target, editedReminder);
+        indicateRemindersChanged();
+    }
+```
+###### \java\seedu\address\model\ModelManager.java
+``` java
+    @Override
+    public ObservableList<ReadOnlyPerson> getBirthdayPanelFilteredPersonList() {
+        return FXCollections.unmodifiableObservableList(sortedFilteredPersonsForBirthdayListPanel);
+    }
+```
+###### \java\seedu\address\model\ModelManager.java
+``` java
+    @Override
+    public ObservableList<ReadOnlyReminder> getSortedReminderList() {
+        return sortedReminderList;
+    }
+
+    @Override
+    public ReadOnlyUniqueReminderList getUniqueReminderList() {
+        return reminderList;
+    }
+
+    @Override
+    public void addReminder(ReadOnlyReminder toAdd) throws DuplicateReminderException {
+        reminderList.add(toAdd);
+        indicateRemindersChanged();
+    }
+
+    @Override
+    public void deleteReminder(ReadOnlyReminder target) throws ReminderNotFoundException {
+        reminderList.remove(target);
+        indicateRemindersChanged();
+    }
+
+```
+###### \java\seedu\address\model\person\Birthday.java
 ``` java
 /**
  * Represents a Person's birthday in the address book.
@@ -439,8 +487,8 @@ public class Birthday {
             + " and in the following format:\n"
             + "'.', '-' and '/' can be used to separate the day, month and year fields,"
             + " and need not be used in pairs (i.e. 21.10/1995 works as well).\n"
-            + "Day field: 1 - 31 (allows leading zeroes).\n"
-            + "Month field: 1-12 (allows leading zeroes).\n"
+            + "Day field: 1 - 31.\n"
+            + "Month field: 1-12.\n"
             + "Year field: 1900 - 2099.\n"
             + "Example: 21/10/1995, 21-05-1996, 8.10.1987, 01/12-1995, 01.01-1990";
     public static final int EMPTY_BIRTHDAY_FIELD_MONTH = 0;
@@ -468,7 +516,7 @@ public class Birthday {
 
 
     /**
-     * Validates the given birthday and instantiate a LocalDate object with the date as of the date
+     * Validates the given birthday and instantiate a LocalDate object with the date
      * this Birthday object was instantiated.
      *
      * @throws IllegalValueException if given birthday string is invalid.
@@ -492,8 +540,8 @@ public class Birthday {
 
     /**
      * This constructor is used for testing purposes.
-     * This is because the use of {@code LocalDate.now()} is not static and might lead to
-     * tests failing depending on the time the tests are conducted.
+     * This is because the value of {@code LocalDate.now()} is dependent on the date the tests are conducted
+     * and might lead to tests failing depending on the date the tests are conducted.
      */
     private Birthday(String birthday, LocalDate currentDateForTesting) {
         this.value = convertToDefaultDateFormat(birthday);
@@ -529,7 +577,7 @@ public class Birthday {
     }
 
     /**
-     * Get the month of the birthday in this Birthday object.
+     * Returns the month of the birthday in this Birthday object.
      * If the birthday field is empty, return EMPTY_BIRTHDAY_FIELD_MONTH
      */
     public int getMonthOfBirthday() {
@@ -546,7 +594,7 @@ public class Birthday {
     }
 
     /**
-     * Get the day of the birthday in this Birthday object.
+     * Returns the day of the birthday in this Birthday object.
      * If the birthday field is empty, return EMPTY_BIRTHDAY_FIELD_DAY
      */
     public int getDayOfBirthday() {
@@ -616,7 +664,7 @@ public class Birthday {
     }
 
     /**
-     * Converts the date into logical segments.
+     * Converts the date into the year, month and date fields.
      */
     private static String[] getSplitDate(String trimmedDate) {
         return trimmedDate.split(BIRTHDAY_SPLIT_REGEX);
@@ -629,11 +677,16 @@ public class Birthday {
         String[] splitDate = getSplitDate(date);
 
         StringBuilder builder = new StringBuilder();
-        builder.append(splitDate[DATE_DAY_INDEX]);
+
+        final int day = Integer.parseInt(splitDate[DATE_DAY_INDEX]);
+        final int month = Integer.parseInt(splitDate[DATE_MONTH_INDEX]);
+        final int year = Integer.parseInt(splitDate[DATE_YEAR_INDEX]);
+
+        builder.append(day);
         builder.append(BIRTHDAY_DASH_SEPARATOR);
-        builder.append(splitDate[DATE_MONTH_INDEX]);
+        builder.append(month);
         builder.append(BIRTHDAY_DASH_SEPARATOR);
-        builder.append(splitDate[DATE_YEAR_INDEX]);
+        builder.append(year);
         return builder.toString();
     }
 
@@ -655,7 +708,7 @@ public class Birthday {
     }
 }
 ```
-###### /java/seedu/address/model/person/Person.java
+###### \java\seedu\address\model\person\Person.java
 ``` java
     public void setBirthday(Birthday birthday) {
         this.birthday.set(requireNonNull(birthday));
@@ -671,10 +724,10 @@ public class Birthday {
         return birthday.get();
     }
 ```
-###### /java/seedu/address/model/person/UpcomingBirthdayInCurrentMonthPredicate.java
+###### \java\seedu\address\model\person\UpcomingBirthdayInCurrentMonthPredicate.java
 ``` java
 /**
- * Tests that a {@code ReadOnlyPerson}'s birthday is within this month and have not past.
+ * Tests that a {@code ReadOnlyPerson}'s birthday is within this month and have not passed.
  * If a {@code ReadOnlyPerson} does not have a birthday recorded, return false.
  */
 public class UpcomingBirthdayInCurrentMonthPredicate implements Predicate<ReadOnlyPerson> {
@@ -729,7 +782,7 @@ public class UpcomingBirthdayInCurrentMonthPredicate implements Predicate<ReadOn
     }
 }
 ```
-###### /java/seedu/address/model/reminders/Date.java
+###### \java\seedu\address\model\reminders\Date.java
 ``` java
 /**
  * Represents a Reminder's date in the program.
@@ -740,8 +793,8 @@ public class Date {
             + " and in the following format:\n"
             + "'.', '-' and '/' can be used to separate the day, month and year fields,"
             + " and need not be used in pairs (i.e. 21.10/1995 works as well).\n"
-            + "Day field: 1 - 31 (allows leading zeroes).\n"
-            + "Month field: 1-12 (allows leading zeroes).\n"
+            + "Day field: 1 - 31.\n"
+            + "Month field: 1-12.\n"
             + "Year field: 1900 - 2099.\n"
             + "Example: 21/10/1995, 21-05-1996, 8.10.1987, 01/12-1995, 01.01-1990";
 
@@ -810,11 +863,16 @@ public class Date {
     private static String convertToPresentableForm(String date) {
         String[] splitDate = date.split(DATE_SPLIT_REGEX);
         StringBuilder builder = new StringBuilder();
-        builder.append(splitDate[DATE_DAY_INDEX]);
+
+        final int day = Integer.parseInt(splitDate[DATE_DAY_INDEX]);
+        final int month = Integer.parseInt(splitDate[DATE_MONTH_INDEX]);
+        final int year = Integer.parseInt(splitDate[DATE_YEAR_INDEX]);
+
+        builder.append(day);
         builder.append(DATE_SEPARATOR);
-        builder.append(splitDate[DATE_MONTH_INDEX]);
+        builder.append(month);
         builder.append(DATE_SEPARATOR);
-        builder.append(splitDate[DATE_YEAR_INDEX]);
+        builder.append(year);
         return builder.toString();
     }
 
@@ -836,7 +894,7 @@ public class Date {
     }
 }
 ```
-###### /java/seedu/address/model/reminders/exceptions/DuplicateReminderException.java
+###### \java\seedu\address\model\reminders\exceptions\DuplicateReminderException.java
 ``` java
 /**
  *  Signals that the operation will result in duplicate Reminder objects.
@@ -847,7 +905,7 @@ public class DuplicateReminderException extends DuplicateDataException {
     }
 }
 ```
-###### /java/seedu/address/model/reminders/exceptions/ReminderNotFoundException.java
+###### \java\seedu\address\model\reminders\exceptions\ReminderNotFoundException.java
 ``` java
 /**
  * Signals that the operation is unable to find the specified reminder.
@@ -855,7 +913,7 @@ public class DuplicateReminderException extends DuplicateDataException {
 public class ReminderNotFoundException extends Exception {
 }
 ```
-###### /java/seedu/address/model/reminders/ReadOnlyReminder.java
+###### \java\seedu\address\model\reminders\ReadOnlyReminder.java
 ``` java
 /**
  * A read-only immutable interface for a Reminder in iContacts.
@@ -872,7 +930,7 @@ public interface ReadOnlyReminder {
     LocalDateTime getLocalDateTime();
     boolean isEventToday();
     boolean isEventWithinThreeDays();
-    boolean hasEventPast();
+    boolean hasEventPassed();
 
     /**
      * Returns true if both have the same state. (interfaces cannot override .equals)
@@ -886,7 +944,7 @@ public interface ReadOnlyReminder {
     }
 }
 ```
-###### /java/seedu/address/model/reminders/ReadOnlyUniqueReminderList.java
+###### \java\seedu\address\model\reminders\ReadOnlyUniqueReminderList.java
 ``` java
 /**
  * Unmodifiable view of a UniqueReminderList
@@ -895,12 +953,12 @@ public interface ReadOnlyUniqueReminderList {
 
     /**
      * Returns an unmodifiable view of the reminders list.
-     * This list will not contain any duplicate persons.
+     * This list will not contain any duplicate reminders.
      */
     ObservableList<ReadOnlyReminder> asObservableList();
 }
 ```
-###### /java/seedu/address/model/reminders/Reminder.java
+###### \java\seedu\address\model\reminders\Reminder.java
 ``` java
 /**
  *  Represents a reminder in iContacts.
@@ -973,8 +1031,8 @@ public class Reminder implements ReadOnlyReminder {
     }
 
     @Override
-    public boolean hasEventPast() {
-        return status.get().hasEventPast();
+    public boolean hasEventPassed() {
+        return status.get().hasEventPassed();
     }
 
     @Override
@@ -1009,7 +1067,7 @@ public class Reminder implements ReadOnlyReminder {
     }
 }
 ```
-###### /java/seedu/address/model/reminders/Status.java
+###### \java\seedu\address\model\reminders\Status.java
 ``` java
 /**
  * Represents a Reminder's status in the program.
@@ -1020,9 +1078,12 @@ public class Status {
     private static final String STATUS_FORMAT_SINGLE_MESSAGE = "Status: %1$s day left.";
     private static final String STATUS_FORMAT_MESSAGE = "Status: %1$s days left.";
     private static final String STATUS_TODAY_MESSAGE = "Event happening today!";
-    private static final String STATUS_OVERDUE = "Event has past.";
+    private static final String STATUS_OVERDUE = "Event has passed.";
 
+    private static final int THREE_DAYS = 3;
     private static final int ONE_DAY = 1;
+    private static final int ZERO_DAY = 0;
+    private static final int ZERO = 0;
 
     private final LocalDate currentDate;
     private final LocalTime currentTime;
@@ -1030,7 +1091,7 @@ public class Status {
     private final LocalDate dateOfReminder;
     private final LocalTime timeOfReminder;
 
-    private String status;
+    private final String status;
 
     /**
      * Initialize the status for this reminder.
@@ -1040,20 +1101,21 @@ public class Status {
         currentTime = LocalTime.now();
         this.dateOfReminder = reminder.getDate().toLocalDate();
         this.timeOfReminder = reminder.getTime().toLocalTime();
-        initStatus();
+        this.status = getStatus();
     }
 
     /**
      * This constructor is used for testing purposes only.
-     * This is because the use of {@code LocalDate.now()} and {@code LocalTime.now()} is not static and might lead to
-     * tests failing depending on the time the tests are conducted.
+     * This is because the values of {@code LocalDate.now()} and {@code LocalTime.now()} is dependent on the date and
+     * time the tests are conducted and might lead to tests failing depending on the date and time the tests
+     * are conducted.
      */
     private Status(Reminder reminder, LocalDate defaultDate, LocalTime defaultTime) {
         this.currentDate = defaultDate;
         this.currentTime = defaultTime;
         this.dateOfReminder = reminder.getDate().toLocalDate();
         this.timeOfReminder = reminder.getTime().toLocalTime();
-        initStatus();
+        this.status = getStatus();
     }
 
     /**
@@ -1068,15 +1130,13 @@ public class Status {
     /**
      * Returns true if the event has already past.
      */
-    public boolean hasEventPast() {
+    public boolean hasEventPassed() {
         final long daysUntilEvent = getDaysUntilEvent();
         final long minutesUntilEvent = getMinutesUntilEvent();
-        if (daysUntilEvent > 0) {
+        if (daysUntilEvent > ZERO_DAY) {
             return false;
-        } else if (daysUntilEvent == 0) {
-            if (minutesUntilEvent >= 0) {
-                return false;
-            }
+        } else if (daysUntilEvent == ZERO_DAY && minutesUntilEvent >= ZERO) {
+            return false;
         }
         return true;
     }
@@ -1098,7 +1158,7 @@ public class Status {
     public boolean isEventWithinThreeDays() {
         final long daysUntilEvent = getDaysUntilEvent();
         final long minutesUntilEvent = getMinutesUntilEvent();
-        if (daysUntilEvent < 0 || daysUntilEvent > 3) {
+        if (daysUntilEvent < ZERO_DAY || daysUntilEvent > THREE_DAYS) {
             return false;
         }
         if (daysUntilEvent == 0 && minutesUntilEvent < 0) {
@@ -1108,33 +1168,36 @@ public class Status {
     }
 
     /**
-     * Carries out the actual initializing of the status.
+     * Returns the correct status depending on the given {@code reminder} to this Status object
+     * @see Status(Reminder)
      */
-    private void initStatus() {
-        if (hasEventPast()) {
-            status = STATUS_OVERDUE;
+    private String getStatus() {
+        if (hasEventPassed()) {
+            return STATUS_OVERDUE;
         } else if (isEventToday()) {
-            status = STATUS_TODAY_MESSAGE;
+            return STATUS_TODAY_MESSAGE;
         } else {
             final long daysUntilEvent = getDaysUntilEvent();
             if (daysUntilEvent == ONE_DAY) {
-                status = String.format(STATUS_FORMAT_SINGLE_MESSAGE, ONE_DAY);
-            } else {
-                status = String.format(STATUS_FORMAT_MESSAGE, getDaysUntilEvent());
+                return String.format(STATUS_FORMAT_SINGLE_MESSAGE, ONE_DAY);
             }
+
+            return String.format(STATUS_FORMAT_MESSAGE, getDaysUntilEvent());
         }
     }
 
     /**
-     * Return the number of days left until {@code reminderDate} (with respect to the date this object is created).
+     * Returns the number of days left until {@code reminderDate} (with respect to the date this object is created).
      */
     private long getDaysUntilEvent() {
         return currentDate.until(dateOfReminder, ChronoUnit.DAYS);
     }
 
     /**
-     * Return the difference in time between the current time and {@code reminderTime} in minutes
+     * Returns the difference in time between the current time and {@code reminderTime} in minutes
      * (with respect to the time this object is created).
+     * Note that this method only returns the difference in time, and does not take into consideration the difference
+     * in days.
      */
     private long getMinutesUntilEvent() {
         return currentTime.until(timeOfReminder, ChronoUnit.MINUTES);
@@ -1158,7 +1221,7 @@ public class Status {
     }
 }
 ```
-###### /java/seedu/address/model/reminders/Time.java
+###### \java\seedu\address\model\reminders\Time.java
 ``` java
 /**
  * Represents a Reminder's time in the program.
@@ -1167,7 +1230,7 @@ public class Status {
 public class Time {
 
     public static final String MESSAGE_TIME_CONSTRAINTS = "Time must be in 24-hour format,"
-            + " with a colon separating the hour and minute.\n"
+            + " with a colon separating the hour and minute fields.\n"
             + "Example: 09:00, 23:59, 17:56";
 
     public static final String HOUR_MIN_SEPARATOR = ":";
@@ -1233,7 +1296,7 @@ public class Time {
     }
 }
 ```
-###### /java/seedu/address/model/reminders/UniqueReminderList.java
+###### \java\seedu\address\model\reminders\UniqueReminderList.java
 ``` java
 /**
  * A list of reminders that enforces uniqueness between its elements and does not allow nulls.
@@ -1340,7 +1403,7 @@ public class UniqueReminderList implements Iterable<Reminder>, ReadOnlyUniqueRem
     }
 
     /**
-     * Returns the list as an unmodiafiable {@code ObservableList}.
+     * Returns the list as an unmodifiable {@code ObservableList}.
      */
     public ObservableList<ReadOnlyReminder> asObservableList() {
         return FXCollections.unmodifiableObservableList(mappedList);
@@ -1364,13 +1427,17 @@ public class UniqueReminderList implements Iterable<Reminder>, ReadOnlyUniqueRem
     }
 }
 ```
-###### /java/seedu/address/model/UserPrefs.java
+###### \java\seedu\address\model\UserPrefs.java
 ``` java
     public String getRemindersFilePath() {
         return remindersFilePath;
     }
+
+    public void setRemindersFilePath(String remindersFilePath) {
+        this.remindersFilePath = remindersFilePath;
+    }
 ```
-###### /java/seedu/address/storage/RemindersStorage.java
+###### \java\seedu\address\storage\RemindersStorage.java
 ``` java
 /**
  * Represents a storage for {@link seedu.address.model.reminders.UniqueReminderList}.
@@ -1383,8 +1450,8 @@ public interface RemindersStorage {
     String getRemindersFilePath();
 
     /**
-     * Returns AddressBook data as a {@link XmlSerializableReminders}.
-     *   Returns {@code Optional.empty()} if storage file is not found.
+     * Returns UniqueReminderList data as a {@link ReadOnlyUniqueReminderList}.
+     * Returns {@code Optional.empty()} if storage file is not found.
      * @throws DataConversionException if the data in storage is not in the expected format.
      * @throws IOException if there was any problem when reading from the storage.
      */
@@ -1409,26 +1476,26 @@ public interface RemindersStorage {
     void saveReminders(ReadOnlyUniqueReminderList reminderList, String filePath) throws IOException;
 }
 ```
-###### /java/seedu/address/storage/Storage.java
+###### \java\seedu\address\storage\Storage.java
 ``` java
     @Override
     Optional<ReadOnlyUniqueReminderList> readReminders() throws DataConversionException, IOException;
 ```
-###### /java/seedu/address/storage/Storage.java
+###### \java\seedu\address\storage\Storage.java
 ``` java
     @Override
     void saveReminders(ReadOnlyUniqueReminderList reminderList) throws IOException;
 ```
-###### /java/seedu/address/storage/Storage.java
+###### \java\seedu\address\storage\Storage.java
 ``` java
     /**
      * Saves the current version of reminders to the hard disk.
-     *   Creates the data file if it is missing.
+     * Creates the data file if it is missing.
      * Raises {@link DataSavingExceptionEvent} if there was an error during saving.
      */
     void handleRemindersChangedEvent(RemindersChangedEvent rce);
 ```
-###### /java/seedu/address/storage/StorageManager.java
+###### \java\seedu\address\storage\StorageManager.java
 ``` java
     @Override
     @Subscribe
@@ -1443,7 +1510,7 @@ public interface RemindersStorage {
         }
     }
 ```
-###### /java/seedu/address/storage/StorageManager.java
+###### \java\seedu\address\storage\StorageManager.java
 ``` java
     @Override
     public String getRemindersFilePath() {
@@ -1473,10 +1540,10 @@ public interface RemindersStorage {
         remindersStorage.saveReminders(reminderList, filePath);
     }
 ```
-###### /java/seedu/address/storage/XmlAdaptedReminder.java
+###### \java\seedu\address\storage\XmlAdaptedReminder.java
 ``` java
 /**
- * JAXB-friendly version of the Reminder.
+ * JAXB-friendly version of Reminder.
  */
 public class XmlAdaptedReminder {
 
@@ -1517,7 +1584,7 @@ public class XmlAdaptedReminder {
 
 }
 ```
-###### /java/seedu/address/storage/XmlFileStorage.java
+###### \java\seedu\address\storage\XmlFileStorage.java
 ``` java
     /**
      * Saves the given reminders data to the specified file.
@@ -1531,7 +1598,7 @@ public class XmlAdaptedReminder {
         }
     }
 ```
-###### /java/seedu/address/storage/XmlFileStorage.java
+###### \java\seedu\address\storage\XmlFileStorage.java
 ``` java
     /**
      * Returns reminders in the file or an empty reminder list
@@ -1545,10 +1612,10 @@ public class XmlAdaptedReminder {
         }
     }
 ```
-###### /java/seedu/address/storage/XmlRemindersStorage.java
+###### \java\seedu\address\storage\XmlRemindersStorage.java
 ``` java
 /**
- * A class to access reminder data stored as an xml file.
+ * A class to access reminder data stored as an xml file on the hard disk.
  */
 
 public class XmlRemindersStorage implements RemindersStorage {
@@ -1611,7 +1678,7 @@ public class XmlRemindersStorage implements RemindersStorage {
     }
 }
 ```
-###### /java/seedu/address/storage/XmlSerializableReminders.java
+###### \java\seedu\address\storage\XmlSerializableReminders.java
 ``` java
 /**
  * A List of reminders that is serializable to XML format.
@@ -1645,19 +1712,18 @@ public class XmlSerializableReminders implements ReadOnlyUniqueReminderList {
             try {
                 return p.toModelType();
             } catch (IllegalValueException e) {
-                e.printStackTrace();
-                //TODO: better error handling
-                return null;
+                throw new AssertionError("Data file is corrupted!");
             }
         }).collect(Collectors.toCollection(FXCollections::observableArrayList));
         return FXCollections.unmodifiableObservableList(reminders);
     }
 }
 ```
-###### /java/seedu/address/ui/BirthdayAndReminderListPanel.java
+###### \java\seedu\address\ui\BirthdayAndReminderListPanel.java
 ``` java
 /**
- * Panel containing the list of persons with birthday in the current month.
+ * Panel containing a list of persons with birthday in the current month,
+ * and a list of reminders.
  */
 public class BirthdayAndReminderListPanel extends UiPart<Region> {
     private static final String FXML = "BirthdayAndReminderListPanel.fxml";
@@ -1665,7 +1731,7 @@ public class BirthdayAndReminderListPanel extends UiPart<Region> {
     private static final String REMINDER_TODAY_STYLE_SHEET = DIRECTORY_PATH + "reminderToday.css";
     private static final String REMINDER_THREE_DAYS_STYLE_SHEET = DIRECTORY_PATH + "reminderWithinThreeDays.css";
     private static final String REMINDER_NORMAL_STYLE_SHEET = DIRECTORY_PATH + "reminderNormal.css";
-    private final Logger logger = LogsCenter.getLogger(PersonListPanel.class);
+    private final Logger logger = LogsCenter.getLogger(BirthdayAndReminderListPanel.class);
 
     @FXML
     private ListView<BirthdayReminderCard> birthdayListView;
@@ -1733,7 +1799,7 @@ public class BirthdayAndReminderListPanel extends UiPart<Region> {
                 this.getStylesheets().add(REMINDER_TODAY_STYLE_SHEET);
             } else if (reminder.isEventWithinThreeDays()) {
                 this.getStylesheets().add(REMINDER_THREE_DAYS_STYLE_SHEET);
-            } else if (!reminder.hasEventPast()) {
+            } else if (!reminder.hasEventPassed()) {
                 this.getStylesheets().add(REMINDER_NORMAL_STYLE_SHEET);
             }
 
@@ -1743,7 +1809,7 @@ public class BirthdayAndReminderListPanel extends UiPart<Region> {
 
 }
 ```
-###### /java/seedu/address/ui/BirthdayReminderCard.java
+###### \java\seedu\address\ui\BirthdayReminderCard.java
 ``` java
 /**
  * An UI component that displays the name, nickname and birthday of a Person.
@@ -1751,14 +1817,6 @@ public class BirthdayAndReminderListPanel extends UiPart<Region> {
 public class BirthdayReminderCard extends UiPart<Region> {
 
     private static final String FXML = "BirthdayReminderCard.fxml";
-
-    /**
-     * Note: Certain keywords such as "location" and "resources" are reserved keywords in JavaFX.
-     * As a consequence, UI elements' variable names cannot be set to such keywords
-     * or an exception will be thrown by JavaFX during runtime.
-     *
-     * @see <a href="https://github.com/se-edu/addressbook-level4/issues/336">The issue on AddressBook level 4</a>
-     */
 
     public final ReadOnlyPerson person;
 
@@ -1798,9 +1856,7 @@ public class BirthdayReminderCard extends UiPart<Region> {
      * Initiates the appropriate icon depending on {@code person}'s birthday.
      */
     private void initIcon() {
-        if (person.getBirthday().isBirthdayToday()) {
-            icon.setVisible(true);
-        } else if (person.getBirthday().isBirthdayTomorrow()) {
+        if (person.getBirthday().isBirthdayToday() || person.getBirthday().isBirthdayTomorrow()) {
             icon.setVisible(true);
         } else {
             icon.setVisible(false);
@@ -1826,7 +1882,7 @@ public class BirthdayReminderCard extends UiPart<Region> {
     }
 }
 ```
-###### /java/seedu/address/ui/BrowserAndRemindersPanel.java
+###### \java\seedu\address\ui\BrowserAndRemindersPanel.java
 ``` java
     /**
      * An Enumeration to differentiate between the child nodes and to keep track of which is
@@ -1836,10 +1892,10 @@ public class BirthdayReminderCard extends UiPart<Region> {
         BROWSER, REMINDERS, DETAILS
     }
 ```
-###### /java/seedu/address/ui/BrowserAndRemindersPanel.java
+###### \java\seedu\address\ui\BrowserAndRemindersPanel.java
 ``` java
     /**
-     * Check which child is currently at the front, and do the appropriate toggling between the children nodes.
+     * Check which child is currently at the front, and perform the appropriate toggling between the children nodes.
      */
     private void toggleBrowserPanel() {
         switch(currentlyInFront) {
@@ -1863,7 +1919,7 @@ public class BirthdayReminderCard extends UiPart<Region> {
         }
     }
 ```
-###### /java/seedu/address/ui/BrowserAndRemindersPanel.java
+###### \java\seedu\address\ui\BrowserAndRemindersPanel.java
 ``` java
     @Subscribe
     private void handleBrowserPanelToggleEvent(BrowserAndRemindersPanelToggleEvent event) {
@@ -1871,7 +1927,7 @@ public class BirthdayReminderCard extends UiPart<Region> {
         toggleBrowserPanel();
     }
 ```
-###### /java/seedu/address/ui/ReminderCard.java
+###### \java\seedu\address\ui\ReminderCard.java
 ``` java
 /**
  * An UI component that displays the content, date, time and status of a Reminder.
@@ -1909,8 +1965,8 @@ public class ReminderCard extends UiPart<Region> {
         return source.isEventWithinThreeDays();
     }
 
-    public boolean hasEventPast() {
-        return source.hasEventPast();
+    public boolean hasEventPassed() {
+        return source.hasEventPassed();
     }
 
     /**
@@ -1944,7 +2000,7 @@ public class ReminderCard extends UiPart<Region> {
     }
 }
 ```
-###### /resources/view/BirthdayAndReminderListPanel.fxml
+###### \resources\view\BirthdayAndReminderListPanel.fxml
 ``` fxml
 <VBox xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
    <children>
@@ -1963,7 +2019,7 @@ public class ReminderCard extends UiPart<Region> {
    </children>
 </VBox>
 ```
-###### /resources/view/BirthdayReminderCard.fxml
+###### \resources\view\BirthdayReminderCard.fxml
 ``` fxml
 <HBox id="cardPane" fx:id="cardPane" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
     <GridPane HBox.hgrow="ALWAYS">
@@ -1998,7 +2054,7 @@ public class ReminderCard extends UiPart<Region> {
     </GridPane>
 </HBox>
 ```
-###### /resources/view/BrowserAndRemindersPanel.fxml
+###### \resources\view\BrowserAndRemindersPanel.fxml
 ``` fxml
 <StackPane xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1">
   <WebView fx:id="browser" />
@@ -2006,86 +2062,15 @@ public class ReminderCard extends UiPart<Region> {
   <AnchorPane fx:id="detailsPanel" prefHeight="700.0" prefWidth="500.0" />
 </StackPane>
 ```
-###### /resources/view/DayTheme.css
+###### \resources\view\DayTheme.css
 ``` css
 .background {
     -fx-background-color: #f2f8ff;
     background-color: #f2f8ff; /* Used in the default.html file */
 }
-
-.label {
-    -fx-font-size: 15pt;
-    -fx-font-family: "Segoe UI Semibold";
-    -fx-text-fill: derive(#383838, +30%);
-    -fx-opacity: 1;
-}
-
-.label-bright {
-    -fx-font-size: 11pt;
-    -fx-font-family: "Segoe UI Semibold";
-    -fx-text-fill: white;
-    -fx-opacity: 1;
-}
-
-.label-header {
-    -fx-font-size: 32pt;
-    -fx-font-family: "Segoe UI Light";
-    -fx-text-fill: white;
-    -fx-opacity: 1;
-}
-
-.text-field {
-    -fx-font-size: 12pt;
-    -fx-font-family: "Segoe UI Semibold";
-}
-
-.tab-pane {
-    -fx-padding: 0 0 0 1;
-}
-
-.tab-pane .tab-header-area {
-    -fx-padding: 0 0 0 0;
-    -fx-min-height: 0;
-    -fx-max-height: 0;
-}
-
-.table-view {
-    -fx-base: #1d1d1d;
-    -fx-control-inner-background: #1d1d1d;
-    -fx-background-color: #1d1d1d;
-    -fx-table-cell-border-color: transparent;
-    -fx-table-header-border-color: transparent;
-    -fx-padding: 5;
-}
-
-.table-view .column-header-background {
-    -fx-background-color: transparent;
-}
-
-.table-view .column-header, .table-view .filler {
-    -fx-size: 35;
-    -fx-border-width: 0 0 1 0;
-    -fx-background-color: transparent;
-    -fx-border-color:
-        transparent
-        transparent
-        derive(-fx-base, 80%)
-        transparent;
-    -fx-border-insets: 0 10 1 0;
-}
-
-.table-view .column-header .label {
-    -fx-font-size: 20pt;
-    -fx-font-family: "Segoe UI Light";
-    -fx-text-fill: white;
-    -fx-alignment: center-left;
-    -fx-opacity: 1;
-}
-
-.table-view:focused .table-row-cell:filled:focused:selected {
-    -fx-background-color: -fx-focus-color;
-}
-
+```
+###### \resources\view\DayTheme.css
+``` css
 .split-pane:horizontal .split-pane-divider {
     -fx-background-color: #f2f8ff;
     -fx-border-color: #f2f8ff;
@@ -2177,72 +2162,9 @@ public class ReminderCard extends UiPart<Region> {
     -fx-font-size: 13pt;
     -fx-text-fill: derive(#383838, +30%);
 }
-
-.result-display .label {
-    -fx-text-fill: black !important;
-}
-
-.scroll-bar:vertical .thumb,
-.scroll-bar:horizontal .thumb {
-    -fx-background-color: derive(#383838, +30%);
-    -fx-background-insets: 2 2 2 2;
-}
-
-.scroll-bar:vertical .track-background,
-.scroll-bar:horizontal .track-background {
-    -fx-background-color: #f2f8ff;
-}
-
-.scroll-bar:vertical > .increment-button,
-.scroll-bar:vertical > .decrement-button,
-.scroll-bar:horizontal > .increment-button,
-.scroll-bar:horizontal > .decrement-button {
-    -fx-padding: 3px;
-}
-
-.scroll-bar:vertical > .increment-button > .increment-arrow {
-    -fx-background-color: grey;
-    -fx-shape: "M 0 0 L 4 8 L 8 0 Z";
-    -fx-padding: 0.30em;
-    -fx-rotate: 0;
-}
-
-.scroll-bar:horizontal > .increment-button > .increment-arrow {
-    -fx-background-color: grey;
-    -fx-shape: "M 0 0 L 4 8 L 8 0 Z";
-    -fx-padding: 0.30em;
-    -fx-rotate: -90;
-}
-
-.scroll-bar:vertical > .decrement-button > .decrement-arrow {
-    -fx-background-color: grey;
-    -fx-shape: "M 0 0 L 4 8 L 8 0 Z";
-    -fx-padding: 0.30em;
-    -fx-rotate: -180;
-}
-
-.scroll-bar:horizontal > .decrement-button > .decrement-arrow {
-    -fx-background-color: grey;
-    -fx-shape: "M 0 0 L 4 8 L 8 0 Z";
-    -fx-padding: 0.30em;
-    -fx-rotate: 90;
-}
-
-.status-bar .label {
-    -fx-font-family: "Segoe UI Light";
-    -fx-text-fill: derive(#383838, +30%);
-}
-
-.status-bar-with-border {
-    -fx-background-color: derive(#1d1d1d, 30%);
-    -fx-border-color: derive(#1d1d1d, 25%);
-    -fx-border-width: 1px;
-}
-
-.status-bar-with-border .label {
-    -fx-text-fill: white;
-}
-
+```
+###### \resources\view\DayTheme.css
+``` css
 .grid-pane {
     -fx-background-color: #f2f8ff;
     -fx-border-color: #f2f8ff;
@@ -2252,133 +2174,15 @@ public class ReminderCard extends UiPart<Region> {
 .grid-pane .anchor-pane {
     -fx-background-color: #f2f8ff;
 }
-
-.context-menu {
-    -fx-background-color: derive(#1d1d1d, 50%);
-}
-
-.context-menu .label {
-    -fx-text-fill: white;
-}
-
+```
+###### \resources\view\DayTheme.css
+``` css
 .menu-bar {
     -fx-background-color: #f2f8ff;
 }
-
-.menu-bar .label {
-    -fx-font-size: 14pt;
-    -fx-font-family: "Segoe UI Light";
-    -fx-text-fill: derive(#383838, +30%);
-    -fx-opacity: 0.9;
-}
-
-.menu .left-container {
-    -fx-background-color: black;
-}
-
-/*
- * Metro style Push Button
- * Author: Pedro Duque Vieira
- * http://pixelduke.wordpress.com/2012/10/23/jmetro-windows-8-controls-on-java/
- */
-.button {
-    -fx-padding: 5 22 5 22;
-    -fx-border-color: #e2e2e2;
-    -fx-border-width: 2;
-    -fx-background-radius: 0;
-    -fx-background-color: #1d1d1d;
-    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
-    -fx-font-size: 11pt;
-    -fx-text-fill: #d8d8d8;
-    -fx-background-insets: 0 0 0 0, 0, 1, 2;
-}
-
-.button:hover {
-    -fx-background-color: #3a3a3a;
-}
-
-.button:pressed, .button:default:hover:pressed {
-  -fx-background-color: #f2f8ff;
-  -fx-text-fill: #1d1d1d;
-}
-
-.button:focused {
-    -fx-border-color: #f2f8ff, #f2f8ff;
-    -fx-border-width: 1, 1;
-    -fx-border-style: solid, segments(1, 1);
-    -fx-border-radius: 0, 0;
-    -fx-border-insets: 1 1 1 1, 0;
-}
-
-.button:disabled, .button:default:disabled {
-    -fx-opacity: 0.4;
-    -fx-background-color: #1d1d1d;
-    -fx-text-fill: white;
-}
-
-.button:default {
-    -fx-background-color: -fx-focus-color;
-    -fx-text-fill: #ffffff;
-}
-
-.button:default:hover {
-    -fx-background-color: derive(-fx-focus-color, 30%);
-}
-
-.dialog-pane {
-    -fx-background-color: #1d1d1d;
-}
-
-.dialog-pane > *.button-bar > *.container {
-    -fx-background-color: #1d1d1d;
-}
-
-.dialog-pane > *.label.content {
-    -fx-font-size: 14px;
-    -fx-font-weight: bold;
-    -fx-text-fill: white;
-}
-
-.dialog-pane:header *.header-panel {
-    -fx-background-color: derive(#1d1d1d, 25%);
-}
-
-.dialog-pane:header *.header-panel *.label {
-    -fx-font-size: 18px;
-    -fx-font-style: italic;
-    -fx-fill: white;
-    -fx-text-fill: white;
-}
-
-#cardPane {
-    -fx-background-color: transparent;
-    -fx-border-width: 0;
-}
-
-#commandTypeLabel {
-    -fx-font-size: 11px;
-    -fx-text-fill: #F70D1A;
-}
-
-#commandTextField {
-    -fx-background-color: transparent #383838 transparent #383838;
-    -fx-background-insets: 0;
-    -fx-border-color: derive(#383838, +30%);
-    -fx-border-insets: 0;
-    -fx-border-width: 2;
-    -fx-font-family: "Segoe UI Light";
-    -fx-font-size: 13pt;
-    -fx-text-fill: derive(#383838, +30%);
-}
-
-#filterField, #personListPanel, #personWebpage {
-    -fx-effect: innershadow(gaussian, black, 10, 0, 0, 0);
-}
-
-#resultDisplay {
-    -fx-border-color : derive(#383838, +30%);
-}
-
+```
+###### \resources\view\DayTheme.css
+``` css
 #resultDisplay .content {
     -fx-background-color: #f2f8ff;
     -fx-background-radius: 0;
@@ -2422,88 +2226,16 @@ public class ReminderCard extends UiPart<Region> {
 .error {
     -fx-text-fill: derive(#dc143c, 0%) !important; /* The error class should always override the default text-fill style */
 }
-
 ```
-###### /resources/view/NightTheme.css
+###### \resources\view\NightTheme.css
 ``` css
 .background {
     -fx-background-color: derive(#383838, -40%);
     background-color: #383838; /* Used in the default.html file */
 }
-
-.label {
-    -fx-font-size: 15pt;
-    -fx-font-family: "Segoe UI Semibold";
-    -fx-text-fill: #f0ffff;
-    -fx-opacity: 1;
-}
-
-.label-bright {
-    -fx-font-size: 11pt;
-    -fx-font-family: "Segoe UI Semibold";
-    -fx-text-fill: white;
-    -fx-opacity: 1;
-}
-
-.label-header {
-    -fx-font-size: 32pt;
-    -fx-font-family: "Segoe UI Light";
-    -fx-text-fill: white;
-    -fx-opacity: 1;
-}
-
-.text-field {
-    -fx-font-size: 12pt;
-    -fx-font-family: "Segoe UI Semibold";
-}
-
-.tab-pane {
-    -fx-padding: 0 0 0 1;
-}
-
-.tab-pane .tab-header-area {
-    -fx-padding: 0 0 0 0;
-    -fx-min-height: 0;
-    -fx-max-height: 0;
-}
-
-.table-view {
-    -fx-base: #1d1d1d;
-    -fx-control-inner-background: #1d1d1d;
-    -fx-background-color: #1d1d1d;
-    -fx-table-cell-border-color: transparent;
-    -fx-table-header-border-color: transparent;
-    -fx-padding: 5;
-}
-
-.table-view .column-header-background {
-    -fx-background-color: transparent;
-}
-
-.table-view .column-header, .table-view .filler {
-    -fx-size: 35;
-    -fx-border-width: 0 0 1 0;
-    -fx-background-color: transparent;
-    -fx-border-color:
-        transparent
-        transparent
-        derive(-fx-base, 80%)
-        transparent;
-    -fx-border-insets: 0 10 1 0;
-}
-
-.table-view .column-header .label {
-    -fx-font-size: 20pt;
-    -fx-font-family: "Segoe UI Light";
-    -fx-text-fill: white;
-    -fx-alignment: center-left;
-    -fx-opacity: 1;
-}
-
-.table-view:focused .table-row-cell:filled:focused:selected {
-    -fx-background-color: -fx-focus-color;
-}
-
+```
+###### \resources\view\NightTheme.css
+``` css
 .split-pane:horizontal .split-pane-divider {
     -fx-background-color: derive(#383838, -40%);
     -fx-border-color: derive(#383838, -40%);
@@ -2595,72 +2327,9 @@ public class ReminderCard extends UiPart<Region> {
     -fx-font-size: 13pt;
     -fx-text-fill: white;
 }
-
-.result-display .label {
-    -fx-text-fill: black !important;
-}
-
-.scroll-bar:vertical .thumb,
-.scroll-bar:horizontal .thumb {
-    -fx-background-color: rgb(211,211,211);
-    -fx-background-insets: 2 2 2 2;
-}
-
-.scroll-bar:vertical .track-background,
-.scroll-bar:horizontal .track-background {
-    -fx-background-color: derive(#383838, -40%);
-}
-
-.scroll-bar:vertical > .increment-button,
-.scroll-bar:vertical > .decrement-button,
-.scroll-bar:horizontal > .increment-button,
-.scroll-bar:horizontal > .decrement-button {
-    -fx-padding: 3px;
-}
-
-.scroll-bar:vertical > .increment-button > .increment-arrow {
-    -fx-background-color: grey;
-    -fx-shape: "M 0 0 L 4 8 L 8 0 Z";
-    -fx-padding: 0.30em;
-    -fx-rotate: 0;
-}
-
-.scroll-bar:horizontal > .increment-button > .increment-arrow {
-    -fx-background-color: grey;
-    -fx-shape: "M 0 0 L 4 8 L 8 0 Z";
-    -fx-padding: 0.30em;
-    -fx-rotate: -90;
-}
-
-.scroll-bar:vertical > .decrement-button > .decrement-arrow {
-    -fx-background-color: grey;
-    -fx-shape: "M 0 0 L 4 8 L 8 0 Z";
-    -fx-padding: 0.30em;
-    -fx-rotate: -180;
-}
-
-.scroll-bar:horizontal > .decrement-button > .decrement-arrow {
-    -fx-background-color: grey;
-    -fx-shape: "M 0 0 L 4 8 L 8 0 Z";
-    -fx-padding: 0.30em;
-    -fx-rotate: 90;
-}
-
-.status-bar .label {
-    -fx-font-family: "Segoe UI Light";
-    -fx-text-fill: white;
-}
-
-.status-bar-with-border {
-    -fx-background-color: derive(#1d1d1d, 30%);
-    -fx-border-color: derive(#1d1d1d, 25%);
-    -fx-border-width: 1px;
-}
-
-.status-bar-with-border .label {
-    -fx-text-fill: white;
-}
-
+```
+###### \resources\view\NightTheme.css
+``` css
 .grid-pane {
     -fx-background-color: derive(#383838, -40%);
     -fx-border-color: derive(#383838, -40%);
@@ -2670,129 +2339,15 @@ public class ReminderCard extends UiPart<Region> {
 .grid-pane .anchor-pane {
     -fx-background-color: derive(#383838, -40%);
 }
-
-.context-menu {
-    -fx-background-color: derive(#1d1d1d, 50%);
-}
-
-.context-menu .label {
-    -fx-text-fill: white;
-}
-
+```
+###### \resources\view\NightTheme.css
+``` css
 .menu-bar {
     -fx-background-color: derive(#383838, -40%);
 }
-
-.menu-bar .label {
-    -fx-font-size: 14pt;
-    -fx-font-family: "Segoe UI Light";
-    -fx-text-fill: white;
-    -fx-opacity: 0.9;
-}
-
-.menu .left-container {
-    -fx-background-color: black;
-}
-
-/*
- * Metro style Push Button
- * Author: Pedro Duque Vieira
- * http://pixelduke.wordpress.com/2012/10/23/jmetro-windows-8-controls-on-java/
- */
-.button {
-    -fx-padding: 5 22 5 22;
-    -fx-border-color: #e2e2e2;
-    -fx-border-width: 2;
-    -fx-background-radius: 0;
-    -fx-background-color: #1d1d1d;
-    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
-    -fx-font-size: 11pt;
-    -fx-text-fill: #d8d8d8;
-    -fx-background-insets: 0 0 0 0, 0, 1, 2;
-}
-
-.button:hover {
-    -fx-background-color: #3a3a3a;
-}
-
-.button:pressed, .button:default:hover:pressed {
-  -fx-background-color: white;
-  -fx-text-fill: #1d1d1d;
-}
-
-.button:focused {
-    -fx-border-color: white, white;
-    -fx-border-width: 1, 1;
-    -fx-border-style: solid, segments(1, 1);
-    -fx-border-radius: 0, 0;
-    -fx-border-insets: 1 1 1 1, 0;
-}
-
-.button:disabled, .button:default:disabled {
-    -fx-opacity: 0.4;
-    -fx-background-color: #1d1d1d;
-    -fx-text-fill: white;
-}
-
-.button:default {
-    -fx-background-color: -fx-focus-color;
-    -fx-text-fill: #ffffff;
-}
-
-.button:default:hover {
-    -fx-background-color: derive(-fx-focus-color, 30%);
-}
-
-.dialog-pane {
-    -fx-background-color: #1d1d1d;
-}
-
-.dialog-pane > *.button-bar > *.container {
-    -fx-background-color: #1d1d1d;
-}
-
-.dialog-pane > *.label.content {
-    -fx-font-size: 14px;
-    -fx-font-weight: bold;
-    -fx-text-fill: white;
-}
-
-.dialog-pane:header *.header-panel {
-    -fx-background-color: derive(#1d1d1d, 25%);
-}
-
-.dialog-pane:header *.header-panel *.label {
-    -fx-font-size: 18px;
-    -fx-font-style: italic;
-    -fx-fill: white;
-    -fx-text-fill: white;
-}
-
-#cardPane {
-    -fx-background-color: transparent;
-    -fx-border-width: 0;
-}
-
-#commandTypeLabel {
-    -fx-font-size: 11px;
-    -fx-text-fill: #F70D1A;
-}
-
-#commandTextField {
-    -fx-background-color: transparent #383838 transparent #383838;
-    -fx-background-insets: 0;
-    -fx-border-color: derive(#383838, +100%);
-    -fx-border-insets: 0;
-    -fx-border-width: 2;
-    -fx-font-family: "Segoe UI Light";
-    -fx-font-size: 13pt;
-    -fx-text-fill: white;
-}
-
-#filterField, #personListPanel, #personWebpage {
-    -fx-effect: innershadow(gaussian, black, 10, 0, 0, 0);
-}
-
+```
+###### \resources\view\NightTheme.css
+``` css
 #resultDisplay .content {
     -fx-background-color: derive(#383838, -40%);
     -fx-background-radius: 0;
@@ -2832,7 +2387,7 @@ public class ReminderCard extends UiPart<Region> {
     -fx-text-fill: #d06651 !important; /* The error class should always override the default text-fill style */
 }
 ```
-###### /resources/view/ReminderCard.fxml
+###### \resources\view\ReminderCard.fxml
 ``` fxml
 <HBox id="cardPane" fx:id="cardPane" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
     <GridPane HBox.hgrow="ALWAYS">
@@ -2862,7 +2417,7 @@ public class ReminderCard extends UiPart<Region> {
     </GridPane>
 </HBox>
 ```
-###### /resources/view/reminderNormal.css
+###### \resources\view\reminderNormal.css
 ``` css
 .list-cell {
      -fx-label-padding: 0 0 0 0;
@@ -2892,7 +2447,7 @@ public class ReminderCard extends UiPart<Region> {
      -fx-text-fill: white;
  }
 ```
-###### /resources/view/reminderToday.css
+###### \resources\view\reminderToday.css
 ``` css
 .list-cell {
     -fx-label-padding: 0 0 0 0;
@@ -2922,7 +2477,7 @@ public class ReminderCard extends UiPart<Region> {
     -fx-text-fill: white;
 }
 ```
-###### /resources/view/reminderWithinThreeDays.css
+###### \resources\view\reminderWithinThreeDays.css
 ``` css
 .list-cell {
     -fx-label-padding: 0 0 0 0;

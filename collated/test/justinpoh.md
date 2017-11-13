@@ -1,5 +1,5 @@
 # justinpoh
-###### /java/guitests/guihandles/BirthdayReminderCardHandle.java
+###### \java\guitests\guihandles\BirthdayReminderCardHandle.java
 ``` java
 /**
  * Provides a handle to a birthday reminder card in the birthday reminder list panel.
@@ -41,7 +41,7 @@ public class BirthdayReminderCardHandle extends NodeHandle<Node> {
 
 }
 ```
-###### /java/guitests/guihandles/ReminderCardHandle.java
+###### \java\guitests\guihandles\ReminderCardHandle.java
 ``` java
 /**
  * Provides a handle to a reminder card in the reminder list panel.
@@ -83,7 +83,7 @@ public class ReminderCardHandle extends NodeHandle<Node> {
     }
 }
 ```
-###### /java/seedu/address/logic/commands/AddReminderCommandTest.java
+###### \java\seedu\address\logic\commands\AddReminderCommandTest.java
 ``` java
     @Test
     public void constructor_nullReminder_throwsNullPointerException() {
@@ -147,7 +147,7 @@ public class ReminderCardHandle extends NodeHandle<Node> {
         return command;
     }
 ```
-###### /java/seedu/address/logic/commands/DeleteReminderCommandTest.java
+###### \java\seedu\address\logic\commands\DeleteReminderCommandTest.java
 ``` java
 /**
  * Contains integration tests (interaction with the Model) and unit tests for {@code DeleteReminderCommand}.
@@ -211,7 +211,7 @@ public class DeleteReminderCommandTest {
     }
 }
 ```
-###### /java/seedu/address/logic/commands/EditReminderCommandTest.java
+###### \java\seedu\address\logic\commands\EditReminderCommandTest.java
 ``` java
 public class EditReminderCommandTest {
 
@@ -324,7 +324,7 @@ public class EditReminderCommandTest {
     }
 }
 ```
-###### /java/seedu/address/logic/commands/EditReminderDescriptorTest.java
+###### \java\seedu\address\logic\commands\EditReminderDescriptorTest.java
 ``` java
 public class EditReminderDescriptorTest {
     @Test
@@ -362,7 +362,7 @@ public class EditReminderDescriptorTest {
     }
 }
 ```
-###### /java/seedu/address/logic/commands/ToggleCommandTest.java
+###### \java\seedu\address\logic\commands\ToggleCommandTest.java
 ``` java
 public class ToggleCommandTest {
     @Rule
@@ -377,7 +377,21 @@ public class ToggleCommandTest {
     }
 }
 ```
-###### /java/seedu/address/logic/parser/AddReminderCommandParserTest.java
+###### \java\seedu\address\logic\LogicManagerTest.java
+``` java
+    @Test
+    public void getBirthdayPanelFilteredPersonList_modifyList_throwsUnsupportedOperationException() {
+        thrown.expect(UnsupportedOperationException.class);
+        logic.getBirthdayPanelFilteredPersonList().remove(0);
+    }
+
+    @Test
+    public void getReminderList_modifyList_throwsUnsupportedOperationException() {
+        thrown.expect(UnsupportedOperationException.class);
+        logic.getReminderList().remove(0);
+    }
+```
+###### \java\seedu\address\logic\parser\AddReminderCommandParserTest.java
 ``` java
 public class AddReminderCommandParserTest {
 
@@ -422,7 +436,7 @@ public class AddReminderCommandParserTest {
     }
 }
 ```
-###### /java/seedu/address/logic/parser/DeleteReminderCommandParserTest.java
+###### \java\seedu\address\logic\parser\DeleteReminderCommandParserTest.java
 ``` java
 /**
  * As we are only doing white-box testing, our test cases do not cover path variations
@@ -446,7 +460,7 @@ public class DeleteReminderCommandParserTest {
     }
 }
 ```
-###### /java/seedu/address/logic/parser/EditReminderCommandParserTest.java
+###### \java\seedu\address\logic\parser\EditReminderCommandParserTest.java
 ``` java
 public class EditReminderCommandParserTest {
 
@@ -585,7 +599,107 @@ public class EditReminderCommandParserTest {
     }
 }
 ```
-###### /java/seedu/address/model/person/BirthdayTest.java
+###### \java\seedu\address\logic\parser\ParserUtilTest.java
+``` java
+    @Test
+    public void parseBirthday_null_throwsNullPointerException() throws Exception {
+        thrown.expect(NullPointerException.class);
+        ParserUtil.parseBirthday(null);
+    }
+
+    @Test
+    public void parseBirthday_invalidValue_throwsIllegalValueException() throws Exception {
+        thrown.expect(IllegalValueException.class);
+        ParserUtil.parseBirthday(Optional.of(INVALID_BIRTHDAY));
+    }
+
+    @Test
+    public void parseBirthday_optionalEmpty_returnsOptionalEmpty() throws Exception {
+        assertFalse(ParserUtil.parseBirthday(Optional.empty()).isPresent());
+    }
+
+    @Test
+    public void parseBirthday_validValue_returnsBirthday() throws Exception {
+        Birthday expectedBirthday = new Birthday(VALID_BIRTHDAY);
+        Optional<Birthday> actualBirthday = ParserUtil.parseBirthday(Optional.of(VALID_BIRTHDAY));
+
+        assertEquals(expectedBirthday, actualBirthday.get());
+    }
+
+    @Test
+    public void parseDate_null_throwsNullPointerException() throws Exception {
+        thrown.expect(NullPointerException.class);
+        ParserUtil.parseDate(null);
+    }
+
+    @Test
+    public void parseDate_invalidValue_throwsIllegalValueException() throws Exception {
+        thrown.expect(IllegalValueException.class);
+        ParserUtil.parseDate(Optional.of(INVALID_DATE));
+    }
+
+    @Test
+    public void parseDate_optionalEmpty_returnsOptionalEmpty() throws Exception {
+        assertFalse(ParserUtil.parseDate(Optional.empty()).isPresent());
+    }
+
+    @Test
+    public void parseDate_validValue_returnsDate() throws Exception {
+        Date expectedDate = new Date(VALID_DATE);
+        Optional<Date> actualDate = ParserUtil.parseDate(Optional.of(VALID_DATE));
+
+        assertEquals(expectedDate, actualDate.get());
+    }
+
+    @Test
+    public void parseTime_null_throwsNullPointerException() throws Exception {
+        thrown.expect(NullPointerException.class);
+        ParserUtil.parseTime(null);
+    }
+
+    @Test
+    public void parseTime_invalidValue_throwsIllegalValueException() throws Exception {
+        thrown.expect(IllegalValueException.class);
+        ParserUtil.parseTime(Optional.of(INVALID_TIME));
+    }
+
+    @Test
+    public void parseTime_optionalEmpty_returnsOptionalEmpty() throws Exception {
+        assertFalse(ParserUtil.parseTime(Optional.empty()).isPresent());
+    }
+
+    @Test
+    public void parseTime_validValue_returnsTime() throws Exception {
+        Time expectedTime = new Time(VALID_TIME);
+        Optional<Time> actualTime = ParserUtil.parseTime(Optional.of(VALID_TIME));
+
+        assertEquals(expectedTime, actualTime.get());
+    }
+```
+###### \java\seedu\address\model\ModelManagerTest.java
+``` java
+    @Test
+    public void getBirthdayPanelFilteredPersonList_modifyList_throwsUnsupportedOperationException() {
+        ModelManager modelManager = new ModelManager();
+        thrown.expect(UnsupportedOperationException.class);
+        modelManager.getBirthdayPanelFilteredPersonList().remove(0);
+    }
+
+    @Test
+    public void getSortedReminderList_modifyList_throwsUnsupportedOperationException() {
+        ModelManager modelManager = new ModelManager();
+        thrown.expect(UnsupportedOperationException.class);
+        modelManager.getSortedReminderList().remove(0);
+    }
+```
+###### \java\seedu\address\model\ModelManagerTest.java
+``` java
+        // different list of reminders -> return false
+        XmlSerializableReminders differentReminders = new XmlSerializableReminders();
+        UniqueReminderList uniqueDifferentReminders = new UniqueReminderList(differentReminders);
+        assertFalse(modelManager.equals(new ModelManager(addressBook, uniqueDifferentReminders, userPrefs)));
+```
+###### \java\seedu\address\model\person\BirthdayTest.java
 ``` java
 public class BirthdayTest {
 
@@ -717,7 +831,7 @@ public class BirthdayTest {
 
 }
 ```
-###### /java/seedu/address/model/person/UpcomingBirthdayInCurrentMonthPredicateTest.java
+###### \java\seedu\address\model\person\UpcomingBirthdayInCurrentMonthPredicateTest.java
 ``` java
 public class UpcomingBirthdayInCurrentMonthPredicateTest {
 
@@ -798,7 +912,7 @@ public class UpcomingBirthdayInCurrentMonthPredicateTest {
     }
 }
 ```
-###### /java/seedu/address/model/reminder/DateTest.java
+###### \java\seedu\address\model\reminder\DateTest.java
 ``` java
 public class DateTest {
 
@@ -863,7 +977,7 @@ public class DateTest {
     }
 }
 ```
-###### /java/seedu/address/model/reminder/StatusTest.java
+###### \java\seedu\address\model\reminder\StatusTest.java
 ``` java
 public class StatusTest {
 
@@ -887,73 +1001,73 @@ public class StatusTest {
     private static final String TIME_MINUTE_UPCOMING = "12:40";
 
     @Test
-    public void hasEventPast() throws Exception {
+    public void hasEventPassed() throws Exception {
 
         // day past -> returns true
         Reminder reminder1 = new ReminderBuilder().withDate(DATE_DAY_PAST).withTime(DEFAULT_TIME).build();
         Status status1 = getStatusTestInstance(reminder1, convertStringToLocalDate(DEFAULT_DATE),
                 convertStringToLocalTime(DEFAULT_TIME));
-        assertTrue(status1.hasEventPast());
+        assertTrue(status1.hasEventPassed());
 
         // month past -> returns true
         Reminder reminder2 = new ReminderBuilder().withDate(DATE_MONTH_PAST).withTime(DEFAULT_TIME).build();
         Status status2 = getStatusTestInstance(reminder2, convertStringToLocalDate(DEFAULT_DATE),
                 convertStringToLocalTime(DEFAULT_TIME));
-        assertTrue(status2.hasEventPast());
+        assertTrue(status2.hasEventPassed());
 
         // year past -> returns true
         Reminder reminder3 = new ReminderBuilder().withDate(DATE_YEAR_PAST).withTime(DEFAULT_TIME).build();
         Status status3 = getStatusTestInstance(reminder3, convertStringToLocalDate(DEFAULT_DATE),
                 convertStringToLocalTime(DEFAULT_TIME));
-        assertTrue(status3.hasEventPast());
+        assertTrue(status3.hasEventPassed());
 
         // hour past -> returns true
         Reminder reminder4 = new ReminderBuilder().withDate(DEFAULT_DATE).withTime(TIME_HOUR_PAST).build();
         Status status4 = getStatusTestInstance(reminder4, convertStringToLocalDate(DEFAULT_DATE),
                 convertStringToLocalTime(DEFAULT_TIME));
-        assertTrue(status4.hasEventPast());
+        assertTrue(status4.hasEventPassed());
 
         // minute past -> returns true
         Reminder reminder5 = new ReminderBuilder().withDate(DEFAULT_DATE).withTime(TIME_MINUTE_PAST).build();
         Status status5 = getStatusTestInstance(reminder5, convertStringToLocalDate(DEFAULT_DATE),
                 convertStringToLocalTime(DEFAULT_TIME));
-        assertTrue(status5.hasEventPast());
+        assertTrue(status5.hasEventPassed());
 
         // upcoming day -> returns false
         Reminder reminder6 = new ReminderBuilder().withDate(DATE_DAY_UPCOMING).withTime(DEFAULT_TIME).build();
         Status status6 = getStatusTestInstance(reminder6, convertStringToLocalDate(DEFAULT_DATE),
                 convertStringToLocalTime(DEFAULT_TIME));
-        assertFalse(status6.hasEventPast());
+        assertFalse(status6.hasEventPassed());
 
         // upcoming month -> returns false
         Reminder reminder7 = new ReminderBuilder().withDate(DATE_MONTH_UPCOMING).withTime(DEFAULT_TIME).build();
         Status status7 = getStatusTestInstance(reminder7, convertStringToLocalDate(DEFAULT_DATE),
                 convertStringToLocalTime(DEFAULT_TIME));
-        assertFalse(status7.hasEventPast());
+        assertFalse(status7.hasEventPassed());
 
         // upcoming year -> returns false
         Reminder reminder8 = new ReminderBuilder().withDate(DATE_YEAR_UPCOMING).withTime(DEFAULT_TIME).build();
         Status status8 = getStatusTestInstance(reminder8, convertStringToLocalDate(DEFAULT_DATE),
                 convertStringToLocalTime(DEFAULT_TIME));
-        assertFalse(status8.hasEventPast());
+        assertFalse(status8.hasEventPassed());
 
         // upcoming hour -> returns false
         Reminder reminder9 = new ReminderBuilder().withDate(DEFAULT_DATE).withTime(TIME_HOUR_UPCOMING).build();
         Status status9 = getStatusTestInstance(reminder9, convertStringToLocalDate(DEFAULT_DATE),
                 convertStringToLocalTime(DEFAULT_TIME));
-        assertFalse(status9.hasEventPast());
+        assertFalse(status9.hasEventPassed());
 
         // upcoming minute -> returns false
         Reminder reminder10 = new ReminderBuilder().withDate(DEFAULT_DATE).withTime(TIME_MINUTE_UPCOMING).build();
         Status status10 = getStatusTestInstance(reminder10, convertStringToLocalDate(DEFAULT_DATE),
                 convertStringToLocalTime(DEFAULT_TIME));
-        assertFalse(status10.hasEventPast());
+        assertFalse(status10.hasEventPassed());
 
         // same date and time -> returns false
         Reminder reminder11 = new ReminderBuilder().withDate(DEFAULT_DATE).withTime(DEFAULT_TIME).build();
         Status status11 = getStatusTestInstance(reminder11, convertStringToLocalDate(DEFAULT_DATE),
                 convertStringToLocalTime(DEFAULT_TIME));
-        assertFalse(status11.hasEventPast());
+        assertFalse(status11.hasEventPassed());
     }
 
     @Test
@@ -1032,7 +1146,7 @@ public class StatusTest {
     public void equals() throws Exception {
 
         // Since value of Status.value is dependent on the methods
-        // Status.hasEventPast, Status.isEventToday, Status.isEventWithinThreeDays,
+        // Status.hasEventPassed, Status.isEventToday, Status.isEventWithinThreeDays,
         // this equals test would not test for Status.value so thoroughly as the tests
         // for the methods are already conducted above.
 
@@ -1079,7 +1193,7 @@ public class StatusTest {
     }
 }
 ```
-###### /java/seedu/address/model/reminder/TimeTest.java
+###### \java\seedu\address\model\reminder\TimeTest.java
 ``` java
 public class TimeTest {
 
@@ -1126,7 +1240,7 @@ public class TimeTest {
     }
 }
 ```
-###### /java/seedu/address/model/reminder/UniqueReminderListTest.java
+###### \java\seedu\address\model\reminder\UniqueReminderListTest.java
 ``` java
 public class UniqueReminderListTest {
     @Rule
@@ -1218,7 +1332,52 @@ public class UniqueReminderListTest {
     }
 }
 ```
-###### /java/seedu/address/storage/XmlRemindersStorageTest.java
+###### \java\seedu\address\storage\StorageManagerTest.java
+``` java
+    @Test
+    public void remindersReadSave() throws Exception {
+        UniqueReminderList original = getUniqueTypicalReminders();
+        storageManager.saveReminders(original);
+        UniqueReminderList retrieved = new UniqueReminderList(storageManager.readReminders().get());
+        assertEquals(original, retrieved);
+    }
+```
+###### \java\seedu\address\storage\StorageManagerTest.java
+``` java
+    @Test
+    public void getRemindersFilePath() {
+        assertNotNull(storageManager.getRemindersFilePath());
+    }
+```
+###### \java\seedu\address\storage\StorageManagerTest.java
+``` java
+    @Test
+    public void handleRemindersChangedEvent_exceptionThrown_eventRaised() {
+        // Create a StorageManager while injecting a stub that  throws an exception when the save method is called
+        Storage storage = new StorageManager(new XmlAddressBookStorage("dummy"),
+                new XmlRemindersStorageExceptionThrowingStub("dummy"),
+                new JsonUserPrefsStorage("dummy"), new ImageDisplayPictureStorage());
+        storage.handleRemindersChangedEvent(new RemindersChangedEvent(new UniqueReminderList()));
+        assertTrue(eventsCollectorRule.eventsCollector.getMostRecent() instanceof DataSavingExceptionEvent);
+    }
+
+
+    /**
+     * A Stub class to throw an exception when the save method is called
+     */
+    class XmlRemindersStorageExceptionThrowingStub extends XmlRemindersStorage {
+
+        public XmlRemindersStorageExceptionThrowingStub(String filePath) {
+            super(filePath);
+        }
+
+        @Override
+        public void saveReminders(ReadOnlyUniqueReminderList reminderList, String filePath) throws IOException {
+            throw new IOException("dummy exception");
+        }
+    }
+```
+###### \java\seedu\address\storage\XmlRemindersStorageTest.java
 ``` java
 public class XmlRemindersStorageTest {
     private static final String TEST_DATA_FOLDER = FileUtil.getPath("./src/test/data/XmlRemindersStorageTest/");
@@ -1315,7 +1474,38 @@ public class XmlRemindersStorageTest {
 }
 
 ```
-###### /java/seedu/address/testutil/EditReminderDescriptorBuilder.java
+###### \java\seedu\address\TestApp.java
+``` java
+        this.saveFileLocation = saveFileLocation;
+        this.saveReminderFileLocation = saveReminderFileLocation;
+```
+###### \java\seedu\address\TestApp.java
+``` java
+        if (initialReminderDataSupplier.get() != null) {
+            createDataFileWithData(new XmlSerializableReminders(),
+                    this.saveReminderFileLocation);
+        }
+```
+###### \java\seedu\address\TestApp.java
+``` java
+        userPrefs.setRemindersFilePath(saveReminderFileLocation);
+```
+###### \java\seedu\address\TestApp.java
+``` java
+    /**
+     * Returns a defensive copy of the reminder data stored inside the storage file.
+     */
+    public UniqueReminderList readStorageUniqueReminderList() {
+        try {
+            return new UniqueReminderList(storage.readReminders().get());
+        } catch (DataConversionException dce) {
+            throw new AssertionError("Data is not in the AddressBook format.");
+        } catch (IOException ioe) {
+            throw new AssertionError("Storage file cannot be found.");
+        }
+    }
+```
+###### \java\seedu\address\testutil\EditReminderDescriptorBuilder.java
 ``` java
 /**
  * A utility class to help with building EditReminderDescriptor objects.
@@ -1363,7 +1553,7 @@ public class EditReminderDescriptorBuilder {
     }
 
     /**
-     * Sets the {@code Date} of the {@code EditReminderDescriptor} that we are building.
+     * Sets the {@code Time} of the {@code EditReminderDescriptor} that we are building.
      */
     public EditReminderDescriptorBuilder withTime(String time) {
         try {
@@ -1379,7 +1569,7 @@ public class EditReminderDescriptorBuilder {
     }
 }
 ```
-###### /java/seedu/address/testutil/ReminderBuilder.java
+###### \java\seedu\address\testutil\ReminderBuilder.java
 ``` java
 /**
  * A utility class to help with building Reminder objects.
@@ -1446,23 +1636,49 @@ public class ReminderBuilder {
     }
 }
 ```
-###### /java/seedu/address/testutil/TypicalReminders.java
+###### \java\seedu\address\testutil\ReminderUtil.java
+``` java
+/**
+ * A utility class for Reminder.
+ */
+public class ReminderUtil {
+
+    /**
+     * Returns an add reminder command string for adding the {@code reminder}.
+     */
+    public static String getAddReminderCommand(ReadOnlyReminder reminder) {
+        return AddReminderCommand.COMMAND_WORD + " " + getReminderDetails(reminder);
+    }
+
+    /**
+     * Returns the part of command string for the given {@code reminder}'s details.
+     */
+    public static String getReminderDetails(ReadOnlyReminder reminder) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(PREFIX_REMINDER + reminder.getReminder() + " ");
+        sb.append(PREFIX_DATE + reminder.getDate().value + " ");
+        sb.append(PREFIX_TIME + reminder.getTime().value + " ");
+        return sb.toString();
+    }
+}
+```
+###### \java\seedu\address\testutil\TypicalReminders.java
 ``` java
 /**
  * A utility class containing a list of {@code Reminder} objects to be used in tests.
  */
 public class TypicalReminders {
 
-    public static final Reminder COFFEE_REMINDER = new ReminderBuilder().build();
-    public static final Reminder HOMEWORK_REMINDER = new ReminderBuilder().withReminder("Do homework")
+    public static final ReadOnlyReminder COFFEE_REMINDER = new ReminderBuilder().build();
+    public static final ReadOnlyReminder HOMEWORK_REMINDER = new ReminderBuilder().withReminder("Do homework")
                                                         .withDate("01/01/2018").withTime("07:30").build();
-    public static final Reminder DINNER_REMINDER = new ReminderBuilder().withReminder("Dinner with family")
+    public static final ReadOnlyReminder DINNER_REMINDER = new ReminderBuilder().withReminder("Dinner with family")
                                                         .withDate("25/12/2017").withTime("18:00").build();
 
     // Manually added
-    public static final Reminder MEETING_REMINDER = new ReminderBuilder().withReminder("Meet with CS2103 group")
+    public static final ReadOnlyReminder MEETING_REMINDER = new ReminderBuilder().withReminder("Meet with CS2103 group")
                                                   .withDate("09/09/2017").withTime("12:00").build();
-    public static final Reminder DENTIST_REMINDER = new ReminderBuilder().withReminder("Go for dental checkup")
+    public static final ReadOnlyReminder DENTIST_REMINDER = new ReminderBuilder().withReminder("Go for dental checkup")
             .withDate("10/10/2017").withTime("14:00").build();
 
     private TypicalReminders() {} //prevents instantiation
@@ -1480,7 +1696,7 @@ public class TypicalReminders {
     }
 }
 ```
-###### /java/seedu/address/ui/BirthdayReminderCardTest.java
+###### \java\seedu\address\ui\BirthdayReminderCardTest.java
 ``` java
     @Test
     public void display() {
@@ -1530,7 +1746,7 @@ public class TypicalReminders {
         assertFalse(birthdayCard.equals(new BirthdayReminderCard(person, 1)));
     }
 ```
-###### /java/seedu/address/ui/ReminderCardTest.java
+###### \java\seedu\address\ui\ReminderCardTest.java
 ``` java
     @Test
     public void display() {
@@ -1540,7 +1756,7 @@ public class TypicalReminders {
         uiPartRule.setUiPart(reminderCard);
         assertCardDisplay(reminderCard, reminder, 1);
 
-        // changes made to Person reflects on card
+        // changes made to Reminder reflects on card
         guiRobot.interact(() -> {
             reminder.setReminder(HOMEWORK_REMINDER.getReminder());
             reminder.setDate(HOMEWORK_REMINDER.getDate());
@@ -1554,7 +1770,7 @@ public class TypicalReminders {
         Reminder reminder = new ReminderBuilder().build();
         ReminderCard reminderCard = new ReminderCard(reminder, 0);
 
-        // same person, same index -> returns true
+        // same reminder, same index -> returns true
         ReminderCard copy = new ReminderCard(reminder, 0);
         assertTrue(reminderCard.equals(copy));
 
@@ -1567,15 +1783,15 @@ public class TypicalReminders {
         // different types -> returns false
         assertFalse(reminderCard.equals(0));
 
-        // different person, same index -> returns false
+        // different reminder, same index -> returns false
         Reminder differentReminder = new ReminderBuilder().withReminder("different reminder").build();
         assertFalse(reminderCard.equals(new ReminderCard(differentReminder, 0)));
 
-        // same person, different index -> returns false
+        // same reminder, different index -> returns false
         assertFalse(reminderCard.equals(new ReminderCard(reminder, 1)));
     }
 ```
-###### /java/seedu/address/ui/testutil/GuiTestAssert.java
+###### \java\seedu\address\ui\testutil\GuiTestAssert.java
 ``` java
     /**
      * Asserts that {@code actualCard} displays the details of {@code expectedPerson}.
@@ -1596,4 +1812,352 @@ public class TypicalReminders {
         assertEquals(expectedReminder.getDate().toString(), actualCard.getDate());
         assertEquals(expectedReminder.getTime().toString(), actualCard.getTime());
     }
+```
+###### \java\systemtests\AddCommandSystemTest.java
+``` java
+        /*Case: add a person with all fields same as another person in the address book except birthday -> added */
+        toAdd = new PersonBuilder().withName(VALID_NAME_AMY).withPhone(VALID_PHONE_AMY).withEmail(VALID_EMAIL_AMY)
+                .withAddress(VALID_ADDRESS_AMY).withBirthday(VALID_BIRTHDAY_BOB).withTags(VALID_TAG_FRIEND).build();
+        command = AddCommand.COMMAND_WORD + NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY + ADDRESS_DESC_AMY
+                + BIRTHDAY_DESC_BOB + TAG_DESC_FRIEND;
+        assertCommandSuccess(command, toAdd);
+```
+###### \java\systemtests\AddCommandSystemTest.java
+``` java
+        /* Case: missing birthday -> added */
+        assertCommandSuccess(HARRY);
+```
+###### \java\systemtests\AddCommandSystemTest.java
+``` java
+        /* Case: invalid birthday -> rejected */
+        command = AddCommand.COMMAND_WORD + NAME_DESC_AMY + PHONE_DESC_AMY + EMAIL_DESC_AMY + ADDRESS_DESC_AMY
+                + INVALID_BIRTHDAY_DESC;
+        assertCommandFailure(command, Birthday.MESSAGE_BIRTHDAY_CONSTRAINTS);
+```
+###### \java\systemtests\AddReminderCommandSystemTest.java
+``` java
+public class AddReminderCommandSystemTest extends UniqueReminderListSystemTest {
+
+    @Test
+    public void addreminder() throws Exception {
+        Model model = getModel();
+
+        /* Case: add a reminder, command with leading spaces and trailing spaces
+         * -> added
+         */
+        ReadOnlyReminder toAdd = COFFEE_REMINDER;
+        String command = "   " + AddReminderCommand.COMMAND_WORD + "  " + REMINDER_DESC_COFFEE + "  "
+                + REMINDER_DESC_DATE_COFFEE + "  " + REMINDER_DESC_TIME_COFFEE;
+        assertCommandSuccess(command, toAdd);
+
+        /* Case: add a duplicate reminder -> rejected */
+        command = AddReminderCommand.COMMAND_WORD + REMINDER_DESC_COFFEE + REMINDER_DESC_DATE_COFFEE
+                + REMINDER_DESC_TIME_COFFEE;
+        assertCommandFailure(command, AddReminderCommand.MESSAGE_DUPLICATE_REMINDER);
+
+        /* Case: add a reminder with all fields same as another reminder in the reminder list except reminder -> added */
+        toAdd = new ReminderBuilder().withReminder(VALID_REMINDER_ASSIGNMENT).withDate(VALID_REMINDER_DATE_COFFEE)
+                .withTime(VALID_REMINDER_TIME_COFFEE).build();
+        command = AddReminderCommand.COMMAND_WORD + REMINDER_DESC_ASSIGNMENT + REMINDER_DESC_DATE_COFFEE
+                + REMINDER_DESC_TIME_COFFEE;
+        assertCommandSuccess(command, toAdd);
+
+        /* Case: add a reminder with all fields same as another reminder in the reminder list except date -> added */
+        toAdd = new ReminderBuilder().withReminder(VALID_REMINDER_COFFEE).withDate(VALID_REMINDER_DATE_ASSIGNMENT)
+                .withTime(VALID_REMINDER_TIME_COFFEE).build();
+        command = AddReminderCommand.COMMAND_WORD + REMINDER_DESC_COFFEE + REMINDER_DESC_DATE_ASSIGNMENT
+                + REMINDER_DESC_TIME_COFFEE;
+        assertCommandSuccess(command, toAdd);
+
+        /* Case: add a reminder with all fields same as another reminder in the reminder list except time -> added */
+        toAdd = new ReminderBuilder().withReminder(VALID_REMINDER_COFFEE).withDate(VALID_REMINDER_DATE_COFFEE)
+                .withTime(VALID_REMINDER_TIME_ASSIGNMENT).build();
+        command = AddReminderCommand.COMMAND_WORD + REMINDER_DESC_COFFEE + REMINDER_DESC_DATE_COFFEE
+                + REMINDER_DESC_TIME_ASSIGNMENT;
+        assertCommandSuccess(command, toAdd);
+
+        /* Case: add to empty reminder list -> added */
+        executeCommand(ClearCommand.COMMAND_WORD);
+        assert getModel().getAddressBook().getPersonList().size() == 0;
+        assertCommandSuccess(MEETING_REMINDER);
+
+        /* Case: missing reminder -> rejected */
+        command = AddReminderCommand.COMMAND_WORD + REMINDER_DESC_DATE_ASSIGNMENT + REMINDER_DESC_TIME_ASSIGNMENT;
+        assertCommandFailure(command, String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddReminderCommand.MESSAGE_USAGE));
+
+        /* Case: missing date -> rejected */
+        command = AddReminderCommand.COMMAND_WORD + REMINDER_DESC_ASSIGNMENT + REMINDER_DESC_TIME_ASSIGNMENT;
+        assertCommandFailure(command, String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddReminderCommand.MESSAGE_USAGE));
+
+        /* Case: missing time -> rejected */
+        command = AddReminderCommand.COMMAND_WORD + REMINDER_DESC_ASSIGNMENT + REMINDER_DESC_DATE_ASSIGNMENT;
+        assertCommandFailure(command, String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddReminderCommand.MESSAGE_USAGE));
+
+        /* Case: invalid keyword -> rejected */
+        command = "addreminders " + ReminderUtil.getReminderDetails(HOMEWORK_REMINDER);
+        assertCommandFailure(command, Messages.MESSAGE_UNKNOWN_COMMAND);
+
+        /* Case: invalid reminder -> rejected */
+        command = AddReminderCommand.COMMAND_WORD + INVALID_REMINDER_DESC + REMINDER_DESC_DATE_ASSIGNMENT
+                + REMINDER_DESC_TIME_ASSIGNMENT;
+        assertCommandFailure(command, String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddReminderCommand.MESSAGE_USAGE));
+
+        /* Case: invalid date -> rejected */
+        command = AddReminderCommand.COMMAND_WORD + REMINDER_DESC_ASSIGNMENT + INVALID_REMINDER_DESC_DATE
+                + REMINDER_DESC_TIME_ASSIGNMENT;
+        assertCommandFailure(command, Date.MESSAGE_DATE_CONSTRAINTS);
+
+        /* Case: invalid time -> rejected */
+        command = AddReminderCommand.COMMAND_WORD + REMINDER_DESC_ASSIGNMENT + REMINDER_DESC_DATE_ASSIGNMENT
+                + INVALID_REMINDER_DESC_TIME;
+        assertCommandFailure(command, Time.MESSAGE_TIME_CONSTRAINTS);
+
+    }
+
+    /**
+     * Executes the {@code AddReminderCommand} that adds {@code toAdd} to the model and verifies that the command box
+     * displays an empty string, the result display box displays the success message of executing
+     * {@code AddReminderCommand} with the details of {@code toAdd}, and the model related components equal to the
+     * current model added with {@code toAdd}. These verifications are done by
+     * {@code UniqueReminderListSystemTest#assertApplicationDisplaysExpected(String, String, Model)}.<br>
+     * Also verifies that the command box has the default style class.
+     * @see UniqueReminderListSystemTest#assertApplicationDisplaysExpected(String, String, Model)
+     */
+    private void assertCommandSuccess(ReadOnlyReminder toAdd) {
+        assertCommandSuccess(ReminderUtil.getAddReminderCommand(toAdd), toAdd);
+    }
+
+    /**
+     * Performs the same verification as {@code assertCommandSuccess(ReadOnlyReminder)}. Executes {@code command}
+     * instead.
+     * @see AddReminderCommandSystemTest#assertCommandSuccess(ReadOnlyReminder)
+     */
+    private void assertCommandSuccess(String command, ReadOnlyReminder toAdd) {
+        Model expectedModel = getModel();
+        try {
+            expectedModel.addReminder(toAdd);
+        } catch (DuplicateReminderException dpe) {
+            throw new IllegalArgumentException("toAdd already exists in the model.");
+        }
+        String expectedResultMessage = String.format(AddReminderCommand.MESSAGE_SUCCESS, toAdd);
+
+
+        assertCommandSuccess(command, expectedModel, expectedResultMessage);
+    }
+
+    /**
+     * Performs the same verification as {@code assertCommandSuccess(String, ReadOnlyReminder)} except that the result
+     * display box displays {@code expectedResultMessage} and the model related components equal to
+     * {@code expectedModel}.
+     * @see AddReminderCommandSystemTest#assertCommandSuccess(String, ReadOnlyReminder)
+     */
+    private void assertCommandSuccess(String command, Model expectedModel, String expectedResultMessage) {
+        executeCommand(command);
+        assertApplicationDisplaysExpected("", expectedResultMessage, expectedModel);
+        assertCommandBoxShowsDefaultStyle();
+    }
+
+    /**
+     * Executes {@code command} and verifies that the command box displays {@code command}, the result display
+     * box displays {@code expectedResultMessage} and the model related components equal to the current model.
+     * These verifications are done by
+     * {@code UniqueReminderListSystemTest#assertApplicationDisplaysExpected(String, String, Model)}.<br>
+     * Also verifies that the status bar remain unchanged, and the command box has the
+     * error style.
+     * @see UniqueReminderListSystemTest#assertApplicationDisplaysExpected(String, String, Model)
+     */
+    private void assertCommandFailure(String command, String expectedResultMessage) {
+        Model expectedModel = getModel();
+
+        executeCommand(command);
+        assertApplicationDisplaysExpected(command, expectedResultMessage, expectedModel);
+        assertCommandBoxShowsErrorStyle();
+    }
+}
+```
+###### \java\systemtests\EditCommandSystemTest.java
+``` java
+    @Test
+    public void editTestClearingBirthday() throws Exception {
+        Model model = getModel();
+
+        /* ----------------- Performing edit operation while an unfiltered list is being shown ---------------------- */
+        /* ----------------- This test only consist of performing the clearing of birthday field -------------------- */
+
+
+        /* Case: clear birthday -> cleared */
+        Index index = INDEX_FIRST_PERSON;
+        ReadOnlyPerson personToEdit = getModel().getFilteredPersonList().get(index.getZeroBased());
+        String command = EditCommand.COMMAND_WORD + " " + index.getOneBased() + " " + PREFIX_BIRTHDAY.getPrefix();
+        Person editedPerson = new PersonBuilder(personToEdit).withBirthday("").build();
+        assertCommandSuccess(command, index, editedPerson);
+    }
+```
+###### \java\systemtests\SystemTestSetupHelper.java
+``` java
+    /**
+     * Sets up the {@code TestApp} and returns it.
+     */
+    public TestApp setupApplication() {
+        try {
+            FxToolkit.setupApplication(() -> testApp = new TestApp(TypicalPersons::getTypicalAddressBook,
+                    UniqueReminderList::new, TestApp.SAVE_LOCATION_FOR_TESTING,
+                    TestApp.SAVE_LOCATION_FOR_REMINDER_TESTING));
+        } catch (TimeoutException te) {
+            throw new AssertionError("Application takes too long to set up.");
+        }
+
+        return testApp;
+    }
+```
+###### \java\systemtests\UniqueReminderListSystemTest.java
+``` java
+public class UniqueReminderListSystemTest {
+    @ClassRule
+    public static ClockRule clockRule = new ClockRule();
+
+    private static final List<String> COMMAND_BOX_DEFAULT_STYLE = Arrays.asList("text-input", "text-field");
+    private static final List<String> COMMAND_BOX_ERROR_STYLE =
+            Arrays.asList("text-input", "text-field", CommandBox.ERROR_STYLE_CLASS);
+
+    private MainWindowHandle mainWindowHandle;
+    private TestApp testApp;
+    private SystemTestSetupHelper setupHelper;
+
+    @BeforeClass
+    public static void setupBeforeClass() {
+        SystemTestSetupHelper.initializeStage();
+    }
+
+    @Before
+    public void setUp() {
+        setupHelper = new SystemTestSetupHelper();
+        testApp = setupHelper.setupApplication();
+        mainWindowHandle = setupHelper.setupMainWindowHandle();
+
+        waitUntilBrowserLoaded(getBrowserPanel());
+        assertApplicationStartingStateIsCorrect();
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        setupHelper.tearDownStage();
+        EventsCenter.clearSubscribers();
+    }
+
+    public CommandBoxHandle getCommandBox() {
+        return mainWindowHandle.getCommandBox();
+    }
+
+    public PersonListPanelHandle getPersonListPanel() {
+        return mainWindowHandle.getPersonListPanel();
+    }
+
+    public BrowserAndRemindersPanelHandle getBrowserPanel() {
+        return mainWindowHandle.getBrowserPanel();
+    }
+
+    public StatusBarFooterHandle getStatusBarFooter() {
+        return mainWindowHandle.getStatusBarFooter();
+    }
+
+    public ResultDisplayHandle getResultDisplay() {
+        return mainWindowHandle.getResultDisplay();
+    }
+
+    /**
+     * Executes {@code command} in the application's {@code CommandBox}.
+     * Method returns after UI components have been updated.
+     */
+    protected void executeCommand(String command) {
+        rememberStates();
+        // Injects a fixed clock before executing a command so that the time stamp shown in the status bar
+        // after each command is predictable and also different from the previous command.
+        clockRule.setInjectedClockToCurrentTime();
+
+        mainWindowHandle.getCommandBox().run(command);
+
+        waitUntilBrowserLoaded(getBrowserPanel());
+    }
+
+    /**
+     * Asserts that the {@code CommandBox} displays {@code expectedCommandInput}, the {@code ResultDisplay} displays
+     * {@code expectedResultMessage}, the model and storage contains the same reminder objects as {@code expectedModel}.
+     */
+    protected void assertApplicationDisplaysExpected(String expectedCommandInput, String expectedResultMessage,
+                                                     Model expectedModel) {
+        assertEquals(expectedCommandInput, getCommandBox().getInput());
+        assertEquals(expectedResultMessage, getResultDisplay().getText());
+        assertEquals(expectedModel, getModel());
+        assertEquals(expectedModel.getUniqueReminderList(), testApp.readStorageUniqueReminderList());
+    }
+
+    /**
+     * Calls {@code BrowserAndRemindersPanelHandle},
+     * {@code PersonListPanelHandle} and {@code StatusBarFooterHandle} to remember their current state.
+     */
+    private void rememberStates() {
+        StatusBarFooterHandle statusBarFooterHandle = getStatusBarFooter();
+        getBrowserPanel().rememberUrl();
+        statusBarFooterHandle.rememberSaveLocation();
+        statusBarFooterHandle.rememberSyncStatus();
+        getPersonListPanel().rememberSelectedPersonCard();
+    }
+
+    /**
+     * Asserts that the browser's url and the selected card in the person list panel remain unchanged.
+     * @see BrowserAndRemindersPanelHandle#isUrlChanged()
+     * @see PersonListPanelHandle#isSelectedPersonCardChanged()
+     */
+    protected void assertSelectedCardUnchanged() {
+        assertFalse(getBrowserPanel().isUrlChanged());
+        assertFalse(getPersonListPanel().isSelectedPersonCardChanged());
+    }
+
+    /**
+     * Asserts that the command box's shows the default style.
+     */
+    protected void assertCommandBoxShowsDefaultStyle() {
+        assertEquals(COMMAND_BOX_DEFAULT_STYLE, getCommandBox().getStyleClass());
+    }
+
+    /**
+     * Asserts that the command box's shows the error style.
+     */
+    protected void assertCommandBoxShowsErrorStyle() {
+        assertEquals(COMMAND_BOX_ERROR_STYLE, getCommandBox().getStyleClass());
+    }
+
+    /**
+     * Asserts that the entire status bar remains the same.
+     */
+    protected void assertStatusBarUnchanged() {
+        StatusBarFooterHandle handle = getStatusBarFooter();
+        assertFalse(handle.isSaveLocationChanged());
+        assertFalse(handle.isSyncStatusChanged());
+    }
+
+    /**
+     * Asserts that the starting state of the application is correct.
+     */
+    private void assertApplicationStartingStateIsCorrect() {
+        try {
+            assertEquals("", getCommandBox().getInput());
+            assertEquals("", getResultDisplay().getText());
+            assertListMatching(getPersonListPanel(), getModel().getFilteredPersonList());
+            assertEquals(MainApp.class.getResource(FXML_FILE_FOLDER + DEFAULT_PAGE), getBrowserPanel().getLoadedUrl());
+            assertEquals("./" + testApp.getStorageSaveLocation(), getStatusBarFooter().getSaveLocation());
+            assertEquals(SYNC_STATUS_INITIAL, getStatusBarFooter().getSyncStatus());
+        } catch (Exception e) {
+            throw new AssertionError("Starting state is wrong.", e);
+        }
+    }
+
+    /**
+     * Returns a defensive copy of the current model.
+     */
+    protected Model getModel() {
+        return testApp.getModel();
+    }
+}
 ```

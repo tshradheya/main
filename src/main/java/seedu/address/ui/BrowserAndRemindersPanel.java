@@ -292,7 +292,7 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
         detailsPanel.getChildren().add(personDetails.getRoot());
     }
 
-
+    //@@author
     //@@author justinpoh
     @Subscribe
     private void handleBrowserPanelToggleEvent(BrowserAndRemindersPanelToggleEvent event) {

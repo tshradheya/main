@@ -69,7 +69,7 @@ public class PersonCard extends UiPart<Region> {
         initTags(person);
         bindListeners(person);
     }
-    //@@author tshradheya
+
     /**
      * Assigns a random color to a tag if it does not exist in the HashMap
      * returns a String containing the color
@@ -80,7 +80,6 @@ public class PersonCard extends UiPart<Region> {
         }
         return tagColorObject.getColor(tag);
     }
-    //@@author
 
     /**
      * Binds the individual UI elements to observe their respective {@code Person} properties

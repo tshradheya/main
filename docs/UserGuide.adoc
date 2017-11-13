@@ -46,7 +46,7 @@ This User Guide aims to help you get started with iContacts. It explains the fea
 Having any Java 8 version is not enough. +
 This app will not work with earlier versions of Java 8.
 +
-.  Download the latest `addressbook.jar` link:{repoURL}/releases[here].
+.  Download the latest `iContacts.jar` link:{repoURL}/releases[here].
 .  Copy the file to the folder you want to use as the home folder for your Address Book.
 .  Double-click the file to start the app. The GUI should appear in a few seconds (Refer to Figure 1).
 +
@@ -161,7 +161,7 @@ The reminder cells are colored differently according to the urgency of the event
 ****
 * If the event has passed, the reminder cell is colored in dark grey (Refer to Figure 2). +
 * If the event is happening today, the reminder cell is colored in red (Refer to Figure 3). +
-* If the event is happening within three days, the reminder cell is colored in yellow (Refer Figure 4). +
+* If the event is happening within three days, the reminder cell is colored in orange (Refer Figure 4). +
 * If the event is happening more than three days later, the reminder cell is colored in green (Refer to Figure 5).
 ****
 
@@ -403,7 +403,7 @@ Examples:
 * `location 2`
 Returns location of the address of person at `INDEX` 2 (Refer to Figure 9)
 
-image::location.PNG[width="790"]
+image::location.png[width="790"]
 _Figure 9: Displays the location of the second person._
 
 // end::location[]

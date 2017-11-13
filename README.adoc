@@ -6,6 +6,7 @@ https://travis-ci.org/CS2103AUG2017-W14-B1/main[image:https://travis-ci.org/CS21
 https://ci.appveyor.com/project/tshradheya/main/branch/master[image:https://ci.appveyor.com/api/projects/status/c9bls1ru0n4vtcqm/branch/master?svg=true[Build status]]
 https://coveralls.io/github/CS2103AUG2017-W14-B1/main[image:https://coveralls.io/repos/github/CS2103AUG2017-W14-B1/main/badge.png[Coverage Status]]
 
+
 ifdef::env-github[]
 image::docs/images/Ui.png[width="600"]
 endif::[]
@@ -20,12 +21,12 @@ endif::[]
 * As students meet more people, it will be difficult for them to remember all the information about the people they met.
 * Therefore, iContacts aims to help students to store and manage contacts easily.
 * In addition to managing contacts, students can also
-** find and filter contacts quickly.
-** add and manage reminders for upcoming events.
-** keep track of upcoming birthdays.
-** send e-mail to several contacts quickly.
-** locate the address of the contact's home using a map.
-** share contacts using the import and export command.
+** Find and filter contacts quickly.
+** Add and manage reminders for upcoming events.
+** Keep track of upcoming birthdays.
+** Send e-mail to several contacts quickly.
+** Locate the address of the contact's home using a map.
+** Share contacts using the import and export command.
 * iContacts is developed by a group of students as their project for the module CS2103T in NUS.
 * This application was built upon the AddressBook-Level4 project povided by the https://github.com/se-edu/i[NUS SE-EDU initiative].
 

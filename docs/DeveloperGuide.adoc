@@ -1398,7 +1398,7 @@ the `Status` object of each `Reminder` object and propagated from `Status` to `R
 **Aspect:** Should the undo/redo mechanism be applied to `Reminder` +
 **Alternative 1 (current choice):** Commands that affect `Reminder` objects are not undoable/redoable. +
 **Pros**: Users would be more aware of any changes they made to a reminder, as they are forced to
-use the `editreminder`, `addreminder` and `deletereminder` commands.
+use the `editreminder`, `addreminder` and `deletereminder` commands. +
 **Cons**: It is less user-friendly. +
 **Alternative 2:** Commands that affect `Reminder` objects are undoable/redoable. +
 **Pros**: More user-friendly. +

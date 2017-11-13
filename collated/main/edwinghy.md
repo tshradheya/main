@@ -121,7 +121,7 @@ public class ExportCommand extends Command {
     private void exportSpecific(int index) throws CommandException {
         List<ReadOnlyPerson> lastShownList = model.getFilteredPersonList();
         try {
-            if (index >= lastShownList.size()) {
+            if (index > lastShownList.size()) {
                 throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
             }
             exportBook.addPerson(lastShownList.get(index - 1));

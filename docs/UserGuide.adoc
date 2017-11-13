@@ -151,21 +151,31 @@ _Figure 6: The full contact information of the person at index 1._
 Shows a list of all persons in the address book. +
 Format: `list`
 
+// tag::sort[]
 === Sorting all persons : `sort`
 
-Sorts and shows a list of all persons in the address book alphabetically. +
+Sorts and shows a list of all contacts in the iContacts alphabetically. +
 Format: `sort`
+// end::sort[]
 
+// tag::export[]
 === Exporting selected contacts : `export`
 
 Exports selected contacts in iContacts. +
-Format: `export [r/RANGE] [p/PATH]`
+Format: `export r/RANGE p/PATH`
 
 ****
-* Exports the person/s at the specified `RANGE` to a specified `PATH`.
+* Exports the contact/s from a specified `RANGE` to a specified `PATH`.
 * The range refers to any index number shown in the most recent listing.
 * The range *must be a positive integer and must not be larger than the last index of the list* 1, 2, 3, 4-7, ...
 * The path *must include the file name without the file extension* c:\exports\classmates
+****
+
+Types of range inputs:
+****
+* Specific contacts - 1, 2, 3, 4
+* Range of contacts - 1-4, 6-9
+* All contacts - all
 ****
 
 Examples:
@@ -174,11 +184,29 @@ Examples:
 `export r/all p/c:\exports\classmates` +
 Exports all the contacts to the file *classmates.xml* in path *c:\exports*.
 
-`export r/1-4 p/c:\exports\classmates` +
+* `export r/1-4 p/c:\exports\classmates` +
 Exports the contacts from index 1 to index 4 to the file *classmates.xml* in path *c:\exports*.
 
-`export r/1-4,6,8 p/c:\exports\classmates` +
+* `export r/1-4,6,8 p/c:\exports\classmates` +
 Exports the contacts at index 1 to index 4 with index 6 and index 8 to the file *classmates.xml* in path *c:\exports*.
+// end::export[]
+
+// tag::import[]
+=== Importing contacts from file : `import`
+
+Imports contacts into iContacts. +
+Format: `import p/PATH`
+
+****
+* Imports all contacts from a specified file `PATH`.
+* The path *must include the file name with the file extension* c:\exports\classmates.xml
+****
+
+Example:
+
+* `import p/c:\exports\classmates.xml` +
+Imports all the contacts stored in the file classmates.xml* into iContacts.
+// end::import[]
 
 === Editing a person : `edit`
 
@@ -335,7 +363,7 @@ Allows to send email after drafting message to everyone with the tag `cs2103` in
 
 //image::email.PNG[width="790"]
 
-
+// tag::find[]
 === Locating persons by name: `find`
 
 Finds persons whose names or nicknames contain any of the given keywords. +
@@ -354,8 +382,8 @@ Examples:
 * `find John` +
 Returns `john` and `John Doe`
 * `find Betsy Tim John` +
-Returns any person having names `Betsy`, `Tim`, or `John`
-
+Returns any person having names or nicknames `Betsy`, `Tim`, or `John`
+// end::find[]
 
 === Finding all people associated with a particular Tag: `viewtag`
 
@@ -564,23 +592,6 @@ Format: `exit`
 
 Address book data are saved in the hard disk automatically after any command that changes the data. +
 There is no need to save manually.
-
-=== Exporting the list: `export`
-
-Exports the last displayed list to a specified location. +
-Format: `export [SAVE LOCATION]NAME`
-
-****
-* Exports the last displayed list as `NAME.xml` to a specified `SAVE LOCATION`.
-* If `SAVE LOCATION` is omitted, the list will be saved at a default folder "data".
-****
-
-Examples:
-
-* `export newData/newList` +
-Exports the last displayed list to `newData` folder as `newList.xml`.
-* `export newList` +
-Saves the last displayed list to the default location as `newList.xml`.
 
 // tag::toggle[]
 === Toggling between reminders panel and browser: `toggle`

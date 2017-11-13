@@ -37,7 +37,7 @@ public class ExportCommand extends Command {
 
     public static final String MESSAGE_ARGUMENTS = "Range: %1$s, Path: %2$s";
 
-    public static final String MESSAGE_EXPORT_FAIL = "Export Failed";
+    public static final String MESSAGE_EXPORT_FAIL = "Export Failed Invalid RANGE or PATH";
     public static final String MESSAGE_EXPORT_SUCCESS = "Export Successful";
 
     private final String range;
@@ -64,9 +64,18 @@ public class ExportCommand extends Command {
             for (int i = 0; i < multipleRange.length; i++) {
                 if (multipleRange[i].contains("-")) {
                     String[] rangeToExport = multipleRange[i].split("-");
-                    exportRange(Integer.parseInt(rangeToExport[0]), Integer.parseInt(rangeToExport[1]));
+                    try {
+                        exportRange(Integer.parseInt(rangeToExport[0]), Integer.parseInt(rangeToExport[1]));
+                    } catch (NumberFormatException e) {
+                        throw new CommandException(MESSAGE_EXPORT_FAIL);
+                    }
+
                 } else {
-                    exportSpecific(Integer.parseInt(multipleRange[i]));
+                    try {
+                        exportSpecific(Integer.parseInt(multipleRange[i]));
+                    } catch (NumberFormatException e) {
+                        throw new CommandException(MESSAGE_EXPORT_FAIL);
+                    }
                 }
             }
         }
@@ -75,7 +84,7 @@ public class ExportCommand extends Command {
             AddressBookStorage storage = new XmlAddressBookStorage(path + ".xml");
             storage.saveAddressBook(exportBook);
         } catch (IOException ioe) {
-            return new CommandResult(MESSAGE_EXPORT_FAIL);
+            throw new CommandException(MESSAGE_EXPORT_FAIL);
         }
         return new CommandResult(MESSAGE_EXPORT_SUCCESS);
     }
@@ -102,7 +111,7 @@ public class ExportCommand extends Command {
         try {
             exportBook.setPersons(lastShownList);
         } catch (DuplicatePersonException e) {
-            e.printStackTrace();
+            assert false : "export file should not have duplicate persons";
         }
     }
 
@@ -117,7 +126,7 @@ public class ExportCommand extends Command {
             }
             exportBook.addPerson(lastShownList.get(index - 1));
         } catch (DuplicatePersonException e) {
-            e.printStackTrace();
+            assert false : "export file should not have duplicate persons";
         }
     }
 
@@ -131,7 +140,7 @@ public class ExportCommand extends Command {
                 exportBook.addPerson(lastShownList.get(i));
             }
         } catch (DuplicatePersonException e) {
-            e.printStackTrace();
+            assert false : "export file should not have duplicate persons";
         }
     }
 
@@ -153,6 +162,7 @@ import java.io.IOException;
 import seedu.address.commons.exceptions.DataConversionException;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.AddressBook;
+import seedu.address.model.person.DisplayPicture;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.PopularityCounter;
 import seedu.address.model.person.ReadOnlyPerson;
@@ -197,7 +207,10 @@ public class ImportCommand extends UndoableCommand {
                 for (ReadOnlyPerson person : this.addressBook.getPersonList()) {
                     Person personToAdd = new Person(person);
                     personToAdd.setPopularityCounter(new PopularityCounter());
+                    personToAdd.setDisplayPicture(new DisplayPicture(""));
                     try {
+                        model.clearSelection();
+                        model.showDefaultPanel();
                         model.addPerson(personToAdd);
                         numSuccess++;
                     } catch (DuplicatePersonException e) {
@@ -265,8 +278,11 @@ package seedu.address.logic.parser;
 
 import static java.util.Objects.requireNonNull;
 
+import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PATH;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_RANGE;
+
+import java.util.stream.Stream;
 
 import seedu.address.logic.commands.ExportCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
@@ -280,11 +296,23 @@ public class ExportCommandParser implements Parser<ExportCommand> {
         requireNonNull(args);
         ArgumentMultimap argMultiMap = ArgumentTokenizer.tokenize(args, PREFIX_RANGE, PREFIX_PATH);
 
+        if (!arePrefixesPresent(argMultiMap, PREFIX_RANGE, PREFIX_PATH)) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, ExportCommand.MESSAGE_USAGE));
+        }
+
         String range = argMultiMap.getValue(PREFIX_RANGE).orElse("");
 
         String path = argMultiMap.getValue(PREFIX_PATH).orElse("");
 
         return new ExportCommand(range, path);
+    }
+
+    /**
+     * Returns true if none of the prefixes contains empty {@code Optional} values in the given
+     * {@code ArgumentMultimap}.
+     */
+    private static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
+        return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
     }
 }
 ```
@@ -293,7 +321,10 @@ public class ExportCommandParser implements Parser<ExportCommand> {
 package seedu.address.logic.parser;
 
 import static java.util.Objects.requireNonNull;
+import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PATH;
+
+import java.util.stream.Stream;
 
 import seedu.address.logic.commands.ImportCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
@@ -307,9 +338,21 @@ public class ImportCommandParser implements Parser<ImportCommand> {
         requireNonNull(args);
         ArgumentMultimap argMultiMap = ArgumentTokenizer.tokenize(args, PREFIX_PATH);
 
+        if (!arePrefixesPresent(argMultiMap, PREFIX_PATH)) {
+            throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, ImportCommand.MESSAGE_USAGE));
+        }
+
         String path = argMultiMap.getValue(PREFIX_PATH).orElse("");
 
         return new ImportCommand(path);
+    }
+
+    /**
+     * Returns true if none of the prefixes contains empty {@code Optional} values in the given
+     * {@code ArgumentMultimap}.
+     */
+    private static boolean arePrefixesPresent(ArgumentMultimap argumentMultimap, Prefix... prefixes) {
+        return Stream.of(prefixes).allMatch(prefix -> argumentMultimap.getValue(prefix).isPresent());
     }
 }
 ```

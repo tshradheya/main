@@ -300,14 +300,6 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
         toggleBrowserPanel();
     }
-
-    @Subscribe
-    private void handleRemindersChangedEvent(RemindersChangedEvent event) {
-        logger.info(LogsCenter.getEventHandlingLogMessage(event, "Bringing reminders panel to the front."));
-        setUpToShowRemindersPanel();
-        remindersPanel.toFront();
-        currentlyInFront = Node.REMINDERS;
-    }
     //@@author
     //@@author tshradheya
 

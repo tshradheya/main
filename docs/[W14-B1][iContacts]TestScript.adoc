@@ -480,7 +480,7 @@ Note:  +
 
 Cases:
 
-. `location 1` +
+. `location 2` +
 Expected result: Location of Bernice Yu: Blk 30 Lorong 3 Serangoon Gardens, #07-18
 
 . `location 22` +
@@ -509,7 +509,7 @@ Cases:
 . `email s/outlook to/friends sub/hey body/bye` +
 Expected result: Email .
 
-. `email s/gmail to/nonexistingtag ` +
+. `email s/gmail to/nonexistingtag` +
 Expected result: Email not sent. Please enter a valid tag and correct service
 
 . `email s/outlook to/friends` +
@@ -526,7 +526,7 @@ Expected result:Invalid command format!
 . `email s/outlook to/friends` +
 Expected result: Email .
 
-. `email s/incorrectService to/friends ` +
+. `email s/incorrectService to/friends` +
 Expected result: Email not sent. Please enter a valid tag and correct service
 
 
@@ -561,6 +561,7 @@ Command usage:
 Note:  +
 
 * Shows details of the person in Details Panel depending on the INDEX specified in currently shown list.
+* Please execute `list` command before doing the testing for these features to get expected output as shown
 
 Cases:
 

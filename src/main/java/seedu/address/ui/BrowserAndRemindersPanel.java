@@ -24,6 +24,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.web.WebView;
 import seedu.address.MainApp;
 import seedu.address.commons.core.LogsCenter;
+import seedu.address.commons.events.model.RemindersChangedEvent;
 import seedu.address.commons.events.ui.BrowserAndRemindersPanelToggleEvent;
 import seedu.address.commons.events.ui.LoadPersonWebpageEvent;
 import seedu.address.commons.events.ui.PersonPanelSelectionChangedEvent;
@@ -298,6 +299,14 @@ public class BrowserAndRemindersPanel extends UiPart<Region> {
     private void handleBrowserPanelToggleEvent(BrowserAndRemindersPanelToggleEvent event) {
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
         toggleBrowserPanel();
+    }
+
+    @Subscribe
+    private void handleRemindersChangedEvent(RemindersChangedEvent event) {
+        logger.info(LogsCenter.getEventHandlingLogMessage(event, "Bringing reminders panel to the front."));
+        setUpToShowRemindersPanel();
+        remindersPanel.toFront();
+        currentlyInFront = Node.REMINDERS;
     }
     //@@author
     //@@author tshradheya

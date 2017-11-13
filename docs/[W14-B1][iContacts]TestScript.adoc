@@ -252,7 +252,7 @@ iContacts would now display the browser panel.
 Expected result: Toggle successful. +
 iContacts would now display the reminders panel.
 
-. `toggle` and iContacts is currently displaying the details panel. +
+. `toggle` and iContacts is currently displaying the details panel (To get details panel first execute `details 1` command). +
 Expected result: Toggle successful. +
 iContacts would now display the reminders panel.
 

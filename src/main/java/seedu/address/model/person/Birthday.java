@@ -209,11 +209,16 @@ public class Birthday {
         String[] splitDate = getSplitDate(date);
 
         StringBuilder builder = new StringBuilder();
-        builder.append(splitDate[DATE_DAY_INDEX]);
+
+        final int day = Integer.parseInt(splitDate[DATE_DAY_INDEX]);
+        final int month = Integer.parseInt(splitDate[DATE_MONTH_INDEX]);
+        final int year = Integer.parseInt(splitDate[DATE_YEAR_INDEX]);
+
+        builder.append(day);
         builder.append(BIRTHDAY_DASH_SEPARATOR);
-        builder.append(splitDate[DATE_MONTH_INDEX]);
+        builder.append(month);
         builder.append(BIRTHDAY_DASH_SEPARATOR);
-        builder.append(splitDate[DATE_YEAR_INDEX]);
+        builder.append(year);
         return builder.toString();
     }
 

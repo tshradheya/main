@@ -256,7 +256,7 @@ public class NameAndTagsContainsKeywordsPredicate {
 
 The method `test(ReadOnlyPerson person)` iterates through the `nameKeywords` and the `tagKeywords` to find a match of every `person` from the address book.
 
-Below is an extract of the method `test(ReadOnlyPerson person)`. The tags of each person are retrieved by the `getTags()` method. This method iterates through the `tagKeywords` and counts the number of matches against the `tagsOfPerson`. If the count is equal to the size of the `tagKeywords`, this means all the keywords in the `tagKeywords` match. The `hasTag` will then be set to `true`.
+Below is an extract of the method `test(ReadOnlyPerson person)`. The method `countTagMatches(person)` counts and returns the number of matches between the tags of the `person` and the tags in the `tagKeywords`. If the `tagsMatchedCount` is equal to the size of the `tagKeywords`, this means all the keywords in the `tagKeywords` match. The `hasTag` will then be set to `true`.
 
 [source,java]
 ----

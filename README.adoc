@@ -5,7 +5,7 @@ ifdef::env-github,env-browser[:outfilesuffix: .adoc]
 https://travis-ci.org/CS2103AUG2017-W14-B1/main[image:https://travis-ci.org/CS2103AUG2017-W14-B1/main.svg?branch=master[Build Status]]
 https://ci.appveyor.com/project/tshradheya/main/branch/master[image:https://ci.appveyor.com/api/projects/status/c9bls1ru0n4vtcqm/branch/master?svg=true[Build status]]
 https://coveralls.io/github/CS2103AUG2017-W14-B1/main[image:https://coveralls.io/repos/github/CS2103AUG2017-W14-B1/main/badge.png[Coverage Status]]
-https://www.codacy.com/app/tshradheya/main_2/dashboard[image:https://api.codacy.com/project/badge/Grade/2b6165116f1b43c984f0f2a42c6be89e["Codacy code quality", link="https://www.codacy.com/app/tshradheya/main_2?utm_source=github.com&utm_medium=referral&utm_content=CS2103AUG2017-W14-B1/main&utm_campaign=Badge_Grade"]
+https://www.codacy.com/app/tshradheya/main_2/dashboard[image:https://api.codacy.com/project/badge/Grade/2b6165116f1b43c984f0f2a42c6be89e["Codacy code quality", link="https://www.codacy.com/app/tshradheya/main_2?utm_source=github.com&utm_medium=referral&utm_content=CS2103AUG2017-W14-B1/main&utm_campaign=Badge_Grade"]]
 
 
 ifdef::env-github[]

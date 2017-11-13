@@ -27,7 +27,7 @@ public class AddReminderCommand extends Command {
             + "Example: " + COMMAND_WORD + " "
             + PREFIX_REMINDER + "Dinner with Family "
             + PREFIX_DATE + "22-11-2017 "
-            + PREFIX_TIME + "1700\n";
+            + PREFIX_TIME + "17:00\n";
 
     public static final String MESSAGE_SUCCESS = "New reminder added.";
     public static final String MESSAGE_DUPLICATE_REMINDER = "This reminder already exists in iContacts.";

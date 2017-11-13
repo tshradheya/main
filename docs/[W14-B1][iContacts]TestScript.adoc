@@ -279,7 +279,7 @@ are relative to the date and time the program is started up. +
 Cases:
 
 . `addreminder rd/Unique Reminder d/01-02-2017 ti/08:00` +
-Expected result: New reminder added! +
+Expected result: New reminder added. +
 A new reminder would be added to the reminder list.
 
 . `addreminder rd/Unique Reminder d/01-02-2017 ti/08:00` +
@@ -292,7 +292,7 @@ Invalid command format! +
 addreminder: Adds a reminder. +
 Parameters: rd/REMINDER d/DATE ti/TIME +
 REMINDER must be non-empty. DATE must be in the format dd-mm-yyyy, dd/mm/yyyy or dd.mm.yyyy, and must be a valid date. TIME is in 24-hour format. +
-Example: addreminder rd/Dinner with Family d/22-11-2017 ti/1700
+Example: addreminder rd/Dinner with Family d/22-11-2017 ti/17:00
 
 . `addreminder rd/Valid reminder 1 d/29/2/2017 ti/18:00` +
 *This `addreminder` command includes an invalid leap day.* +
@@ -332,7 +332,7 @@ Invalid command format! +
 addreminder: Adds a reminder. +
 Parameters: rd/REMINDER d/DATE ti/TIME +
 REMINDER must be non-empty. DATE must be in the format dd-mm-yyyy, dd/mm/yyyy or dd.mm.yyyy, and must be a valid date. TIME is in 24-hour format. +
-Example: addreminder rd/Dinner with Family d/22-11-2017 ti/1700
+Example: addreminder rd/Dinner with Family d/22-11-2017 ti/17:00
 
 === Deleting a reminder
 *Please make sure to reload the sample reminder data before conducting the tests below to have accurate expected results.*

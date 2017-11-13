@@ -462,6 +462,17 @@ public class ExportCommand extends Command {
     }
 }
 ----
+
+===== Design Considerations
+
+**Aspect:** Should PopularityCounter and DisplayPicture be set to the default value+
+**Alternative 1 (current choice):** Both PopularityCounter and DisplayPicture should be set to the default value  +
+**Pros:** Does not affect the users contact's PopularityCounter and allows the user to set their own preferred DisplayPicture of a contact  +
+**Cons:** Users wont be able to share display picture even if they want to. +
+**Alternative 2:** Import the contacts as how it was exported+
+**Pros:** : DisplayPicture will be imported into iContacts +
+**Cons:** : The PopularityCounter of the user's contacts will be inaccurate.
+
 // end::import[]
 
 // tag::find[]

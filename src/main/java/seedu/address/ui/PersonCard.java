@@ -1,5 +1,6 @@
 package seedu.address.ui;
 
+import java.io.File;
 import java.util.Random;
 
 import javafx.beans.binding.Bindings;
@@ -24,6 +25,11 @@ public class PersonCard extends UiPart<Region> {
     private static final String FXML = "PersonListCard.fxml";
     private static final Integer IMAGE_WIDTH = 100;
     private static final Integer IMAGE_HEIGHT = 100;
+    private static final String DIRECTORY_SAVING_PATH = "pictures/";
+    private static final String DEFAULT_IMAGE_PATH = "/images/defaulddp.png";
+    private static final String EMPTY_STRING = "";
+    private static final String IMAGE_EXTENSION = ".png";
+
     private static String[] colors = {"#ff0000", "#0000ff", "#008000", "#ff00ff", "#00ffff"};
     private static Random random = new Random();
 
@@ -93,19 +99,26 @@ public class PersonCard extends UiPart<Region> {
     //@@author tshradheya
 
     /**
-     * Assigns URL to the image depending on the path
+     * Assigns image pattern to the shape to display image
      */
     private void assignImage(ReadOnlyPerson person) {
 
-        if (!person.getDisplayPicture().getPath().equals("")) {
+        if (!person.getDisplayPicture().getPath().equals(EMPTY_STRING)) {
 
-            Image image = new Image("file:" + "pictures/" + person.getDisplayPicture().getPath() + ".png",
-                    IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
+            Image image = new Image("file:" + DIRECTORY_SAVING_PATH + person.getDisplayPicture().getPath()
+                    + IMAGE_EXTENSION, IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
 
+            // Defensive programming to take care of image corruption
+            File file = new File(DIRECTORY_SAVING_PATH + person.getDisplayPicture().getPath()
+                    + IMAGE_EXTENSION);
+            if (!file.exists()) {
+                image = new Image(MainApp.class.getResourceAsStream(DEFAULT_IMAGE_PATH),
+                        IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
+            }
             displayPicture.setFill(new ImagePattern(image));
 
         } else {
-            Image image = new Image(MainApp.class.getResourceAsStream("/images/defaulddp.png"),
+            Image image = new Image(MainApp.class.getResourceAsStream(DEFAULT_IMAGE_PATH),
                     IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
 
             displayPicture.setFill(new ImagePattern(image));

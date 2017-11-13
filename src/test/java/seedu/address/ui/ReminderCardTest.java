@@ -23,7 +23,7 @@ public class ReminderCardTest extends GuiUnitTest {
         uiPartRule.setUiPart(reminderCard);
         assertCardDisplay(reminderCard, reminder, 1);
 
-        // changes made to Person reflects on card
+        // changes made to Reminder reflects on card
         guiRobot.interact(() -> {
             reminder.setReminder(HOMEWORK_REMINDER.getReminder());
             reminder.setDate(HOMEWORK_REMINDER.getDate());
@@ -37,7 +37,7 @@ public class ReminderCardTest extends GuiUnitTest {
         Reminder reminder = new ReminderBuilder().build();
         ReminderCard reminderCard = new ReminderCard(reminder, 0);
 
-        // same person, same index -> returns true
+        // same reminder, same index -> returns true
         ReminderCard copy = new ReminderCard(reminder, 0);
         assertTrue(reminderCard.equals(copy));
 
@@ -50,11 +50,11 @@ public class ReminderCardTest extends GuiUnitTest {
         // different types -> returns false
         assertFalse(reminderCard.equals(0));
 
-        // different person, same index -> returns false
+        // different reminder, same index -> returns false
         Reminder differentReminder = new ReminderBuilder().withReminder("different reminder").build();
         assertFalse(reminderCard.equals(new ReminderCard(differentReminder, 0)));
 
-        // same person, different index -> returns false
+        // same reminder, different index -> returns false
         assertFalse(reminderCard.equals(new ReminderCard(reminder, 1)));
     }
     //@@author
@@ -71,7 +71,7 @@ public class ReminderCardTest extends GuiUnitTest {
         // verify id is displayed correctly
         assertEquals(Integer.toString(expectedId) + ". ", reminderCardHandle.getId());
 
-        // verify person details are displayed correctly
+        // verify reminder details are displayed correctly
         assertReminderCardDisplaysReminder(expectedReminder, reminderCardHandle);
     }
 }

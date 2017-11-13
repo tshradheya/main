@@ -11,7 +11,6 @@ import seedu.address.commons.core.ComponentManager;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.events.model.AddressBookChangedEvent;
 import seedu.address.commons.events.model.DisplayPictureChangedEvent;
-import seedu.address.commons.events.model.DisplayPictureDeleteEvent;
 import seedu.address.commons.events.model.RemindersChangedEvent;
 import seedu.address.commons.events.storage.DataSavingExceptionEvent;
 import seedu.address.commons.exceptions.DataConversionException;
@@ -163,12 +162,6 @@ public class StorageManager extends ComponentManager implements Storage {
     }
 
     @Override
-    public void deleteImageFromDirectory(String pathName) {
-        logger.fine("Attempting to delete to file: " + pathName);
-        displayPictureStorage.deleteImageFromDirectory(pathName);
-    }
-
-    @Override
     @Subscribe
     public void handleDisplayPictureChangedEvent(DisplayPictureChangedEvent event) throws IOException {
         logger.info(LogsCenter.getEventHandlingLogMessage(event, " Image changed, saving to file"));
@@ -181,11 +174,6 @@ public class StorageManager extends ComponentManager implements Storage {
         }
     }
 
-    @Override
-    @Subscribe
-    public void handleDisplayPictureDeleteEvent(DisplayPictureDeleteEvent event) {
-        deleteImageFromDirectory(event.path);
-    }
     //@@author
 
 }

@@ -39,7 +39,7 @@ public interface Model {
     /** Returns an unmodifiable view of the sorted list of reminders */
     ObservableList<ReadOnlyReminder> getSortedReminderList();
 
-    /** Returns the reminders */
+    /** Return the reminders */
     ReadOnlyUniqueReminderList getUniqueReminderList();
 
     /** Deletes the given person. */

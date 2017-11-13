@@ -21,7 +21,6 @@ import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.events.model.AddressBookChangedEvent;
 import seedu.address.commons.events.model.DisplayPictureChangedEvent;
-import seedu.address.commons.events.model.DisplayPictureDeleteEvent;
 import seedu.address.commons.events.model.PopularContactChangedEvent;
 import seedu.address.commons.events.model.RemindersChangedEvent;
 import seedu.address.commons.events.model.UpdateListForSelectionEvent;
@@ -140,6 +139,7 @@ public class ModelManager extends ComponentManager implements Model {
     /** Raises an event to indicate the reminders have changed */
     private void indicateRemindersChanged() {
         raise(new RemindersChangedEvent(reminderList));
+        showDefaultPanel();
     }
     //@@author
 
@@ -147,8 +147,11 @@ public class ModelManager extends ComponentManager implements Model {
     public synchronized void deletePerson(ReadOnlyPerson target) throws PersonNotFoundException {
         clearSelection();
         addressBook.removePerson(target);
-        raise(new SelectFirstAfterDeleteEvent());
-        raise(new DisplayPictureDeleteEvent(target.getDisplayPicture().getPath()));
+        if (sortedfilteredPersons.isEmpty()) {
+            showDefaultPanel();
+        } else {
+            raise(new SelectFirstAfterDeleteEvent());
+        }
         indicateAddressBookChanged();
         indicatePopularContactsChangedPossibility();
         updatePopularContactList();
@@ -244,7 +247,7 @@ public class ModelManager extends ComponentManager implements Model {
             try {
                 this.updatePersonsPopularityCounterByOne(person);
             } catch (DuplicatePersonException dpe) {
-                assert false : "Duplicate";
+                assert false : "Duplicate is not possible";
             } catch (PersonNotFoundException pnfe) {
                 throw new AssertionError("The target person cannot be missing");
             }
@@ -282,6 +285,7 @@ public class ModelManager extends ComponentManager implements Model {
      */
     @Override
     public void updatePopularContactList() {
+        logger.info("Popular List getting Refreshed");
         refreshWithPopulatingAddressBook();
         listOfPersonsForPopularContacts.sort((o1, o2) ->
                 o2.getPopularityCounter().getCounter() - o1.getPopularityCounter().getCounter());
@@ -350,6 +354,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     @Override
     public void showDefaultPanel() {
+        logger.info("Default panel will be shown on right on refresh");
         raise(new ShowDefaultPanelEvent());
     }
     //@@author
@@ -396,7 +401,7 @@ public class ModelManager extends ComponentManager implements Model {
                 return Index.fromZeroBased(i);
             }
         }
-        assert false : "Should not come here in no case";
+        assert false : "Should not come here in any case";
         return Index.fromZeroBased(-1);
     }
 
@@ -445,6 +450,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     @Override
     public void clearSelection() {
+        logger.info("Clears selection of person in list");
         raise(new ClearSelectionEvent());
     }
 

@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import seedu.address.commons.events.model.AddressBookChangedEvent;
 import seedu.address.commons.events.model.DisplayPictureChangedEvent;
-import seedu.address.commons.events.model.DisplayPictureDeleteEvent;
 import seedu.address.commons.events.model.RemindersChangedEvent;
 import seedu.address.commons.events.storage.DataSavingExceptionEvent;
 import seedu.address.commons.exceptions.DataConversionException;
@@ -48,7 +47,7 @@ public interface Storage extends AddressBookStorage, UserPrefsStorage, Reminders
 
     /**
      * Saves the current version of the Address Book to the hard disk.
-     *   Creates the data file if it is missing.
+     * Creates the data file if it is missing.
      * Raises {@link DataSavingExceptionEvent} if there was an error during saving.
      */
     void handleAddressBookChangedEvent(AddressBookChangedEvent abce);
@@ -56,7 +55,7 @@ public interface Storage extends AddressBookStorage, UserPrefsStorage, Reminders
     //@@author justinpoh
     /**
      * Saves the current version of reminders to the hard disk.
-     *   Creates the data file if it is missing.
+     * Creates the data file if it is missing.
      * Raises {@link DataSavingExceptionEvent} if there was an error during saving.
      */
     void handleRemindersChangedEvent(RemindersChangedEvent rce);
@@ -64,5 +63,4 @@ public interface Storage extends AddressBookStorage, UserPrefsStorage, Reminders
 
     void handleDisplayPictureChangedEvent(DisplayPictureChangedEvent event) throws IOException;
 
-    void handleDisplayPictureDeleteEvent(DisplayPictureDeleteEvent event);
 }

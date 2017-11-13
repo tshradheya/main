@@ -7,11 +7,11 @@ ifdef::env-github,env-browser[:outfilesuffix: .adoc]
 iContacts is an application that targets university students, aiming to help them manage their contacts and other aspects of their university life in an efficient manner.
 iContacts is a Command Line Interface (CLI) application, where most of the commands are executed by typing rather than clicking on buttons.
 Through iContacts, users would be able to store, manage and search through contact information efficiently and effectively.
-Not only that, users would be able to set display pictures for each contact, and also add reminders for upcoming events.
+Not only that, users would be able to set display pictures for each contact and also add reminders for upcoming events.
 Last but not least, iContacts allow users to easily share contact information amongst each other via its import and export mechanisms. +
 
 This portfolio is to collate my contributions towards the developing of iContacts. It also showcases the software programming
-knowledge I have learned during the course of CS2103T, as well as how I utilized this knowledge and applied it onto a real-world
+knowledge I have learned during the course of CS2103T, as well as how I utilized this knowledge and applied it to a real-world
 project. This portfolio also contains some suggested enhancements to be developed for iContacts in the future.
 
 *Code contributed*: [https://github.com/CS2103AUG2017-W14-B1/main/blob/master/collated/main/justinpoh.md[Functional code]] [https://github.com/CS2103AUG2017-W14-B1/main/blob/master/collated/test/justinpoh.md[Test code]]
@@ -44,7 +44,7 @@ can grant users a sense of the quantity of upcoming tasks and events. Also, only
 when it is nearing might give the user insufficient time to prepare for it. Instead, permanently displaying the reminders
 with a countdown to the event allow users to better prepare for it.
 
-We also recognise that there is a need to differentiate reminders based on the level of urgency. Therefore, we chose to do this
+We also recognize that there is a need to differentiate reminders based on the level of urgency. Therefore, we chose to do this
 by coloring the reminder cells differently. Using color is simple but powerful.
 
 ==== Implementation
@@ -102,7 +102,7 @@ the `find` command should be enhanced such that it can work with similar keyword
 Currently, iContacts only notify users of invalid command syntax after users have typed out the whole command and pressed `Enter`.
 As the feedback to the users is very general, users might have a hard time figuring out which part of the command had an erroneous
 syntax. Therefore, this dynamic command syntax validation feature would be able to instantly feedback to users regarding the
-validity of the command they typed, by changing the color of the border of the CommandBox. There will be three colors: +
+validity of the command they typed, by changing the color of the border of the `CommandBox`. There will be three colors: +
 
 * A green border means that the syntax of the command is valid.
 * A red border means that the syntax of the command is invalid.
@@ -119,9 +119,11 @@ to integrate iContacts with existing online address book and Cloud Storage servi
 * Created the current default GUI of iContacts, as well as creating the Day theme for iContacts. (Pull requests https://github.com/CS2103AUG2017-W14-B1/main/pull/195[#195])
 * Updated component diagrams in DG and diagrams in UG during the project. (Pull requests https://github.com/CS2103AUG2017-W14-B1/main/pull/171[#171],
  https://github.com/CS2103AUG2017-W14-B1/main/pull/200[#200], https://github.com/CS2103AUG2017-W14-B1/main/pull/201/files[#201],
- https://github.com/CS2103AUG2017-W14-B1/main/pull/149[#149], https://github.com/CS2103AUG2017-W14-B1/main/pull/108[#108], https://github.com/CS2103AUG2017-W14-B1/main/pull/215[#215])
+ https://github.com/CS2103AUG2017-W14-B1/main/pull/149[#149], https://github.com/CS2103AUG2017-W14-B1/main/pull/108[#108], https://github.com/CS2103AUG2017-W14-B1/main/pull/215[#215],
+ https://github.com/CS2103AUG2017-W14-B1/main/pull/242[#242], https://github.com/CS2103AUG2017-W14-B1/main/pull/243[#243])
 * Implemented Birthday field. (Pull requests https://github.com/CS2103AUG2017-W14-B1/main/pull/76[#76])
 * Updated READ.ME. (Pull requests https://github.com/CS2103AUG2017-W14-B1/main/pull/86[#86])
-* Updated AboutUs.adoc. (Pull requests https://github.com/CS2103AUG2017-W14-B1/main/pull/88[#88], https://github.com/CS2103AUG2017-W14-B1/main/pull/212[#212])
+* Updated AboutUs.adoc. (Pull requests https://github.com/CS2103AUG2017-W14-B1/main/pull/88[#88], https://github.com/CS2103AUG2017-W14-B1/main/pull/212[#212],
+https://github.com/CS2103AUG2017-W14-B1/main/pull/241[#241])
 * Updated Glossary. (Pull requests https://github.com/CS2103AUG2017-W14-B1/main/pull/59[#59], https://github.com/CS2103AUG2017-W14-B1/main/pull/70[#70])
 * Updated NFR. (Pull requests https://github.com/CS2103AUG2017-W14-B1/main/pull/50[#50])

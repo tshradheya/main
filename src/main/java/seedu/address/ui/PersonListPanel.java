@@ -124,6 +124,7 @@ public class PersonListPanel extends UiPart<Region> {
 
     @Subscribe
     private void handleSelectFirstAfterDeleteEvent(SelectFirstAfterDeleteEvent event) {
+        personListView.scrollTo(0);
         personListView.getSelectionModel().selectFirst();
     }
     //@@author

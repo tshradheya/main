@@ -10,13 +10,19 @@ ifdef::env-github[]
 :note-caption: :information_source:
 endif::[]
 ifdef::env-github,env-browser[:outfilesuffix: .adoc]
-:repoURL: https://github.com/se-edu/addressbook-level4/tree/master
+:repoURL: https://github.com/CS2103AUG2017-W14-B1/main/tree/master
 
 By: `Team SE-EDU`      Since: `Jun 2016`      Licence: `MIT`
 
 == Introduction
 
-iContacts is an address book application with target audience as university students for managing contacts. This guide provides information for developers who wish to join our team as either developer or tester, and is intended to get you to understand the internal designs of the application, so that you will be able to work with the application quickly. The guide explains the design, implementation of noteworthy features, and the testing methods used in iContacts.
+iContacts is an address book application whose target audience is university students. iContacts aim to help
+students manage their contacts effectively and efficiently, as well as providing many other features
+such as setting reminders, tagging of contacts, emailing and more.
+This guide provides information for those who wish to join our team as either a developer or tester,
+and is intended to help you quickly understand the internal design of the application so that you will be able to
+understand how this application work. The guide also explains in detail the implementation of noteworthy features,
+as well as the testing methods used in developing iContacts.
 
 == Setting up
 
@@ -115,7 +121,7 @@ Below is a quick overview of each component:
 
 * link:#common-classes[*`Commons`*] represents a collection of classes used by multiple other components. Two of those classes play important roles at the architecture level:
 
-** `EventsCenter` : This class (written using https://github.com/google/guava/wiki/EventBusExplained[Google's Event Bus library]) is used by components to communicate with other components using events (i.e. a form of _Event Driven_ design)
+** `EventsCenter` : This class (written using https://github.com/google/guava/wiki/EventBusExplained[Google's Event Bus library]) is used by the components to communicate with other components using events (i.e. a form of _Event Driven_ design).
 ** `LogsCenter` : This class is used by many classes to write log messages to iContacts' log file.
 
 * The rest of iContacts consists of four components:
@@ -130,7 +136,7 @@ Each of the four components
 *** defines its _API_ in an `interface` with the same name as the Component.
 *** exposes its functionality using a `{Component Name}Manager` class.
 
-For example, the `Logic` component (Refer to Figure 2) defines its API in the `Logic.java` interface and exposes its functionality using the `LogicManager.java` class.
+For example, the `Logic` component (Refer to Figure 2) defines its _API_ in the `Logic.java` interface and exposes its functionality using the `LogicManager.java` class.
 
 image::LogicClassDiagram.png[width="800"]
 _Figure 2 : Class Diagram of the Logic component_
@@ -144,7 +150,7 @@ image::SDforDeletePerson.png[width="800"]
 _Figure 3 : Component interactions for `delete 1` command (Part 1)_
 
 [NOTE]
-Note how the `Model` simply raises a `AddressBookChangedEvent` when the Address Book data are changed, instead of asking the `Storage` to save the updates to the hard disk.
+Note how the `Model` simply raises an `AddressBookChangedEvent` when the address book data are changed, instead of asking the `Storage` to save the updates to the hard disk.
 
 The diagram below (Refer to Figure 4) shows how the `EventsCenter` reacts to that event, which eventually results in the updates being saved to the hard disk and the status bar of the UI being updated to reflect the 'Last Updated' time.
 
@@ -152,7 +158,7 @@ image::SDforDeletePersonEventHandling.png[width="800"]
 _Figure 4 : Component interactions for `delete 1` command (Part 2)_
 
 [NOTE]
-Note how the event is propagated through the `EventsCenter` to the `Storage` and `UI` without the `Model` having to be coupled to either of them. This is an example of how this Event-Driven approach helps us reduce direct coupling between components.
+Note how the event is propagated through the `EventsCenter` to the `Storage` and `UI` without the `Model` having to be coupled to either of them. This is an example of how this _Event-Driven_ approach helps us reduce direct coupling between components.
 
 === Components
 
@@ -160,12 +166,12 @@ This section explains the `UI`, `Logic`, `Model` and `Storage` component used in
 
 ==== UI component
 
-The `UI` component provides with the API of Graphical User Interface. The figure below (Refer to Figure 5) shows the structure of the `UI` component.
+The `UI` component provides  the _API_ of Graphical User Interface. The figure below (Refer to Figure 5) shows the structure of the `UI` component.
 
 image::UiClassDiagram.png[width="800"]
 _Figure 5 : Structure of the UI component_
 
-*API* : link:{repoURL}/src/main/java/seedu/address/ui/Ui.java[`Ui.java`]
+*_API_* : link:{repoURL}/src/main/java/seedu/address/ui/Ui.java[`Ui.java`]
 
 The `UI` consists of a `MainWindow` that is made up of parts e.g.`CommandBox`, `ResultDisplay`, `PersonListPanel`, `StatusBarFooter`, `BrowserPanel` etc. All of these, including the `MainWindow`, inherit from the abstract `UiPart` class.
 
@@ -173,9 +179,9 @@ The `UI` component uses JavaFx UI framework. The layout of these `UI` parts is d
 
 The `UI` component
 
-* executes user commands using the `Logic` component.
-* binds itself to some data in the `Model` so that the `UI` can auto-update when data in the `Model` changes.
-* responds to events raised from various parts of iContacts and updates the `Ui` accordingly.
+* executes the user commands using the `Logic` component.
+* binds itself to some data in the `Model` so that the `UI` can auto-update when the data in the `Model` changes.
+* responds to events raised from various parts of iContacts and updates the `UI` accordingly.
 
 ==== Logic component
 The `Logic` component deals with how each command and its parser would be executed in an event-driven design. The figures below (Refer to Figures 6, 7) shows the structure of the `Logic` component.
@@ -186,44 +192,44 @@ _Figure 6 : Structure of the Logic component_
 image::LogicCommandClassDiagram.png[width="800"]
 _Figure 7 : Structure of Commands in the Logic component. This diagram shows finer details concerning `XYZCommand` and `Command` in Figure 6_
 
-*API* :
+*_API_* :
 link:{repoURL}/src/main/java/seedu/address/logic/Logic.java[`Logic.java`]
 
 The `Logic` component uses the `AddressBookParser` class to parse the user command. This results in a `Command` object which is executed by the `LogicManager`. The command execution can affect the `Model` (e.g. adding a person) and/or raise events. The result of the command execution is encapsulated as a `CommandResult` object which is passed back to the `UI`.
 
-The figure below (Refer to Figure 8) shows the sequence diagram of interactions within the `Logic` component for the `execute("delete 1")` API call.
+The figure below (Refer to Figure 8) shows the sequence diagram of interactions within the `Logic` component for the `execute("delete 1")` _API_ call.
 
 image::DeletePersonSdForLogic.png[width="800"]
 _Figure 8 : Interactions inside the Logic component for the `delete 1` command_
 
 ==== Model component
-The `Model` Component handles the contacts in address book and all its stored details in data structures which provides with the API to create, read, update and delete the contacts in the address book. The figure below (Refer to Figure 9) shows the structure of the `Model` component.
-
+The `Model` component handles the contacts in the address book and all its stored details in data structures which provide _APIs_ to create, read, update and delete the contacts. The figure below (Refer to Figure 9) shows the structure of the `Model` component.
 
 image::ModelClassDiagram.png[width="800"]
 _Figure 9 : Structure of the Model component_
 
-*API* : link:{repoURL}/src/main/java/seedu/address/model/Model.java[`Model.java`]
+*_API_* : link:{repoURL}/src/main/java/seedu/address/model/Model.java[`Model.java`]
 
 The `Model` component
 
 * stores a `UserPref` object that represents the user's preferences.
 * stores the address book data.
-* exposes an unmodifiable `ObservableList<ReadOnlyPerson>` that can be 'observed' e.g. the UI can be bound to this list so that the UI automatically updates when the data in the list change.
-* does not depend on any of the other three components.
+* exposes an unmodifiable `ObservableList<ReadOnlyPerson>` that can be 'observed' e.g. the `UI` can be bound to this list so that the `UI` automatically updates when the data in the list change.
+* does not depend on any of the other three components (`UI`, `Logic` and `Storage`).
 
 ==== Storage component
-The `Storage` component handles the storage of all data of address book in the local device. The figure below (Refer to Figure 10) shows the structure of Storage component.
+The `Storage` component handles the storage of all data of the address book in the local device. The figure below (Refer to Figure 10) shows the structure of the Storage component.
 
 image::StorageClassDiagram.png[width="800"]
 _Figure 10 : Structure of the Storage component_
 
-*API* : link:{repoURL}/src/main/java/seedu/address/storage/Storage.java[`Storage.java`]
+*_API_* : link:{repoURL}/src/main/java/seedu/address/storage/Storage.java[`Storage.java`]
 
 The `Storage` component
 
 * can save `UserPref` objects in json format and read it back.
-* can save the Address Book data in xml format and read it back.
+* can save the address book data in xml format and read it back.
+* can save the reminder data in xml format and read it back.
 
 === Common classes
 
@@ -289,6 +295,16 @@ public class NameAndTagsContainsKeywordsPredicate {
 
 For the `FilterCommand` to work properly, either the `nameKeywords` or the `tagKeywords` must be non-empty.
 
+[discrete]
+==== Design Considerations
+
+**Aspect:** Command with different search logic +
+**Alternative 1 (current choice):** Create a separate command to search for contacts that match all keywords. +
+**Pros:** Implementation can be easy as the logic is similar to the `FindCommand`. +
+**Cons:** May not make sense to have separate commands to search for contacts. +
+**Alternative 2:** Modify the `FindCommand` to allow users the option to search contacts that either match any keywords or match all keywords. +
+**Pros:** Lesser command for the users to remember when searching for contacts. +
+**Cons:** Implementation can be more complicated as there is a need to address both OR search and AND search on the same command.
 // end::filter[]
 
 // tag::export[]
@@ -585,7 +601,7 @@ The following sequence diagram (Refer to Figure 15) shows how the undo operation
 image::UndoRedoSequenceDiagram.png[width="800"]
 _Figure 15 : Sequence diagram of the undo operation_
 
-The redo does the exact opposite (pops from `redoStack`, push to `undoStack`, and restores the address book to the state after the command is executed).
+The redo operation does the exact opposite (pops from `redoStack`, push to `undoStack`, and restores the address book to the state after the command is executed).
 
 [NOTE]
 If the `redoStack` is empty, then there are no other commands left to be redone, and an `Exception` will be thrown when popping the `redoStack`.
@@ -649,16 +665,15 @@ _Figure 18 : Activity diagram for UndoRedoStack_
 // end::undoredo[]
 
 
+// tag::displaypic[]
 === Display Picture mechanism
 
-The Display Picture mechanism is done by using ImageView in JavaFX which is a part of the UI Component.
-
-The `displaypic` command adds/updates the display picture for the contact specified. The image is then displayed as ImageView in PersonCard.
+The `displaypic` command adds/updates the display picture for the contact specified. The image is then displayed as `ImageView` in `PersonCard` and `DetailsPanel`.
 The arguments of the command are `INDEX` and `PATHOFIMAGE`. The image needs to be present in the local device of the user.
 
-This command works by retrieving the image using `BufferedImage`. The command extracts the image from the specified absolute path of image e.g. `C:\Users\Admin\Desktop\My files\pic.jpg`.
+The Display Picture command is implemented in a way so that the image is read from the user specified path and then stored in iContacts directory so that the image is never lost.
 
-By executing the given code below, a new folder named 'pictures/' is created if it is missing. The folder is used to store the images
+By executing the given code below, a new folder named 'pictures/' is created if it is missing. The folder is used to store the images.
 
 [source,java]
 ----
@@ -673,14 +688,21 @@ public void createPictureStorageFolder() throws IOException {
 
 ----
 
-It then stores the image in the folder called `/pictures/` present in the same directory as `.jar`  by giving it a unique hashcode based on the user's email address.
-The reading and writing of images is done using the `ImageIO` class.
+Since the command has function of reading and writing of image, the Storage architectural style was used and extended for Display pictures.
 
 The following UML diagram shows the Storage Architecture for reading and writing of image file:
 
 image::UMLStorageDisplaypic.PNG[width="300"]
-_Figure 2 : UML Diagram for the extended Storage Diagram._
+_Figure 2 : UML Diagram for the extended Storage Component._
 
+
+This command works by retrieving the image using `BufferedImage`. The command extracts the image from the specified absolute path of image e.g. `C:\Users\Admin\Desktop\My files\pic.jpg`
+
+It then stores the image in the folder called `/pictures/` present in the same directory as `.jar`  by giving it a unique hashcode based on the user's email address.
+The reading and writing of images is done using the `ImageIO` class.
+
+
+An event handler is used to notify the `UI` and `Storage` component of the changes made in image and it's name.
 
 The sequence diagram for adding a display picture is shown below: +
 
@@ -704,6 +726,7 @@ public class PersonCard extends UiPart<Region> {
 }
 ----
 
+The Display Picture mechanism is done by using `ImageView`/`ImagePattern` in JavaFX which is a part of the UI Component.
 The `Circle` shape is used for better UI/UX design and is filled with the `ImagePatten`. The wireframe used to display the image for each person is shown below:
 
 image::WireFramePersonCard.PNG[width="300"]
@@ -734,7 +757,9 @@ The command is implemented in this manner because of the following:
 * The `PATHOFIMAGE` must be an absolute path on the local device to make sure the image is referenced.
 * The image is stored in directory with a unique name to avoid conflict. Hashcode of user's email address is used to maintain uniqueness.
 * The task is done using CLI to follow project requirements.
-* The image is stored in jpg format to ensure maximum compatibility.
+* The image is stored in png format to ensure maximum compatibility.
+* In case of image corruption/deletion, care is taken to avoid hanging of UI and display the default image. This is done by checking `file.exists()`.
+
 
 ==== Design Considerations
 
@@ -757,13 +782,19 @@ The command is implemented in this manner because of the following:
 **Cons:** It will no longer be a complete CLI process.
 
 ---
+
+// end::displaypic[]
+
+// tag::location[]
+
 === Location mechanism
-The location command is implemented in an event-driven mechanism form. The below diagram (Refer to Figure 21) shows sequence diagram for it.
+The location command is implemented in the form of an event-driven mechanism . The diagram below (Refer to Figure 21) shows the sequence diagram for it.
 
 image::locationSD.PNG[width="790"]
 _Figure 21 : Sequence diagram for the Location Command._
 
-The execution of command raises an event `ShowLocationEvent`. This causes the `BrowserAndReminderPanel` to switch to Node `Browser` irrespective of current state of the application. The activity diagram for such a case is shown below (Refer to Figure 22):
+The execution of command raises an event `ShowLocationEvent`. This causes the `BrowserAndReminderPanel` to switch to Node `Browser` irrespective of current state of the application.
+The activity diagram for such a case is shown below (Refer to Figure 22):
 
 image::locationAD.PNG[width="790"]
 _Figure 22 : Sequence diagram for the Location Command._
@@ -774,9 +805,9 @@ Following is the code written to ensure the GUI set up for the command:
 ----
 private void setUpToShowLocation() {
     if (currentlyInFront == Node.REMINDERS) {
+        setUpToShowBrowser();
         browser.toFront();
         currentlyInFront = Node.BROWSER;
-        raise(new TurnLabelsOffEvent());
     }
 }
 ----
@@ -802,7 +833,7 @@ public String loadPersonLocation(String address) {
 
 
 [discrete]
-==== Design Considerations
+==== Design Consideration
 
 **Aspect:** What to use to show the location +
 **Alternative 1 (current choice):** Show using google maps url in BrowserPanel  +
@@ -812,30 +843,36 @@ public String loadPersonLocation(String address) {
 **Pros:**  It will provide more functionality. +
 **Cons:** It could cause more resources to be used for the exact same feature and wouldn’t utilise pre-existing browser properly.
 
+// end::location[]
 
+// tag::email[]
 === Email mechanism
 
 The email command lets the user compose an email in default browser with filled in data like recipients, subject and body.
+
+The email command has various fields to denote the Recipients, Subject, Body and Service. Than relation between them can be shown through the UML diagram below:
+
+image::emailUML.PNG[width="790"]
+_Figure 23 : Sequence diagram for the Email Command._
 
 [NOTE]
 The recipients are all contacts belonging to a particular tag.
 [NOTE]
 The only two services offered are `gmail` and `outlook` as our target users are students.
 
-The email command through an event driven mechanism. The below diagram (Refer to Figure 23) shows sequence diagram for it.
+The email command happens through an event driven mechanism. The below diagram (Refer to Figure 23) shows sequence diagram for it.
+The execution of command raises an event `SendingEmailEvent`.
 
 image::emailSD.PNG[width="790"]
 _Figure 23 : Sequence diagram for the Email Command._
 
-The given command is parsed to know the `Service` , `tag` to which email has to be sent, `Subject` and `Body`.
+The command is parsed to know the `Service` , `Tag` to which email has to be sent, `Subject` and `Body`.
 
 The parsing takes place in the following manner (Refer to Figure 24):
 
 image::ParserSDEmail.PNG[width="790"]
 _Figure 24 : Sequence diagram for parsing the Email Command._
 
-
-The execution of command raises an event `SendingEmailEvent`.
 
 The URL for composing the mail set up through the following code
 
@@ -851,7 +888,7 @@ Desktop.getDesktop().browse(new URI(String.format(GMAIL_EMAIL_URL, recipients, s
 ----
 
 [discrete]
-==== Design Considerations
+==== Design Consideration
 
 **Aspect:** Where to compose the mail +
 **Alternative 1 (current choice):** Opens the default browser of Desktop  +
@@ -861,10 +898,23 @@ Desktop.getDesktop().browse(new URI(String.format(GMAIL_EMAIL_URL, recipients, s
 **Pros:** No dependency on other apps +
 **Cons:** Does not auto fill in the text due to older version of browser
 
+// end::email[]
+
+// tag::fvc[]
 === Frequently Visited Contacts mechanism
+
+This feature brings in a new UI element which is a list of maximum size 5 called `PopularContactList` and each list showing the name, popularity rank and display picture in a `PopularContactCard`.
+These way these UI elements are added is shown in the following diagram:
+
+image::umlfvc.PNG[width="790"]
+_Figure TBD : Class Digram of UI with Popular Contact Panel._
 
 The mechanism to show the top five most frequently visited contacts is facilitated by the `PopularityCounter` of each contact.
 For every new person added into the address book, he is assigned a popularity counter of `0`. The top five popular contacts are extracted by sorting the list based on the field `PopularityCounter` of each person. In case of same popularity counter, the person who was added before is given higher priority.
+
+
+[NOTE]
+This feature is not implemented as a command.The list gets refreshed whenever the popularity counter is supposed to change.
 
 The Frequently Visited Contacts mechanism is an event-driven mechanism. However, there is no explicit command to view the top five frequently visited contacts as they are always refreshed whenever there is an change in the address book. They are always displayed on the UI below the `CommandResult` panel. The
 The event to refresh the Popular Contacts List, `PopularContactChangedEvent` is triggered whenever any of the command that increases `PopularityCounter` is execcuted.
@@ -886,9 +936,16 @@ Following are the commands which will increase the `PopularityCounter` by one fo
 
 *** `viewtag`
 *** `select`
-*** `details`
+*** `details` [special case when counter increases by 2 as it is a stronger indicator of who could be a frequently visited contact]
 *** `location`
 *** `email`
+
+On execution of any of the following command, an extra event is raised which updates the popular contact list after updating the popularity counter of the contact.
+The sequence diagram for the extra event is shown below for `select` command:
+
+image::selectFreuentlyVisited.PNG[width="790"]
+_Figure TBD : Sequence diagram for frequently visited mechanism for `select` command._
+
 
 [NOTE]
 Manual selection of person through a click also increases the popularity counter of that person. This is the same action as `details` command.
@@ -900,6 +957,7 @@ The following method is used to increate the `popularityCounter` by one:
 ----
 public ReadOnlyPerson increaseCounterByOne(ReadOnlyPerson person) {
         person.getPopularityCounter().increasePopularityCounter();
+
         return new Person(person.getName(), person.getPhone(), person.getEmail(), person.getAddress(),
                 person.getBirthday(), person.getNickname(), person.getDisplayPicture(), person.getPopularityCounter(),
                 person.getTags());
@@ -914,7 +972,18 @@ image::frequentlyVisitedSD.PNG[width="790"]
 _Figure TBD : Sequence diagram for frequently visited mechanism._
 
 
+==== Design Considerations
 
+**Aspect:** How to implement the feature +
+**Alternative 1 (current choice):** Make the list get refreshed every time one of the command which changes popularity is executed   +
+**Pros:** Becomes a dynamic feature such that user can see favourite contacts at any time +
+**Cons:** Makes application slightly slower as more execution of code for those commands +
+**Alternative 2:** Execute command to refresh list of popular contacts +
+**Pros:** Reduces regular refresh of list +
+**Cons:** Will have to keep track of command history to see the list of commands executed before previous execution of favourites command
+// end::fvc[]
+
+// tag::details[]
 === Details Panel Implementation
 
 The `detail` command shows more details of the contact like address, birthday, email in addition to the details shown in the `PersonCard` of `PersonListPanel`
@@ -952,7 +1021,78 @@ Following is the wireframe for the Details Panel:
 image::wireframeDetailsPanel.PNG[width="600"]
 _Figure TBD : Wireframe for Details Panel._
 
-Using the `FontAwesomeFx` library, an icon is set for each label as seen in the UI.
+Using the `FontAwesomeFx` library, an icon is set for each label to make the UI look appealing as seen in the UI above(Refer to figure TBD).
+
+The solution to showing the same colour for a tag in `DetailsPanel` and `PersonCard` was resolved by having a *Singleton Class* `TagColor`.
+
+The following code inside the class ensured that the class acted as an global class and since only one instance was created, it made the tag color's constant for each tag.
+
+
+[source, java]
+----
+public static TagColor getInstance() {
+        if (tagColor == null) {
+            tagColor = new TagColor();
+        }
+        return tagColor;
+    }
+----
+
+
+==== Design Consideration
+
+**Aspect:** How to improve UI +
+**Alternative 1 (current choice):** Show the extra details of contact after they are selected +
+Pros: Allows more contacts to be shown in the list as they information there is reduced +
+Cons: User needs to manually select the user to see more details of that person +
+**Alternative 2:** Show all detail of person in the `PersonCard` +
+Pros: Reduces effort of selection of contact to see extra details +
+Cons: Looks very cluttered and has poor User Interface design
+
+
+//end::details[]
+
+// tag::viewtag[]
+=== View tag mechanism
+
+The command is added into the logic following the given class diagram:
+
+image::umlLogic.PNG[width="790"]
+_Figure TBD : Class Diagram of Logic._
+
+The `viewtag` command works by setting predicate to the `Observable filteredlist`.
+
+Only one keyword is allowed for the command and it shows all people with thr given tag.
+
+The method `test(ReadOnlyPerson person)` iterates through the `tagKeywords` to find a match of every `person` from the address book.
+
+There is use of streams and lambda[Java 8 features] to make the code more readable as shown below:
+
+[source, java]
+----
+public boolean test(ReadOnlyPerson person) {
+        Set<Tag> tagsOfPerson = person.getTags();
+
+        return tagsOfPerson.stream()
+                .anyMatch(tagMatches -> tagMatches.getTagName().equalsIgnoreCase(keyword));
+
+    }
+----
+
+
+[discrete]
+==== Design Consideration
+
+**Aspect:** How to filter the list +
+**Alternative 1 (current choice):** Use of Lambda and Stream  +
+**Pros:**  Code is more readable +
+**Cons:** Sometimes takes more time to process than normal loops +
+**Alternative 2:** Loops and Conditions +
+**Pros:**  Known to be faster than Streams at times +
+**Cons:** Harder to avoid arrow headed violation of coding style.
+
+// end::viewtag[]
+
 
 // tag::toggle[]
 === Toggling mechanism
@@ -988,7 +1128,7 @@ image::togglingMechanism3.png[width="790"]
 _Figure 27 : Sequence diagram for the second part of the toggling mechanism._
 
 The `BrowserAndRemindersPanel` class has a variable `currentlyInFront` keeping track of which panel (browser or reminders) is currently being shown.
-`toggleBrowserPanel` would then use the `currentlyInFront` variable to toggle to the correct panel, and then update `currentlyInFront` appropriately:
+`toggleBrowserPanel` would then use the `currentlyInFront` variable to toggle to and show the correct panel, and then update `currentlyInFront` appropriately:
 
 [source, java]
 ----
@@ -1044,6 +1184,7 @@ public class BrowserAndRemindersPanel extends UIPart<Region> {
 The `LoadPersonWebpageEvent` is posted whenever the `select` command is executed. Within the `handleLoadPersonPageEvent`
 method, the statement `browser.toFront()` and the method `setUpToShowWebBrowser` would then bring the browser panel to the front no matter what, and also make it visible.
 
+[discrete]
 ==== Design Considerations
 
 **Aspect:** Usage of browser area +
@@ -1066,7 +1207,7 @@ Cons: Users cannot interact with the reminders panel (since the browser is techn
 //tag::reminder[]
 === Reminder Implementation
 image::ReminderUML1.png[width="390"]
-_Figure 28: UML diagram showing the make-up of Reminder objects._
+_Figure 28: UML class diagram showing the make-up of Reminder objects._
 
 The `Reminder` object represents a reminder in iContacts. It contains a `String` variable `reminder`, which represents
 the actual reminder from the user, and also a `Date`, `Time` and `Status` object, which represents the date, time and link:#status[status] of the reminder respectively
@@ -1224,27 +1365,27 @@ public class BirthdayAndReminderListPanel extends UiPart<Region> {
 Depending on the status of the reminder, different styles would be set for the specific `ReminderListViewCell`.
 
 The methods `isEventToday`, `isEventWithinThreeDays` and `hasEventPassed` seen from the code snippet above originate from
-the `Status` object of each `Reminder` object, and propagated from `Status` to `Reminder` then finally to `ReminderCard`.
+the `Status` object of each `Reminder` object and propagated from `Status` to `Reminder` then finally to `ReminderCard`.
 
 [discrete]
 ==== Design Consideration
-**Aspect:** How to store Reminders in-memory +
-**Alternative 1 (current choice):** Store Reminder objects in UniqueReminderList, independent of AddressBook. +
+**Aspect:** How to store `Reminder` in-memory +
+**Alternative 1 (current choice):** Store `Reminder` objects in `UniqueReminderList`, independent of `AddressBook`. +
 Pros: Follows the _Single-Responsibility Principle_, because a reminder should not be an address book's responsibility. +
 Cons: More changes have to be made to the existing code base, making it tougher to implement. +
-**Alternative 2:** Store Reminder objects within AddressBook. +
-Pros: Easier to implement as lesser changes have to be made to the existing program. +
+**Alternative 2:** Store `Reminder` objects within `AddressBook`. +
+Pros: Easier to implement as lesser changes have to be made to the existing code base. +
 Cons: Violates the _Single-Responsibility Principle_.
 
-**Aspect:** Should the undo/redo mechanism be applied to Reminder +
-**Alternative 1 (current choice):** Commands that affect Reminder objects are not undoable/redoable. +
+**Aspect:** Should the undo/redo mechanism be applied to `Reminder` +
+**Alternative 1 (current choice):** Commands that affect `Reminder` objects are not undoable/redoable. +
 Pros: Users would be more aware of any changes they made to a reminder, as they are forced to
 use the `editreminder`, `addreminder` and `deletereminder` commands.
 Cons: It is less user-friendly. +
-**Alternative 2:** Commands that affect Reminder objects are undoable/redoable. +
+**Alternative 2:** Commands that affect `Reminder` objects are undoable/redoable. +
 Pros: More user-friendly. +
-Cons: Users might get careless with changing the information of a Reminder object. This might be detrimental
-as the date and time fields of a Reminder are very important.
+Cons: Users might get careless with changing the information of a `Reminder` object. This might be detrimental
+as the date and time fields of a `Reminder` are very important.
 //end::reminder[]
 
 
@@ -1259,7 +1400,7 @@ The theme-changing mechanism is an event-driven mechanism. The above diagram (Re
 image::themeChangingMechanism2.png[width="790"]
 _Figure 32 : Sequence diagram for the first part of the theme-changing mechanism_
 
-As shown from the sequence diagram above (Refer to Figure 32), after the user entered the command `theme sky`, a new object `ThemeCommand` will be created. The `LogicManager` will then execute `ThemeCommand`, and the event `ChangeThemeRequestEvent` will be posted by `EventsCenter`. The code snippet below shows the `execute()` method of `ThemeCommand`:
+As shown from the sequence diagram above (Refer to Figure 32), after the user entered the command `theme day`, a new object `ThemeCommand` will be created. The `LogicManager` will then execute `ThemeCommand`, and the event `ChangeThemeRequestEvent` will be posted by `EventsCenter`. The code snippet below shows the `execute()` method of `ThemeCommand`:
 
 ----
 public class ThemeCommand extends Command {
@@ -1275,6 +1416,17 @@ image::themeChangingMechanism3.png[width="790"]
 _Figure 33 : Sequence diagram for the second part of the theme-changing mechanism_
 
 As shown from the sequence diagram above (Refer to Figure 33), the method `handleChangeThemeEvent()` in `MainWindow` will handle the event and change the theme of the address book through the method `changeTheme()` accordingly.
+
+[discrete]
+==== Design Considerations
+
+**Aspect:** Implementation of `ThemeCommand` +
+**Alternative 1 (current choice):** Utilize `ChangeEventRequestEvent` that allow `MainWindow` to handle the event to change the theme. +
+**Pros:** `ThemeCommand` can be more efficient since it does not directly change the theme. +
+**Cons:** New developers may find it difficult to understand the event-driven nature of the application. +
+**Alternative 2:** Allow `ThemeCommand` to set the theme directly by allowing it access to `MainWindow`. +
+**Pros:** Easier for new developers to understand. +
+**Cons:** Violates the architectural style as `ThemeCommand` belongs to the `Logic` component that should not be able to access the `UI` component where `MainWindow` belongs to.
 // end::theme[]
 
 === Logging
@@ -1286,6 +1438,8 @@ We are using `java.util.logging` package for logging. The `LogsCenter` class is 
 * Currently log messages are output through: `Console` and to a `.log` file.
 
 *Logging Levels*
+
+The list below shows all the available logging levels used:
 
 * `SEVERE` : Critical problem detected which may possibly cause the termination of the application.
 * `WARNING` : Can continue, but with caution.
@@ -1357,15 +1511,15 @@ To run tests in headless mode, open a console and run the command `gradlew clean
 
 We have two types of tests:
 
-*  *GUI Tests* - These are tests involving the GUI. They include,
+*  *GUI Tests* - These are tests involving the GUI. They include
 ** _System Tests_ that test the entire App by simulating user actions on the GUI. These are in the `systemtests` package.
 ** _Unit tests_ that test the individual components. These are in `seedu.address.ui` package.
-*  *Non-GUI Tests* - These are tests not involving the GUI. They include,
+*  *Non-GUI Tests* - These are tests not involving the GUI. They include
 **  _Unit tests_ targeting the lowest level methods/classes. +
 e.g. `seedu.address.commons.StringUtilTest`
 **  _Integration tests_ that are checking the integration of multiple code units (those code units are assumed to be working). +
 e.g. `seedu.address.storage.StorageManagerTest`
-**  Hybrids of unit and integration tests. These test are checking multiple code units as well as how the are connected together. +
+**  Hybrids of unit and integration tests. These tests are checking multiple code units as well as how they are connected together. +
 e.g. `seedu.address.logic.LogicManagerTest`
 
 
@@ -1387,7 +1541,7 @@ We use https://travis-ci.org/[Travis CI] and https://www.appveyor.com/[AppVeyor]
 
 === Making a Release
 
-Here are the steps to create a new release.
+Here are the steps to create a new release:
 
 .  Update the version number in link:{repoURL}/src/main/java/seedu/address/MainApp.java[`MainApp.java`].
 .  Generate a JAR file <<UsingGradle#creating-the-jar-file, using Gradle>>.
@@ -1396,9 +1550,10 @@ Here are the steps to create a new release.
 
 === Managing Dependencies
 
-A project often depends on third-party libraries. For example, Address Book depends on the http://wiki.fasterxml.com/JacksonHome[Jackson library] for XML parsing. Managing these _dependencies_ can be automated using Gradle. For example, Gradle can download the dependencies automatically, which is better than these alternatives. +
-a. Include those libraries in the repo (this bloats the repo size). +
-b. Require developers to download those libraries manually (this creates extra work for developers).
+A project often depends on third-party libraries. For example, iContacts depends on the http://wiki.fasterxml.com/JacksonHome[Jackson library] for XML parsing. Managing these _dependencies_ can be automated using Gradle. For example, Gradle can download the dependencies automatically, which is better than these alternatives:
+
+* Include those libraries in the repo (this bloats the repo size).
+* Require developers to download those libraries manually (this creates extra work for developers).
 
 [appendix]
 == Suggested Programming Tasks to Get Started
@@ -1659,10 +1814,10 @@ This application is targeted towards University students, aiming to meet their n
 *  User Profile
 
 **  University Students
-**  Students part of many CCA clubs and committees
-**  Students taking role of Teaching Assistant/Tutor
-**  Students who is interning and has colleagues
-**  Students having close friends and family
+**  Students who are part of many CCA clubs and committees
+**  Students taking on the role of Teaching Assistant/Tutor
+**  Students who are interning and have colleagues
+**  Students who have close friends and family
 
 [appendix]
 == User Stories

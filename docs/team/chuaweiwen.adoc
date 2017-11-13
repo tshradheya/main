@@ -4,11 +4,11 @@ ifdef::env-github,env-browser[:outfilesuffix: .adoc]
 :stylesDir: ../stylesheets
 
 == Project: iContacts
-iContacts is an address book application with target audience as university students for managing contacts. The user interacts with it using a CLI, and it has a GUI created with JavaFX. It is written in Java, and has about 8 kLoC. iContacts allow users to manage reminders, keep track of upcoming contacts' birthday, as well as share the contact list using the application's import and export mechanism.
+iContacts is an address book application targeted to university students for managing contacts. iContacts is a Command Line Interface (CLI) application where most of the interactions are through typing commands on a keyboard. It has a Graphical User Interface (GUI) created with JavaFX, and is written in Java with about 12 kLoC. iContacts allow users to manage reminders, keep track of upcoming contacts' birthday, as well as share the contact list using the application's import and export mechanism.
 
-This portfolio showcases the features and enhancements I have contributed to iContacts, lists my enhancement proposal for the upcoming features, and also includes other contributions I have made.
+This portfolio highlights the features and enhancements I have contributed to the development of iContacts, lists my enhancement proposal for the upcoming features, and also includes other contributions I have made. It also showcases the application of software engineering skills I have learned during the development.
 
-*Code contributed*: [link:../../collated/main/chuaweiwen.md[Functional code]] [link:../../collated/test/chuaweiwen.md[Test code]]
+*Code contributed*: [https://github.com/CS2103AUG2017-W14-B1/main/blob/master/collated/main/chuaweiwen.md[Functional code]] [https://github.com/CS2103AUG2017-W14-B1/main/blob/master/collated/test/chuaweiwen.md[Test code]]
 
 === Enhancement Added: Nickname
 
@@ -76,7 +76,7 @@ include::../UserGuide.adoc[tag=theme]
 
 ==== Justification
 
-* Users can have more choice in setting the theme of iContacts.
+* Users can have more choices of theme to set for iContacts.
 * Users may find it easier to use iContacts if they are working on their preferred theme.
 
 ==== Implementation
@@ -112,5 +112,8 @@ include::../DeveloperGuide.adoc[tag=theme]
 
 === Other contributions
 
-* Conducted acceptance testing for another project by my peers and uncovered bugs (see issue https://github.com/CS2103AUG2017-F11-B4/main/issues/48[#48], https://github.com/CS2103AUG2017-F11-B4/main/issues/49[#49], https://github.com/CS2103AUG2017-F11-B4/main/issues/51[#51], https://github.com/CS2103AUG2017-F11-B4/main/issues/52[#52])
-* Fixed the grammatical errors in the User Guide and Developer Guide (see https://github.com/CS2103AUG2017-W14-B1/main/pull/202[#202]).
+* Conducted acceptance testing on another team project and uncovered bugs (see issue https://github.com/CS2103AUG2017-F11-B4/main/issues/48[#48], https://github.com/CS2103AUG2017-F11-B4/main/issues/49[#49], https://github.com/CS2103AUG2017-F11-B4/main/issues/51[#51], https://github.com/CS2103AUG2017-F11-B4/main/issues/52[#52]).
+* Wrote additional tests to increase coverage (see pull requests https://github.com/CS2103AUG2017-W14-B1/main/pull/93[#93], https://github.com/CS2103AUG2017-W14-B1/main/pull/180[#180]).
+* Wrote part of the https://github.com/CS2103AUG2017-W14-B1/main/blob/master/src/test/data/ManualTesting/%5BW14-B1%5D%5BiContacts%5DTestScript.adoc[TestScript.adoc] (see pull requests https://github.com/CS2103AUG2017-W14-B1/main/pull/232[#232], https://github.com/CS2103AUG2017-W14-B1/main/pull/233[#233]).
+* Fixed the grammatical errors in the User Guide and Developer Guide (see pull requests https://github.com/CS2103AUG2017-W14-B1/main/pull/202[#202], https://github.com/CS2103AUG2017-W14-B1/main/pull/214[#214]).
+* Highlighted improvements to the quality of the User Guide and Developer Guide (see issue https://github.com/CS2103AUG2017-W14-B1/main/issues/169[#169]).

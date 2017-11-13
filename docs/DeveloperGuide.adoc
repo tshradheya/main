@@ -326,7 +326,7 @@ public class ExportCommand extends Command {
 }
 ----
 
-The method `getRangefromInput()` splits the String range using a seperator and returns a String array for the different values in the String range.
+The method `getRangefromInput()` splits the String range using a separator and returns a String array for the different values in the String range.
 
 Below is an extract of the method `getRangefromInput()`:
 
@@ -368,9 +368,18 @@ public class ExportCommand extends Command {
             for (int i = 0; i < multipleRange.length; i++) {
                 if (multipleRange[i].contains("-")) {
                     String[] rangeToExport = multipleRange[i].split("-");
-                    exportRange(Integer.parseInt(rangeToExport[0]), Integer.parseInt(rangeToExport[1]));
+                    try {
+                        exportRange(Integer.parseInt(rangeToExport[0]), Integer.parseInt(rangeToExport[1]));
+                    } catch (NumberFormatException e) {
+                        throw new CommandException(MESSAGE_EXPORT_FAIL);
+                    }
+
                 } else {
-                    exportSpecific(Integer.parseInt(multipleRange[i]));
+                    try {
+                        exportSpecific(Integer.parseInt(multipleRange[i]));
+                    } catch (NumberFormatException e) {
+                        throw new CommandException(MESSAGE_EXPORT_FAIL);
+                    }
                 }
             }
         }
@@ -401,6 +410,59 @@ public class ExportCommand extends Command {
 }
 ----
 // end::export[]
+
+// tag::import[]
+=== Import mechanism
+
+The `ImportCommand` uses `XmlAddressBookStorage` to generate a temporary AddressBook object from a given path. It takes in a `String` value `path`. The command then adds the contacts found in the temporary AddressBook object into the main address book object. Below is the constructor for the class:
+
+[source,java]
+----
+public class ImportCommand extends UndoableCommand {
+    public ImportCommand(String path) {
+        this.path = path;
+        this.addressBookStorage = new XmlAddressBookStorage(path);
+        numSuccess = 0;
+        numDuplicates = 0;
+    }
+}
+----
+
+The `ImportCommand` first checks if an AddressBook object can be initialise from the specified path, and if it does it initialises a new Person Object and adds it into the main AddressBook object through the model. Below is the code snippet:
+[source,java]
+----
+public class ExportCommand extends Command {
+
+    @Override
+    public CommandResult executeUndoableCommand() throws CommandException {
+        try {
+            if (addressBookStorage.readAddressBook().isPresent()) {
+                this.addressBook = new AddressBook(addressBookStorage.readAddressBook().get());
+                for (ReadOnlyPerson person : this.addressBook.getPersonList()) {
+                    Person personToAdd = new Person(person);
+                    personToAdd.setPopularityCounter(new PopularityCounter());
+                    personToAdd.setDisplayPicture(new DisplayPicture(""));
+                    try {
+                        model.clearSelection();
+                        model.showDefaultPanel();
+                        model.addPerson(personToAdd);
+                        numSuccess++;
+                    } catch (DuplicatePersonException e) {
+                        numDuplicates++;
+                    }
+                }
+            } else {
+                throw new CommandException(String.format(MESSAGE_INVALID_FILE, path));
+            }
+        } catch (DataConversionException | IOException e) {
+            throw new CommandException(String.format(MESSAGE_INVALID_FILE, path));
+        }
+
+        return new CommandResult(String.format(MESSAGE_SUCCESS, numSuccess, numDuplicates));
+    }
+}
+----
+// end::import[]
 
 // tag::find[]
 === Find mechanism
@@ -446,6 +508,25 @@ For the `FindCommand` to work properly `nameKeywords` must be non-empty. The cod
     }
 ----
 // end::find[]
+
+// tag::sort[]
+=== Sorting mechanism
+
+The `SortCommand` uses a `SortedList` that is initialise with the current filteredPerson and is sorted using a comparator. Below is the code snippet:
+
+[source,java]
+----
+sortedfilteredPersons = new SortedList<>(filteredPersons);
+
+@Override
+public void sortFilteredPersonList() {
+
+    Comparator<ReadOnlyPerson> sortByName = (o1, o2) -> o1.getName().fullName.compareTo(o2.getName().fullName);
+    sortedfilteredPersons.setComparator(sortByName);
+    indicateAddressBookChanged();
+}
+----
+// end::sort[]
 
 // tag::undoredo[]
 === Undo/Redo mechanism

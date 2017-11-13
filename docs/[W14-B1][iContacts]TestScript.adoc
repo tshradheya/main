@@ -46,7 +46,7 @@ Following are the commands which will increase the `PopularityCounter` by one fo
 
 *** `viewtag`
 *** `select`
-*** `details`
+*** `details` [special case when counter increases by 2 as it is a stronger indicator of who could be a frequently visited contact]
 *** `location`
 *** `email`
 
@@ -534,9 +534,6 @@ Expected result:Invalid command format!
                 The 'to' field can take tag and it only supports one parameter.
                 Parameters: s/SERVICE to/TAG sub/SUBJECT body/BODY
                 Example: email s/gmail to/cs2103 sub/Meeting body/On Monday
-
-. `email s/outlook to/friends` +
-Expected result: Email .
 
 . `email s/incorrectService to/friends` +
 Expected result: Email not sent. Please enter a valid tag and correct service

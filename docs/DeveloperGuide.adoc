@@ -1334,7 +1334,7 @@ public class ThemeCommand extends Command {
 image::themeChangingMechanism3.png[width="790"]
 _Figure 33 : Sequence diagram for the second part of the theme-changing mechanism_
 
-As shown from the sequence diagram above (Refer to Figure 33), the method `handleChangeThemeEvent()` in `MainWindow` will handle the event and change the theme of the address book through the method `changeTheme()` accordingly.
+As shown from the sequence diagram above (Refer to Figure 33), the method `handleChangeThemeEvent()` in `MainWindow` will handle the event and change the theme of iContacts through the method `changeTheme()` accordingly.
 
 [discrete]
 ==== Design Considerations

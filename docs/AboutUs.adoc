@@ -36,7 +36,7 @@ image::tshradheya.jpg[width="150", align="left"]
 {empty}[https://github.com/tshradheya[github]] [https://cs2103aug2017-w14-b1.github.io/main/team/tshradheya.html[portfolio]]
 
 Role: Team Leader +
-Responsibilities: Deliverables and deadlines, Scheduling and tracking, Model
+Responsibilities: Developer, Deliverables and deadlines, Scheduling and tracking, Model
 
 '''
 

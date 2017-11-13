@@ -35,6 +35,8 @@ The following are the steps to load sample data:
 `addressbook.xml` and `reminders.xml` files inside the "data" folder if need to.
 
 
+[NOTE]
+For path mentioned in below command get the absolute path from your device and try the commands.
 
 == Commands to Test
 
@@ -620,9 +622,10 @@ Expected result: 1 person/s imported 0 duplicate/s found +
 +
 Imports the contact *Zee Leon* into iContacts.
 
+* `viewtag nusStudentClub`
 * `delete 1`
 * `delete 1`
-* `delete 1`
+* `delete 2`
 
 * `import p/specified path\multiple.xml` +
 Expected result: 3 person/s imported 0 duplicate/s found +

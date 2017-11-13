@@ -403,7 +403,7 @@ Examples:
 * `location 2`
 Returns location of the address of person at `INDEX` 2 (Refer to Figure 9)
 
-image::location.PNG[width="790"]
+image::location.png[width="790"]
 _Figure 9: Displays the location of the second person._
 
 // end::location[]

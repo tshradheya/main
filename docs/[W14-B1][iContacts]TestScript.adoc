@@ -28,7 +28,7 @@ The following are the steps to load sample data:
 
 * Alternative 2 (more troublesome)
 . Create a new, empty folder and name it "iContacts". Place the iContacts JAR file within it.
-. Rename `SampleData.xml` and `SampleRemindersData.xml` to `addressbook.xml` and `reminders.xml` respectively.
+. Rename `[W14-B1][iContacts]SampleData.xml` and `[W14-B1][iContacts]SampleRemindersData.xml` to `addressbook.xml` and `reminders.xml` respectively.
 . Move these 2 files into another empty folder.
 . For the first command tested, run the JAR file as normal. A "data" folder will be created in the working directory of iContacts.
 . For subsequent commands, copy-paste the `addressbook.xml` and `reminders.xml` files into the "data" folder. Overwrite the existing

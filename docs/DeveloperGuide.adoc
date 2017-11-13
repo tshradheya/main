@@ -256,7 +256,7 @@ public class NameAndTagsContainsKeywordsPredicate {
 
 The method `test(ReadOnlyPerson person)` iterates through the `nameKeywords` and the `tagKeywords` to find a match of every `person` from the address book.
 
-Below is an extract of the method `test(ReadOnlyPerson person)`. The tags of each person are retrieved by the `getTags()` method. This method iterates through the `tagKeywords` and counts the number of matches against the `tagsOfPerson`. If the count is equal to the size of the `tagKeywords`, this means all the keywords in the `tagKeywords` match. The `hasTag` will then be set to `true`.
+Below is an extract of the method `test(ReadOnlyPerson person)`. The method `countTagMatches(person)` counts and returns the number of matches between the tags of the `person` and the tags in the `tagKeywords`. If the `tagsMatchedCount` is equal to the size of the `tagKeywords`, this means all the keywords in the `tagKeywords` match. The `hasTag` will then be set to `true`.
 
 [source,java]
 ----
@@ -286,7 +286,7 @@ public class NameAndTagsContainsKeywordsPredicate {
     public boolean test(ReadOnlyPerson person) {
         boolean hasName = false;
             if (!nameKeywords.isEmpty()) {
-                nameFound = nameKeywords.stream().allMatch(nameKeywords -> StringUtil
+                hasName = nameKeywords.stream().allMatch(nameKeywords -> StringUtil
                 .containsWordIgnoreCase(person.getName().fullName, nameKeywords));
         }
     }
@@ -298,13 +298,13 @@ For the `FilterCommand` to work properly, either the `nameKeywords` or the `tagK
 [discrete]
 ==== Design Considerations
 
-**Aspect:** Command with different search logic +
+**Aspect:** Should similar search commands be separated +
 **Alternative 1 (current choice):** Create a separate command to search for contacts that match all keywords. +
-**Pros:** Implementation can be easy as the logic is similar to the `FindCommand`. +
-**Cons:** May not make sense to have separate commands to search for contacts. +
+**Pros:** Users will not be confused between the functionality of the `find` and `filter` commands. +
+**Cons:** Users have to remember an additional command. +
 **Alternative 2:** Modify the `FindCommand` to allow users the option to search contacts that either match any keywords or match all keywords. +
 **Pros:** Lesser command for the users to remember when searching for contacts. +
-**Cons:** Implementation can be more complicated as there is a need to address both OR search and AND search on the same command.
+**Cons:** Implementation can be more complicated as there is a need to address both `OR` search and `AND` search on the same command.
 // end::filter[]
 
 // tag::export[]
@@ -1426,7 +1426,7 @@ public class ThemeCommand extends Command {
 image::themeChangingMechanism3.png[width="790"]
 _Figure 33 : Sequence diagram for the second part of the theme-changing mechanism_
 
-As shown from the sequence diagram above (Refer to Figure 33), the method `handleChangeThemeEvent()` in `MainWindow` will handle the event and change the theme of the address book through the method `changeTheme()` accordingly.
+As shown from the sequence diagram above (Refer to Figure 33), the method `handleChangeThemeEvent()` in `MainWindow` will handle the event and change the theme of iContacts through the method `changeTheme()` accordingly.
 
 [discrete]
 ==== Design Considerations

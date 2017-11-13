@@ -1,7 +1,17 @@
 = iContacts - Test Script
+:toc:
+:toc-title:
+:toc-placement: preamble
 :sectnums:
 :imagesDir: images
+:stylesDir: stylesheets
+:experimental:
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+endif::[]
 
+By: `Team W14-B1`      Since: `Jun 2016`      Licence: `MIT`
 
 == Introduction
 This document explains the steps to perform manual testing, and how to load the sample data.

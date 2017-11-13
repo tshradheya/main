@@ -73,7 +73,7 @@ Akshay comes on #4 position
 
 
 . `list` +
-`select 1` +
+`select 3` +
 Charlotte's counter increases +
 Charlotte's comes on #4 position before Akshay even though they have the same counter since, Charlotte was added before Akshay in address book
 

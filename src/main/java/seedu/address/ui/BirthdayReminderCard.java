@@ -55,8 +55,9 @@ public class BirthdayReminderCard extends UiPart<Region> {
     private void initIcon() {
         if (person.getBirthday().isBirthdayToday() || person.getBirthday().isBirthdayTomorrow()) {
             icon.setVisible(true);
+        } else {
+            icon.setVisible(false);
         }
-        icon.setVisible(false);
     }
 
     @Override

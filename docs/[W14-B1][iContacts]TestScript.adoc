@@ -36,6 +36,8 @@ The following are the steps to load sample data:
 `addressbook.xml` and `reminders.xml` files inside the "data" folder if need to.
 
 
+[NOTE]
+For path mentioned in below command get the absolute path from your device and try the commands.
 
 == Commands to Test
 
@@ -46,7 +48,7 @@ Following are the commands which will increase the `PopularityCounter` by one fo
 
 *** `viewtag`
 *** `select`
-*** `details`
+*** `details` [special case when counter increases by 2 as it is a stronger indicator of who could be a frequently visited contact]
 *** `location`
 *** `email`
 
@@ -73,7 +75,7 @@ Akshay comes on #4 position
 
 
 . `list` +
-`select 1` +
+`select 3` +
 Charlotte's counter increases +
 Charlotte's comes on #4 position before Akshay even though they have the same counter since, Charlotte was added before Akshay in address book
 
@@ -252,7 +254,7 @@ iContacts would now display the browser panel.
 Expected result: Toggle successful. +
 iContacts would now display the reminders panel.
 
-. `toggle` and iContacts is currently displaying the details panel. +
+. `toggle` and iContacts is currently displaying the details panel (To get details panel first execute `details 1` command). +
 Expected result: Toggle successful. +
 iContacts would now display the reminders panel.
 
@@ -535,9 +537,6 @@ Expected result:Invalid command format!
                 Parameters: s/SERVICE to/TAG sub/SUBJECT body/BODY
                 Example: email s/gmail to/cs2103 sub/Meeting body/On Monday
 
-. `email s/outlook to/friends` +
-Expected result: Email .
-
 . `email s/incorrectService to/friends` +
 Expected result: Email not sent. Please enter a valid tag and correct service
 
@@ -624,9 +623,10 @@ Expected result: 1 person/s imported 0 duplicate/s found +
 +
 Imports the contact *Zee Leon* into iContacts.
 
+* `viewtag nusStudentClub`
 * `delete 1`
 * `delete 1`
-* `delete 1`
+* `delete 2`
 
 * `import p/specified path\multiple.xml` +
 Expected result: 3 person/s imported 0 duplicate/s found +

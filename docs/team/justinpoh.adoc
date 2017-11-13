@@ -44,7 +44,7 @@ can grant users a sense of the quantity of upcoming tasks and events. Also, only
 when it is nearing might give the user insufficient time to prepare for it. Instead, permanently displaying the reminders
 with a countdown to the event allow users to better prepare for it.
 
-We also recognise that there is a need to differentiate reminders based on the level of urgency. Therefore, we chose to do this
+We also recognize that there is a need to differentiate reminders based on the level of urgency. Therefore, we chose to do this
 by coloring the reminder cells differently. Using color is simple but powerful.
 
 ==== Implementation

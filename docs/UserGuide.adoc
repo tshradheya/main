@@ -268,7 +268,7 @@ Format: `editreminder INDEX [rd/REMINDER] [d/DATE] [ti/TIME]`
 ****
 * Edits the reminder at the specified `INDEX`. The index refers to the index number shown in the list of reminders. The index *must be a positive integer* 1, 2, 3...
 * At least one of the optional fields must be provided.
-* Existing values will be updated to the given input values. If the field is left empty, the original value will be used instead.
+* Existing values will be updated to the given input values. If the field is not specified, the original value will be used instead.
 ****
 
 Examples:

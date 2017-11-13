@@ -24,7 +24,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.web.WebView;
 import seedu.address.MainApp;
 import seedu.address.commons.core.LogsCenter;
-import seedu.address.commons.events.model.RemindersChangedEvent;
 import seedu.address.commons.events.ui.BrowserAndRemindersPanelToggleEvent;
 import seedu.address.commons.events.ui.LoadPersonWebpageEvent;
 import seedu.address.commons.events.ui.PersonPanelSelectionChangedEvent;

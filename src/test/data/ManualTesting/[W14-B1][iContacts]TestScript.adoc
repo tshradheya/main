@@ -563,3 +563,71 @@ Expected result: Invalid command format!
                  details: Shows details the person identified by the index number used in the last person listing.
                  Parameters: INDEX (must be a positive integer)
                  Example: details 1
+
+
+=== Export Command
+Command usage: `export r/RANGE p/PATH`
+
+* `viewtag nusStudentClub`
+* `export r/*1* p/path of the file\Zee Leon *WITHOUT* .xml extension` +
+Expected result: Export Successful +
++
+*Zee Leon.xml* file containing contact *Zee Leon* will be generated and stored in the specified *PATH*.
+
+* `export r/*1-3* p/path of the file\multiple *WITHOUT* .xml extension` +
+Expected result: Export Successful +
++
+*multiple.xml* file containing contacts *Zee Leon*, *Yow rin* and *Wayne Lee* will be generated and stored in the specified *PATH*.
+
+* `export r/*all* p/path of the file\nusstudentclub *WITHOUT* .xml extension` +
+Expected result: Export Successful +
++
+*nusstudentclub.xml* file containing *all* contacts in the current list will be generated and stored in the specified *PATH*.
+
+* `export r/a p/invalid filepath *WITHOUT* .xml extension` +
+Expected result: Export Failed Invalid RANGE or PATH
+
+
+=== Import Command
+Command usage:
+`import p/PATH`
+
+* `viewtag nusStudentClub`
+* `delete 1`
+* `import p/specified path\Zee Leon.xml` +
+Expected result: 1 person/s imported 0 duplicate/s found +
++
+Imports the contact *Zee Leon* into iContacts.
+
+* `delete 1`
+* `delete 1`
+* `delete 1`
+
+* `import p/specified path\multiple.xml` +
+Expected result: 3 person/s imported 0 duplicate/s found +
++
+Imports the contact *Zee Leon*, *Yow rin*, *Wayne Lee* into iContacts.
+
+* `import p/specified path\nusstudentclub.xml` +
+Expected result: 0 person/s imported 4 duplicate/s found +
++
+Imports 0 contacts as all incoming contacts are duplicate.
+
+
+=== Sort Command
+Command usage:
+`sort`
+
+Note: Sorting does not persist if you close the application.
+
+* `sort` +
+Expected result: List Sorted +
++
+Contact list will be sorted in alphabetical order.
+
+
+=== Find Command Enhancement
+Command usage:
+`find KEYWORD`
+
+Note: Find allows searching iContacts using both name and nickname.

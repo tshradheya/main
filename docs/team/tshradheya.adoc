@@ -25,7 +25,7 @@ include::../UserGuide.adoc[tag=displaypic]
 ==== Justification
 
 The Display picture command is used to add a personal factor to the iContacts application. By adding a personalised display picture for each contact, the user can identify their various contacts uniquely especially when you have multiple contacts having the same name.
-The Display picture also adds a visual appeal to the product giving a better User Interface (UI) design and make the product more appealing to the university students.
+The Display picture also adds a visual appeal to the product giving a better User Interface (UI) design and making the product more appealing to the university students.
 
 
 ==== Implementation
@@ -55,7 +55,7 @@ include::../UserGuide.adoc[tag=location]
 
 ==== Justification
 
-Google Maps are often used by students to know the exact location of the destination. The command makes it easier for users to find location of a contact’s address and find directions to their place.
+Google Maps are often used by students to know the exact location of the destination. The command makes it easier for users to find exact location of a contact’s address and get directions to their place.
 The exact location can be obtained by just typing the command, which is a lot more user friendly than having to search for the location in Google Maps by typing the entire address.
 
 ==== Implementation
@@ -85,8 +85,8 @@ include::../UserGuide.adoc[tag=email]
 
 ==== Justification
 
-Email is highly used by university students. Usually the student has to go to the mailing website, individually type in the email id to all those people whom the user wants to email.
-This has been made easier through the `email` command. A user can simply email all contacts with a particular tag for e.g. `cs2103teammates` and get the drafted email with Subject and Body in the default browser.
+Email is highly used by university students. Usually the student has to go to the mailing website, individually type in the email id of all those people whom the user wants to email.
+This has been made easier through the `email` command. A user can simply email all contacts with a particular tag for e.g. `cs2103teammates` and get the drafted email with Subject, Body and all Recipients in the default browser.
 
 This saves the user from all the typing and copy pasting of email id's from various places just to draft a simple email.
 
@@ -119,7 +119,7 @@ include::../UserGuide.adoc[tag=fvc]
 
 Through the frequently viewed contacts list of top 5 popular contacts, the user can easily view their details by selecting them rather than having to type commands and search for them.
 
-It also provides a better user experience as the user can see the people he has frequenlty visited and are his favourites on top of the list.
+It also provides a better user experience as the user can see the people he has frequenlty visited and are his favourites on top of application.
 
 
 ==== Implementation
@@ -150,7 +150,7 @@ include::../UserGuide.adoc[tag=details]
 
 ==== Justification
 
-This command was made to improve the UI for better user experience. Now the user can only see important details in the person card and can use this command to view more details in better design.
+This command was made to improve the UI for better user experience. Now the user can only see important details in the person card and can use this command to view more details in a more enhanced UI design.
 
 The `details` command also works by manual selection which gives more freedom to user when viewing details of a particular user.
 
@@ -185,7 +185,7 @@ include::../UserGuide.adoc[tag=viewtag]
 Tags can be considered as groups by user. This feature is mainly implemented to enhance usage of other commands. +
 For e.g. in `export` command to export all contacts having a particular tag, user will have to use `viewtag cs2103team` and then use range as `all` for the `export` command than having to type the index of each of them.
 
-It only supports one keyword as `filter` command was made as an stronger search command for `find` and `viewtag`.
+It only supports one keyword as `filter` command was made as an stronger search command combining functionality of `find` and `viewtag`.
 
 ==== Implementation
 
@@ -240,6 +240,7 @@ _Figure 1 : Use case Diagram._
 * Contributed in User Guide and Developer Guide to enhance its language link:https://github.com/CS2103AUG2017-W14-B1/main/pull/239[`Pull Request #239`].
 * Helped several people on the forum with their technical difficulties.
 * Found 6 bugs during acceptance testing link:https://github.com/CS2103AUG2017-T17-B4/main/issues?utf8=%E2%9C%93&q=is%3Aissue%20author%3Atshradheya%20[`Issues Created`]
+* Managed all final submissions for CS2103T and CS2101
 
 == Project: NUSEvents Android Application
 

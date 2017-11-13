@@ -33,7 +33,7 @@ Role: Project Supervisor
 
 === Shradheya Thakre
 image::tshradheya.jpg[width="150", align="left"]
-{empty}[https://github.com/tshradheya[github]] [link:team/tshradheya.adoc[portfolio]]
+{empty}[https://github.com/tshradheya[github]] [https://cs2103aug2017-w14-b1.github.io/main/team/tshradheya.html[portfolio]]
 
 Role: Team Leader +
 Responsibilities: Deliverables and deadlines, Scheduling and tracking, Model
@@ -42,7 +42,7 @@ Responsibilities: Deliverables and deadlines, Scheduling and tracking, Model
 
 === Edwin Goh
 image::edwinghy.jpg[width="150", align="left"]
-{empty}[https://github.com/edwinghy[github]] [link:team/edwinghy.adoc[portfolio]]
+{empty}[https://github.com/edwinghy[github]] [https://cs2103aug2017-w14-b1.github.io/main/team/edwinghy.html[portfolio]]
 
 Role: Developer +
 Responsibilities: Documentation, Storage
@@ -51,7 +51,7 @@ Responsibilities: Documentation, Storage
 
 === Justin Poh
 image::justinpoh.jpg[width="150", align="left"]
-{empty}[https://github.com/justinpoh[github]] [link:team/justinpoh.adoc[portfolio]]
+{empty}[https://github.com/justinpoh[github]] [https://cs2103aug2017-w14-b1.github.io/main/team/justinpoh.html[portfolio]]
 
 Role: Developer +
 Responsibilities: UI, Model
@@ -60,9 +60,9 @@ Responsibilities: UI, Model
 
 === Chua Wei Wen
 image::chuaweiwen.jpg[width="150", align="left"]
-{empty}[https://github.com/chuaweiwen[github]] [link:team/chuaweiwen.adoc[portfolio]]
+{empty}[https://github.com/chuaweiwen[github]] [https://cs2103aug2017-w14-b1.github.io/main/team/chuaweiwen.html[portfolio]]
 
 Role: Developer +
-Responsibilities: Logic, Documentation
+Responsibilities: Documentation, Logic
 
 '''

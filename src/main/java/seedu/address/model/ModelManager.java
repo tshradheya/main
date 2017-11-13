@@ -139,6 +139,7 @@ public class ModelManager extends ComponentManager implements Model {
     /** Raises an event to indicate the reminders have changed */
     private void indicateRemindersChanged() {
         raise(new RemindersChangedEvent(reminderList));
+        showDefaultPanel();
     }
     //@@author
 

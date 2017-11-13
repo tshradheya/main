@@ -326,7 +326,7 @@ public class ExportCommand extends Command {
 }
 ----
 
-The method `getRangefromInput()` splits the String range using a separator and returns a String array for the different values in the String range.
+The method `getRangefromInput()` splits the range using a separator and returns a `String` array for the different values in the range.
 
 Below is an extract of the method `getRangefromInput()`:
 
@@ -343,14 +343,14 @@ public class ExportCommand extends Command {
 }
 ----
 
-To determine which contacts should be added to the exportBook we have to check the the user input. There are three cases:
+To determine which contacts should be added to the `exportBook` we have to check the the user input. There are three cases:
 
 * All (Priority)
-** if the word `all` is present in the user input, we will just export all the contacts in the last shown list.
+** if the word `all` is present in the user input, we will just export all the contacts from the last shown list.
 * Specific index (e.g. 1, 2, 3)
-** if the user input contains a specific index we will add that index (one-based) to the `exportBook`.
+** if the user input contains a specific index, we will add that index (one-based) to the `exportBook`.
 * Range of indexes (e.g. 1-5,8-10)
-** if the user input contains a range which is identified by `-` character, we will add that range of index (one-based) to the `exportBook`.
+** if the user input contains a range which is identified by the `-` character, we will add that range of index (one-based) to the `exportBook`.
 
 Below is the code snippet to identify the three cases in the user input:
 
@@ -414,7 +414,7 @@ public class ExportCommand extends Command {
 // tag::import[]
 === Import mechanism
 
-The `ImportCommand` uses `XmlAddressBookStorage` to generate a temporary AddressBook object from a given path. It takes in a `String` value `path`. The command then adds the contacts found in the temporary AddressBook object into the main address book object. Below is the constructor for the class:
+The `ImportCommand` uses `XmlAddressBookStorage` to generate a temporary `AddressBook` object from a given path. It takes in a `String` value `path`. The command then adds the contacts found in the temporary AddressBook object into the main address book object. Below is the constructor for the class:
 
 [source,java]
 ----
@@ -428,10 +428,10 @@ public class ImportCommand extends UndoableCommand {
 }
 ----
 
-The `ImportCommand` first checks if an AddressBook object can be initialise from the specified path, and if it does it initialises a new Person Object and adds it into the main AddressBook object through the model. Below is the code snippet:
+The `ImportCommand` first checks if an AddressBook object can be initialised from the specified path, and if it does it initialises a new `Person` object and adds it into the main `AddressBook` object through the `model`. Below is the code snippet:
 [source,java]
 ----
-public class ExportCommand extends Command {
+public class ImportCommand extends UndoableCommand {
 
     @Override
     public CommandResult executeUndoableCommand() throws CommandException {
@@ -462,16 +462,16 @@ public class ExportCommand extends Command {
     }
 }
 ----
+[discrete]
+==== Design Considerations
 
-===== Design Considerations
-
-**Aspect:** Should PopularityCounter and DisplayPicture be set to the default value+
-**Alternative 1 (current choice):** Both PopularityCounter and DisplayPicture should be set to the default value  +
-**Pros:** Does not affect the users contact's PopularityCounter and allows the user to set their own preferred DisplayPicture of a contact  +
-**Cons:** Users wont be able to share display picture even if they want to. +
-**Alternative 2:** Import the contacts as how it was exported+
-**Pros:** : DisplayPicture will be imported into iContacts +
-**Cons:** : The PopularityCounter of the user's contacts will be inaccurate.
+**Aspect:** Should `PopularityCounter` and `DisplayPicture` be set to the default value +
+**Alternative 1 (current choice):** Both `PopularityCounter` and `DisplayPicture` should be set to the default value.  +
+**Pros:** Does not affect the contact's `PopularityCounter` and allows the user to set their own preferred `DisplayPicture` of a contact.  +
+**Cons:** Users will not be able to share `DisplayPicture. +
+**Alternative 2:** Import the contacts with both `PopularityCounter` and `DisplayPicture` unchanged. +
+**Pros:** `DisplayPicture` will be imported into iContacts. +
+**Cons:** The `PopularityCounter` of the user's contacts will be inaccurate.
 
 // end::import[]
 
@@ -523,7 +523,7 @@ For the `FindCommand` to work properly `nameKeywords` must be non-empty. The cod
 // tag::sort[]
 === Sorting mechanism
 
-The `SortCommand` uses a `SortedList` that is initialise with the current filteredPerson and is sorted using a comparator. Below is the code snippet:
+The `SortCommand` uses a `SortedList` that is initialised with the current `filteredPerson` and is sorted using a comparator. Below is the code snippet:
 
 [source,java]
 ----

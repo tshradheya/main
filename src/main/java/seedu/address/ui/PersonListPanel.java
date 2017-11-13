@@ -54,9 +54,8 @@ public class PersonListPanel extends UiPart<Region> {
                         logger.fine("Selection in person list panel changed to : '" + newValue + "'");
                         raise(new PersonPanelSelectionChangedEvent(newValue, newValue.person));
                         raise(new UpdatePopularityCounterForSelectionEvent(newValue.person));
-                        //@@author
-
                     }
+                    //@@author
                 });
     }
 

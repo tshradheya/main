@@ -161,7 +161,7 @@ The reminder cells are colored differently according to the urgency of the event
 ****
 * If the event has passed, the reminder cell is colored in dark grey (Refer to Figure 2). +
 * If the event is happening today, the reminder cell is colored in red (Refer to Figure 3). +
-* If the event is happening within three days, the reminder cell is colored in yellow (Refer Figure 4). +
+* If the event is happening within three days, the reminder cell is colored in orange (Refer Figure 4). +
 * If the event is happening more than three days later, the reminder cell is colored in green (Refer to Figure 5).
 ****
 

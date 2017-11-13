@@ -133,6 +133,13 @@ public class ModelManager extends ComponentManager implements Model {
         raise(displayPictureChangedEvent);
         return displayPictureChangedEvent.isRead();
     }
+
+    @Override
+    public void clearSelection() {
+        logger.info("Clears selection of person in list");
+        raise(new ClearSelectionEvent());
+    }
+
     //@@author
 
     //@author justinpoh
@@ -142,6 +149,8 @@ public class ModelManager extends ComponentManager implements Model {
         showDefaultPanel();
     }
     //@@author
+
+    //@@author tshradheya
 
     @Override
     public synchronized void deletePerson(ReadOnlyPerson target) throws PersonNotFoundException {
@@ -156,6 +165,7 @@ public class ModelManager extends ComponentManager implements Model {
         indicatePopularContactsChangedPossibility();
         updatePopularContactList();
     }
+    //@@author
 
     @Override
     public synchronized void addPerson(ReadOnlyPerson person) throws DuplicatePersonException {
@@ -446,12 +456,6 @@ public class ModelManager extends ComponentManager implements Model {
         return addressBook.equals(other.addressBook)
                 && filteredPersons.equals(other.filteredPersons)
                 && reminderList.equals(other.reminderList);
-    }
-
-    @Override
-    public void clearSelection() {
-        logger.info("Clears selection of person in list");
-        raise(new ClearSelectionEvent());
     }
 
 }

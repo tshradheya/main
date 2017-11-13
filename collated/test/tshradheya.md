@@ -1472,6 +1472,8 @@ public class AddressBookPictureStorageTest {
 ``` java
 package seedu.address.storage;
 
+import static junit.framework.TestCase.assertEquals;
+
 import java.io.IOException;
 
 import org.junit.Rule;
@@ -1503,13 +1505,19 @@ public class ImageDisplayPictureStorageTest {
     }
 
     /**
-     * To ensure no exception is thrown and command happens successfully
+     * Ensures no exception is thrown and command happens successfully
      * @throws IOException not expected
      */
     @Test
     public void read_validPath_success() throws IOException {
-        DisplayPictureStorage displayPictureStorage = new ImageDisplayPictureStorage();
-        displayPictureStorage.readImageFromDevice(TEST_DATA_FOLDER + "1137944384.png", 1137944384);
+        Exception exception = null;
+        try {
+            DisplayPictureStorage displayPictureStorage = new ImageDisplayPictureStorage();
+            displayPictureStorage.readImageFromDevice(TEST_DATA_FOLDER + "1137944384.png", 1137944384);
+        } catch (Exception e) {
+            exception = e;
+        }
+        assertEquals(exception, null);
     }
 
 }

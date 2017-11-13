@@ -82,7 +82,6 @@ public class DetailsPanel extends UiPart<Region> {
      * Assigns a random color to a tag if it does not exist in the HashMap
      * returns a String containing the color
      */
-
     private String getTagColor(String tag) {
         //Defensive coding
         if (tagColorObject == null) {

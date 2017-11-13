@@ -34,30 +34,6 @@ public class DisplayPictureChangedEvent extends BaseEvent {
     }
 }
 ```
-###### \java\seedu\address\commons\events\model\DisplayPictureDeleteEvent.java
-``` java
-package seedu.address.commons.events.model;
-
-import seedu.address.commons.events.BaseEvent;
-
-/**
- * Triggers event to delete image when a person is deleted
- */
-public class DisplayPictureDeleteEvent extends BaseEvent {
-
-    public final String path;
-
-    public DisplayPictureDeleteEvent(String path) {
-        this.path = path;
-    }
-
-    @Override
-    public String toString() {
-        return path + " to be deleted";
-    }
-
-}
-```
 ###### \java\seedu\address\commons\events\model\PopularContactChangedEvent.java
 ``` java
 package seedu.address.commons.events.model;
@@ -154,6 +130,23 @@ public class UpdatePopularityCounterForSelectionEvent extends BaseEvent {
     public ReadOnlyPerson getPerson() {
         return person;
     }
+
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName();
+    }
+}
+```
+###### \java\seedu\address\commons\events\ui\ClearSelectionEvent.java
+``` java
+package seedu.address.commons.events.ui;
+
+import seedu.address.commons.events.BaseEvent;
+
+/**
+ * Triggers event to clear selection of list
+ */
+public class ClearSelectionEvent extends BaseEvent {
 
     @Override
     public String toString() {
@@ -263,6 +256,23 @@ public class PopularContactPanelSelectionChangedEvent extends BaseEvent {
     }
 }
 ```
+###### \java\seedu\address\commons\events\ui\SelectFirstAfterDeleteEvent.java
+``` java
+package seedu.address.commons.events.ui;
+
+import seedu.address.commons.events.BaseEvent;
+
+/**
+ * Triggers event to select first person of list
+ */
+public class SelectFirstAfterDeleteEvent extends BaseEvent {
+
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName();
+    }
+}
+```
 ###### \java\seedu\address\commons\events\ui\SendingEmailEvent.java
 ``` java
 package seedu.address.commons.events.ui;
@@ -292,6 +302,29 @@ public class SendingEmailEvent extends BaseEvent {
 
     @Override
     public String toString() {
+        return this.getClass().getSimpleName();
+    }
+}
+```
+###### \java\seedu\address\commons\events\ui\ShowDefaultPanelEvent.java
+``` java
+package seedu.address.commons.events.ui;
+
+import java.util.logging.Logger;
+
+import seedu.address.commons.core.LogsCenter;
+import seedu.address.commons.events.BaseEvent;
+
+/**
+ * Triggers event to show default panel on the `BrowserAndReminderPanel` of UI
+ */
+public class ShowDefaultPanelEvent extends BaseEvent {
+
+    private static final Logger logger = LogsCenter.getLogger(ShowDefaultPanelEvent.class);
+
+    @Override
+    public String toString() {
+        logger.info("Defalut panel will be displayed");
         return this.getClass().getSimpleName();
     }
 }
@@ -496,7 +529,7 @@ public class DisplayPictureCommand extends Command {
 
     public static final String MESSAGE_IMAGE_PATH_FAIL =
             "This specified path cannot be read. Please check it's validity and try again";
-
+    private static final String EMPTY_STRING = "";
 
     private Index index;
     private DisplayPicture displayPicture;
@@ -521,22 +554,21 @@ public class DisplayPictureCommand extends Command {
             throw new CommandException(Messages.MESSAGE_INVALID_PERSON_DISPLAYED_INDEX);
         }
 
+        //Defensive coding
+        if (displayPicture.getPath() == null) {
+            assert false : "Should never be null";
+        }
+
         ReadOnlyPerson personToEdit = lastShownList.get(index.getZeroBased());
 
-        if (displayPicture.getPath().equalsIgnoreCase("")) {
-            displayPicture.setPath("");
+        if (displayPicture.getPath().equalsIgnoreCase(EMPTY_STRING)) {
+            displayPicture.setPath(EMPTY_STRING);
 
             Person editedPerson = new Person(personToEdit.getName(), personToEdit.getPhone(), personToEdit.getEmail(),
                     personToEdit.getAddress(), personToEdit.getBirthday(), personToEdit.getNickname(),
                     displayPicture, personToEdit.getPopularityCounter(), personToEdit.getTags());
 
-            try {
-                model.updatePerson(personToEdit, editedPerson);
-            } catch (DuplicatePersonException dpe) {
-                throw new CommandException(MESSAGE_DUPLICATE_PERSON);
-            } catch (PersonNotFoundException pnfe) {
-                throw new AssertionError("The target person cannot be missing");
-            }
+            updatePersonWithDisplayPicturePath(personToEdit, editedPerson);
 
             return new CommandResult(generateSuccessMessage(editedPerson));
         }
@@ -555,20 +587,14 @@ public class DisplayPictureCommand extends Command {
                 personToEdit.getAddress(), personToEdit.getBirthday(), personToEdit.getNickname(),
                 displayPicture, personToEdit.getPopularityCounter(), personToEdit.getTags());
 
-        try {
-            model.updatePerson(personToEdit, editedPerson);
-        } catch (DuplicatePersonException dpe) {
-            throw new CommandException(MESSAGE_DUPLICATE_PERSON);
-        } catch (PersonNotFoundException pnfe) {
-            throw new AssertionError("The target person cannot be missing");
-        }
+        updatePersonWithDisplayPicturePath(personToEdit, editedPerson);
 
         return new CommandResult(generateSuccessMessage(editedPerson));
     }
 
     /**
      * Generates failure message
-     * @return String
+     * @return String wih failure message
      */
     private String generateFailureMessage() {
         return MESSAGE_IMAGE_PATH_FAIL;
@@ -577,13 +603,30 @@ public class DisplayPictureCommand extends Command {
     /**
      * Generates success message
      * @param personToEdit is checked
-     * @return String
+     * @return String with success message
      */
     private String generateSuccessMessage(ReadOnlyPerson personToEdit) {
         if (!displayPicture.getPath().isEmpty()) {
             return String.format(MESSAGE_ADD_DISPLAYPICTURE_SUCCESS, personToEdit);
         } else {
             return String.format(MESSAGE_DELETE_DISPLAYPICTURE_SUCCESS, personToEdit);
+        }
+    }
+
+    /**
+     * Updates person in address book with new displaypicture path
+     * @param personToEdit who has to be assigned display picture path
+     * @param editedPerson person assigned display picture path
+     * @throws CommandException when duplicate person found
+     */
+    private void updatePersonWithDisplayPicturePath(ReadOnlyPerson personToEdit,
+                                                    Person editedPerson) throws CommandException {
+        try {
+            model.updatePerson(personToEdit, editedPerson);
+        } catch (DuplicatePersonException dpe) {
+            throw new CommandException(MESSAGE_DUPLICATE_PERSON);
+        } catch (PersonNotFoundException pnfe) {
+            assert false : "The target person cannot be missing";
         }
     }
 
@@ -616,6 +659,9 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL_SERVICE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL_SUBJECT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL_TO;
 
+import java.util.logging.Logger;
+
+import seedu.address.commons.core.LogsCenter;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.email.Body;
 import seedu.address.model.email.Service;
@@ -629,11 +675,11 @@ public class EmailCommand extends Command {
 
     public static final String COMMAND_WORD = "email";
     public static final String MESSAGE_EMAIL_SENT = "Email .";
-    public static final String MESSAGE_NOT_SENT = "Please enter a valid name/tag with a valid Email ID.";
+    public static final String MESSAGE_NOT_SENT = "Email not sent. Please enter a valid tag and correct service ";
     public static final String EMAIL_SERVICE_GMAIL = "gmail";
     public static final String EMAIL_SERVICE_OUTLOOK = "outlook";
     public static final String MESSAGE_USAGE = COMMAND_WORD + ":  people in the Address Book.\n"
-            + "The 'to' field is compulsory\n"
+            + "The 'service' field is compulsory\n"
             + "The 'to' field can take tag and it only supports one parameter.\n"
             + "Parameters: "
             + PREFIX_EMAIL_SERVICE + "SERVICE "
@@ -641,11 +687,12 @@ public class EmailCommand extends Command {
             + PREFIX_EMAIL_SUBJECT + "SUBJECT "
             + PREFIX_EMAIL_BODY + "BODY \n"
             + "Example: " + COMMAND_WORD + " "
-            + PREFIX_EMAIL_SERVICE + "gmail"
-            + PREFIX_EMAIL_TO + "cs2103"
+            + PREFIX_EMAIL_SERVICE + "gmail "
+            + PREFIX_EMAIL_TO + "cs2103 "
             + PREFIX_EMAIL_SUBJECT + "Meeting "
             + PREFIX_EMAIL_BODY + "On Monday ";
 
+    private static final Logger logger = LogsCenter.getLogger(EmailCommand.class);
     private PersonContainsTagPredicate predicate;
     private Subject subject;
     private Body body;
@@ -695,7 +742,7 @@ public class EmailCommand extends Command {
             String emailTo = model.createEmailRecipients(predicate);
             processEmail(emailTo);
         } catch (ParseException e) {
-            e.printStackTrace();
+            logger.info("Wrong service or tag");
             return new CommandResult(MESSAGE_NOT_SENT);
         }
         return new CommandResult(MESSAGE_EMAIL_SENT);
@@ -1219,6 +1266,30 @@ public class Subject {
         raise(displayPictureChangedEvent);
         return displayPictureChangedEvent.isRead();
     }
+
+    @Override
+    public void clearSelection() {
+        logger.info("Clears selection of person in list");
+        raise(new ClearSelectionEvent());
+    }
+
+```
+###### \java\seedu\address\model\ModelManager.java
+``` java
+
+    @Override
+    public synchronized void deletePerson(ReadOnlyPerson target) throws PersonNotFoundException {
+        clearSelection();
+        addressBook.removePerson(target);
+        if (sortedfilteredPersons.isEmpty()) {
+            showDefaultPanel();
+        } else {
+            raise(new SelectFirstAfterDeleteEvent());
+        }
+        indicateAddressBookChanged();
+        indicatePopularContactsChangedPossibility();
+        updatePopularContactList();
+    }
 ```
 ###### \java\seedu\address\model\ModelManager.java
 ``` java
@@ -1292,7 +1363,7 @@ public class Subject {
             try {
                 this.updatePersonsPopularityCounterByOne(person);
             } catch (DuplicatePersonException dpe) {
-                assert false : "Duplicate";
+                assert false : "Duplicate is not possible";
             } catch (PersonNotFoundException pnfe) {
                 throw new AssertionError("The target person cannot be missing");
             }
@@ -1330,6 +1401,7 @@ public class Subject {
      */
     @Override
     public void updatePopularContactList() {
+        logger.info("Popular List getting Refreshed");
         refreshWithPopulatingAddressBook();
         listOfPersonsForPopularContacts.sort((o1, o2) ->
                 o2.getPopularityCounter().getCounter() - o1.getPopularityCounter().getCounter());
@@ -1372,21 +1444,21 @@ public class Subject {
 
     @Override
     public void showDefaultPanel() {
+        logger.info("Default panel will be shown on right on refresh");
         raise(new ShowDefaultPanelEvent());
     }
 ```
 ###### \java\seedu\address\model\ModelManager.java
 ``` java
-
     @Override
     public Index getIndexOfGivenPerson(ReadOnlyPerson person) {
-        for (int i = 0; i < filteredPersons.size(); i++) {
-            ReadOnlyPerson readOnlyPerson = filteredPersons.get(i);
+        for (int i = 0; i < sortedfilteredPersons.size(); i++) {
+            ReadOnlyPerson readOnlyPerson = sortedfilteredPersons.get(i);
             if (readOnlyPerson.isSameStateAs(person)) {
                 return Index.fromZeroBased(i);
             }
         }
-        assert false : "Should not come here in no case";
+        assert false : "Should not come here in any case";
         return Index.fromZeroBased(-1);
     }
 
@@ -1407,7 +1479,7 @@ public class Subject {
         } catch (DuplicatePersonException dpe) {
             assert false : "Is not possible as counter will be increased by one";
         } catch (PersonNotFoundException pnfe) {
-            assert false : "Only existing person can be selected";
+            logger.info("Only possible when a person is deleted from a list containing single item");
         }
 
         updatePopularContactList();
@@ -1695,8 +1767,6 @@ public interface DisplayPictureStorage {
 
     void saveImageInDirectory(BufferedImage image, String uniquePath) throws IOException;
 
-    void deleteImageFromDirectory(String  filepath);
-
 }
 ```
 ###### \java\seedu\address\storage\ImageDisplayPictureStorage.java
@@ -1721,6 +1791,12 @@ import seedu.address.logic.parser.exceptions.ImageException;
  */
 public class ImageDisplayPictureStorage implements DisplayPictureStorage {
 
+    private static final int IMAGE_WIDTH = 980;
+    private static final int IMAGE_HEIGHT = 640;
+
+    private static final String IMAGE_EXTENSION = ".png";
+    private static final String DIRECTORY_SAVING_PATH = "pictures/";
+
     private static final Logger logger = LogsCenter.getLogger(ImageDisplayPictureStorage.class);
 
 
@@ -1738,14 +1814,16 @@ public class ImageDisplayPictureStorage implements DisplayPictureStorage {
         String uniquePath = null;
 
         try {
+            logger.info(" Image read from path " + imagePath);
             fileToRead = new File(imagePath);
-            image = new BufferedImage(963, 640, BufferedImage.TYPE_INT_ARGB);
+            image = new BufferedImage(IMAGE_WIDTH, IMAGE_HEIGHT, BufferedImage.TYPE_INT_ARGB);
             image = ImageIO.read(fileToRead);
 
             uniquePath = Integer.toString(newPath);
 
             saveImageInDirectory(image, uniquePath);
         } catch (IOException ioe) {
+            logger.info("Image not read properly");
             throw new ImageException(String.format(MESSAGE_INVALID_IMAGE,
                     DisplayPictureCommand.MESSAGE_IMAGE_PATH_FAIL));
 
@@ -1759,26 +1837,14 @@ public class ImageDisplayPictureStorage implements DisplayPictureStorage {
     public void saveImageInDirectory(BufferedImage image, String uniquePath) throws IOException {
         File fileToWrite = null;
         try {
-            fileToWrite = new File("pictures/" + uniquePath + ".png");
-            ImageIO.write(image, "png", fileToWrite);
+            logger.info("image is being stored in directory ");
+            fileToWrite = new File(DIRECTORY_SAVING_PATH + uniquePath + IMAGE_EXTENSION);
+            ImageIO.write(image, IMAGE_EXTENSION, fileToWrite);
         } catch (IOException ioe) {
+            logger.info("Image not saved properly");
             throw  new ImageException(String.format(MESSAGE_INVALID_IMAGE,
                     DisplayPictureCommand.MESSAGE_IMAGE_PATH_FAIL));
         }
-    }
-
-    /**
-     * Deletes image from /pictures/ directory
-     * @param filepath of image to be deleted
-     */
-    public void deleteImageFromDirectory(String  filepath) {
-        if (filepath.equalsIgnoreCase("")) {
-            logger.info("image not present so cannot be deleted");
-        }
-        File file = new File("pictures/" + filepath + ".png");
-
-        logger.info(filepath + "deleted during exit");
-        file.deleteOnExit();
     }
 
 }
@@ -1798,12 +1864,6 @@ public class ImageDisplayPictureStorage implements DisplayPictureStorage {
     }
 
     @Override
-    public void deleteImageFromDirectory(String pathName) {
-        logger.fine("Attempting to delete to file: " + pathName);
-        displayPictureStorage.deleteImageFromDirectory(pathName);
-    }
-
-    @Override
     @Subscribe
     public void handleDisplayPictureChangedEvent(DisplayPictureChangedEvent event) throws IOException {
         logger.info(LogsCenter.getEventHandlingLogMessage(event, " Image changed, saving to file"));
@@ -1816,21 +1876,18 @@ public class ImageDisplayPictureStorage implements DisplayPictureStorage {
         }
     }
 
-    @Override
-    @Subscribe
-    public void handleDisplayPictureDeleteEvent(DisplayPictureDeleteEvent event) {
-        deleteImageFromDirectory(event.path);
-    }
 ```
 ###### \java\seedu\address\ui\BrowserAndRemindersPanel.java
 ``` java
     private void setUpToShowRemindersPanel() {
+        logger.info("Reminders Panel visible");
         detailsPanel.setVisible(false);
         remindersPanel.setVisible(true);
         browser.setVisible(false);
     }
 
     private void setUpToShowDetailsPanel() {
+        logger.info("Details Panel visible");
         detailsPanel.setVisible(true);
         remindersPanel.setVisible(false);
         browser.setVisible(false);
@@ -1849,6 +1906,7 @@ public class ImageDisplayPictureStorage implements DisplayPictureStorage {
      * Set's up the UI to bring browser to front
      */
     private void setUpToShowWebBrowser() {
+        logger.info("Browser Panel visible");
         browser.setVisible(true);
         detailsPanel.setVisible(false);
         remindersPanel.setVisible(false);
@@ -1898,9 +1956,9 @@ public class ImageDisplayPictureStorage implements DisplayPictureStorage {
         try {
             Desktop.getDesktop().browse(new URI(String.format(GMAIL_EMAIL_URL, recipients, subject, body)));
         } catch (URISyntaxException urise) {
-            urise.printStackTrace();
+            assert false : "As long as google doesn't change its links this should not happen";
         } catch (IOException ioe) {
-            ioe.printStackTrace();
+            assert false : "As long as google doesn't change its links this should not happen";
         }
     }
 
@@ -1914,9 +1972,9 @@ public class ImageDisplayPictureStorage implements DisplayPictureStorage {
         try {
             Desktop.getDesktop().browse(new URI(String.format(OUTLOOK_EMAIL_URL, recipients, subject, body)));
         } catch (URISyntaxException urise) {
-            urise.printStackTrace();
+            assert false : "As long as outlook doesn't change its links this should not happen";
         } catch (IOException ioe) {
-            ioe.printStackTrace();
+            assert false : "As long as outlook doesn't change its links this should not happen";
         }
     }
 
@@ -1930,7 +1988,6 @@ public class ImageDisplayPictureStorage implements DisplayPictureStorage {
         detailsPanel.getChildren().clear();
         detailsPanel.getChildren().add(personDetails.getRoot());
     }
-
 
 ```
 ###### \java\seedu\address\ui\BrowserAndRemindersPanel.java
@@ -1982,6 +2039,7 @@ public class ImageDisplayPictureStorage implements DisplayPictureStorage {
 ``` java
 package seedu.address.ui;
 
+import java.io.File;
 import java.util.Random;
 
 import javafx.beans.binding.Bindings;
@@ -1994,6 +2052,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import seedu.address.MainApp;
 import seedu.address.model.person.ReadOnlyPerson;
 import seedu.address.ui.util.TagColor;
 
@@ -2005,6 +2064,10 @@ public class DetailsPanel extends UiPart<Region> {
     private static final String FXML = "DetailsPanel.fxml";
     private static final Integer IMAGE_WIDTH = 100;
     private static final Integer IMAGE_HEIGHT = 100;
+    private static final String DIRECTORY_SAVING_PATH = "pictures/";
+    private static final String DEFAULT_IMAGE_PATH = "/images/defaulddp.png";
+    private static final String EMPTY_STRING = "";
+    private static final String IMAGE_EXTENSION = ".png";
     private static String[] colors = {"#ff0000", "#0000ff", "#008000", "#ff00ff", "#00ffff"};
     private static Random random = new Random();
 
@@ -2057,8 +2120,11 @@ public class DetailsPanel extends UiPart<Region> {
      * Assigns a random color to a tag if it does not exist in the HashMap
      * returns a String containing the color
      */
-
     private String getTagColor(String tag) {
+        //Defensive coding
+        if (tagColorObject == null) {
+            assert false : "Impossible as it is an singleton class and one object already created by PersonCard";
+        }
         if (!tagColorObject.containsTag(tag)) {
             tagColorObject.addColor(tag, colors[random.nextInt(colors.length)]);
         }
@@ -2088,10 +2154,18 @@ public class DetailsPanel extends UiPart<Region> {
      */
     private void assignImage(ReadOnlyPerson person) {
 
-        if (!person.getDisplayPicture().getPath().equals("")) {
+        if (!person.getDisplayPicture().getPath().equals(EMPTY_STRING)) {
 
-            Image image = new Image("file:" + "pictures/" + person.getDisplayPicture().getPath() + ".png",
-                    IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
+            Image image = new Image("file:" + DIRECTORY_SAVING_PATH + person.getDisplayPicture().getPath()
+                    + IMAGE_EXTENSION, IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
+
+            // To take care of image deleted manually
+            File file = new File(DIRECTORY_SAVING_PATH + person.getDisplayPicture().getPath()
+                    + IMAGE_EXTENSION);
+            if (!file.exists()) {
+                image = new Image(MainApp.class.getResourceAsStream(DEFAULT_IMAGE_PATH),
+                        IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
+            }
 
             centerImage();
             detailsDisplayPicture.setImage(image);
@@ -2161,34 +2235,28 @@ public class DetailsPanel extends UiPart<Region> {
 ```
 ###### \java\seedu\address\ui\PersonCard.java
 ``` java
-    /**
-     * Assigns a random color to a tag if it does not exist in the HashMap
-     * returns a String containing the color
-     */
-    private String getTagColor(String tag) {
-        if (!tagColorObject.containsTag(tag)) {
-            tagColorObject.addColor(tag, colors[random.nextInt(colors.length)]);
-        }
-        return tagColorObject.getColor(tag);
-    }
-```
-###### \java\seedu\address\ui\PersonCard.java
-``` java
 
     /**
-     * Assigns URL to the image depending on the path
+     * Assigns image pattern to the shape to display image
      */
     private void assignImage(ReadOnlyPerson person) {
 
-        if (!person.getDisplayPicture().getPath().equals("")) {
+        if (!person.getDisplayPicture().getPath().equals(EMPTY_STRING)) {
 
-            Image image = new Image("file:" + "pictures/" + person.getDisplayPicture().getPath() + ".png",
-                    IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
+            Image image = new Image("file:" + DIRECTORY_SAVING_PATH + person.getDisplayPicture().getPath()
+                    + IMAGE_EXTENSION, IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
 
+            // Defensive programming to take care of image corruption
+            File file = new File(DIRECTORY_SAVING_PATH + person.getDisplayPicture().getPath()
+                    + IMAGE_EXTENSION);
+            if (!file.exists()) {
+                image = new Image(MainApp.class.getResourceAsStream(DEFAULT_IMAGE_PATH),
+                        IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
+            }
             displayPicture.setFill(new ImagePattern(image));
 
         } else {
-            Image image = new Image(MainApp.class.getResourceAsStream("/images/defaulddp.png"),
+            Image image = new Image(MainApp.class.getResourceAsStream(DEFAULT_IMAGE_PATH),
                     IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
 
             displayPicture.setFill(new ImagePattern(image));
@@ -2201,6 +2269,7 @@ public class DetailsPanel extends UiPart<Region> {
                         logger.fine("Selection in person list panel changed to : '" + newValue + "'");
                         raise(new PersonPanelSelectionChangedEvent(newValue, newValue.person));
                         raise(new UpdatePopularityCounterForSelectionEvent(newValue.person));
+                    }
 ```
 ###### \java\seedu\address\ui\PersonListPanel.java
 ``` java
@@ -2232,10 +2301,24 @@ public class DetailsPanel extends UiPart<Region> {
     private void handleUpdatePersonListPanelSelectionEvent(UpdatePersonListPanelSelectionEvent event) {
         scrollTo(event.getIndex().getZeroBased());
     }
+
+    @Subscribe
+    private void handleClearSelection(ClearSelectionEvent event) {
+        personListView.getSelectionModel().clearSelection();
+    }
+
+    @Subscribe
+    private void handleSelectFirstAfterDeleteEvent(SelectFirstAfterDeleteEvent event) {
+        personListView.scrollTo(0);
+        personListView.getSelectionModel().selectFirst();
+    }
 ```
 ###### \java\seedu\address\ui\PopularContactCard.java
 ``` java
 package seedu.address.ui;
+
+import java.io.File;
+import java.util.logging.Logger;
 
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
@@ -2246,6 +2329,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import seedu.address.MainApp;
+import seedu.address.commons.core.LogsCenter;
 import seedu.address.model.person.ReadOnlyPerson;
 
 /**
@@ -2253,9 +2337,14 @@ import seedu.address.model.person.ReadOnlyPerson;
  */
 public class PopularContactCard extends UiPart<Region> {
 
+    private static final Logger logger = LogsCenter.getLogger(PersonCard.class);
     private static final String FXML = "PopularContactCard.fxml";
     private static final Integer IMAGE_WIDTH = 70;
     private static final Integer IMAGE_HEIGHT = 70;
+    private static final String DIRECTORY_SAVING_PATH = "pictures/";
+    private static final String DEFAULT_IMAGE_PATH = "/images/defaulddp.png";
+    private static final String EMPTY_STRING = "";
+    private static final String IMAGE_EXTENSION = ".png";
 
     /**
      * Note: Certain keywords such as "location" and "resources" are reserved keywords in JavaFX.
@@ -2297,15 +2386,26 @@ public class PopularContactCard extends UiPart<Region> {
      */
     private void assignImage(ReadOnlyPerson person) {
 
-        if (!person.getDisplayPicture().getPath().equals("")) {
+        if (!person.getDisplayPicture().getPath().equals(EMPTY_STRING)) {
 
-            Image image = new Image("file:" + "pictures/" + person.getDisplayPicture().getPath() + ".png",
-                    IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
+            Image image = new Image("file:" + DIRECTORY_SAVING_PATH + person.getDisplayPicture().getPath()
+                    + IMAGE_EXTENSION, IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
+
+            // To take care of image deleted manually
+            File file = new File(DIRECTORY_SAVING_PATH + person.getDisplayPicture().getPath() + IMAGE_EXTENSION);
+
+            //Defensive programming
+            if (!file.exists()) {
+                logger.info("Corrupted image. Loading default image now");
+
+                image = new Image(MainApp.class.getResourceAsStream(DEFAULT_IMAGE_PATH),
+                        IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
+            }
 
             popularContactDisplayPicture.setFill(new ImagePattern(image));
 
         } else {
-            Image image = new Image(MainApp.class.getResourceAsStream("/images/defaulddp.png"),
+            Image image = new Image(MainApp.class.getResourceAsStream(DEFAULT_IMAGE_PATH),
                     IMAGE_WIDTH, IMAGE_HEIGHT, false, false);
 
             popularContactDisplayPicture.setFill(new ImagePattern(image));
@@ -2433,7 +2533,8 @@ import java.util.HashMap;
 
 
 /**
- * Singleon Class. Stores hashmap which maps color to the tag
+ * Singleton Class
+ * Stores hashmap which maps color to the tag
  */
 public class TagColor {
 

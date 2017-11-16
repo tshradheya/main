@@ -67,7 +67,7 @@ public class ImageDisplayPictureStorage implements DisplayPictureStorage {
         try {
             logger.info("image is being stored in directory ");
             fileToWrite = new File(DIRECTORY_SAVING_PATH + uniquePath + IMAGE_EXTENSION);
-            ImageIO.write(image, IMAGE_EXTENSION, fileToWrite);
+            ImageIO.write(image, "png", fileToWrite);
         } catch (IOException ioe) {
             logger.info("Image not saved properly");
             throw  new ImageException(String.format(MESSAGE_INVALID_IMAGE,
